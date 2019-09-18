@@ -1,9 +1,9 @@
 #include <stdio.h>
 
-void enter(char* massage, int* variable_int)	//function for int input
+void in_int(char* massage, int* variable_int)	//function for int input
 {
 	char c;
-enter_begin:
+in_int_begin:
 	printf("%s", massage);
 	do
 	{								//handling spaces at the beginning of a line
@@ -12,7 +12,7 @@ enter_begin:
 	while (c == ' ');
 
 	if (c == '\n')
-		goto enter_begin;		//handling empty input
+		goto in_int_begin;		//handling empty input
 
 	short minus;						//handling negative input
 	if (c == '-')
@@ -23,6 +23,9 @@ enter_begin:
 	else
 		minus = 1;
 
+	while (c == ' ')
+		c = getchar();
+
 	*variable_int = 0;
 
 	while (c >= '0' && c <= '9')
@@ -31,7 +34,7 @@ enter_begin:
 		{
 			while (getchar() != '\n');
 			printf("invalid input, input is too big\n");
-			goto enter_begin;
+			goto in_int_begin;
 		}
 		*variable_int = *variable_int * 10 + c - '0';
 		c = getchar();
@@ -44,7 +47,7 @@ enter_begin:
 	{
 		while (getchar() != '\n');
 		printf("invalid input\n");
-		goto enter_begin;
+		goto in_int_begin;
 	}
 	*variable_int *= minus;
 }
@@ -67,7 +70,7 @@ int main()
 
 	do 
 	{												//data input
-		enter("Enter first number: ", &x);
+		in_int("Enter first number: ", &x);
 		if (x < 0)
 			printf("invalid input, natural number expacted\n");
 	}
@@ -76,7 +79,7 @@ int main()
 
 	do
 	{
-		enter("Enter second number: ", &y);
+		in_int("Enter second number: ", &y);
 		if (y < 0)
 			printf("invalid input, natural number expacted\n");
 	}
@@ -85,7 +88,7 @@ int main()
 
 	do
 	{
-		enter("Enter third number: ", &z);
+		in_int("Enter third number: ", &z);
 		if (z < 0)
 			printf("invalid input, natural number expacted\n");
 	}
