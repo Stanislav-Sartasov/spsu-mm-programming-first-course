@@ -56,6 +56,9 @@ in_double_begin:
 		}
 	}
 
+	while (c == ' ')
+		c = getchar();
+
 	if (c != '\n')
 	{
 		while (getchar() != '\n');
