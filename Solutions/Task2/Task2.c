@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+
+
 void in_int(char* massage, int* variable_int)	//function for int input
 {
 	char c;
@@ -9,7 +11,7 @@ in_int_begin:
 	{								//handling spaces at the beginning of a line
 		c = getchar();
 	}
-	while (c == ' ');
+	while (c == ' ' || c == '\t');
 
 	if (c == '\n')
 		goto in_int_begin;		//handling empty input
@@ -23,7 +25,7 @@ in_int_begin:
 	else
 		minus = 1;
 
-	while (c == ' ')
+	while (c == ' ' || c == '\t')
 		c = getchar();
 
 	*variable_int = 0;
@@ -40,7 +42,7 @@ in_int_begin:
 		c = getchar();
 	}
 
-	while (c == ' ')		//post processing and validation of input
+	while (c == ' ' || c == '\t')		//post processing and validation of input
 		c = getchar();
 
 	if (c != '\n')
@@ -71,7 +73,7 @@ int main()
 	do 
 	{												//data input
 		in_int("Enter first number: ", &x);
-		if (x < 0)
+		if (x <= 0)
 			printf("invalid input, natural number expacted\n");
 	}
 	while (x < 0);
@@ -80,7 +82,7 @@ int main()
 	do
 	{
 		in_int("Enter second number: ", &y);
-		if (y < 0)
+		if (y <= 0)
 			printf("invalid input, natural number expacted\n");
 	}
 	while (y < 0);
@@ -89,7 +91,7 @@ int main()
 	do
 	{
 		in_int("Enter third number: ", &z);
-		if (z < 0)
+		if (z <= 0)
 			printf("invalid input, natural number expacted\n");
 	}
 	while (z < 0);
