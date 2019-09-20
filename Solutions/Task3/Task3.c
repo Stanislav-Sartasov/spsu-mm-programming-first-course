@@ -13,7 +13,7 @@ in_double_begin:
 	{
 		c = getchar();
 	}
-	while (c == ' ');
+	while (c == ' ' || c == '\t');
 
 	if (c == '\n')
 		goto in_double_begin;
@@ -27,7 +27,7 @@ in_double_begin:
 	else
 		minus = 1;
 
-	while (c == ' ')
+	while (c == ' ' || c == '\t')
 		c = getchar();
 
 	*variable_double = 0.0;
@@ -39,9 +39,16 @@ in_double_begin:
 		c = getchar();
 	}
 
+	while (c == ' ' || c == '\t')
+		c = getchar();
+
 	if ((c == '.') && whole_part_flag)
 	{
 		c = getchar();
+
+		while (c == ' ' || c == '\t')
+			c = getchar();
+
 		if (c < '0' || c > '9')
 		{
 			if (c != '\n')
@@ -55,6 +62,9 @@ in_double_begin:
 			c = getchar();
 		}
 	}
+
+	while (c == ' ' || c == '\t')
+		c = getchar();
 
 	if (c != '\n')
 	{
