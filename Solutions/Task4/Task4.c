@@ -2,7 +2,7 @@
 
 char std_prime(int in)
 {
-	if ((!(in % 2) || in == 1) && (in != 2))
+	if ((in != 2 && !(in % 2)) ||  in == 1)
 		return 0;
 	for (int i = 3; i * i <= in; i += 2)
 		if (!(in % i))
