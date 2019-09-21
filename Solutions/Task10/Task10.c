@@ -57,6 +57,8 @@ int find_amount(int number, int money_biggest_type, int* money_types)
 		return 1;
 	if (!number)
 		return 1;
+	if (money_biggest_type == 1)
+		return number / 2;
 	int count = 0;
 	for (int type_count = 1; money_types[money_biggest_type] * type_count <= number; type_count++)
 		count += find_amount(number - money_types[money_biggest_type] * type_count, money_biggest_type - 1, money_types);
@@ -80,9 +82,12 @@ int main()
 	long long count = 0;
 
 	for (int i = 0; (money / money_types[i] > 0) && (i < 8); i++)
+	{
 		count += find_amount(money, i, money_types);
+		printf("i = %d, count = %lld\n", i, count);
+	}
 
-	printf("%ld\n", count);
+	printf("%lld\n", count);
 
 	return 0;
 }
