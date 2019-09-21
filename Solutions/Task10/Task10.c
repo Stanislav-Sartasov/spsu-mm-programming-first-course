@@ -82,7 +82,7 @@ int main()
 	for (int i = 0; (money / money_types[i] > 0) && (i < 8); i++)
 		count += find_amount(money, i, money_types);
 
-	printf("%d\n", count);
+	printf("%ld\n", count);
 
 	return 0;
 }
