@@ -70,6 +70,8 @@ int main()
 {
 	int x, y, z;
 
+	printf("This program for the entered three numbers determines\nwhether they are a Pythagorean triple and if they are, simple or compound\n\n");
+
 	do 
 	{												//data input
 		in_int("Enter first number: ", &x);
