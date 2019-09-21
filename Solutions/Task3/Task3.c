@@ -3,7 +3,7 @@
 
 #define PI 3.141592653589793238462643383279502884
 
-void in_double(char* massage, double* variable_double)		//I'm getting hurt doing that
+void in_double(char* massage, double* variable_double)
 {
 	char c;
 in_double_begin:
