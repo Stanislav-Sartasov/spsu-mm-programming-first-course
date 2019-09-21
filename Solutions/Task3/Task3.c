@@ -87,6 +87,8 @@ int main()
 {
 	double x, y, z;
 
+	printf("This program, based on the three lengths of segments entered,\ndetermines whether a triangle with such sides can exist and if so, what angles it has\n\n");
+
 	do
 	{
 		in_double("Enter x: ", &x);
