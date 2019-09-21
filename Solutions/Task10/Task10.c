@@ -77,7 +77,7 @@ int main()
 
 	int money_types[8] = { 1, 2, 5, 10, 20, 50, 100, 200 };
 
-	int count = 0;
+	long long count = 0;
 
 	for (int i = 0; (money / money_types[i] > 0) && (i < 8); i++)
 		count += find_amount(money, i, money_types);
