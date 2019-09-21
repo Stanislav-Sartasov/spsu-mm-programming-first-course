@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 int gcd(int x, int y);
+//
 int main()
 {
     int x, y, z, max;

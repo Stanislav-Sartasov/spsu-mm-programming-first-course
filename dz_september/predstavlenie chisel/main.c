@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include<string.h>
 
-void showtwo(int a);
+void showtwo(int a);//other view
 void showIEEEx64(int a);
 
 int main()

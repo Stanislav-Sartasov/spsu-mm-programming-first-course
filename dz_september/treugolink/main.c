@@ -11,7 +11,7 @@ int main()
     if((a<b+c) && (b<a+c) && (c<a+b) && a>0 && b>0 && c>0)
     {
         double p=(a+b+c)/2, s;
-        s=sqrt(p*(p-a)*(p-b)*(p-c)); //printf("%f",s);
+        s=sqrt(p*(p-a)*(p-b)*(p-c));
         p=2.0*s/(a*b); printf("possible: %f ",asin(p)*180/pi);
         p=2.0*s/(b*c); printf("%f ",asin(p)*180/pi);
         p=2.0*s/(a*c); printf("%f",asin(p)*180/pi);
