@@ -66,6 +66,7 @@ int find_amount(int number, int money_biggest_type, int* money_types)
 int main()
 {
 	int money;
+	printf("This program for the entered amount of money in pensions\nis determined by how many ways you can collect this amount using standard English coins\n\n");
 	do
 	{
 		in_int("Enter amount of money: ", &money);
