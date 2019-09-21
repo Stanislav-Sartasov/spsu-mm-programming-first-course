@@ -63,15 +63,12 @@ in_double_begin:
 		}
 	}
 
-<<<<<<< .mine
 	while (c == ' ' || c == '\t')
 		c = getchar();
 
-=======
 	while (c == ' ')
 		c = getchar();
 
->>>>>>> .theirs
 	if (c != '\n')
 	{
 		while (getchar() != '\n');
