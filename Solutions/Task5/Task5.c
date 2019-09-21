@@ -88,6 +88,7 @@ long double cfin(int* array, int size)	//continued fraction in number
 
 int main()
 {
+	printf("This program for the entered number determines the continued fraction of its square root\n\n");
 	double n;
 	in_double("Enter number: ", &n);
 	printf("\n");
