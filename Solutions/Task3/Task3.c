@@ -18,7 +18,7 @@ in_double_begin:
 	if (c == '\n')
 		goto in_double_begin;
 
-	short minus;
+	char minus;
 	if (c == '-')
 	{
 		c = getchar();
@@ -64,9 +64,6 @@ in_double_begin:
 	}
 
 	while (c == ' ' || c == '\t')
-		c = getchar();
-
-	while (c == ' ')
 		c = getchar();
 
 	if (c != '\n')
