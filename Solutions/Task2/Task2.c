@@ -16,7 +16,7 @@ in_int_begin:
 	if (c == '\n')
 		goto in_int_begin;		//handling empty input
 
-	short minus;						//handling negative input
+	char minus;						//handling negative input
 	if (c == '-')
 	{
 		c = getchar();
