@@ -35,6 +35,12 @@ int main()
 
 	long long count = 0;
 
+	if (money == 1)
+	{
+		printf("\n1\n");
+		return 0;
+	}
+
 	for (int i = 1; (money / money_types[i] > 0) && (i < 8); i++)
 	{
 		count += find_amount(money, i, money_types);
