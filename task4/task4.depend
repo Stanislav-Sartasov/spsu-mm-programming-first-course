@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1569268070 source:/home/lyubov/Desktop/task4/main.c
+	<stdio.h>
+	<math.h>
+
