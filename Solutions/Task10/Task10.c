@@ -1,55 +1,5 @@
 #include <stdio.h>
-
-void in_int(char* massage, int* variable_int)	//function for int input
-{
-	char c;
-in_int_begin:
-	printf("%s", massage);
-	do
-	{								//handling spaces at the beginning of a line
-		c = getchar();
-	} while (c == ' ' || c == '\t');
-
-	if (c == '\n')
-		goto in_int_begin;		//handling empty input
-
-	char minus;						//handling negative input
-	if (c == '-')
-	{
-		c = getchar();
-		minus = -1;
-	}
-	else
-		minus = 1;
-
-	while (c == ' ' || c == '\t')
-		c = getchar();
-
-	*variable_int = 0;
-
-	while (c >= '0' && c <= '9')
-	{
-		if (*variable_int * 10 + c - '0' < 0)		//handling int overflow
-		{
-			while (getchar() != '\n');
-			printf("invalid input, input is too big\n");
-			goto in_int_begin;
-		}
-		*variable_int = *variable_int * 10 + c - '0';
-		c = getchar();
-	}
-
-	while (c == ' ' || c == '\t')		//post processing and validation of input
-		c = getchar();
-
-	if (c != '\n')
-	{
-		while (getchar() != '\n');
-		printf("invalid input\n");
-		goto in_int_begin;
-	}
-	*variable_int *= minus;
-}
+#include "inputing.h"
 
 int find_amount(int number, int money_biggest_type, int* money_types)
 {
@@ -58,10 +8,14 @@ int find_amount(int number, int money_biggest_type, int* money_types)
 	if (!number)
 		return 1;
 	if (money_biggest_type == 1)
-		return number / 2;
+		return number / 2 + 1;
 	int count = 0;
 	for (int type_count = 1; money_types[money_biggest_type] * type_count <= number; type_count++)
-		count += find_amount(number - money_types[money_biggest_type] * type_count, money_biggest_type - 1, money_types);
+		if (money_types[money_biggest_type] * type_count == number)
+			count++;
+		else
+			for (int j = 1; j < money_biggest_type; j++)
+				count += find_amount(number - money_types[money_biggest_type] * type_count, j, money_types);
 	return count;
 }
 
@@ -81,13 +35,12 @@ int main()
 
 	long long count = 0;
 
-	for (int i = 0; (money / money_types[i] > 0) && (i < 8); i++)
+	for (int i = 1; (money / money_types[i] > 0) && (i < 8); i++)
 	{
 		count += find_amount(money, i, money_types);
-		printf("i = %d, count = %lld\n", i, count);
 	}
 
-	printf("%lld\n", count);
+	printf("\n%lld\n", count);
 
 	return 0;
 }
