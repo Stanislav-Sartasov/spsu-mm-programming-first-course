@@ -1,80 +1,8 @@
 #include <stdio.h>
 #include <math.h>
+#include "inputing.h"
 
 #define PI 3.141592653589793238462643383279502884
-
-void in_double(char* massage, double* variable_double)
-{
-	char c;
-in_double_begin:
-	printf("%s", massage);
-
-	do
-	{
-		c = getchar();
-	}
-	while (c == ' ' || c == '\t');
-
-	if (c == '\n')
-		goto in_double_begin;
-
-	char minus;
-	if (c == '-')
-	{
-		c = getchar();
-		minus = -1;
-	}
-	else
-		minus = 1;
-
-	while (c == ' ' || c == '\t')
-		c = getchar();
-
-	*variable_double = 0.0;
-	char whole_part_flag = (c >= '0' && c <= '9') ? 1 : 0;
-
-	while (c >= '0' && c <= '9')
-	{
-		*variable_double = *variable_double * 10 + c - '0';
-		c = getchar();
-	}
-
-	while (c == ' ' || c == '\t')
-		c = getchar();
-
-	if ((c == '.') && whole_part_flag)
-	{
-		c = getchar();
-
-		while (c == ' ' || c == '\t')
-			c = getchar();
-
-		if (c < '0' || c > '9')
-		{
-			if (c != '\n')
-				while (getchar() != '\n');
-			printf("invalid input\n");
-			goto in_double_begin;
-		}
-		for (int i = 10; c >= '0' && c <= '9'; i *= 10)
-		{
-			*variable_double = *variable_double + ((double)c - (double)'0') / (double)i;
-			c = getchar();
-		}
-	}
-
-	while (c == ' ' || c == '\t')
-		c = getchar();
-
-	if (c != '\n')
-	{
-		while (getchar() != '\n');
-		printf("invalid input\n");
-		goto in_double_begin;
-	}
-
-	*variable_double *= minus;
-}
 
 void dms_out(double degree)
 {
@@ -87,7 +15,7 @@ int main()
 {
 	double x, y, z;
 
-	printf("This program, based on the three lengths of segments entered,\ndetermines whether a triangle with such sides can exist and if so, what angles it has\n\n");
+	printf("This program, based on the three lengths of segments entered (x, y, z),\ndetermines whether a triangle with such sides can exist and if so, what angles it has\n\n");
 
 	do
 	{
@@ -116,9 +44,9 @@ int main()
 	while (z < 0);
 	printf("\n");
 
-	if ((x + y < z) || (x + z < y) || (y + z < x))
+	if ((x + y <= z) || (x + z <= y) || (y + z <= x) || !x || !y || !z)
 	{
-		printf("There is no such triangle");
+		printf("There is no such triangle\n");
 		return 0;
 	}
 	

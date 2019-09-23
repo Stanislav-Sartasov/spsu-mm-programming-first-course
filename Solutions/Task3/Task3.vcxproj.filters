@@ -18,5 +18,13 @@
     <ClCompile Include="Task3.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="inputing.c">
+      <Filter>Файлы ресурсов</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="inputing.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
