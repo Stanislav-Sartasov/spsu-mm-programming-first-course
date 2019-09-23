@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
+
 int correct_input(char str[])
 {
 	char digits[11] = "0123456789";
@@ -19,8 +20,7 @@ int correct_input(char str[])
 		}
 	}
 	else exit = 1;
-	if (exit == 1) return 1;
-	else return 0;
+	if (exit == 0) return 0;
 }
 
 main()	
