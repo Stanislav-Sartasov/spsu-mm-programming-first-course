@@ -5,22 +5,22 @@
 int correct_input(char str[])
 {
 	char digits[11] = "0123456789";
-	int digit_true, exit = 0;
+	int digit_true;
 	if (str[0] != '0')
 	{
 
-		for (int l = 0; (l < strlen(str)) && (exit != 1); l++)
+		for (int l = 0; (l < strlen(str)); l++)
 		{
 			digit_true = 0;
-			for (int n = 0; (n < 10) && (exit != 1); n++)
+			for (int n = 0; (n < 10); n++)
 			{
 				if (str[l] == digits[n]) digit_true = 1;
 			}
-			if (digit_true == 0) exit = 1;
+			if (digit_true == 0) return 1;
 		}
 	}
-	else exit = 1;
-	if (exit == 0) return 0;
+	else return 1;
+	return 0;
 }
 
 main()	
