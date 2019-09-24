@@ -10,7 +10,7 @@ int* set_len(int* array, int* size, int new_size)
 		auxiliary_array = (int*)malloc(new_size * sizeof(int));
 	if (*size)
 	{
-		for (int i = 0; (i < *size) || (i < new_size); i++)
+		for (int i = 0; (i < *size) && (i < new_size); i++)
 			auxiliary_array[i] = array[i];
 		free(array);
 	}
