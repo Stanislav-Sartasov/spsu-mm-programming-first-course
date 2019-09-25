@@ -52,10 +52,13 @@ int main()
 		int t = whole_part - b_fraction;	//intermediate variable
 		b_fraction = t + whole_part;
 		t_fraction = (n - t * t) / t_fraction;
+
 		c_fraction = set_len(c_fraction, &c_fraction_len, i);
 		c_fraction[i - 1] = b_fraction / t_fraction;
 		printf(", %d", c_fraction[i - 1]);
+
 		b_fraction = b_fraction % t_fraction;
+
 		if (c_fraction[i - 1] == whole_part * 2)
 		{
 			char flag = 1;
@@ -68,6 +71,7 @@ int main()
 			if (flag)
 			{
 				printf("\n\n");
+				free(c_fraction);
 				return 0;
 			}
 		}
