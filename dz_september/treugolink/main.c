@@ -1,12 +1,17 @@
 #include <stdio.h>
 #include <math.h>
+#include "functionToGo.h"
 
 #define pi 3.14159265358979
 
 int main()
 {
     double a,b,c;
-    scanf("%lf%lf%lf",&a,&b,&c);
+    //scanf("%lf%lf%lf",&a,&b,&c);
+    changeAgainInputText("try to put \"double\" type of number");
+    a=savein();
+    b=savein();
+    c=savein();
     //printf("%f %f %f",a,b,c);
     if((a<b+c) && (b<a+c) && (c<a+b) && a>0 && b>0 && c>0)
     {
