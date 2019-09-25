@@ -1,22 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-#include <malloc.h>
 #include "inputing.h"
-
-int* set_len(int* array, int* size, int new_size)
-{
-	int* auxiliary_array = (int*)malloc(new_size * sizeof(int));
-	while (auxiliary_array == '\0')
-		auxiliary_array = (int*)malloc(new_size * sizeof(int));
-	if (*size)
-	{
-		for (int i = 0; (i < *size) && (i < new_size); i++)
-			auxiliary_array[i] = array[i];
-		free(array);
-	}
-	*size = new_size;
-	return auxiliary_array;
-}
 
 int main()
 {
@@ -35,7 +19,7 @@ int main()
 
 	printf("%d", whole_part);
 
-	if (trunc(whole_part) * trunc(whole_part) == n)
+	if (whole_part * whole_part == n)
 	{
 		printf("\n");
 		return 0;
@@ -44,36 +28,23 @@ int main()
 	int t_fraction = 1;
 	int b_fraction = 0; // top fraction, bottom fraction
 
-	int* c_fraction = 0;
-	int c_fraction_len = 0;
+	int t;	//intermediate variable
 
-	for (int i = 1;; i++)
+	for (;;)
 	{
-		int t = whole_part - b_fraction;	//intermediate variable
+		t = whole_part - b_fraction;
 		b_fraction = t + whole_part;
 		t_fraction = (n - t * t) / t_fraction;
 
-		c_fraction = set_len(c_fraction, &c_fraction_len, i);
-		c_fraction[i - 1] = b_fraction / t_fraction;
-		printf(", %d", c_fraction[i - 1]);
+		t = b_fraction / t_fraction;
+		printf(", %d", t);		
+
+		if (t == whole_part * 2)
+		{
+			printf("\n\n");
+			return 0;
+		}
 
 		b_fraction = b_fraction % t_fraction;
-
-		if (c_fraction[i - 1] == whole_part * 2)
-		{
-			char flag = 1;
-			for (int j = 0; j < c_fraction_len / 2; j++)
-				if (c_fraction[j] != c_fraction[c_fraction_len - 2 - j])
-				{
-					flag = 0;
-					break;
-				}
-			if (flag)
-			{
-				printf("\n\n");
-				free(c_fraction);
-				return 0;
-			}
-		}
 	}
 }
