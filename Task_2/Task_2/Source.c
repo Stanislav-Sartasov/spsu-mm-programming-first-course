@@ -29,8 +29,8 @@ int main()
 {	
 	
 	setlocale(LC_ALL, "Rus");
-	printf("Программа получает на вход тройку чисел и определяет, является ли эта тройка Пифагоровой\n");
-	printf("Введите последовательно 3 числа\n");
+	printf("The program receives a triple of numbers as input and determines whether this triple is Pythagorean\n");
+	printf("Enter 3 numbers consecutively\n");
 	int x = 0; int z = 0; int y = 0; int i = 0; char eol = 0; int n = 1;
 	
 	while (n == 1)
@@ -40,25 +40,25 @@ int main()
 		int zscan = scanf("%d%c", &z , &eol);
 		if (xscan && yscan && zscan && eol == '\n')
 		{
-			if ((x <= 0) || (y <= 0) || (z<=0))
+			if ((x <= 0) || (y <= 0) || ( z <= 0 ))
 			{
-				printf("Вы ввели не положительные числа - попробуйте еще раз\n");
+				printf("You entered non-positive numbers-try again\n");
 			}
 			else 
 			{
 				n = 0;
 				if (check(x, y, z))
 				{
-					printf("Да, это Пифагорова тройка\n");
+					printf("Yes, it's Pythagorean triplets.а\n");
 					if ((gcd(x, y) == 1) && (gcd(y, z) == 1))
 					{
-						printf("Да, это примитивная тройка");
+						printf("Yeah, it's a primitive three.");
 					}
 
 				}
 				else
 				{
-					printf("Нет это не Пифагорова тройка");
+					printf("No it's not Pythagorean triplets");
 				}
 				
 			}
@@ -66,7 +66,7 @@ int main()
 		}
 		else
 		{
-			printf("Вы ввели строку - попробуйте еще раз\n");
+			printf("You entered a string-try again\n");
 			scanf("%*[^\n]");
 		}
 	}
