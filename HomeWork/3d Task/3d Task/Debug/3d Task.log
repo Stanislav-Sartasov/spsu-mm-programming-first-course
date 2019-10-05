@@ -1,0 +1,5 @@
+﻿  Source1.cpp
+c:\users\ww\source\repos\3d task\3d task\source1.cpp(12): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+c:\users\ww\source\repos\3d task\3d task\source1.cpp(18): error C3861: system: идентификатор не найден
+c:\users\ww\source\repos\3d task\3d task\source1.cpp(28): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+c:\users\ww\source\repos\3d task\3d task\source1.cpp(32): error C3861: system: идентификатор не найден
