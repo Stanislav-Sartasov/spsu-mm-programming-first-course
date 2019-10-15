@@ -21,7 +21,7 @@ int main()
 
 	if (whole_part * whole_part == n)
 	{
-		printf("\n");
+		printf(" }\n\ni = 0\n");
 		return 0;
 	}
 
@@ -41,7 +41,7 @@ int main()
 
 		if (t == whole_part * 2)
 		{
-			printf(" }\n\ni = %d\n\n", i);
+			printf(" }\n\ni = %d\n", i);
 			return 0;
 		}
 
