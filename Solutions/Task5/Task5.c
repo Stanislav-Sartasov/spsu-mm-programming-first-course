@@ -17,7 +17,7 @@ int main()
 
 	int whole_part = trunc(sqrt(n));
 
-	printf("%d", whole_part);
+	printf("{ %d", whole_part);
 
 	if (whole_part * whole_part == n)
 	{
@@ -30,7 +30,7 @@ int main()
 
 	int t;	//intermediate variable
 
-	for (;;)
+	for (int i = 1;; i++)
 	{
 		t = whole_part - b_fraction;
 		b_fraction = t + whole_part;
@@ -41,7 +41,7 @@ int main()
 
 		if (t == whole_part * 2)
 		{
-			printf("\n\n");
+			printf(" }\n\ni = %d\n\n", i);
 			return 0;
 		}
 
