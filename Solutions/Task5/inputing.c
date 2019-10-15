@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int in_int_back(char* message, int* variable_int)	//return 0 if it's ok, else return -1
+char in_int_back(char* message, int* variable_int)	//return 0 if it's ok, else return -1
 {
 	char c;
 	printf("%s", message);
