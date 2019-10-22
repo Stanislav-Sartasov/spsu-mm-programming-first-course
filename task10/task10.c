@@ -61,7 +61,7 @@ int main()
 		{
 			for (int k = coins[i]; k <= sum; k++)
 			{
-			table[k] += table[k - coins[i]];
+				table[k] += table[k - coins[i]];
 			}
 		}
 		printf("%d\n", table[sum]);
