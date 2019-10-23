@@ -10,48 +10,43 @@ int PythTh(int x, int y, int z)
 	else isTrue = 0;
 	return isTrue;
 }
-int comprNum(int x, int y, unsigned short int isComprNum)
+int coprimeNum(int x, int y, unsigned short int isCoprimeNum)
 {
 	while (x != y)
 	{
 		if (x > y) x -= y;
 		else y -= x;
 	}
-	if (x == 1) isComprNum = isComprNum + 1;
-	return isComprNum;
+	if (x == 1) isCoprimeNum = isCoprimeNum + 1;
+	return isCoprimeNum;
 }
 int main()
 {
-	system("chcp 1251");
-	int x, y, z;
-	int res;
-
-	do {
+	int x, y, z, res;
+	printf("%s", "Enter 3 numbers \n");
+	do
+	{
 		res = scanf("%d%d%d", &x, &y, &z);
+		if (x <= 0 || y <= 0 || z <= 0) res = 0;
 		while (getchar() != '\n');
-		if (res == 3) break; //printf("%s", "’орошо!\n");
-		else printf("%s", "¬ведены неверные значени€, попробуйте снова\n");
+		if (res == 3) break; 
+		else printf("%s", "Invalid numbers entered, try again\n");
 	} 
 	while (res != 3);
-	if (x <= 0 || y <= 0 || z <= 0)
-	{
-		printf("%s", "¬ведены неверные значени€, попробуйте снова\n");
-		scanf("%d%d%d", &x, &y, &z);
-	}
 
-	unsigned short int isTrue, isComprNum = 0;
+	unsigned short int isTrue, isCoprimeNum = 0;
 
 	isTrue = PythTh(x, y, z);
 
-	if (isTrue == 1) printf("%s\n", "„исла €вл€ютс€ пифагоровыми тройками");
-	else printf("%s\n", "„исла не €вл€ютс€ пифагоровыми тройками");
+	if (isTrue == 1) printf("%s\n", "Numbers are Pythagorean triples");
+	else printf("%s\n", "Numbers are not Pythagorean triples");
 
-	isComprNum = comprNum(x, y, isComprNum);
-	isComprNum = comprNum(x, z, isComprNum);
-	isComprNum = comprNum(z, y, isComprNum);
+	isCoprimeNum = coprimeNum(x, y, isCoprimeNum);
+	isCoprimeNum = coprimeNum(x, z, isCoprimeNum);
+	isCoprimeNum = coprimeNum(z, y, isCoprimeNum);
 
-	if (isComprNum == 3) printf("%s\n", "„исла €вл€ютс€ простыми пифагоровыми тройками");
-	else printf("%s\n", "„исла не €вл€ютс€ простыми пифагоровыми тройками");
+	if (isCoprimeNum == 3) printf("%s\n", "Numbers are simple Pythagorean triples");
+	else printf("%s\n", "Numbers are not simple Pythagorean triples");
 
 	system("pause");
 	return 0;
