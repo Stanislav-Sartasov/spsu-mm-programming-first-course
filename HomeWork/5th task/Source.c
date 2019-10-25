@@ -6,7 +6,7 @@ int main()
 {
 	char number[100];
 	int i, begin, end,k=0,mist;
-	printf("%s", "Enter the number \n");
+	printf("%s", "Enter rational number \n");
 	for (;;)  //safty input
 	{
 		k = 0;
@@ -22,7 +22,7 @@ int main()
 				break;
 			}
 		}
-		if (mist > 0) printf("%s", "Invalid numbers entered, try again\n");
+		if (mist > 0 || k == 0) printf("%s", "Invalid numbers entered, try again\n");
 		else break;
 	}
 
