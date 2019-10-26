@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "functionToGo.h"
 
-int gcd(int x, int y);
+int gccd(int x, int y);
 int main()
 {
     int x, y, z, max;
@@ -23,7 +23,7 @@ int main()
     if(x * x + y * y == z * z)
     {
         printf("Yes\n");
-        if(gcd(x,y) == gcd(x,z) == gcd(y,z)==1)
+        if(gccd(x,y) == gccd(x,z) == gccd(y,z)==1)
             printf("Simple numbers");
         else
             printf("NOT Simple numbers");
@@ -35,7 +35,7 @@ int main()
     return 0;
 }
 
-int gcd(int x, int y)
+int gccd(int x, int y)
 {
     int d = 1;
     if(x < y)
