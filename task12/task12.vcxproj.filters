@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="task12.cpp">
+    <ClCompile Include="task12.c">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
   </ItemGroup>
