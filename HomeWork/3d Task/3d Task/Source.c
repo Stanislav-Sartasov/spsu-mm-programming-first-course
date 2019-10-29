@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-unsigned int Trian(float a, float b, float c)       
+unsigned int Trian(float a, float b, float c)       // is possible to bild a triangle if yes isTrian = 1
 {
 	if ((a + b > c) && (a + c > b) && (b + c > a)) return 1;
 	else  return 0;
