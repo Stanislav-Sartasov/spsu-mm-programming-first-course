@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
+
 int PythTh(int x, int y, int z)
 {
 	unsigned short int isTrue;
@@ -10,6 +11,7 @@ int PythTh(int x, int y, int z)
 	else isTrue = 0;
 	return isTrue;
 }
+
 int coprimeNum(int x, int y, unsigned short int isCoprimeNum)
 {
 	while (x != y)
@@ -20,6 +22,7 @@ int coprimeNum(int x, int y, unsigned short int isCoprimeNum)
 	if (x == 1) isCoprimeNum = isCoprimeNum + 1;
 	return isCoprimeNum;
 }
+
 int main()
 {
 	int x, y, z, res;
