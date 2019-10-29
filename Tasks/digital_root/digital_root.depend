@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1572103712 source:c:\users\pavel\desktop\proga_univer\digital_root\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+

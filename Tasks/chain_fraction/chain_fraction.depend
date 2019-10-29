@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1572366580 source:c:\users\pavel\desktop\proga_univer\chain_fraction\main.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+
