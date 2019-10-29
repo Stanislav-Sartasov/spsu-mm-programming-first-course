@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include <stdlib.h>
 
 int check()
 {
@@ -48,11 +49,11 @@ int main()
 	for (int i = 1; i < 8; i++)
 		if (n < coins[i])
 		{
-			printf("%d", dp[i * n]);
+			printf("%lld", dp[i * n]);
 			return 0;
 		}
 
-	printf("%d", dp[8 * n]);
+	printf("%lld", dp[8 * n]);
 	free(dp);
 	return 0;
 }
