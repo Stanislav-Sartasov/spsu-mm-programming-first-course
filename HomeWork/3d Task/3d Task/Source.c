@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-unsigned int Trian(float a, float b, float c)       // is possible to bild a triangle if yes isTrian = 1
+unsigned int trian(float a, float b, float c)       
 {
 	if ((a + b > c) && (a + c > b) && (b + c > a)) return 1;
 	else  return 0;
@@ -32,7 +32,7 @@ int main()
 		else printf("%s", "Invalid numbers entered, try again\n");
 	} while (res != 3);
 
-	if (Trian(a, b, c) == 0) printf("%s\n", "Is not tiangle");
+	if (trian(a, b, c) == 0) printf("%s\n", "Is not tiangle");
 	else
 	{
 		float cosa, cosb, cosc;
