@@ -69,7 +69,7 @@ int main()
     arr[0] = (int) (numerator / denominator);
     for (int i = 1; i < size_of_precalculation; i++)
     {
-       t = numerator - arr[i - 1] * denominator - y_fract;
+       t = (int)(numerator - arr[i - 1] * denominator);
        numerator = y + q0 - t;
        denominator = (x - (q0 - t) * (q0 - t)) / denominator;
        arr[i] = (int) (numerator / denominator);
