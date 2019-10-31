@@ -4,7 +4,7 @@
 
 int main()
 {
-    long long q;
+    long long q, q0;
     double b, r, a = savein();
 
     r = reminder(a, sqrt(a));
@@ -12,7 +12,8 @@ int main()
     printf("%lld\n",q);
     a=sqrt(a);
     b=r;
-    for(;b>0.0002;)
+    q0=q;
+    do
     {
         r = reminder(a, b);
         q = wholep(a, b);
@@ -20,6 +21,7 @@ int main()
         a=b;
         b=r;
     }
+    while(2*q0 != q);
 
     return 0;
 }
