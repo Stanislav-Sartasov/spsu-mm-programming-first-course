@@ -43,14 +43,15 @@ int main()
 	unsigned int* a[size] = { 0 };
 	unsigned int* b[size] = { 0 };
 	unsigned int* c[size] = { 0 };
-	c[0] = 1;
+	int exp = 5000;
 	a[0] = 3;
-	for (int i = 2; i <= 5000; i <<= 1)
+	c[0] = exp % 2 ? a[0] : 1;
+	for (int i = 2; i <= exp; i <<= 1)
 	{
 		mtp(a, a, b);
 		for (int j = 0; j < size; j++)
 			a[j] = b[j];
-		if (5000 & i)
+		if (exp & i)
 		{
 			mtp(c, a, b);
 			for (int j = 0; j < size; j++)
