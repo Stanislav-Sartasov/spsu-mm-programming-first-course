@@ -34,7 +34,7 @@ int main()
                 a[i] = a[i] * 10 + (s[j] - '0');
             }
         }
-        if (!fl)
+        if (!fl && a[0] && a[1] && a[2])
             break;
         printf("Please, enter correct numbers\n");
         fl = 0;
