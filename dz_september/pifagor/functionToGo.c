@@ -9,14 +9,14 @@ double saveInDouble()
 {
     double a = 0, delim = 1;
     char c = '\0';
-    int first = 1, sign = 1, goodset = 1, less1 = 0;
+    int first = 1, sign = 1, goodSet = 1, less1 = 0;
 
     do
     {
         a = 0; delim = 1;
         c = '\0';
-        first = 1; sign = 1; goodset = 1; less1 = 0;
-        while((c != ' ') && (c != '\n') && goodset)
+        first = 1; sign = 1; goodSet = 1; less1 = 0;
+        while((c != ' ') && (c != '\n') && goodSet)
         {
             scanf("%c", &c);
             if(first)
@@ -27,7 +27,7 @@ double saveInDouble()
                 if((c >= '0') && (c <= '9'))
                     {a = c - '0'; continue; }
 
-                goodset = 0;
+                goodSet = 0;
                 break;
             }
 
@@ -47,17 +47,17 @@ double saveInDouble()
                 continue;
             }
             if((c != ' ') && (c != '\n'))
-                { goodset = 0;  break; }
+                { goodSet = 0;  break; }
         }
         a = a * sign;
-        if(!goodset)
+        if(!goodSet)
         {
             printf("%s\n", stringOfAgainInput);
             c = '\0';
             while(c != '\n')
                 scanf("%c",&c);
         }
-    }while(goodset != 1);
+    }while(goodSet != 1);
     return a;
 }
 
@@ -65,14 +65,14 @@ long long saveInInt()
 {
     long long a = 0;
     char c = '\0';
-    int first = 1, sign = 1, goodset = 1;
+    int first = 1, sign = 1, goodSet = 1;
 
     do
     {
         a = 0;
         c = '\0';
-        first = 1; sign = 1; goodset = 1;
-        while((c != ' ') && (c != '\n') && goodset)
+        first = 1; sign = 1; goodSet = 1;
+        while((c != ' ') && (c != '\n') && goodSet)
         {
             scanf("%c", &c);
             if(first)
@@ -83,7 +83,7 @@ long long saveInInt()
                 if((c >= '0') && (c <= '9'))
                     {a = c - '0'; continue; }
 
-                goodset = 0;
+                goodSet = 0;
                 break;
             }
 
@@ -94,17 +94,17 @@ long long saveInInt()
             }
 
             if((c != ' ') && (c != '\n'))
-                { goodset = 0;  break; }
+                { goodSet = 0;  break; }
         }
         a = a * sign;
-        if(!goodset)
+        if(!goodSet)
         {
             printf("%s\n",stringOfAgainInput);
             c = '\0';
             while(c != '\n')
                 scanf("%c",&c);
         }
-    }while(goodset != 1);
+    }while(goodSet != 1);
     return a;
 }
 
