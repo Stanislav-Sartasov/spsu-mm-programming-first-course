@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1572863235 source:/home/lyubov/Desktop/hw programming/task11/main.c
+	<stdlib.h>
+	<stdio.h>
+	<malloc.h>
+
