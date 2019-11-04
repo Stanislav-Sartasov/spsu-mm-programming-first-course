@@ -2,20 +2,20 @@
 #include <stdlib.h>
 #include <math.h>
 
+#define max(X, Y) (((X) > (Y)) ? (X) : (Y))
+
 const double eps = 1e-6;
 const double PI = 3.141592653589793;
+const int MAXLEN = 10;
 
-double max(double a, double b) {
-    if (a > b)
-        return a;
-    return b;
-}
-
-int correct(char s[]) {
+int correct(char s[])
+{
     int b = 1, cnt = 0;
     for (int i = 0; s[i] != '\0'; i++)
     {
         if (!(('0' <= s[i] && s[i] <= '9') || s[i] == '.' || s[i] == ','))
+            b = 0;
+        if (i == 0 && ('0' > s[i] || s[i] > '9'))
             b = 0;
         if (s[i] == '.' || s[i] == ',')
             cnt++;
@@ -23,7 +23,8 @@ int correct(char s[]) {
     return (b && cnt <= 1);
 }
 
-long double convert(char s[]) {
+long double convert(char s[])
+{
     long double a = 0;
     int k = -1;
     for (int i = 0; s[i] != '\0'; i++)
@@ -44,7 +45,7 @@ int main()
 {
     printf("Please enter lengths of sides of the triangle to find out angles of the triangle\n");
     double a, b, c;
-    char s1[10], s2[10], s3[10];
+    char s1[MAXLEN], s2[MAXLEN], s3[MAXLEN];
     scanf("%s", &s1);
     scanf("%s", &s2);
     scanf("%s", &s3);
