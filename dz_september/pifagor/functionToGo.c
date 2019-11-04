@@ -3,29 +3,29 @@
 #include "functionToGo.h"
 
 
-char stringOfAgainInput[80]="try again";
+char stringOfAgainInput[80] = "try again";
 
-double savein()
+double saveInDouble()
 {
-    double a=0, delim=1;
+    double a = 0, delim = 1;
     char c = '\0';
-    int first=1, sign=1, goodset=1, less1=0;
+    int first = 1, sign = 1, goodset = 1, less1 = 0;
 
     do
     {
-        a=0; delim=1;
+        a = 0; delim = 1;
         c = '\0';
-        first=1; sign=1; goodset=1; less1=0;
+        first = 1; sign = 1; goodset = 1; less1 = 0;
         while((c != ' ') && (c != '\n') && goodset)
         {
             scanf("%c", &c);
             if(first)
             {
-                first=0;
+                first = 0;
                 if(c == '-')
                     { sign = -1; continue; }
                 if((c >= '0') && (c <= '9'))
-                    {a=c-'0'; continue; }
+                    {a = c - '0'; continue; }
 
                 goodset = 0;
                 break;
@@ -34,13 +34,13 @@ double savein()
             if(c == '.')
                 { less1 = 1; continue; }
 
-            if((c >= '0') && (c <='9') && !less1)
+            if((c >= '0') && (c <= '9') && !less1)
             {
                 a = a * 10 + c - '0';
                 continue;
             }
 
-            if((c >= '0') && (c <='9') && less1)
+            if((c >= '0') && (c <= '9') && less1)
             {
                 delim = delim * 10;
                 a = a + (double)(( c - '0' ))/delim;
@@ -53,7 +53,7 @@ double savein()
         if(!goodset)
         {
             printf("%s\n", stringOfAgainInput);
-            c='\0';
+            c = '\0';
             while(c != '\n')
                 scanf("%c",&c);
         }
@@ -61,17 +61,17 @@ double savein()
     return a;
 }
 
-long long saveinint()
+long long saveInInt()
 {
-    long long a=0;
+    long long a = 0;
     char c = '\0';
-    int first=1, sign=1, goodset=1;
+    int first = 1, sign = 1, goodset = 1;
 
     do
     {
-        a=0;
+        a = 0;
         c = '\0';
-        first=1; sign=1; goodset=1;
+        first = 1; sign = 1; goodset = 1;
         while((c != ' ') && (c != '\n') && goodset)
         {
             scanf("%c", &c);
@@ -81,13 +81,13 @@ long long saveinint()
                 if(c == '-')
                     { sign = -1; continue; }
                 if((c >= '0') && (c <= '9'))
-                    {a=c-'0'; continue; }
+                    {a = c - '0'; continue; }
 
                 goodset = 0;
                 break;
             }
 
-            if((c >= '0') && (c <='9'))
+            if((c >= '0') && (c <= '9'))
             {
                 a = a * 10 + c - '0';
                 continue;
@@ -100,7 +100,7 @@ long long saveinint()
         if(!goodset)
         {
             printf("%s\n",stringOfAgainInput);
-            c='\0';
+            c = '\0';
             while(c != '\n')
                 scanf("%c",&c);
         }
@@ -110,6 +110,6 @@ long long saveinint()
 
 void changeAgainInputText(const char *str)
 {
-    for(register int i=0; i<80; ++i)
-        stringOfAgainInput[i]=str[i];
+    for(register int i = 0; i < 80; ++i)
+        stringOfAgainInput[i] = str[i];
 }

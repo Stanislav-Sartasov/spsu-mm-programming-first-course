@@ -2,6 +2,6 @@
 
 extern char stringOfAgainInput[80];
 
-double savein(void);
-long long saveinint(void);
+double saveInDouble(void);
+long long saveInInt(void);
 void changeAgainInputText(const char *str);

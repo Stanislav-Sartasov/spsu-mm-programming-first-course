@@ -2,15 +2,23 @@
 #include "functionToGo.h"
 
 int gccd(int x, int y);
+
 int main()
 {
     int x, y, z, max;
     //scanf("%d%d%d", &x, &y, &z);
     changeAgainInputText("enter Vx: xeN");
-    x = (int)saveinint();
-    y = (int)saveinint();
-    z = (int)saveinint();
+    printf("Input 3 numbers:\n");
+    x = (int)saveInInt();
+    y = (int)saveInInt();
+    z = (int)saveInInt();
     //printf("%d %d %d", x, y, z);
+    if((z < 1) || (y < 1) || (x < 1))
+    {
+        printf("No\n");
+        return 0;
+    }
+
     if(z<y)
     {
         max = y; y = z; z = max;
@@ -23,7 +31,7 @@ int main()
     if(x * x + y * y == z * z)
     {
         printf("Yes\n");
-        if(gccd(x,y) == gccd(x,z) == gccd(y,z)==1)
+        if(gccd(x,y) == gccd(x,z) == gccd(y,z) == 1)
             printf("Simple numbers");
         else
             printf("NOT Simple numbers");
