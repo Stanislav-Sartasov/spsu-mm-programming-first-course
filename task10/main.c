@@ -31,17 +31,16 @@ int main()
     long long *dp = malloc(sizeof(long long) * ((n + 1) * 8));
     int coins[] = {1, 2, 5, 10, 20, 50, 100, 200};
     dp[0] = 1;
-    for (int i = 1; i <= n; i++)
+    for (int i = 0; i <= n; i++)
     {
         for (int j = 0; j < 8; j++)
         {
-            dp[i * 8 + j] = 0;
+            if (i || j)
+                dp[i * 8 + j] = 0;
             if (i - coins[j] < 0)
                 continue;
             for (int k = 0; k <= j; k++)
-            {
                 dp[i * 8 + j] += dp[(i - coins[j]) * 8 + k];
-            }
         }
     }
     long long ans = 0;
