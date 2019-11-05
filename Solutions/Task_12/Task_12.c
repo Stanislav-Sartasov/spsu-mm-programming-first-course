@@ -58,10 +58,21 @@ int main()
 				c[j] = b[j];
 		}
 	}
+        char null_flag = 1;
 	for (int i = size - 1; i >= 0; i--)
 	{
 		unsigned int f = c[i];
+                int g;
 		for (int j = 7; j >= 0; j--)
-			printf("%x", (f & (15 << (4 * j))) >> (4 * j));
+                {
+                        g = (f & (15 << (4 * j))) >> (4 * j);
+                        if (null_flag)
+                        {
+                                if (g == 0)
+                                        continue;
+                                null_flag = 0;
+                        }
+			printf("%x", g);
+                }
 	}
 }
