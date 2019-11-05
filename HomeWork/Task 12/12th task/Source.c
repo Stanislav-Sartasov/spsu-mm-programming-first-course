@@ -27,15 +27,15 @@ void myPow(int *mas, int n, int pow)
 
 int main()
 {
-	int n = 3000, i;
-	int mas[3000];
+	int n = 5000, i;
+	int mas[5000];
 	mas[0] = 1;
 	for (i = 1; i < n; i++) mas[i] = 0;
 
 	myPow(mas, 3, n);
 
 	int zero = 0;
-	for (i = n/2; i >= 0; i--)
+	for (i = n - 1; i >= 0; i--)
 		if (mas[i] != 0)
 		{
 			zero = i + 1;
