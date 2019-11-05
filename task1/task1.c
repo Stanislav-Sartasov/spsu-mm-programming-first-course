@@ -3,7 +3,6 @@
 void IEEE754_Single(int list, int* r, int left)
 {
 	int exp;
-	int n;
 	int bit_exp[8];
 	exp = 127 + 64 - left - 1;
 	for (int i = 7; i >= 0; i--)
@@ -51,18 +50,17 @@ void IEEE754_Double(int list, int* r, int left)
 
 int main()
 {
-	int full_name[] = { "Bakaev", "Evgeniy", "Vladimirovich" };
-	int c = 1;
+	const char name[] = "Evgeniy";
+	const char surname[] = "Bakaev";
+	const char patronymic[] = "Vladimirovich";
+	int c = strlen(name) * strlen(surname) * strlen(patronymic);
 	int bit_int[64];
 	int right_zero = -1;
 	int left_unit = -1;
 	int* p;
 	int right_unit = -1;
 	
-	for (int i = 0; i < 3; i++)
-	{
-		c = c * strlen(full_name[i]);
-	}
+	
 
 	for (int k = 63; k >= 0; k--)
 	{
