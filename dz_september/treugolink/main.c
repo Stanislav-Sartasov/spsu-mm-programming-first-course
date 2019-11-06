@@ -4,6 +4,9 @@
 
 #define pi 3.14159265358979
 
+int minute(double d);
+int second(double d);
+
 int main()
 {
     double a, b, c;
@@ -21,13 +24,28 @@ int main()
     //printf("%f %f %f",a,b,c);
     if((a < b + c) && (b < a + c) && (c < a + b) && a > 0 && b > 0 && c > 0)
     {
+        printf("possible\n");
         double p = (a + b + c) / 2, s;
         s = sqrt(p * (p - a) * (p - b) * (p - c));
-        p = 2.0 * s / (a * b); printf("possible: %f ",asin(p) * 180 / pi);
-        p = 2.0 * s / (b * c); printf("%f ",asin(p) * 180 / pi);
-        p = 2.0 * s / (a * c); printf("%f",asin(p) * 180 / pi);
+
+        p = 2.0 * s / (a * b);
+        printf("degrees: %d, minutes: %d, seconds: %d\n", (int)trunc(asin(p) * 180 / pi), minute(asin(p) * 180 / pi), second(asin(p) * 180 / pi));
+        p = 2.0 * s / (b * c);
+        printf("degrees: %d, minutes: %d, seconds: %d\n", (int)trunc(asin(p) * 180 / pi), minute(asin(p) * 180 / pi), second(asin(p) * 180 / pi));
+        p = 2.0 * s / (a * c);
+        printf("degrees: %d, minutes: %d, seconds: %d\n", (int)trunc(asin(p) * 180 / pi), minute(asin(p) * 180 / pi), second(asin(p) * 180 / pi));
     }
     else
         printf("impossible");
     return 0;
+}
+
+int minute(double d)
+{
+    return (int)trunc((d - trunc(d)) * 60);
+}
+
+int second(double d)
+{
+    return (int)trunc((d * 60 - trunc(d * 60)) * 60);
 }
