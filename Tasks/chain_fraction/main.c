@@ -62,16 +62,16 @@ int main()
     int arr[size_of_precalculation], denominator;
     double numerator;
     ll t = (int) y_trunc;
-    ll q0 = (int) y_trunc;
-    printf("fraction have the presentation - %d, ", q0);
-    denominator = x - q0 * q0;
-    numerator = y + q0;
+    ll q_zero = (int) y_trunc;
+    printf("Fraction have the presentation:\nfirst member - %d", q_zero);
+    denominator = x - q_zero * q_zero;
+    numerator = y + q_zero;
     arr[0] = (int) (numerator / denominator);
     for (int i = 1; i < size_of_precalculation; i++)
     {
-       t = (int)(numerator - arr[i - 1] * denominator);
-       numerator = y + q0 - t;
-       denominator = (x - (q0 - t) * (q0 - t)) / denominator;
+       t = (int) (numerator - arr[i - 1] * denominator);
+       numerator = y + q_zero - t;
+       denominator = (x - (q_zero - t) * (q_zero - t)) / denominator;
        arr[i] = (int) (numerator / denominator);
     }
     int *first_q = (int*) malloc(sizeof(int) * 2);
@@ -81,7 +81,7 @@ int main()
     {
        if (arr[k] != first_q[0])
        {
-            first_q = (int*) realloc(first_q,sizeof(int) * (i + 1));
+            first_q = (int*) realloc(first_q, sizeof(int) * (i + 1));
             first_q[i] = arr[k];
             i++;
             k++;
@@ -96,7 +96,7 @@ int main()
                     compare_q = 0;
                     for (int e = i; e <= l; e++)
                     {
-                        first_q = (int*) realloc(first_q,sizeof(int) * (i + 1));
+                        first_q = (int*) realloc(first_q, sizeof(int) * (i + 1));
                         first_q[i] = arr[e];
                         i++;
                         k++;
@@ -106,10 +106,10 @@ int main()
             }
             if (compare_q == 1)
             {
-                printf("(");
+                printf("\nperiod - ");
                 for (int l = 0; l < i - 1; l++)
                     printf("%d, ", first_q[l]);
-                printf("%d)", first_q[i - 1]);
+                printf("%d\nEnd.\n", first_q[i - 1]);
                 free(first_q);
                 return 0;
             }

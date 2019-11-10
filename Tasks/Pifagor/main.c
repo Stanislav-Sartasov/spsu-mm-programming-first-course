@@ -14,7 +14,7 @@ ull gcd(ull a, ull b)
     return a;
 }
 
-void sort_two_numbers(ull*a, ull *b)
+void sort_two_numbers(ull *a, ull *b)
 {
     if (*a > *b)
     {

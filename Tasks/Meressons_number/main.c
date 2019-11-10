@@ -43,7 +43,7 @@ int main()
     printf("Prime numbers: \n");
     long long n = 1;
     int current_pow_n = 0;
-    for (int i = 1; i < 32; i++)
+    for (int i = 2; i < 32; i++)
     {
         if (is_prime(i))
         {

@@ -2,37 +2,94 @@
 #include <stdlib.h>
 #include <time.h>
 
-const int n = 999999;
+const int n = 1000000;
 
-int find_max_root(int y, unsigned char *v)
+int kek(int k, int n, int *digits)
 {
-    if (v[y] != 0)
-            return v[y];
-    int res = 1 + (y - 1) % 9;
-    int i = 2;
-    while (i * i <= y)
+    int i;
+    int overflow;
+    for (i = k - 1, overflow = n; i != -1;)
     {
-        if (y % i == 0)
-        {
-            int div = y / i;
-            int x1 = 1 + (i - 1) % 9;
-            int c1 = v[div];
-            if (x1 + c1 > res)
-                res = x1 + c1;
-        }
-        i++;
+        digits[i]++;
+        if (digits[i] < overflow)
+            break;
+        i--;
+        overflow--;
     }
-    v[y] = res;
+    if (i != -1)
+    {
+        for (i = i + 1; i < k; i++)
+            digits[i] = digits[i - 1] + 1;
+        return 1;
+    }
+    return 0;
+}
+
+int find_next_divider(int *y)
+{
+    if (*y % 2 == 0)
+    {
+        *y /= 2;
+        return 2;
+    }
+    int x = 3;
+    while (x * x <= *y)
+    {
+        if (*y % x == 0)
+        {
+            *y /= x;
+            return x;
+        }
+        x += 2;
+    }
+    return 1;
+}
+
+int find_max_root(int y, unsigned char *a)
+{
+    if (a[y] != 0)
+        return a[y];
+    int res = 1 + (y - 1) % 9;
+    int i = 0;
+    int j = y;
+    int v[20];
+    int div = 0;
+    while (j != 1 && div != 1)
+    {
+        div = find_next_divider(&j);
+        if (div != 1)
+        {
+            v[i] = div;
+            i++;
+        }
+    }
+    for (int e = 1; e < i + 1; e++)
+    {
+        int combination[e];
+        for (int k = 0; k < e; k++)
+            combination[k] = k;
+        int next_permutation = 1;
+        while (next_permutation)
+        {
+            int x1 = 1;
+            for (int k = 0; k < e; k++)
+                x1 *= v[combination[k]];
+            int c1 = y / x1;
+            if (x1 != 1)
+                if (a[x1] + a[c1] > res)
+                    res = a[x1] + a[c1];
+            next_permutation = kek(e, i , combination);
+        }
+    }
+    a[y] = res;
     return res;
 }
 
-
 int main()
 {
-    unsigned char *v = (unsigned char*) malloc(sizeof(unsigned char) * (n + 1));
+    unsigned char *v = (unsigned char*) malloc(sizeof(unsigned char) * n);
     int ans = 0;
-    int i = 2;
-    for (i; i < n + 1; i++)
+    for (int i = 2; i < n; i++)
     {
         v[i] = 0;
         ans += find_max_root(i, v);

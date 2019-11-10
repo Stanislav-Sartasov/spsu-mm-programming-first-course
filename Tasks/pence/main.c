@@ -8,7 +8,7 @@ void input(ull *a)
     int x;
     while (1)
     {
-        printf("Enter 1 integer numbers\n");
+        printf("Enter 1 integer number\n");
         x = scanf("%lld", a);
         if (x == 1)
         {
