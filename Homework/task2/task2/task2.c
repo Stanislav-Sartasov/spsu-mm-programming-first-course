@@ -6,6 +6,7 @@ int is_pythagorean_triple(int x, int y, int z)
 	return ((x * x + y * y == z * z) || (x * x + z * z == y * y) 
 		|| (z * z + y * y == x * x));
 }
+
 int gcd(int a, int b)
 {
 	while (a && b)
