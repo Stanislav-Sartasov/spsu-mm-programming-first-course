@@ -13,7 +13,7 @@ int isSimple(int x)
 int main()
 {
 	int x;
-	for (int i = 1; i <= 31; i++)
+	for (int i = 2; i <= 31; i++)
 	{
 		x = pow(2, i) - 1;
 		if (isSimple(x) == 1) printf("%d\n", x);
