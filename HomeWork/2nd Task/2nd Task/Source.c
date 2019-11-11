@@ -5,9 +5,9 @@
 int PythTh(int x, int y, int z)
 {
 	unsigned short int isTrue;
-	if ((x*x + y * y) == (z*z)) isTrue = 1;
-	else if ((x*x + z * z) == (y*y)) isTrue = 1;
-	else if ((y*y + z * z) == (x*x)) isTrue = 1;
+	if ((x * x + y * y) == (z * z)) isTrue = 1;
+	else if ((x * x + z * z) == (y * y)) isTrue = 1;
+	else if ((y * y + z * z) == (x * x)) isTrue = 1;
 	else isTrue = 0;
 	return isTrue;
 }
