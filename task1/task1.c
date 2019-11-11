@@ -75,8 +75,9 @@ int main()
 	printf("Two's complement: ");
 	for (int i = 32; i < 64; i++) // Отрицательное 32-битное целое, модуль которого равен найденному произведению
 	{
-		if (i > right_zero) printf("%d", bit_int[i]);
-		else printf("%d", (bit_int[i] + 1) % 2);
+		if (i < right_zero - 1) printf("%d", (bit_int[i] + 1) % 2);
+		else if (i == right_zero - 1) printf("%d", bit_int[i]);
+		else printf("0");
 	}
 
 	p = bit_int;
