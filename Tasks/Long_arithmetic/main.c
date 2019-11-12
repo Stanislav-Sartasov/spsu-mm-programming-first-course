@@ -14,6 +14,7 @@ struct long_number
    void (*append) (list**, int);
    void (*multiply_hex) (list*, int);
    void (*print_hex) (list*);
+   void (*free_memory) (list*);
    list *number;
 };
 
@@ -70,15 +71,26 @@ void print_hex(list *head)
     }
 }
 
+void free_memory(list *head)
+{
+    while (head)
+    {
+        list *next = head -> next;
+        free(head);
+        head = next;
+    }
+}
+
 int main()
 {
-    struct long_number a = {&append, &multiply_hex, &print_hex, NULL};
+    struct long_number a = {&append, &multiply_hex, &print_hex, &free_memory, NULL};
     a.append(&(a.number), 1);
     for (int i = 0; i < 5000; i++)
         a.multiply_hex(a.number, 3);
     printf("Answer:\n");
     a.print_hex(a.number);
     printf("\nEnd.");
+    a.free_memory(a.number);
     return 0;
 }
 

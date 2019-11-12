@@ -63,7 +63,7 @@ int main()
     double numerator;
     ll t = (int) y_trunc;
     ll q_zero = (int) y_trunc;
-    printf("Fraction have the presentation:\nfirst member - %d", q_zero);
+    printf("Fraction have the presentation:\n- First member: %d", q_zero);
     denominator = x - q_zero * q_zero;
     numerator = y + q_zero;
     arr[0] = (int) (numerator / denominator);
@@ -106,7 +106,7 @@ int main()
             }
             if (compare_q == 1)
             {
-                printf("\nperiod - ");
+                printf("\n- The period has %d elements\n- And seems as: ", i);
                 for (int l = 0; l < i - 1; l++)
                     printf("%d, ", first_q[l]);
                 printf("%d\nEnd.\n", first_q[i - 1]);

@@ -4,7 +4,7 @@
 
 const int n = 1000000;
 
-int kek(int k, int n, int *digits)
+int find_next_permutation(int k, int n, int *digits)
 {
     int i;
     int overflow;
@@ -68,8 +68,8 @@ int find_max_root(int y, unsigned char *a)
         int combination[e];
         for (int k = 0; k < e; k++)
             combination[k] = k;
-        int next_permutation = 1;
-        while (next_permutation)
+        int existence_next_permutation = 1;
+        while (existence_next_permutation)
         {
             int x1 = 1;
             for (int k = 0; k < e; k++)
@@ -78,7 +78,7 @@ int find_max_root(int y, unsigned char *a)
             if (x1 != 1)
                 if (a[x1] + a[c1] > res)
                     res = a[x1] + a[c1];
-            next_permutation = kek(e, i , combination);
+            existence_next_permutation = find_next_permutation(e, i , combination);
         }
     }
     a[y] = res;
