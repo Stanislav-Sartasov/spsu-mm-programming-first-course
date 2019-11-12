@@ -7,20 +7,10 @@ int coins[8] = { 1,2,5,10,20,50,100,200 };
 int answer(int n)
 {
 	int *mas = (int*)malloc((n + 1) * sizeof(int));
-	int i, check;
-	mas[0] = 1;
-	for (i = 1; i < n + 1; i++) mas[i] = 0;
+	int i;
+	for (i = 0; i < n + 1; i++) mas[i] = 1;
 
-	for (i = 7; i >= 0; i--)
-	{
-		if (n > coins[i])
-		{
-			check = i + 1;
-			break;
-		}
-	}
-
-	for (i = 0; i < check; i++)
+	for (i = 1; i < 8; i++)
 	{
 		for (int j = coins[i]; j <= n; j++)
 		{
@@ -34,7 +24,7 @@ int answer(int n)
 
 int main()
 {
-	int n,answ,res;
+	int n, answ, res;
 	//scanf("%d", &n);
 	printf("%s", "Enter the amount of money ");
 	do
