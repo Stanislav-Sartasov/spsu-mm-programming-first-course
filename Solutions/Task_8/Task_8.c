@@ -262,7 +262,8 @@ int main()
 	char quotes;
 	int str_beg;
 	char start_flag;
-	printf("\tthis program allows you to use certain filters for bmp-24 and bmp-32 images\n");
+	printf("\tthis program allows you to use certain filters for bmp-24 and bmp-32 images\n");	
+	printf("\tinput format: <input file name> <filter with modificators> <output file name>\n");
 	printf("\tenter <help> for details\n");
 	printf("\tenter <exit> for finish\n\n");
 	for (;;)
