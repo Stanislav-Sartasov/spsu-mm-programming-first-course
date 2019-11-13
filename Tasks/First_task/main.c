@@ -78,8 +78,8 @@ int main()
     bound =  find_lower_bound(res);
     to_binary(1023 + bound, binary_presentation, 1, 11);
     x = pow(2, bound);
-    long long m2 = (long long) ((res  - x) / (x + .0) * pow(2, 52) +0.5);
-    to_binary(m2, binary_presentation, 12, size - 1);
+    long long m_second = (long long) ((res  - x) / (x + .0) * pow(2, 52) +0.5);
+    to_binary(m_second, binary_presentation, 12, size - 1);
     printf("Third subtask: ");
     print_array(binary_presentation, size);
 
