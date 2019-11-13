@@ -333,7 +333,7 @@ int main()
 				printf("\n\t<shade>\n");
 				printf("\n\tyou can use modificators like <gaussian /sz = 5>\n");
 				printf("\n\twithout modifiers standard values will be taken:\n");
-				printf("\t\tsz = 3\n\t\tsg = 0.6\n\t\tth = 2\n");
+				printf("\t\tsz = 3\n\t\tsg = 0.6\n\t\tth = 2.0\n");
 				printf("\n\tenter <exit> for finish\n\n");
 				continue;
 			}
