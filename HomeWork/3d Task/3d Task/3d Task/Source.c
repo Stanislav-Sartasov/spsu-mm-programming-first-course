@@ -3,25 +3,25 @@
 #include <stdlib.h>
 #include <math.h>
 
-unsigned int trian(float a, float b, float c)       
+unsigned int trian(float a, float b, float c)
 {
 	if ((a + b > c) && (a + c > b) && (b + c > a)) return 1;
 	else  return 0;
 }
 
-void angle(float a, float b, float c)
+float degree(float a, float b, float c)
 {
-	float cosa;
-	cosa = (pow(a, 2) + pow(b, 2) - pow(c, 2)) / (-2)*a*b;
-	printf("%f\n", acos(cosa));
+	float deg;
+	deg = (pow(a, 2) - pow(b, 2) - pow(c, 2)) / ((-2) * b * c);
+	deg = acos(deg) * 180 / 3.14159265359;
+	return deg;
 }
+
 
 int main()
 {
-	system("chcp 1251");
 	float a, b, c;
 	int res;
-	unsigned int isTrian = 0;
 	printf("%s", "Enter lengths of sides of the triangle ");
 	do
 	{
@@ -35,18 +35,23 @@ int main()
 	if (trian(a, b, c) == 0) printf("%s\n", "Is not tiangle");
 	else
 	{
-		float cosa, cosb, cosc;
-		cosa = (a*a - b * b - c * c) / ((-2)*b*c);
-		cosa = acos(cosa) * 180 / 3.14159265359;
+		float alpha_deg, alpha_min, alpha_sec, beta_deg, beta_min, beta_sec, gamma_deg, gamma_min, gamma_sec;
 
-		cosb = (b*b - a * a - c * c) / ((-2)*a*c);
-		cosb = acos(cosb) * 180 / 3.14159265359;
+		alpha_deg = degree(a, b, c);
+		alpha_min = (alpha_deg - floor(alpha_deg)) * 60;
+		alpha_sec = (alpha_min - floor(alpha_min)) * 60;
 
-		cosc = (c*c - b * b - a * a) / ((-2)*b*a);
-		cosc = acos(cosc) * 180 / 3.14159265359;
-		printf("\n%f", cosa);
-		printf("\n%f", cosb);
-		printf("\n%f", cosc);
+		beta_deg = degree(b, c, a);
+		beta_min = (beta_deg - floor(beta_deg)) * 60;
+		beta_sec = (beta_min - floor(beta_min)) * 60;
+
+		gamma_deg = degree(c, b, a);
+		gamma_min = (gamma_deg - floor(gamma_deg)) * 60;
+		gamma_sec = (gamma_min - floor(gamma_min)) * 60;
+
+		printf("%d degree %d minutes %d seconds \n", (int)alpha_deg, (int)alpha_min, (int)alpha_sec);
+		printf("%d degree %d minutes %d seconds \n", (int)beta_deg, (int)beta_min, (int)beta_sec);
+		printf("%d degree %d minutes %d seconds \n", (int)gamma_deg, (int)gamma_min, (int)gamma_sec);
 	}
 
 	system("pause");
