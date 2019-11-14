@@ -490,14 +490,13 @@ int main()
 		free(str);
 		free(modifier);
 
-		quotes = read_and_write_bmp(file_in, file_out, &width, &height, &image, &alpha);
-		if (alpha)
-			bit_count = 32;
-		else
-			bit_count = 24;
-
-		if (!quotes)
+		if (!read_and_write_bmp(file_in, file_out, &width, &height, &image, &alpha))
 		{
+			if (alpha)
+				bit_count = 32;
+			else
+				bit_count = 24;
+		
 			if (compare(function_name, "median"))
 				median(&image, width, height, sz);
 			else if (compare(function_name, "gaussian"))
