@@ -318,6 +318,8 @@ int main()
 					str = (char*)realloc(str, sizeof(char) * (255 * ((i - str_beg) / 255) + 1));
 			}
 			str[i - str_beg] = '\0';
+			if (c[i] == '"')
+				i++;
 			if (compare(str, "exit"))
 				return 0;
 			if (compare(str, "help"))
@@ -463,20 +465,23 @@ int main()
 				i++;
 				if ((i - str_beg) % 255 == 0 && (i - str_beg) != 0)
 					str = (char*)realloc(str, sizeof(char) * (255 * ((i - str_beg) / 255) + 1));
-			}
+			}			
+			str[i - str_beg] = '\0';			
 			if (c[i] == '\n' && quotes)
 			{
 				printf("invalid input\n");
 				fclose(file_in);
 				continue;
 			}
-			str[i - str_beg] = '\0';
+			if (c[i] == '"')
+				i++;
 			while (c[i] == ' ' || c[i] == '\t')
 				i++;
 			if (c[i] != '\n')
 			{
 				printf("invalid input\n");
 				fclose(file_in);
+				continue;
 			}
 			if (fopen_s(&file_out, str, "wb") != 0)
 			{
