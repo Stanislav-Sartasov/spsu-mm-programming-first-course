@@ -323,7 +323,7 @@ int main()
 			if (compare(str, "help"))
 			{
 				printf("\n\tfilters supported:\n\n");
-				printf("\t<module>\n");
+				printf("\t<median>\n");
 				printf("\t\t/sz - matrix size\n\n");
 				printf("\t<gaussian>\n");
 				printf("\t\t/sz - matrix size\n");
@@ -379,12 +379,12 @@ int main()
 			}
 			function_name[i - str_beg] = '\0';
 
-			if (compare(function_name, "median")
-				&& compare(function_name, "gaussian")
-				&& compare(function_name, "sobel")
-				&& compare(function_name, "sobel_x")
-				&& compare(function_name, "sobel_y")
-				&& compare(function_name, "shade"))
+			if (!compare(function_name, "median")
+				&& !compare(function_name, "gaussian")
+				&& !compare(function_name, "sobel")
+				&& !compare(function_name, "sobel_x")
+				&& !compare(function_name, "sobel_y")
+				&& !compare(function_name, "shade"))
 			{
 				printf("invalid filter input\n");
 				fclose(file_in);
@@ -490,42 +490,50 @@ int main()
 		free(str);
 		free(modifier);
 
-		read_and_write_bmp(file_in, file_out, &width, &height, &image, &alpha);
+		quotes = read_and_write_bmp(file_in, file_out, &width, &height, &image, &alpha);
 		if (alpha)
 			bit_count = 32;
 		else
 			bit_count = 24;
 
-		if (compare(function_name, "median"))
-			median(&image, width, height, sz);
-		else if (compare(function_name, "gaussian"))
-			gaussian(&image, width, height, sz, sg);
-		else if (compare(function_name, "sobel"))
-			sobel_xy(0, &image, width, height, th);
-		else if (compare(function_name, "sobel_x"))
-			sobel_xy('x', &image, width, height, th);
-		else if (compare(function_name, "sobel_y"))
-			sobel_xy('y', &image, width, height, th);
-		else if (compare(function_name, "shade"))
-			shade(&image, width, height);
-
-		free(function_name);
-
-		for (unsigned i = 0; i < height; i++)
+		if (!quotes)
 		{
-			for (unsigned j = 0; j < width; j++)
+			if (compare(function_name, "median"))
+				median(&image, width, height, sz);
+			else if (compare(function_name, "gaussian"))
+				gaussian(&image, width, height, sz, sg);
+			else if (compare(function_name, "sobel"))
+				sobel_xy(0, &image, width, height, th);
+			else if (compare(function_name, "sobel_x"))
+				sobel_xy('x', &image, width, height, th);
+			else if (compare(function_name, "sobel_y"))
+				sobel_xy('y', &image, width, height, th);
+			else if (compare(function_name, "shade"))
+				shade(&image, width, height);
+
+			free(function_name);
+
+			for (unsigned i = 0; i < height; i++)
 			{
-				for (int c = 2; c >= 0; c--)
-					fprintf(file_out, "%c", image[i * width + j][c]);
-				if (alpha != 0)
+				for (unsigned j = 0; j < width; j++)
+				{
+					for (int c = 2; c >= 0; c--)
+						fprintf(file_out, "%c", image[i * width + j][c]);
+					if (alpha != 0)
+						fprintf(file_out, "%c", 0);
+				}
+				for (int j = 0; j < (4 - ((width * (bit_count / 8)) % 4)) % 4; j++)
 					fprintf(file_out, "%c", 0);
 			}
-			for (int j = 0; j < (4 - ((width * (bit_count / 8)) % 4)) % 4; j++)
-				fprintf(file_out, "%c", 0);
+			free(image);
+			if (!alpha)
+				free(alpha);
+			fclose(file_out);
 		}
-		free(image);
-		if (!alpha)
-			free(alpha);
-		fclose(file_out);
+		else
+		{
+			free(function_name);
+			printf("input file reading error\n");
+		}
 	}
 }
