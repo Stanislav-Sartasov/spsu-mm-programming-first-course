@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 int check()
 {
 	int c, flag = 1;
@@ -22,7 +23,6 @@ void input(int* x)
 		result = scanf("%d", x);
 		flag = check();
 	}
-
 }
 
 int main()
@@ -32,28 +32,22 @@ int main()
 
 	int coins[] = { 1, 2, 5, 10, 20, 50, 100, 200 };
 
-	long long* dp = (long long*)malloc(8 * (n + 1) * sizeof(long long));
+	long long* dp = (long long*)malloc(8 * n * sizeof(long long));
 
 	for (int i = 0; i < 8; i++)
-		dp[i * n] = 1;
-	for (int i = 0; i <= n; i++)
 		dp[i] = 1;
+	for (int i = 0; i < n; i++)
+		dp[8 * i] = 1;
 
-	for (int i = 1; i < 8; i++)
-		for (int w = 1; w <= n; w++)
-			if (w < coins[i])
-				dp[i* n + w] = dp[(i - 1) * n + w];
+	for (int i = 1; i < n; i++)
+		for (int j = 1; j < 8; j++)
+			if (i + 1 <= coins[j])
+				dp[8 * i + j] = dp[8 * i + j - 1] + (i + 1 == coins[j] ? 1 : 0);
 			else
-				dp[i * n + w] = dp[(i - 1) * n + w] + dp[i * n + w - coins[i]];
+				dp[8 * i + j] = dp[8 * i + j - 1] + dp[8 * (i - coins[j]) + j];
 
-	for (int i = 1; i < 8; i++)
-		if (n < coins[i])
-		{
-			printf("%lld", dp[i * n]);
-			return 0;
-		}
+	printf("%lld", dp[8 * n - 1]);
 
-	printf("%lld", dp[8 * n]);
 	free(dp);
 	return 0;
 }
