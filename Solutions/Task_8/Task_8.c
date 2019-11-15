@@ -438,7 +438,7 @@ int main()
 					else
 						c[i] = '\n';
 				}
-				else if (modifier[0] == 't' && modifier[1] == 'h')
+				else if (modifier[0] == 't' && modifier[1] == 'h' && atof(str) != 0)
 					th = 255 / atof(str);
 				else
 					c[i] = '\n';
