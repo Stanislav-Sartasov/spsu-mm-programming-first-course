@@ -431,9 +431,9 @@ int main()
 					c[i] = '\n';
 				if (modifier[0] == 's')
 				{
-					if (modifier[1] == 'z')
+					if (modifier[1] == 'z' && atoi(str) != 0)
 						sz = atoi(str);
-					else if (modifier[1] == 'g')
+					else if (modifier[1] == 'g' && atof(str) != 0)
 						sg = atof(str);
 					else
 						c[i] = '\n';
