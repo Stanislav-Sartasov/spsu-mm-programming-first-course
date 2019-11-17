@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1574022390 source:/home/lyubov/Desktop/hw programming/task6/main.c
+	<stdio.h>
+	<stdlib.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<sys/mman.h>
+	<fcntl.h>
+	<unistd.h>
+	<errno.h>
+	<string.h>
+
