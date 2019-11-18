@@ -1,0 +1,4 @@
+﻿  Source.c
+C:\Users\Лев\source\repos\HW1-5\HW1-5\Source.c(21,1): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+C:\Users\Лев\source\repos\HW1-5\HW1-5\Source.c(28,1): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+  HW1-5.vcxproj -> C:\Users\Лев\source\repos\HW1-5\Debug\HW1-5.exe
