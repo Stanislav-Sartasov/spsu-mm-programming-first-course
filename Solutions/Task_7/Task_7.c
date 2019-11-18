@@ -233,7 +233,8 @@ void hash_reinit_element(element* old_hash, hash_table* new_hash)
 		hash_reinit_element(old_hash->left, new_hash);
 	if (old_hash->right)
 		hash_reinit_element(old_hash->right, new_hash);
-	hash_table_insert(new_hash, old_hash->key, old_hash->key_size, old_hash->data, old_hash->data_size, 0);
+	if (new_hash)
+		hash_table_insert(new_hash, old_hash->key, old_hash->key_size, old_hash->data, old_hash->data_size, 0);
 	element_free(old_hash);
 }
 
@@ -292,6 +293,14 @@ void hash_table_delete(hash_table* hash, unsigned char* key, unsigned key_size)
 	}
 }
 
+void hash_table_free(hash_table* hash)
+{
+	for (int i = 0; i < hash->size; i++)
+		hash_reinit_element(hash->table[i], 0);
+	free(hash->table);
+	free(hash);
+}
+
 int main()
 {
 	unsigned key = 10;
@@ -310,7 +319,7 @@ int main()
 
 	char* str_key = "hello_hash";
 	char* str_data = "yes it's working";
-	hash_table_insert(head, str_key, 11, str_data, 17, 0);
+	hash_table_insert(head, str_key, 11, str_data, 17, 0);	
 
 	for (int i = 0; i < 2000000; i++)
 	{
@@ -338,4 +347,5 @@ int main()
 
 	printf("final size in count of buckets = %u\n", head->size);
 	printf("if it isn't any error messages then solution work correctly\n");
+	hash_table_free(head);
 }
