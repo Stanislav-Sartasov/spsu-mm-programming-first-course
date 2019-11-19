@@ -12,7 +12,9 @@ int main()
         for (int k = 2; k < sqrt(x); ++k)
         {
             if  (x % k  ==  0)
-                { flag = 0; break; }
+                {
+                    flag = 0; break;
+                }
         }
 
         if ((flag) && (x !=  1))
