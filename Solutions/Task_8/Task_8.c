@@ -256,22 +256,23 @@ int main(int argc, char** argv)
 
 	if (argc < 4)
 	{
-		if (compare(argv[1], "help"))
-		{
-			printf("\n\tfilters supported:\n\n");
-			printf("\t<median>\n");
-			printf("\t\t/sz - matrix size\n\n");
-			printf("\t<gaussian>\n");
-			printf("\t\t/sz - matrix size\n");
-			printf("\t\t/sg - sigma\n\n");
-			printf("\t<sobel> <sobel_x> <sobel_y>\n");
-			printf("\t\t/th - threshold, pixels in shades of gray from (255 / th) is white, the rest are black\n");
-			printf("\n\t<shade>\n");
-			printf("\n\tyou can use modificators like <gaussian /sz = 5>\n");
-			printf("\n\twithout modifiers standard values will be taken:\n");
-			printf("\t\tsz = 3\n\t\tsg = 0.6\n\t\tth = 2.0\n\n");
-			return 0;
-		}
+		if (argc == 2)
+			if (compare(argv[1], "help"))
+			{
+				printf("\n\tfilters supported:\n\n");
+				printf("\t<median>\n");
+				printf("\t\t/sz - matrix size\n\n");
+				printf("\t<gaussian>\n");
+				printf("\t\t/sz - matrix size\n");
+				printf("\t\t/sg - sigma\n\n");
+				printf("\t<sobel> <sobel_x> <sobel_y>\n");
+				printf("\t\t/th - threshold, pixels in shades of gray from (255 / th) is white, the rest are black\n");
+				printf("\n\t<shade>\n");
+				printf("\n\tyou can use modificators like <gaussian /sz = 5>\n");
+				printf("\n\twithout modifiers standard values will be taken:\n");
+				printf("\t\tsz = 3\n\t\tsg = 0.6\n\t\tth = 2.0\n\n");
+				return 0;
+			}
 		return -1;
 	}
 	if (fopen_s(&file_in, argv[1], "rb"))
