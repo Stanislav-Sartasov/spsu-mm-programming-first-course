@@ -88,9 +88,13 @@ long long saveInInt()
             {
                 first=0;
                 if (c == '-')
-                    { sign = -1; continue; }
+                {
+                        sign = -1; continue;
+                }
                 if ((c >= '0') && (c <= '9'))
-                    {a = c - '0'; continue; }
+                {
+                    a = c - '0'; continue;
+                }
 
                 goodSet = 0;
                 break;
@@ -103,7 +107,9 @@ long long saveInInt()
             }
 
             if ((c != ' ') && (c != '\n'))
-                { goodSet = 0;  break; }
+            {
+                goodSet = 0;  break;
+            }
         }
         a = a * sign;
         if (!goodSet)
