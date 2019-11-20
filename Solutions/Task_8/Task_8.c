@@ -79,7 +79,7 @@ int read_and_write_bmp(FILE* file_in, FILE* file_out, unsigned int* width, unsig
 			if (bit_count == 32)
 				*alpha[i * *width + j] = fgetc(file_in);
 		}
-		for (int j = 0; j < (4 - ((*width * (bit_count / 8)) % 4)) % 4; j++)
+		for (unsigned j = 0; j < (4 - ((*width * (bit_count / 8)) % 4)) % 4; j++)
 			fgetc(file_in);
 	}
 	fclose(file_in);
@@ -89,6 +89,8 @@ int read_and_write_bmp(FILE* file_in, FILE* file_out, unsigned int* width, unsig
 void median(rgb_24** image, unsigned int width, unsigned int height, int m_size)
 {
 	unsigned char* arr = (unsigned char*)malloc(sizeof(unsigned char) * m_size * m_size);
+	if (!arr)
+		printf("no");
 	int size;
 	int m = m_size / 2;
 	rgb_24* new_image = (rgb_24*)malloc(sizeof(rgb_24) * height * width);
@@ -97,14 +99,14 @@ void median(rgb_24** image, unsigned int width, unsigned int height, int m_size)
 			for (int c = 0; c < 3; c++)
 			{
 				size = 0;
-				for (int i = y - m; i <= y + m; i++)
-					for (int j = x - m; j <= x + m; j++)
+				for (unsigned i = y - m; i <= y + m; i++)
+					for (unsigned j = x - m; j <= x + m; j++)
 						if ((i >= 0) && (i < height) && (j >= 0) && (j < width))
 						{
 							size++;
 							arr[size - 1] = *(*(*image + i * width + j) + c);
 						}
-				for (int i = 0; i < size / 2 + 1; i++)
+				for (unsigned i = 0; i < size / 2 + 1; i++)
 				{
 					unsigned char min = arr[i];
 					short ind = i;
@@ -370,7 +372,7 @@ int main(int argc, char** argv)
 						continue;
 					}
 					free(str);
-					str = (char*)malloc(str, sizeof(char) * 256);
+					str = (char*)malloc(sizeof(char) * 256);
 
 
 					sz = 3;
@@ -435,7 +437,7 @@ int main(int argc, char** argv)
 						while (c[i] == ' ' || c[i] == '\t')
 							i++;
 						free(str);
-						str = (char*)malloc(str, sizeof(char) * 256);
+						str = (char*)malloc(sizeof(char) * 256);
 						str_beg = i;
 						while ((c[i] >= '0' && c[i] <= '9') || c[i] == '.')
 						{
@@ -452,7 +454,7 @@ int main(int argc, char** argv)
 						if (modifier[0] == 's')
 						{
 							if (modifier[1] == 'z' && atoi(str) != 0)
-								sz = atoi(str);
+								sz = atoi(str) - 1 + atoi(str) % 2;
 							else if (modifier[1] == 'g' && atof(str) != 0)
 								sg = atof(str);
 							else
@@ -546,7 +548,7 @@ int main(int argc, char** argv)
 							if (alpha != 0)
 								fprintf(file_out, "%c", 0);
 						}
-						for (int j = 0; j < (4 - ((width * (bit_count / 8)) % 4)) % 4; j++)
+						for (unsigned j = 0; j < (4 - ((width * (bit_count / 8)) % 4)) % 4; j++)
 							fprintf(file_out, "%c", 0);
 					}
 					free(image);
@@ -618,7 +620,7 @@ int main(int argc, char** argv)
 		if (mod[0] == 's')
 		{
 			if (mod[1] == 'z')
-				sz = atoi(argv[i]);
+				sz = atoi(argv[i]) - 1 + atoi(argv[i]) % 2;
 			else if (mod[1] == 'g')
 				sg = atof(argv[i]);
 			else
@@ -683,7 +685,7 @@ int main(int argc, char** argv)
 				if (alpha != 0)
 					fprintf(file_out, "%c", 0);
 			}
-			for (int j = 0; j < (4 - ((width * (bit_count / 8)) % 4)) % 4; j++)
+			for (unsigned j = 0; j < (4 - ((width * (bit_count / 8)) % 4)) % 4; j++)
 				fprintf(file_out, "%c", 0);
 		}
 		free(image);
