@@ -71,6 +71,8 @@ void averageFilter(unsigned char* bitMapImage, int height, int width)
 
 	for (int i = 0; i < height * width * 3; i++)
 		bitMapImage[i] = bitMapImageCopy[i];
+
+	free(bitMapImageCopy);
 }
 
 void gaussFilter(unsigned char* bitMapImage, int height, int width, int size)
@@ -138,6 +140,9 @@ void gaussFilter(unsigned char* bitMapImage, int height, int width, int size)
 
 	for (int i = 0; i < height * width * 3; i++)
 		bitMapImage[i] = bitMapImageCopy[i];
+
+	free(gaussian);
+	free(bitMapImageCopy);
 }
 
 void fromColorToBlackAndWhiteFilter(unsigned char* bitMapImage, int height, int width)
@@ -228,6 +233,8 @@ void sobelFilter(unsigned char* bitMapImage, int height, int width, char mode)
 
 	for (int i = 0; i < height * width * 3; i++)
 		bitMapImage[i] = bitMapImageCopy[i] > 200 ? 255 : 0;
+
+	free(bitMapImageCopy);
 }
 
 int main(int argc, char* argv[])
@@ -236,6 +243,7 @@ int main(int argc, char* argv[])
 
 	FILE* fileIn = fopen(argv[1], "rb");
 	FILE* fileOut = fopen(argv[3], "wb");
+
 	struct BITMAPFILEHEADER bitMapFileHeader;
 	struct BITMAPINFOHEADER bitMapInfoHeader;
 
