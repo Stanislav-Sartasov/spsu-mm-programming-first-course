@@ -66,30 +66,10 @@ int rebalance(unsigned int choice)
 	int i, j;
 	if (choice == 0)
 	{
-		int **tmp = (int**)malloc(n * sizeof(int*));
-		for (i = 0; i < n; i++) tmp[i] = (int*)malloc(ptr * sizeof(int));
-
-		for (i = 0; i < n; i++)
-		{
-			for (j = 0; j < ptr; j++) tmp[i][j] = hashTable[i][j];
-		}
-
-		for (i = 0; i < n; i++) free(hashTable[i]);
-
 		ptr++;
-
-		hashTable = (int**)malloc(n * sizeof(int*));
-		for (i = 0; i < n; i++) hashTable[i] = (int*)malloc(ptr * sizeof(int));
-
-		for (i = 0; i < n; i++)
-		{
-			for (j = 0; j < ptr - 1; j++) hashTable[i][j] = tmp[i][j];
-		}
-
+		for (i = 0; i < n; i++) hashTable[i] = (int*)realloc(hashTable[i], ptr * sizeof(int));
+		
 		for (i = 0; i < n; i++) hashTable[i][ptr - 1] = 0;
-
-		for (i = 0; i < n; i++) free(tmp[i]);
-		free(tmp);
 
 		return 0;
 	}
@@ -116,6 +96,7 @@ int rebalance(unsigned int choice)
 		//for (i = 0; i < n; i++) free(hashTable[i]);
 
 		//hashTable = (int**)malloc(n * sizeof(int*));
+
 		for (i = 0; i < n; i++) hashTable[i] = (int*)malloc(ptr * sizeof(int));
 
 		for (i = 0; i < n; i++)
