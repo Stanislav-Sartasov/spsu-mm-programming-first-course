@@ -76,14 +76,14 @@ void insert(int** p, int val, int k, int mod)
 	}
 	else
 	{
-		int i = res;
+		int i = res + 1;
 		int flag = 1;
 		while (i < mod)
 		{
-			if (p[1][res] == -1)
+			if (p[1][i] == -1)
 			{
-				p[0][res] = val;
-				p[1][res] = k;
+				p[0][i] = val;
+				p[1][i] = k;
 				flag = 0;
 				break;
 			}
@@ -94,10 +94,11 @@ void insert(int** p, int val, int k, int mod)
 			i = 0;
 			while (i < res)
 			{
-				if (p[1][res] == -1)
+				if (p[1][i] == -1)
 				{
-					p[0][res] = val;
-					p[0][res] = k;
+					p[0][i] = val;
+					p[1][i] = k;
+					break;
 				}
 				i += 1;
 			}
@@ -153,11 +154,7 @@ int main()
 	{
 		hash_table[i] = (int*)malloc(n * sizeof(int));
 	}
-	for (int i = 0; i < n; i++)
-	{
-		//hash_table[0][i] = 0;
-		hash_table[1][i] = -1;
-	}
+	memset(hash_table[1], -1, n * sizeof(int));
 
 	printf("\nMENU \n1.Insert \n2.Search \n3.Delete \n4.Exit \n");
 	while (exit == 1)
@@ -173,10 +170,6 @@ int main()
 
 			}
 			relocate(hash_table, n);
-			for (int i = 0; i < n; i++)
-			{
-				printf("\n%d ", hash_table[1][i]);
-			}
 		}
 
 		if (choice == 1)
