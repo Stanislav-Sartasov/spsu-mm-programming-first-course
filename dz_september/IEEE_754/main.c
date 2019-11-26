@@ -8,7 +8,7 @@ int main()
 {
     char name[80] = "Makar", surname[80] = "Pelogeiko", fathern[80] = "Andreevich";
     int length = strlen(name) * strlen(surname) * strlen(fathern);
-
+    //printf("%d", length);
     showTwo(length);
     showIEEEx64(length);
     return 0;
@@ -16,11 +16,11 @@ int main()
 
 void showIEEEx64(int a)
 {
-    long long b = 18014398509481983 - a + 1;
-    int c[54], e[11], f = 53, exp = 0, expk = 10;
+    long long b = a;
+    int c[52], e[11], f = 51, exp = 0, expk = 10;
     for (register int i = 0; i < 11; ++i)
         e[i] = 0;
-    for (register int i = 0; i < 54; ++i)
+    for (register int i = 0; i < 52; ++i)
         c[i] = 0;
     while (b && (f + 1))
     {
@@ -28,20 +28,23 @@ void showIEEEx64(int a)
         b /= 2;
     }
     ++f;
-    exp = 127 + 54 - f;
+    exp = 1023 + 52 - f - 1;
     while (exp && (expk + 1))
     {
         e[expk--] = exp % 2;
         exp /= 2;
     }
 
-    printf("IEE 754x64: %d-", c[0]);
+    printf("IEE 754x64: %d-", 1);
     for (register int i = 0; i < 11; ++i)
-        printf("%d",e[i]);
+        printf("%d", e[i]);
     printf("-");
-    for (register int i = 2; i < 54; ++i)
+    for (register int i = f + 1; i < 52; ++i)
         printf("%d", c[i]);
+    for (int i = 0; i < f + 1; ++i)
+        printf("0");
     printf("\n");
+
 }
 
 void showTwo(int a)
@@ -86,11 +89,11 @@ void showTwo(int a)
                 exp /= 2;
             }
             for (int h = 0; h < 8; ++h)
-                printf("%d",e[h]);
+                printf("%d", e[h]);
 
             printf("-");
             for (register int h = i; h < 32; ++h)
-                printf("%d",c[h]);
+                printf("%d", c[h]);
             for (register int h = 32 - i; h < 24; ++h)
                 printf("0");
             break;
