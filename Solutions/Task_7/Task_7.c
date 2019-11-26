@@ -82,10 +82,8 @@ element* element_find(element* step, unsigned char* key, unsigned key_size)
 	{
 	case 1:
 		return element_find(step->right, key, key_size);
-		break;
 	case -1:
 		return element_find(step->left, key, key_size);
-		break;
 	case 0:
 		return step;
 	}
@@ -303,8 +301,7 @@ void hash_table_free(hash_table* hash)
 
 int main()
 {
-	unsigned key = 10;
-	unsigned data = 101;
+	unsigned key;
 	hash_table* head = hash_table_init();
 	int code;
 	element* el;
