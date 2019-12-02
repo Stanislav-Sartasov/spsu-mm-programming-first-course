@@ -22,6 +22,9 @@
     <ClCompile Include="Function.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Function.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{D717283D-73D2-4AAD-B82A-7CE9D93B9612}</ProjectGuid>
