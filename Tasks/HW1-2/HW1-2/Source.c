@@ -6,7 +6,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 //Пифагоровы тройки
-int gcd08(int a, int b) {
+int gcd08(int a, int b) 
+{
 	int nod = 1L;
 	int tmp;
 	if (a == 0L)
@@ -17,22 +18,27 @@ int gcd08(int a, int b) {
 		return a;
 	if (a == 1L || b == 1L)
 		return 1L;
-	while (a != 0 && b != 0) {
-		if (((a & 1L) | (b & 1L)) == 0L) {
+	while (a != 0 && b != 0) 
+	{
+		if (((a & 1L) | (b & 1L)) == 0L) 
+		{
 			nod <<= 1L;
 			a >>= 1L;
 			b >>= 1L;
 			continue;
 		}
-		if (((a & 1L) == 0L) && (b & 1L)) {
+		if (((a & 1L) == 0L) && (b & 1L)) 
+		{
 			a >>= 1L;
 			continue;
 		}
-		if ((a & 1L) && ((b & 1L) == 0L)) {
+		if ((a & 1L) && ((b & 1L) == 0L)) 
+		{
 			b >>= 1L;
 			continue;
 		}
-		if (a > b) {
+		if (a > b) 
+		{
 			tmp = a;
 			a = b;
 			b = tmp;
@@ -47,24 +53,32 @@ int gcd08(int a, int b) {
 		return nod * a;
 }
 
-int pif(a, b, c) {
-	if (a * a + b * b == c * c || a * a + c * c == b * b || c * c + b * b == a * a) {
+int pif(a, b, c)
+{
+	if ((a * a + b * b == c * c || a * a + c * c == b * b || c * c + b * b == a * a) && (a > 0 && b > 0 && c > 0))
+	{
 		printf("Пифагорова тройка\n");
 		int d = gcd08(a, b);
-		if (gcd08(d, c) == 1) {
+		if (gcd08(d, c) == 1)
+		{
 			printf("Взаимно-простые числа");
 		}
-		else {
+		else 
+		{
 			printf("Не взаимно-простые числа");
 		}
 	}
-	else {
+	else
+	{
 		printf("Не Пифагорова тройка");
 	}
 }
 
-int main() {
+int main() 
+{
 	setlocale(LC_ALL, "Rus");
+
+	printf("Введите стороны треугольника, чтобы узнать - являются ли они Пифагоровой тройкой, и если являются, то взаимно-просты ли они\n");
 
 	int a, b, c;
 	scanf_s("%d%d%d", &a, &b, &c);
