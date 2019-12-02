@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void IEEE754_Single(int list, int* r, int left)
+void ieee_single(int list, int* r, int left)
 {
 	int exp;
 	int bit_exp[8];
@@ -23,7 +23,7 @@ void IEEE754_Single(int list, int* r, int left)
 	}
 }
 
-void IEEE754_Double(int list, int* r, int left)
+void ieee_double(int list, int* r, int left)
 {
 	int exp;
 	int n;
@@ -81,7 +81,7 @@ int main()
 	}
 
 	p = bit_int;
-	IEEE754_Single(bit_int, p, left_unit);
-	IEEE754_Double(bit_int, p, left_unit);
+	ieee_single(bit_int, p, left_unit);
+	ieee_double(bit_int, p, left_unit);
 	return 0;
 }
