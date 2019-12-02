@@ -3,7 +3,7 @@
 #define PI 3.141592
 
 
-double DoubleChecking(double check)
+double inputCheck(double check)
 {
 	printf("Input a positive number:\n");
 	char t;
@@ -19,7 +19,8 @@ double DoubleChecking(double check)
 	}
 }
 
-void Transfer(double angle)
+
+void dmsOutput(double angle)
 {
 	int degrees = (int)angle;
 	int minutes = (int)((angle - degrees) * 60);
@@ -28,23 +29,22 @@ void Transfer(double angle)
 }
 
 
-
 int main()
 {
 	double p = 180 / PI;
 	double a = 0, b = 0, c = 0;
 	double alpha, beta, gamma;
-	a = DoubleChecking(a);
-	b = DoubleChecking(b);
-	c = DoubleChecking(c);
+	a = inputCheck(a);
+	b = inputCheck(b);
+	c = inputCheck(c);
 	if ((a + b > c) && (a + c > b) && (b + c > a))
 	{
 		alpha = acos((a * a + b * b - c * c) / (2 * a * b)) * p;
 		beta = acos((c * c + b * b - a * a) / (2 * c * b)) * (180 / PI);
 		gamma = acos((a * a + c * c - b * b) / (2 * a * c)) * (180 / PI);
-		Transfer(alpha);
-		Transfer(beta);
-		Transfer(gamma);
+		dmsOutput(alpha);
+		dmsOutput(beta);
+		dmsOutput(gamma);
 	}
 	else
 		printf("Triangle on these sides is impossible.");
