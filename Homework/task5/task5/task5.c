@@ -31,13 +31,14 @@ int main()
 			printf("Invalid input! Try again! \n\n");
 			scanf("%*[^\n]");
 		}
-	} while (!check);
+	}
+	while (!check);
 
 	double x = sqrt(n);
 	double m = 0, s = 1, a = (int)sqrt(n);
 
 	printf("Continued fractional representation of square root of the entered number: [%.0f; ", a);
-	while(1)
+	while (1)
 	{
 		period++;
 		m = a * s - m;
