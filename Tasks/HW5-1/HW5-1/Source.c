@@ -5,11 +5,12 @@
 
 int main()
 {
+	printf("Enter the amount of money in pennies to see the number of ways : ");
 	int penny[8] = { 1,2,5,10,20,50,100,200 };
 	long* methods;
 	int num;
 
-	scanf_s("%d", &num);
+	scanf_s("%d", &num, 9);
 
 	methods = (long*)malloc((num + 1) * sizeof(long));
 		
@@ -24,6 +25,8 @@ int main()
 		}
 	}
 	printf("All methods is: %d", methods[num]);
+	free(methods);
+	
 
 	return 0;
 }
