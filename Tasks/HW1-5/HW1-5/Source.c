@@ -5,8 +5,10 @@
 
 int main()
 {
+	printf("Enter the number from which you want to take the root\n");
 	int period = 0;
 	double main_num;
+
 
 	scanf_s("%lf", &main_num);
 
@@ -32,7 +34,7 @@ int main()
 			printf(" %d", b);
 		double c = a - b;
 		a = pow(c, -1);
-		if ((float)a == (float)divider && period != 0)
+		if (((float)a == (float)divider && period != 0) || period == 19)
 		{
 			printf("]\nperiod = %d", period);
 			break;
