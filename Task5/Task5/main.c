@@ -2,7 +2,7 @@
 #include <math.h>
 
 
-int IntChecking(int check)		// Проверка на корректность ввода
+int inputCheck(int check)
 {
 	printf("Input a positive number:\n");
 	char t;
@@ -20,7 +20,7 @@ int IntChecking(int check)		// Проверка на корректность ввода
 }
 
 
-void ChainFraction(int x)
+void chainFraction(int x)
 {
 	int t = sqrt(x);
 	int intPart = t, numerator = 0, denominator = 1, count = 0;
@@ -43,6 +43,6 @@ void ChainFraction(int x)
 int main()
 {
 	int x = 0;
-	x = IntChecking(x);
-	ChainFraction(x);
+	x = inputCheck(x);
+	chainFraction(x);
 }
