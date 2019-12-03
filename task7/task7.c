@@ -37,53 +37,39 @@ int input(char string[])
 	return atoi(string);
 }
 
-int relocate(int** q, int length)
+struct hash_table
 {
-	int res;
-	int** copy_hash_table = (int**)malloc(2 * sizeof(int*));
-	for (int i = 0; i < 2; i++)
-	{
-		copy_hash_table[i] = (int*)malloc(length / 2 * sizeof(int));
-	}
-	for (int i = 0; i < length / 2; i++)
-	{
-		copy_hash_table[0][i] = q[0][i];	
-		copy_hash_table[1][i] = q[1][i];
+	int* values;
+	int* keys;
+	int max_load;
+	int load;
+};
 
-	}
-	memset(q[1], -1, sizeof(int) * length);
-	for (int i = 0; i < length / 2; i++)
-	{
-		res = copy_hash_table[1][i] % length;
-		q[0][res] = copy_hash_table[0][i];
-		q[1][res] = copy_hash_table[1][i];
-	}
-	for (int i = 0; i < 2; i++) {
-		free(copy_hash_table[i]);
-	}
-	free(copy_hash_table);
+int hash(int x, int n)
+{
+	int v = x % n;
+	return v;
 }
 
-void insert(int** p, int val, int k, int mod)
+void add(struct hash_table* q, int val, int k)
 {
 	int res;
-	int i = 0;
-	res = k % mod;
-	if (p[1][res] == -1)
+	res = hash(k, q->max_load);
+	if (q->keys[res] == -1)
 	{
-		p[0][res] = val;
-		p[1][res] = k;
+		q->values[res] = val;
+		q->keys[res] = k;
 	}
 	else
 	{
 		int i = res + 1;
 		int flag = 1;
-		while (i < mod)
+		while (i < q->max_load)
 		{
-			if (p[1][i] == -1)
+			if (q->keys[i] == -1)
 			{
-				p[0][i] = val;
-				p[1][i] = k;
+				q->values[i] = val;
+				q->keys[i] = k;
 				flag = 0;
 				break;
 			}
@@ -94,105 +80,133 @@ void insert(int** p, int val, int k, int mod)
 			i = 0;
 			while (i < res)
 			{
-				if (p[1][i] == -1)
+				if (q->keys[i] == -1)
 				{
-					p[0][i] = val;
-					p[1][i] = k;
+					q->values[i] = val;
+					q->keys[i] = k;
 					break;
 				}
 				i += 1;
 			}
 		}
 	}
+
 }
 
-int search(int** q, int key, int mod)
+void relocate(struct hash_table* q)
 {
 	int res;
+	int length = q->max_load;
+	int** copy_hash_table = (int**)malloc(2 * sizeof(int*));
+	for (int i = 0; i < 2; i++)
+	{
+		copy_hash_table[i] = (int*)malloc(length / 2 * sizeof(int));
+	}
+	for (int i = 0; i < length / 2; i++)
+	{
+		copy_hash_table[0][i] = q->values[i];	
+		copy_hash_table[1][i] = q->keys[i];
+
+	}
+	memset(q->keys, -1, sizeof(int) * length);
+	for (int i = 0; i < length / 2; i++)
+	{
+		add(q, copy_hash_table[0][i], copy_hash_table[1][i]);
+	}
+	for (int i = 0; i < 2; i++) {
+		free(copy_hash_table[i]);
+	}
+	free(copy_hash_table);
+}
+
+
+
+void insert(struct hash_table* q, int val, int k)
+{
 	
-	res = key % mod;
-	if (q[1][res] == key) return res;
+	if (q->load == q->max_load)
+	{
+		q->max_load *= 2;
+		q->values = (int*)realloc(q->values, sizeof(int) * q->max_load);
+		q->keys = (int*)realloc(q->keys, sizeof(int) * q->max_load);
+		relocate(q, q->max_load);
+	}
+	add(q, val, k);
+	q->load += 1;
+}
+
+int search(struct hash_table* q, int k)
+{
+	int res;
+	res = hash(k, q->max_load);
+	if (q->keys[res] == k) return res;
 	else
 	{
-		for (int i = res + 1; i < mod; i++)
+		for (int i = res + 1; i < q->max_load; i++)
 		{
-			if (q[1][i] == key) return i;
+			if (q->keys[i] == k) return i;
 		}
 	}
 	if (1)
 	{
 		for (int i = 0; i < res; i++)
 		{
-			if (q[1][i] == key)	return i;
+			if (q->keys[i] == k) return i;
 		}
 	}
 	return -1;
 }
 
-void delete(int** q, int key, int mod)
+void delete(struct hash_table* q, int k)
 {
-	if (search(q, key, mod) != -1)
+	if (search(q, k) != -1)
 	{
-		printf("\nThe element deleted is %d.\n", q[0][search(q, key, mod)]);
-		q[1][search(q, key, mod)] = -1;
+		printf("\nThe element deleted is %d.\n", q->values[search(q, k)]);
+		q->keys[search(q, k)] = -1;
+		q->load -= 1;
 	}
 }
 
 
 int main()
 {
-	int n = 100;
 	int exit = 1;
 	int choice = 0;
-	int amount = 0;
 	int key;
 	int value;
 	char s[21];
 
-	int** hash_table = (int**)malloc(2 * sizeof(int*));
-	for (int i = 0; i < 2; i++) 
-	{
-		hash_table[i] = (int*)malloc(n * sizeof(int));
-	}
-	memset(hash_table[1], -1, n * sizeof(int));
-
+	struct hash_table p;
+	p.max_load = 3;
+	p.load = 0;
+	p.values = (int*)(malloc(sizeof(int) * 3));
+	p.keys = (int*)(malloc(sizeof(int) * 3));
+	memset(p.keys, -1, sizeof(int) * 3);
 	printf("\nMENU \n1.Insert \n2.Search \n3.Delete \n4.Exit \n");
 	while (exit == 1)
 	{
 		printf("\nSelect menu item ");
 		choice = input(s);
-		if (amount == n)
-		{
-			n *= 2;
-			for (int i = 0; i < 2; i++)
-			{
-				hash_table[i] = realloc(hash_table[i], n * sizeof(int));
-
-			}
-			relocate(hash_table, n);
-		}
-
 		if (choice == 1)
 		{
 			printf("\nEnter the value ");
 			value = input(s);
 			printf("\nEnter the key ");
 			key = input(s);
-			insert(hash_table, value, key, n);
-			amount += 1;
+			insert(&p, value, key, p.max_load);
 		}
 		else if (choice == 2)
 		{
 			printf("\nEnter the key: ");
 			key = input(s);
-			if (search(hash_table, key, n) == -1) printf("\nThe key searched was not found in the hash table");
-			else printf("Searched element = %d\n", hash_table[0][search(hash_table, key, n)]);
+			if (search(&p, key, p.max_load) == -1) printf("\nThe key searched was not found in the hash table");
+			else printf("Searched element = %d\n", p.values[search(&p, key, p.max_load)]);
 		}
 		else if (choice == 3)
 		{
 			printf("\nEnter the key: ");
 			key = input(s);
-			delete(hash_table, key, n);
+			delete(&p, key, p.max_load);
 		}
 		else if (choice == 4)
 		{
@@ -201,10 +215,8 @@ int main()
 		else printf("Incorrrect input.\n");
 	}
 
-	for (int i = 0; i < 2; i++) {
-		free(hash_table[i]);
-	}
-	free(hash_table);
+	free(p.keys);
+	free(p.values);
 
 	return 0;
 }
