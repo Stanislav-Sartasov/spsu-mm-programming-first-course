@@ -2,17 +2,15 @@
 #include <stdlib.h>
 #include <math.h>
 
-const int size_of_precalculation = 500000;
+const int size_of_precalculation = 519125;
 
-typedef long long ll;
-
-void input(ll *a)
+void input(int *a)
 {
     int x;
     while (1)
     {
         printf("Enter 1 integer number\n");
-        x = scanf("%lld", a);
+        x = scanf("%d", a);
         if (x == 1)
         {
             char s;
@@ -21,24 +19,18 @@ void input(ll *a)
             while (s != '\0' && s != '\n')
             {
                 if  (s != ' ')
-                {
                     fl = 1;
-                }
                 s = getchar();
             }
             if  (fl == 0 && *a > 0)
-            {
                 break;
-            }
         }
         else
         {
             char s;
             s = getchar();
             while (s != '\0' && s != '\n')
-            {
                 s = getchar();
-            }
         }
         printf("Wrong input\n");
     }
@@ -46,23 +38,23 @@ void input(ll *a)
 
 int main()
 {
-    ll x;
+    int x;
     input(&x);
-    double y = pow(x, 0.5);
-    double eps = 10e-8;
-    double y_trunc;
-    double y_fract = modf(y, &y_trunc);
+    long double y = pow(x, 0.5);
+    long double eps = 10e-8;
+    long double y_trunc;
+    long double y_fract = modfl(y, &y_trunc);
     while (y - y_trunc < eps)
     {
         printf("The entered number is the square of the integer. ");
         input(&x);
         y = pow(x, 0.5);
-        y_fract = modf(y, &y_trunc);
+        y_fract = modfl(y, &y_trunc);
     }
     int arr[size_of_precalculation], denominator;
-    double numerator;
-    ll t = (int) y_trunc;
-    ll q_zero = (int) y_trunc;
+    long double numerator;
+    int t = (int) y_trunc;
+    int q_zero = (int) y_trunc;
     printf("Fraction have the presentation:\n- First member: %d", q_zero);
     denominator = x - q_zero * q_zero;
     numerator = y + q_zero;
@@ -89,7 +81,7 @@ int main()
        else
         {
             int compare_q = 1;
-            for (int l = k; l < 100; l++)
+            for (int l = k; l < size_of_precalculation; l++)
             {
                 if (arr[l] != arr[l % i])
                 {
