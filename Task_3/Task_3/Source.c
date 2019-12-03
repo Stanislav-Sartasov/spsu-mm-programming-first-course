@@ -6,13 +6,14 @@
 #define RADIAN 57.295779513
 
 
-double find_age(double x, double y, double z)
+float find_age(float x, float y, float z)
 {
 	return acos((( y * y + z * z - x * x ) / ( 2 * y * z))) * RADIAN;
 }
 
-void ride_age(double age)
+void ride_age(float age)
 {	
+
 	int d = (int)age;
 	printf("degree : %d\n", d);
 
@@ -28,22 +29,25 @@ int main()
 {
 	int n = 0;
 	char eol = 0;
-	double x = 0; double y = 0; double z = 0;
-	double age1; double age2; double age3;
+	float x = 0; float y = 0; float z = 0;
+	float eps = 0.00001;
 
+
+	printf("The program determines whether it is possible to build a triangle on three sides and displays its angles\n");
+	printf("Enter three numbers\n");
 
 	while (n == 0)
 	{
-		int xscan = scanf("%lf", &x);
-		int yscan = scanf("%lf", &y);
-		int zscan = scanf("%lf%c", &z, &eol);
+		int xscan = scanf("%f", &x);
+		int yscan = scanf("%f", &y);
+		int zscan = scanf("%f%c", &z, &eol);
 
 		if (xscan && yscan && zscan && eol == '\n')
 		{
 			if (x * y > 0 && y * z > 0 && x * z > 0)
 			{
 				n = 1;
-				if ((x + y - z > 0.00001) && (x + z - y > 0.00001) && (z + y - x > 0.00001))
+				if ((x + y - z > eps) && (x + z -y > eps) && (z + y - x > eps))
 				{
 					printf("You can build a triangle\n");
 
