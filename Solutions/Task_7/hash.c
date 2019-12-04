@@ -3,9 +3,9 @@
 #include "crc_32.h"
 
 #define poly 0x4C11DB7, 0, 0, 0xFFFFFFFF	//Polynomial, Initial Value, Revers Flag, Final Xor Value
-#define hash_table_base_size 128
-#define hash_table_base_modifier 4
-#define hash_table_max_depht 4
+#define hash_base_size 128
+#define hash_base_modifier 4
+#define hash_max_depht 4
 
 typedef struct
 {
@@ -31,7 +31,7 @@ char compare(unsigned char* x, unsigned x_size, unsigned char* y, unsigned y_siz
 	return 0;
 }
 
-element* element_insert(element* step, unsigned char* key, unsigned key_size, unsigned char* data, unsigned data_size)
+element* element_add(element* step, unsigned char* key, unsigned key_size, unsigned char* data, unsigned data_size)
 {
 	if (step == 0)
 	{
@@ -53,15 +53,15 @@ element* element_insert(element* step, unsigned char* key, unsigned key_size, un
 	{
 	case 1:
 		if (step->right == 0)
-			step->right = element_insert(0, key, key_size, data, data_size);
+			step->right = element_add(0, key, key_size, data, data_size);
 		else
-			code = (unsigned)element_insert(step->right, key, key_size, data, data_size);
+			code = (unsigned)element_add(step->right, key, key_size, data, data_size);
 		break;
 	case -1:
 		if (step->left == 0)
-			step->left = element_insert(0, key, key_size, data, data_size);
+			step->left = element_add(0, key, key_size, data, data_size);
 		else
-			code = (unsigned)element_insert(step->left, key, key_size, data, data_size);
+			code = (unsigned)element_add(step->left, key, key_size, data, data_size);
 		break;
 	case 0:
 		free(step->data);
@@ -74,16 +74,16 @@ element* element_insert(element* step, unsigned char* key, unsigned key_size, un
 	return (element*)(code + 1);
 }
 
-element* element_find(element* step, unsigned char* key, unsigned key_size)
+element* element_get(element* step, unsigned char* key, unsigned key_size)
 {
 	if (step == 0)
 		return 0;
 	switch (compare(key, key_size, step->key, step->key_size))
 	{
 	case 1:
-		return element_find(step->right, key, key_size);
+		return element_get(step->right, key, key_size);
 	case -1:
-		return element_find(step->left, key, key_size);
+		return element_get(step->left, key, key_size);
 	case 0:
 		return step;
 	}
@@ -203,25 +203,25 @@ typedef struct
 	element** table;
 } hash_table;
 
-hash_table* hash_table_init()
+hash_table* hash_init()
 {
 	hash_table* hash = (hash_table*)malloc(sizeof(hash_table));
 	hash->max_depth = 0;
-	hash->size = hash_table_base_size;
+	hash->size = hash_base_size;
 	hash->table = (element * *)malloc(sizeof(element*) * hash->size);
 	for (unsigned i = 0; i < hash->size; i++)
 		hash->table[i] = 0;
 	return hash;
 }
 
-unsigned hash_table_func(unsigned char* key, unsigned key_size)
+unsigned hash_func(unsigned char* key, unsigned key_size)
 {
 	if (!crc_set_flag)
 		crc_set(poly);
 	return crc_calc(key, key_size);
 }
 
-hash_table* hash_table_insert(hash_table* hash, unsigned char* key, unsigned key_size, unsigned char* data, unsigned data_size, char balance_key);
+hash_table* hash_add(hash_table* hash, unsigned char* key, unsigned key_size, unsigned char* data, unsigned data_size, char balance_key);
 
 void hash_reinit_element(element* old_hash, hash_table* new_hash)
 {
@@ -232,15 +232,15 @@ void hash_reinit_element(element* old_hash, hash_table* new_hash)
 	if (old_hash->right)
 		hash_reinit_element(old_hash->right, new_hash);
 	if (new_hash)
-		hash_table_insert(new_hash, old_hash->key, old_hash->key_size, old_hash->data, old_hash->data_size, 0);
+		hash_add(new_hash, old_hash->key, old_hash->key_size, old_hash->data, old_hash->data_size, 0);
 	element_free(old_hash);
 }
 
-hash_table* hash_table_balance(hash_table* hash_old, double modifier)
+hash_table* hash_balance(hash_table* hash_old, double modifier)
 {
 	hash_table* hash_new = (hash_table*)malloc(sizeof(hash_table));
 	hash_new->max_depth = 0;
-	hash_new->size = (unsigned)(hash_old->size * hash_table_base_modifier);
+	hash_new->size = (unsigned)(hash_old->size * hash_base_modifier);
 	hash_new->table = (element * *)malloc(sizeof(element*) * hash_new->size);
 	for (unsigned i = 0; i < hash_new->size; i++)
 		hash_new->table[i] = 0;
@@ -251,31 +251,31 @@ hash_table* hash_table_balance(hash_table* hash_old, double modifier)
 	return hash_new;
 }
 
-hash_table* hash_table_insert(hash_table* hash, unsigned char* key, unsigned key_size, unsigned char* data, unsigned data_size, char balance_key)
+hash_table* hash_add(hash_table* hash, unsigned char* key, unsigned key_size, unsigned char* data, unsigned data_size, char balance_key)
 {
-	unsigned hash_key = (unsigned)hash_table_func(key, key_size) % hash->size;
+	unsigned hash_key = (unsigned)hash_func(key, key_size) % hash->size;
 	if (hash->table[hash_key])
 	{
-		unsigned depth = (unsigned)element_insert(hash->table[hash_key], key, key_size, data, data_size);
+		unsigned depth = (unsigned)element_add(hash->table[hash_key], key, key_size, data, data_size);
 		if (depth > hash->max_depth)
 			hash->max_depth = depth;
-		if (hash->max_depth > hash_table_max_depht && balance_key)
-			return hash_table_balance(hash, hash_table_base_modifier);
+		if (hash->max_depth > hash_max_depht && balance_key)
+			return hash_balance(hash, hash_base_modifier);
 	}
 	else
-		hash->table[hash_key] = element_insert(hash->table[hash_key], key, key_size, data, data_size);
+		hash->table[hash_key] = element_add(hash->table[hash_key], key, key_size, data, data_size);
 	return 0;
 }
 
-element* hash_table_find(hash_table* hash, unsigned char* key, unsigned key_size)
+element* hash_get(hash_table* hash, unsigned char* key, unsigned key_size)
 {
-	unsigned hash_key = hash_table_func(key, key_size) % hash->size;
-	return element_find(hash->table[hash_key], key, key_size);
+	unsigned hash_key = hash_func(key, key_size) % hash->size;
+	return element_get(hash->table[hash_key], key, key_size);
 }
 
-void hash_table_delete(hash_table* hash, unsigned char* key, unsigned key_size)
+void hash_delete(hash_table* hash, unsigned char* key, unsigned key_size)
 {
-	unsigned hash_key = hash_table_func(key, key_size) % hash->size;
+	unsigned hash_key = hash_func(key, key_size) % hash->size;
 	int code = (int)element_delete(hash->table[hash_key], key, key_size);
 	switch (code)
 	{
@@ -291,9 +291,9 @@ void hash_table_delete(hash_table* hash, unsigned char* key, unsigned key_size)
 	}
 }
 
-void hash_table_free(hash_table* hash)
+void hash_free(hash_table* hash)
 {
-	for (int i = 0; i < hash->size; i++)
+	for (unsigned i = 0; i < hash->size; i++)
 		hash_reinit_element(hash->table[i], 0);
 	free(hash->table);
 	free(hash);

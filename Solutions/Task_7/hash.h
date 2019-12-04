@@ -17,12 +17,14 @@ typedef struct
 	element** table;
 } hash_table;
 
-hash_table* hash_table_init();
+char compare(unsigned char* x, unsigned x_size, unsigned char* y, unsigned y_size);
 
-hash_table* hash_table_insert(hash_table* hash, unsigned char* key, unsigned key_size, unsigned char* data, unsigned data_size, char balance_key);
+hash_table* hash_init();
 
-element* hash_table_find(hash_table* hash, unsigned char* key, unsigned key_size);
+hash_table* hash_add(hash_table* hash, unsigned char* key, unsigned key_size, unsigned char* data, unsigned data_size, char balance_key);
 
-void hash_table_delete(hash_table* hash, unsigned char* key, unsigned key_size);
+element* hash_get(hash_table* hash, unsigned char* key, unsigned key_size);
 
-void hash_table_free(hash_table* hash);
+void hash_delete(hash_table* hash, unsigned char* key, unsigned key_size);
+
+void hash_free(hash_table* hash);
