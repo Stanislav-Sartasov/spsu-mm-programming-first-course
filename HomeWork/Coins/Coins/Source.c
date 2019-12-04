@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int coins[8] = { 1,2,5,10,20,50,100,200 };
+int coins[8] = {1, 2, 5, 10, 20, 50, 100, 200};
 
 int answer(int n)
 {
