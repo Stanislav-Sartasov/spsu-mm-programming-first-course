@@ -124,10 +124,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="crc_32.c" />
+    <ClCompile Include="hash.c" />
     <ClCompile Include="Task_7.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="crc_32.h" />
+    <ClInclude Include="hash.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
