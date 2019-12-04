@@ -1,98 +1,88 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-#include <stdlib.h>
 
-int main() 
+int main()
 {
-	const char name[] = "Lev";
-	const char surname[] = "Chernishev";
-	const char fathersname[] = "Dmitrievich";
+	char name[] = "Lev", surname[] = "Chernishev", fathersname[] = "Dmitrievich";
+	int prod = strlen(name) * strlen(surname) * strlen(fathersname);
 
-	int length;
-	length = strlen(name) * strlen(surname) * strlen(fathersname);
-
-	printf("%d\n", length);
-	
-	int tv = length, l;
-
-	int bit32[32];
+	int int_b[32];
 	for (int i = 0; i < 32; i++)
-		bit32[i] = 0;
-
-	int k;
-	for (k = 31; length > 0; k--)
+		int_b[i] = 1;
+	int b = prod, pos = 31;
+	while (b)
 	{
-		bit32[k] = length % 2;
-		length /= 2;
+		if (b % 2)
+			int_b[pos] = 0;
+		else
+			int_b[pos] = 1;
+		pos--;
+		b /= 2;
 	}
-	int j = 31 - k;
+	int k = 31;
+	while (int_b[k])
+	{
+		int_b[k] = 0;
+		k--;
+	}
+	int_b[k] = 1;
 
+	printf("A) ");
 	for (int i = 0; i < 32; i++)
-	{
-		if (bit32[i] == 0) bit32[i] = 1;
-		else bit32[i] = 0;
-	}
-
-	for (int i = 31; i >= 0; i--)
-	{
-		if (bit32[i] == 0)
-		{
-			bit32[i] = 1;
-			break;
-		}
-		else bit32[i] = 0;
-	}
-
-	for (int i = 0; i < 32; i++) printf("%hu", bit32[i]);
+		printf("%d", int_b[i]);
 	printf("\n");
 
 
-
-	int bin32IE[32], exponent;
-	for (int i = 0; i < 32; i++) 
-		bin32IE[i] = 0;
-	int i = 7 + k;
-
-	exponent = k + 126;
-	for (int j = 1; j < k; j++)
+	int float_b[32];
+	for (int i = 0; i < 32; i++)
+		float_b[i] = 0;
+	int n = prod, lenght = -1;
+	while (n)
 	{
-		bin32IE[i] = tv % 2;
-		tv /= 2;
-		i--;
+		n /= 2;
+		lenght++;
 	}
-
+	int exponent = 127 + lenght;
 	for (int i = 8; i > 0; i--)
 	{
-		bin32IE[i] = exponent % 2;
+		float_b[i] = exponent % 2;
 		exponent /= 2;
 	}
-
-	for (int i = 0; i < 32; i++) printf("%d", bin32IE[i]);
-	printf("\n");
-
-
-	int bin64IE[64];
-	bin64IE[0] = 1;
-	for (i = 1; i < 64; i++) 
-		bin64IE[i] = 0;
-
-	int g = 11;
-
-	exponent = k + 1022;
-	while (exponent)
+	int m = prod;
+	for (int i = 8 + lenght; i > 8; i--)
 	{
-		bin64IE[g] = exponent % 2;
-		g--;
-		exponent /= 2;
+		float_b[i] = m % 2;
+		m /= 2;
 	}
 
-	for (int i = 12; i - 3 < 32; i++) 
-		bin64IE[i] = bin32IE[i - 3];
-
-	for (int i = 0; i < 64; i++) 
-		printf("%d", bin64IE[i]);
-
+	printf("B) ");
+	for (int i = 0; i < 32; i++)
+		printf("%d", float_b[i]);
 	printf("\n");
 
+
+	int double_b[64] = { 0 };
+	double_b[0] = 1;
+	n = prod;
+	lenght = -1;
+	while (n)
+	{
+		n /= 2;
+		lenght++;
+	}
+	exponent = 1023 + lenght;
+	for (int i = 11; i > 0; i--)
+	{
+		double_b[i] = exponent % 2;
+		exponent /= 2;
+	}
+	for (int i = 11 + lenght; i > 11; i--)
+	{
+		double_b[i] = prod % 2;
+		prod /= 2;
+	}
+
+	printf("C) ");
+	for (int i = 0; i < 64; i++)
+		printf("%d", double_b[i]);
 	return 0;
 }
