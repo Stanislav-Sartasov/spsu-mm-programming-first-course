@@ -27,7 +27,7 @@ void myPow(int *mas, int n, int pow)
 
 int main()
 {
-	int n = 5000, i;
+	int n = 2000, i;
 	int *mas = (int*)malloc(n * sizeof(int));
 	mas[0] = 1;
 	for (i = 1; i < n; i++) mas[i] = 0;
