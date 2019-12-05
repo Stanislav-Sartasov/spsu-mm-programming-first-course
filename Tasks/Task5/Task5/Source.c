@@ -31,6 +31,7 @@ void input(int* x)
 int main()
 {
 	int n;
+	printf("Enter a natural number that is not a square of the integer.\n");
 	input(&n);
 
 	int wholePart = sqrt(n);
