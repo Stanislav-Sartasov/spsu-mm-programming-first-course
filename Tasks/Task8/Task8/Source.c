@@ -4,12 +4,13 @@
 #include <string.h>
 #define min(x, y) x < y ? x : y
 
+FILE* fileIn;
+FILE* fileOut;
 
 void inputCheck(int argc, char* argv[])
 {
 	if (argc != 4 || !(strcmp(argv[2], "Averaging") == 0 || strcmp(argv[2], "Gauss3") == 0 || strcmp(argv[2], "Gauss5") == 0 || strcmp(argv[2], "Sobel") == 0
-		|| strcmp(argv[2], "SobelX") == 0 || strcmp(argv[2], "SobelY") == 0 || strcmp(argv[2], "ColorWB") == 0) || fopen(argv[1], "rb") == NULL ||
-		fopen(argv[3], "rb") == NULL)
+		|| strcmp(argv[2], "SobelX") == 0 || strcmp(argv[2], "SobelY") == 0 || strcmp(argv[2], "ColorWB") == 0) || fopen_s(&fileIn, argv[1], "rb") != 0)
 	{
 		printf("Invalid input. Try again.");
 		exit(0);
@@ -57,7 +58,7 @@ void averageFilter(unsigned char* bitMapImage, int height, int width)
 
 			for (int step = 0; step < 9; step++)
 				if (i + steps[step][0] >= 0 && i + steps[step][0] < height && j + steps[step][1] >= 0 && j + steps[step][1] < width)
-				{ 
+				{
 					result[0] += bitMapImage[((i + steps[step][0]) * width + j + steps[step][1]) * 3];
 					result[1] += bitMapImage[((i + steps[step][0]) * width + j + steps[step][1]) * 3 + 1];
 					result[2] += bitMapImage[((i + steps[step][0]) * width + j + steps[step][1]) * 3 + 2];
@@ -237,12 +238,20 @@ void sobelFilter(unsigned char* bitMapImage, int height, int width, char mode)
 	free(bitMapImageCopy);
 }
 
+void convolution(unsigned char* bitMapImage, struct BITMAPFILEHEADER bitMapFileHeader, struct BITMAPINFOHEADER bitMapInfoHeader)
+{
+	fwrite(&bitMapFileHeader, sizeof(bitMapFileHeader), 1, fileOut);
+	fwrite(&bitMapInfoHeader, sizeof(bitMapInfoHeader), 1, fileOut);
+	for (int i = 0; i < bitMapInfoHeader.biSizeImage; i++)
+		fwrite(&bitMapImage[i], 1, 1, fileOut);
+}
+
 int main(int argc, char* argv[])
 {
 	inputCheck(argc, argv);
 
-	FILE* fileIn = fopen(argv[1], "rb");
-	FILE* fileOut = fopen(argv[3], "wb");
+	fopen_s(&fileIn, argv[1], "rb");
+	fopen_s(&fileOut, argv[3], "wb");
 
 	struct BITMAPFILEHEADER bitMapFileHeader;
 	struct BITMAPINFOHEADER bitMapInfoHeader;
@@ -254,9 +263,6 @@ int main(int argc, char* argv[])
 
 	fseek(fileIn, bitMapFileHeader.bfOffBits, SEEK_SET);
 	fread(bitMapImage, 1, bitMapInfoHeader.biSizeImage, fileIn);
-
-	fwrite(&bitMapFileHeader, sizeof(bitMapFileHeader), 1, fileOut);
-	fwrite(&bitMapInfoHeader, sizeof(bitMapInfoHeader), 1, fileOut);
 
 	if (strcmp(argv[2], "Averaging") == 0)
 		averageFilter(bitMapImage, bitMapInfoHeader.biHeight, bitMapInfoHeader.biWidth);
@@ -273,8 +279,7 @@ int main(int argc, char* argv[])
 	else if (strcmp(argv[2], "ColorWB") == 0)
 		fromColorToBlackAndWhiteFilter(bitMapImage, bitMapInfoHeader.biHeight, bitMapInfoHeader.biWidth);
 
-	for (int i = 0; i < bitMapInfoHeader.biSizeImage; i++)
-		fwrite(&bitMapImage[i], 1, 1, fileOut);
+	convolution(bitMapImage, bitMapFileHeader, bitMapInfoHeader);
 
 	printf("The program worked successfully");
 	free(bitMapImage);
