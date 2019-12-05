@@ -18,7 +18,7 @@ struct bmpheader
 	unsigned int	bfOffBits;		//смещение до байтов изображения
 };
 
-struct bmpheaderinfo 
+struct bmpheaderinfo
 {
 	unsigned int Size;              //длина заголовка
 	unsigned int Width;             // ширина
@@ -94,7 +94,7 @@ void sobelFilterY(unsigned char* bitmap, int width, int height, int bitcount)
 	for (int i = 0; i < height * width * bc; i++)
 		bitmap[i] = bitmapcopy[i];
 	free(bitmapcopy);
-	
+
 }
 
 void medianFilter(unsigned char* bitmap, int width, int height, int bitcount)
@@ -158,6 +158,12 @@ void gaussianFilter(unsigned char* bitmap, int width, int height, int bitcount)
 
 int main(int argc, char* argv[])
 {
+	if (argc != 4)
+	{
+		printf("Enter 4 parameters!");
+		return -1;
+	}
+
 	char* name_of_filter[5] = { "blackAndWhite", "sobelFilterX", "sobelFilterY", "medianFilter", "gaussianFilter" };
 	void (*filter[5])(void);
 	filter[0] = &blackAndWhite;
@@ -168,7 +174,7 @@ int main(int argc, char* argv[])
 
 	FILE* fin;
 	FILE* fout;
-	
+
 
 	struct bmpheader bmpheader;
 	struct bmpheaderinfo bmpinfo;
@@ -210,7 +216,6 @@ int main(int argc, char* argv[])
 	fread(&bmpheader, sizeof(bmpheader), 1, fin);
 	fread(&bmpinfo, sizeof(bmpinfo), 1, fin);
 
-	unsigned int size = bmpinfo.Width * bmpinfo.Height * (bmpinfo.BitCount / 8);
 	unsigned char* colorTable = (unsigned char*)malloc(bmpheader.bfOffBits - 54);
 
 	fread(colorTable, 1, bmpheader.bfOffBits - 54, fin);
