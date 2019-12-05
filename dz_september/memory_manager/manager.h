@@ -5,9 +5,9 @@
 
 extern char *bufer;
 extern char *buferstat;
-extern unsigned long long bufersize;
+extern unsigned long long bufersize, MEMSIZE;
 
-void init(unsigned long long x);
+void init(void);
 void initstop(void);
 void* myMalloc(size_t size);
 void myFree(void *ptr);

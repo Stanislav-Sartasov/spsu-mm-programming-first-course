@@ -2,7 +2,8 @@
 
 char *bufer;
 char *buferstat;
-unsigned long long bufersize;
+unsigned long long bufersize, MEMSIZE = 8;
+
 
 
 void initstop(void)
@@ -116,15 +117,15 @@ void* myMalloc(size_t size)
     return (void*)(bufer+start);
 }
 
-void init(unsigned long long x)
+void init(void)
 {
-    x = x + (x % 4 == 0 ? 0 : 4 - (x % 4));
-    bufer = (char*) malloc(sizeof(char) * x);
-    buferstat = (char*) malloc(sizeof(char) * x / 4);
-    //for(unsigned long long i = 0; i<x; ++i)
+    MEMSIZE = MEMSIZE + (MEMSIZE % 4 == 0 ? 0 : 4 - (MEMSIZE % 4));
+    bufer = (char*) malloc(sizeof(char) * MEMSIZE);
+    buferstat = (char*) malloc(sizeof(char) * MEMSIZE / 4);
+    //for (unsigned long long i = 0; i < MEMSIZE / 4; ++i)
     //    buferstat[i] = 0;
-    memset(buferstat, 0, sizeof(char) * x / 4);
-    bufersize=x;
+    memset(buferstat, 0, sizeof(char) * MEMSIZE / 4);
+    bufersize=MEMSIZE;
 }
 
 unsigned long long getBuferStat(unsigned long long i)

@@ -2,13 +2,12 @@
 
 int main()
 {
-    unsigned long long memsize = 8;
+    //unsigned long long memsize = 8;
     int *number, *next;
     unsigned int amount;
-    //scanf("%lld", &memsize);
-    //printf("%lld", memsize);
 
-    init(memsize);
+    //init(memsize);
+    init();
     printf("how many elements(2)? ");
     scanf("%d", &amount);
     number = (int*)  myMalloc((size_t)(sizeof(int) * amount));
@@ -47,13 +46,15 @@ int main()
     {
         printf("memory full\n");
     }
-    printf("end of test 1\n");
+    printf("\nend of test 1\n");
 
     initstop();
-    init(memsize + 4);
+    //init(memsize + 4);
+    MEMSIZE += 4;
+    init();
 
-    printf("--------------------------------------/n");
-    printf("test 2(realloc)/n");
+    printf("--------------------------------------\n");
+    printf("test 2(realloc)\n");
     next = (int*)myMalloc(sizeof (int));
     number = (int*)myMalloc(sizeof (int) * 2);
     printf("\n");
