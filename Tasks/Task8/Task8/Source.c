@@ -238,12 +238,22 @@ void sobelFilter(unsigned char* bitMapImage, int height, int width, char mode)
 	free(bitMapImageCopy);
 }
 
-void convolution(unsigned char* bitMapImage, struct BITMAPFILEHEADER bitMapFileHeader, struct BITMAPINFOHEADER bitMapInfoHeader)
+void convolution(unsigned char* bitMapImage, struct BITMAPINFOHEADER bitMapInfoHeader, char* argv[])
 {
-	fwrite(&bitMapFileHeader, sizeof(bitMapFileHeader), 1, fileOut);
-	fwrite(&bitMapInfoHeader, sizeof(bitMapInfoHeader), 1, fileOut);
-	for (int i = 0; i < bitMapInfoHeader.biSizeImage; i++)
-		fwrite(&bitMapImage[i], 1, 1, fileOut);
+	if (strcmp(argv[2], "Averaging") == 0)
+		averageFilter(bitMapImage, bitMapInfoHeader.biHeight, bitMapInfoHeader.biWidth);
+	else if (strcmp(argv[2], "Gauss3") == 0)
+		gaussFilter(bitMapImage, bitMapInfoHeader.biHeight, bitMapInfoHeader.biWidth, 1);
+	else if (strcmp(argv[2], "Gauss5") == 0)
+		gaussFilter(bitMapImage, bitMapInfoHeader.biHeight, bitMapInfoHeader.biWidth, 2);
+	else if (strcmp(argv[2], "Sobel") == 0)
+		sobelFilter(bitMapImage, bitMapInfoHeader.biHeight, bitMapInfoHeader.biWidth, '0');
+	else if (strcmp(argv[2], "SobelX") == 0)
+		sobelFilter(bitMapImage, bitMapInfoHeader.biHeight, bitMapInfoHeader.biWidth, 'x');
+	else if (strcmp(argv[2], "SobelY") == 0)
+		sobelFilter(bitMapImage, bitMapInfoHeader.biHeight, bitMapInfoHeader.biWidth, 'y');
+	else if (strcmp(argv[2], "ColorWB") == 0)
+		fromColorToBlackAndWhiteFilter(bitMapImage, bitMapInfoHeader.biHeight, bitMapInfoHeader.biWidth);
 }
 
 int main(int argc, char* argv[])
@@ -264,22 +274,12 @@ int main(int argc, char* argv[])
 	fseek(fileIn, bitMapFileHeader.bfOffBits, SEEK_SET);
 	fread(bitMapImage, 1, bitMapInfoHeader.biSizeImage, fileIn);
 
-	if (strcmp(argv[2], "Averaging") == 0)
-		averageFilter(bitMapImage, bitMapInfoHeader.biHeight, bitMapInfoHeader.biWidth);
-	else if (strcmp(argv[2], "Gauss3") == 0)
-		gaussFilter(bitMapImage, bitMapInfoHeader.biHeight, bitMapInfoHeader.biWidth, 1);
-	else if (strcmp(argv[2], "Gauss5") == 0)
-		gaussFilter(bitMapImage, bitMapInfoHeader.biHeight, bitMapInfoHeader.biWidth, 2);
-	else if (strcmp(argv[2], "Sobel") == 0)
-		sobelFilter(bitMapImage, bitMapInfoHeader.biHeight, bitMapInfoHeader.biWidth, '0');
-	else if (strcmp(argv[2], "SobelX") == 0)
-		sobelFilter(bitMapImage, bitMapInfoHeader.biHeight, bitMapInfoHeader.biWidth, 'x');
-	else if (strcmp(argv[2], "SobelY") == 0)
-		sobelFilter(bitMapImage, bitMapInfoHeader.biHeight, bitMapInfoHeader.biWidth, 'y');
-	else if (strcmp(argv[2], "ColorWB") == 0)
-		fromColorToBlackAndWhiteFilter(bitMapImage, bitMapInfoHeader.biHeight, bitMapInfoHeader.biWidth);
+	convolution(bitMapImage, bitMapInfoHeader, argv);
 
-	convolution(bitMapImage, bitMapFileHeader, bitMapInfoHeader);
+	fwrite(&bitMapFileHeader, sizeof(bitMapFileHeader), 1, fileOut);
+	fwrite(&bitMapInfoHeader, sizeof(bitMapInfoHeader), 1, fileOut);
+	for (int i = 0; i < bitMapInfoHeader.biSizeImage; i++)
+		fwrite(&bitMapImage[i], 1, 1, fileOut);
 
 	printf("The program worked successfully");
 	free(bitMapImage);
