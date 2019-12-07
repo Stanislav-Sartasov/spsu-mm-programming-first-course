@@ -10,7 +10,7 @@ int main()
 	element* el;
 	for (int key = 0; key < 2000000; key++)
 	{
-		code = (int)hash_add(head, &key, sizeof(int), &key, sizeof(int), 1);
+		code = (int)hash_add(head, &key, sizeof(int), &key, sizeof(int));
 		if (code)
 		{
 			head = (hash_table*)code;
@@ -19,7 +19,7 @@ int main()
 
 	char* str_key = "hello_hash";
 	char* str_data = "yes it's working";
-	hash_add(head, str_key, 11, str_data, 17, 0);	
+	hash_add(head, str_key, 11, str_data, 17);	
 
 	for (int i = 0; i < 2000000; i++)
 	{

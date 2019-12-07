@@ -221,7 +221,7 @@ unsigned hash_func(unsigned char* key, unsigned key_size)
 	return crc_calc(key, key_size);
 }
 
-hash_table* hash_add(hash_table* hash, unsigned char* key, unsigned key_size, unsigned char* data, unsigned data_size, char balance_key);
+hash_table* hash_add_back(hash_table* hash, unsigned char* key, unsigned key_size, unsigned char* data, unsigned data_size, char balance_key);
 
 void hash_reinit_element(element* old_hash, hash_table* new_hash)
 {
@@ -232,7 +232,7 @@ void hash_reinit_element(element* old_hash, hash_table* new_hash)
 	if (old_hash->right)
 		hash_reinit_element(old_hash->right, new_hash);
 	if (new_hash)
-		hash_add(new_hash, old_hash->key, old_hash->key_size, old_hash->data, old_hash->data_size, 0);
+		hash_add_back(new_hash, old_hash->key, old_hash->key_size, old_hash->data, old_hash->data_size, 0);
 	element_free(old_hash);
 }
 
@@ -251,7 +251,7 @@ hash_table* hash_balance(hash_table* hash_old, double modifier)
 	return hash_new;
 }
 
-hash_table* hash_add(hash_table* hash, unsigned char* key, unsigned key_size, unsigned char* data, unsigned data_size, char balance_key)
+hash_table* hash_add_back(hash_table* hash, unsigned char* key, unsigned key_size, unsigned char* data, unsigned data_size, char balance_key)
 {
 	unsigned hash_key = (unsigned)hash_func(key, key_size) % hash->size;
 	if (hash->table[hash_key])
@@ -265,6 +265,11 @@ hash_table* hash_add(hash_table* hash, unsigned char* key, unsigned key_size, un
 	else
 		hash->table[hash_key] = element_add(hash->table[hash_key], key, key_size, data, data_size);
 	return 0;
+}
+
+hash_table* hash_add(hash_table* hash, unsigned char* key, unsigned key_size, unsigned char* data, unsigned data_size)
+{
+	hash_add_back(hash, key, key_size, data, data_size, 1);
 }
 
 element* hash_get(hash_table* hash, unsigned char* key, unsigned key_size)

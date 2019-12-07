@@ -21,7 +21,7 @@ char compare(unsigned char* x, unsigned x_size, unsigned char* y, unsigned y_siz
 
 hash_table* hash_init();
 
-hash_table* hash_add(hash_table* hash, unsigned char* key, unsigned key_size, unsigned char* data, unsigned data_size, char balance_key);
+hash_table* hash_add(hash_table* hash, unsigned char* key, unsigned key_size, unsigned char* data, unsigned data_size);
 
 element* hash_get(hash_table* hash, unsigned char* key, unsigned key_size);
 
