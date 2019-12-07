@@ -269,7 +269,7 @@ hash_table* hash_add_back(hash_table* hash, unsigned char* key, unsigned key_siz
 
 hash_table* hash_add(hash_table* hash, unsigned char* key, unsigned key_size, unsigned char* data, unsigned data_size)
 {
-	hash_add_back(hash, key, key_size, data, data_size, 1);
+	return hash_add_back(hash, key, key_size, data, data_size, 1);
 }
 
 element* hash_get(hash_table* hash, unsigned char* key, unsigned key_size)
