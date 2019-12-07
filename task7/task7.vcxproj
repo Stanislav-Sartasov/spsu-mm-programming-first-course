@@ -123,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="hash_table.c" />
     <ClCompile Include="task7.c" />
   </ItemGroup>
   <ItemGroup>

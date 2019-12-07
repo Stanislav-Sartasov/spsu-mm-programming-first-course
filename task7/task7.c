@@ -59,6 +59,7 @@ int main()
 		if (choice == 1)
 		{
 			printf("\nEnter the value ");
+
 			value = input(s);
 			printf("\nEnter the key ");
 			key = input(s);
