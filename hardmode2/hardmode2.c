@@ -230,7 +230,7 @@ int main()
 	long long b = list_b[4] % mod;
 	long long res;
 	a = mod_exp(a);
-	b = mod_exp(a);
+	b = mod_exp(b);
 	b = (((b * b) % mod) * b) % mod; // b^75 % mod
 	res = (a * b) % mod;
 	res = (res * binom(100, 25)) % mod;
