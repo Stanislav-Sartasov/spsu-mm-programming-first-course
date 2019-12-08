@@ -1,3 +1,5 @@
+// ./bin/Debug/task6 input.txt output.txt
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -8,7 +10,8 @@
 #include <errno.h>
 #include <string.h>
 
-int fail(char *filename, int linenumber) {
+int fail (char *filename, int linenumber)
+{
     fprintf(stderr, "%s:%d %s\n", filename, linenumber, strerror(errno));
     exit(1);
     return 0; /*Make compiler happy */
@@ -16,15 +19,31 @@ int fail(char *filename, int linenumber) {
 
 #define QUIT fail(__FILE__, __LINE__ )
 
-int cmp(const void *p1, const void *p2){
+int cmp (const void *p1, const void *p2)
+{
     return strcmp(* (char * const *) p1, * (char * const *) p2);
 }
 
-int main() {
+int main(int argc, char* argv[])
+{
     int fdin, fdout;
     void *src/*, *dst*/;
-    fdin = open("input.txt", O_RDONLY);
-    fdout = open("output.txt", O_RDWR | O_CREAT | O_TRUNC, 0600);
+	if (argc != 3)
+	{
+		printf("Check the parameters are correct");
+		exit(-1);
+	}
+
+	if ((fdin = open(argv[1], O_RDONLY)) == -1)
+	{
+		printf("Input file open failed");
+		exit(-1);
+	}
+	if ((fdout = open(argv[2], O_RDWR | O_CREAT | O_TRUNC, 0600)) == -1)
+	{
+		printf("Output file create failed");
+		exit(-1);
+	}
     struct stat st;
     fstat(fdin, &st);
     int size = st.st_size;
@@ -99,6 +118,8 @@ int main() {
     free(words);
 
     munmap(src, size);
+    close(fdin);
+    close(fdout);
     //munmap(dst, size);
     return 0;
 }
