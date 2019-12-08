@@ -27,12 +27,15 @@ void myPow(int *mas, int n, int pow)
 
 int main()
 {
-	int n = 2000, i;
+	int n = 5000, i;
 	int *mas = (int*)malloc(n * sizeof(int));
 	mas[0] = 1;
 	for (i = 1; i < n; i++) mas[i] = 0;
 
 	myPow(mas, 3, n);
+
+	n = 2000;
+	mas = realloc(mas, n * sizeof(int));
 
 	int zero = 0;
 	for (i = n - 1; i >= 0; i--)
@@ -41,6 +44,7 @@ int main()
 			zero = i + 1;
 			break;
 		}
+
 
 	for (i = zero - 1; i >= 0; i--) printf("%x", mas[i]);
 	printf("\n");
