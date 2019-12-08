@@ -11,16 +11,16 @@ char comp(const char* i, const char* j)
 #pragma pack(push, 1)
 struct bmpheader
 {
-	unsigned char	b1, b2;			//BM
-	unsigned int	bfSize;			//размер файла в байтах	
-	unsigned short	bfReserved1;	//резерв    
-	unsigned short	bfReserved2;	//резеов 
-	unsigned int	bfOffBits;		//смещение до байтов изображения
+	unsigned char	b1, b2;			// BM
+	unsigned int	bfSize;			// размер файла в байтах	
+	unsigned short	bfReserved1;	// резерв    
+	unsigned short	bfReserved2;	// резеов 
+	unsigned int	bfOffBits;		// смещение до байтов изображения
 };
 
 struct bmpheaderinfo
 {
-	unsigned int Size;              //длина заголовка
+	unsigned int Size;              // длина заголовка
 	unsigned int Width;             // ширина
 	unsigned int Height;            // высота
 	unsigned short Planes;          // число плоскостей
@@ -42,59 +42,6 @@ void blackAndWhite(unsigned char* bitmap, int width, int height, int bitcount)
 		for (int j = 0; j < 3; j++)
 			bitmap[i + j] = mid;
 	}
-}
-
-void sobelFilterX(unsigned char* bitmap, int width, int height, int bitcount)
-{
-	int bc = bitcount / 8;
-	unsigned char* bitmapcopy = (unsigned char*)malloc(bc * height * width * sizeof(char));
-	for (int i = 0; i < height * width * bc; i++)
-		bitmapcopy[i] = bitmap[i];
-	for (int j = 0; j < 3; j++)
-	{
-		for (int i = bc * width + j; i < (width * (height - 1)) * bc; i += bc)
-		{
-			if ((i % (width * bc) < bc) || ((i + bc) % (width * bc) < bc))
-				continue;
-			int x = bitmap[i - bc * width - bc] + 2 * bitmap[i - bc * width] + bitmap[i - bc * width + bc]
-				- bitmap[i + bc * width - bc] - 2 * bitmap[i + bc * width] - bitmap[i + bc * width + bc];
-			if (x > 255)
-				x = 255;
-			if (x < 0)
-				x = 0;
-			bitmapcopy[i] = x;
-		}
-	}
-	for (int i = 0; i < height * width * bc; i++)
-		bitmap[i] = bitmapcopy[i];
-	free(bitmapcopy);
-}
-
-void sobelFilterY(unsigned char* bitmap, int width, int height, int bitcount)
-{
-	int bc = bitcount / 8;
-	unsigned char* bitmapcopy = (unsigned char*)malloc(bc * height * width * sizeof(unsigned char));
-	for (int i = 0; i < height * width * bc; i++)
-		bitmapcopy[i] = bitmap[i];
-	for (int j = 0; j < 3; j++)
-	{
-		for (int i = bc * width + j; i < (width * (height - 1)) * bc; i += bc)
-		{
-			if ((i % (width * bc) < bc) || ((i + bc) % (width * bc) < bc))
-				continue;
-			int y = (bitmap[i + bc * width + bc] + 2 * bitmap[i + bc] + bitmap[i - bc * width + bc]
-				- bitmap[i + bc * width - bc] - 2 * bitmap[i - bc] - bitmap[i - bc * width - bc]);
-			if (y > 255)
-				y = 255;
-			if (y < 0)
-				y = 0;
-			bitmapcopy[i] = y;
-		}
-	}
-	for (int i = 0; i < height * width * bc; i++)
-		bitmap[i] = bitmapcopy[i];
-	free(bitmapcopy);
-
 }
 
 void medianFilter(unsigned char* bitmap, int width, int height, int bitcount)
@@ -129,27 +76,39 @@ void medianFilter(unsigned char* bitmap, int width, int height, int bitcount)
 	free(bitmapcopy);
 }
 
-void gaussianFilter(unsigned char* bitmap, int width, int height, int bitcount)
+void filtersByKey(unsigned char* bitmap, int width, int height, int bitcount, int k)
 {
 	int bc = bitcount / 8;
 	unsigned char* bitmapcopy = (unsigned char*)malloc(bc * height * width * sizeof(unsigned char));
 	for (int i = 0; i < height * width * bc; i++)
 		bitmapcopy[i] = bitmap[i];
+
+	double matrix[3][9] = { {-1, -2, -1,  0,  0,  0,  1,  2,  1},
+	                        {-1,  0,  1, -2,  0,  2, -1,  0,  1},
+	                        { 1,  2,  1,  2,  4,  2,  1,  2,  1} };
+
 	for (int j = 0; j < 3; j++)
 	{
 		for (int i = bc * width + j; i < (width * (height - 1)) * bc; i += bc)
 		{
 			if ((i % (width * bc) < bc) || ((i + bc) % (width * bc) < bc))
 				continue;
-			bitmapcopy[i] = 0.0625 * (4 * bitmapcopy[i] + 2 * (bitmapcopy[i + bc * width] + bitmapcopy[i + bc] + bitmapcopy[i - bc] + bitmapcopy[i - bc * width]) +
-				1 * (bitmapcopy[i + bc * width + bc] + bitmapcopy[i + bc * width - bc] + bitmapcopy[i - bc * width - bc] + bitmapcopy[i - bc * width + bc]));
+			unsigned char pixel_value = matrix[k][0] * bitmap[i + bc * width - bc] + matrix[k][1] * bitmap[i + bc * width] + matrix[k][2] * bitmap[i + bc * width + bc]
+				+ matrix[k][3] * bitmap[i - bc] + matrix[k][4] * bitmap[i] + matrix[k][5] * bitmap[i + bc] + matrix[k][6] * bitmap[i - bc * width - bc]
+				+ matrix[k][7] * bitmap[i - bc * width] + matrix[k][8] * bitmap[i - bc * width + bc];
+			if (k < 2)
+			{
+				if (pixel_value > 255)
+					pixel_value = 255;
+				if (pixel_value < 0)
+					pixel_value = 0;
+			}
+			else 
+			{
+				pixel_value *= 0.625;
+			}
+			bitmapcopy[i] = pixel_value;
 		}
-		bitmapcopy[j] = 0.0625 * (4 * bitmapcopy[j] + 2 * (bitmapcopy[j + bc] + bitmapcopy[bc * width + j]) + bitmapcopy[bc * width + bc + j]);
-
-		bitmapcopy[(width - 1) * bc + j] = 0.0625 * (4 * bitmapcopy[(width - 1) * bc + j]
-			+ 2 * (bitmapcopy[(width - 2) * 3 + j] + bitmapcopy[2 * bc * width - bc + j]) + bitmapcopy[2 * bc * width - 2 * bc + j]);
-		bitmapcopy[height * width * bc - bc + j] = 0.0625 * (4 * bitmapcopy[height * width * bc - bc + j]
-			+ 2 * (bitmapcopy[height * width * bc - bc + j - bc] + bitmapcopy[height * (width - 1) * bc - bc + j]) + bitmapcopy[height * (width - 1) * bc - 2 * bc + j]);
 	}
 	for (int i = 0; i < height * width * bc; i++)
 		bitmap[i] = bitmapcopy[i];
@@ -164,13 +123,11 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
-	char* name_of_filter[5] = { "blackAndWhite", "sobelFilterX", "sobelFilterY", "medianFilter", "gaussianFilter" };
-	void (*filter[5])(void);
-	filter[0] = &blackAndWhite;
-	filter[1] = &sobelFilterX;
-	filter[2] = &sobelFilterY;
-	filter[3] = &medianFilter;
-	filter[4] = &gaussianFilter;
+	char* name_of_filter[5] = { "sobelFilterX", "sobelFilterY", "gaussianFilter", "blackAndWhite", "medianFilter" };
+	void (*filter[4])(void);
+	filter[0] = &filtersByKey;
+	filter[1] = &blackAndWhite;
+	filter[2] = &medianFilter;
 
 	FILE* fin;
 	FILE* fout;
@@ -231,7 +188,11 @@ int main(int argc, char* argv[])
 		fwrite(&colorTable[i], 1, 1, fout);
 	}
 
-	filter[num_of_filter](bitmap, bmpinfo.Width, bmpinfo.Height, bmpinfo.BitCount);
+	if (num_of_filter < 3)
+		filter[0](bitmap, bmpinfo.Width, bmpinfo.Height, bmpinfo.BitCount, num_of_filter);
+	else
+		filter[num_of_filter - 2](bitmap, bmpinfo.Width, bmpinfo.Height, bmpinfo.BitCount, num_of_filter);
+
 
 	for (int i = 0; i < bmpinfo.SizeImage; i++)
 	{
