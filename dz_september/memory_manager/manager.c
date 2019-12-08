@@ -27,28 +27,9 @@ void* myRealloc(void* ptr, int size)
     while (getBuferStat(stop) != 2);
     pushBuferStat(stop, 0);
 
-//    for (unsigned long long i = 0; i < bufersize; ++i)
-//    {
-//        if (getBuferStat(i) == 0)
-//        {
-//            flag = 1;
-//            for (unsigned long long k = i; k < i + (unsigned long long)size; ++k)
-//                if ((getBuferStat(k) != 0) || (bufersize < i + (unsigned long long)size))
-//                {
-//                    flag = 0;
-//                    i = k;
-//                    break;
-//                }
-//        }
-//        if (flag)
-//        {
-//            newstart = i;
-//            break;
-//        }
-//    }
     for (unsigned long long i = 0; i < bufersize; ++i)
     {
-        if (i + (size_t)size - k > bufersize)
+        if (i + (size_t)size - k - 1 > bufersize)
         {
             flag = 0;
             k = 0;
@@ -110,7 +91,7 @@ void* myMalloc(size_t size)
     unsigned long long start = 0;
     for (unsigned long long i = 0; i < bufersize; ++i)
     {
-        if (i + size - k > bufersize)
+        if (i + size - k - 1 > bufersize)
         {
             flagtrue = 0;
             k = 0;
