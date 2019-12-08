@@ -1,5 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include<stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 void myPow(int *mas, int n, int pow)
