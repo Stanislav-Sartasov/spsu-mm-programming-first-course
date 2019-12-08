@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.852
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Malloc", "Malloc\Malloc.vcxproj", "{F42B714C-E2C3-46C8-ACE5-C2358A690010}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TEST1", "TEST1\TEST1.vcxproj", "{8424DA08-DEB8-4DD4-AAAC-3175B5043196}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,19 +13,19 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F42B714C-E2C3-46C8-ACE5-C2358A690010}.Debug|x64.ActiveCfg = Debug|x64
-		{F42B714C-E2C3-46C8-ACE5-C2358A690010}.Debug|x64.Build.0 = Debug|x64
-		{F42B714C-E2C3-46C8-ACE5-C2358A690010}.Debug|x86.ActiveCfg = Debug|Win32
-		{F42B714C-E2C3-46C8-ACE5-C2358A690010}.Debug|x86.Build.0 = Debug|Win32
-		{F42B714C-E2C3-46C8-ACE5-C2358A690010}.Release|x64.ActiveCfg = Release|x64
-		{F42B714C-E2C3-46C8-ACE5-C2358A690010}.Release|x64.Build.0 = Release|x64
-		{F42B714C-E2C3-46C8-ACE5-C2358A690010}.Release|x86.ActiveCfg = Release|Win32
-		{F42B714C-E2C3-46C8-ACE5-C2358A690010}.Release|x86.Build.0 = Release|Win32
+		{8424DA08-DEB8-4DD4-AAAC-3175B5043196}.Debug|x64.ActiveCfg = Debug|x64
+		{8424DA08-DEB8-4DD4-AAAC-3175B5043196}.Debug|x64.Build.0 = Debug|x64
+		{8424DA08-DEB8-4DD4-AAAC-3175B5043196}.Debug|x86.ActiveCfg = Debug|Win32
+		{8424DA08-DEB8-4DD4-AAAC-3175B5043196}.Debug|x86.Build.0 = Debug|Win32
+		{8424DA08-DEB8-4DD4-AAAC-3175B5043196}.Release|x64.ActiveCfg = Release|x64
+		{8424DA08-DEB8-4DD4-AAAC-3175B5043196}.Release|x64.Build.0 = Release|x64
+		{8424DA08-DEB8-4DD4-AAAC-3175B5043196}.Release|x86.ActiveCfg = Release|Win32
+		{8424DA08-DEB8-4DD4-AAAC-3175B5043196}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {C975B248-56F8-45CA-99A3-EF77A91D0BBB}
+		SolutionGuid = {E2C72F20-76AB-422E-83C1-D10FE4C49D22}
 	EndGlobalSection
 EndGlobal

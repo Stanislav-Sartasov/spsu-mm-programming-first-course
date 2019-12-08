@@ -3,264 +3,187 @@
 #include <stdlib.h>
 #include <string.h>
 #include<malloc.h>
-#define amount_of_space 10000
 #define endl printf("\n")
-int stack[amount_of_space];
-int free_space = amount_of_space, has_initialized = 0;
-int amount_of_blocks = 1;
-struct mem_block *blocks;
 
-struct mem_block
+int amount_of_space = 10000;
+void *memory;
+int has_initialized = 0;
+
+typedef struct mem_block
 {
-	int loccation;
-	int size;
-	int available;
-};
+	size_t size_of_block;
+	struct mem_block *next;
+	struct mem_block *previous;
+} mem_block;
+
+mem_block *stack = NULL;
 
 void init()
 {
-	for (int i = 0; i < amount_of_space; i++) stack[i] = i;
-	
-	blocks = (struct mem_block*)malloc(1 * sizeof(struct mem_block));
-	blocks[0].available = amount_of_space;
-	blocks[0].loccation = 0;
 	has_initialized = 1;
+	memory = malloc(amount_of_space);
+	mem_block *block = (mem_block*)memory;
+	block->next = NULL;
+	block->previous = NULL;
+	block->size_of_block = amount_of_space;
+	stack = block;
 }
 
-void* myMalloc(size_t size)
+mem_block *find_free_memory(size_t size)
 {
-	if (size <= 0)
+	mem_block *tmp = stack;
+	while (tmp != NULL)
 	{
-		printf("%s", "Size can't be less than 0");
-		return NULL;
+		if (tmp->size_of_block >= size + sizeof(size_t)) return tmp;
+		tmp = tmp->next;
 	}
+	return NULL;
+}
+
+void delete_block(mem_block *block)
+{
+	if (block = stack)
+	{
+		stack = block->next;
+		return;
+	}
+	else if (block->next == NULL)
+	{
+		block->previous->next = NULL;
+		return;
+	}
+	block->previous->next = block->next;
+	block->next->previous = block->previous; 
+}
+
+void *myMalloc(size_t size)
+{
 	if (has_initialized == 0) init();
 
-	void *bp;
-	int i;
-	i = allocate(size);
-
-	if (i == -1) return NULL;
-	bp = &stack[blocks[i].loccation];
-	return bp;
-}
-
-int allocate(size_t size)
-{
-	if (size > free_space)
+	mem_block *block = find_free_memory(size);
+	if (block == NULL) return NULL;
+	if (size == block->size_of_block)
 	{
-		printf("%s", "You have no free memory");
-		return -1;
+		delete_block(block);
+		return (char*)block + sizeof(size_t);
 	}
 
-	for (int i = 0; i < amount_of_blocks; i++)
-	{
-		if (blocks[i].available == size)
-		{
-			blocks[i].available = 0;
-			blocks[i].size = size;
-			if (i != 0) blocks[i].loccation = blocks[i - 1].loccation + blocks[i - 1].size;
-			else blocks[i].loccation = 0;
-			free_space -= size;
-			return i;
-		}
-	}
-
-	for (int i = 0; i < amount_of_blocks; i++)
-	{
-		if (blocks[i].available > size)
-		{
-			free_space -= size;
-			split_blocks(i, size);
-			return i;
-		}
-	}
+	block->size_of_block = block->size_of_block - sizeof(size_t) - size;
+	mem_block *new = (mem_block*)((char *)block + block->size_of_block);
+	new->size_of_block = size + sizeof(size_t);
+	return (char *)new + sizeof(size_t);
 
 }
 
-int split_blocks(int ptr, size_t size)
+void myFree(void *ptr)
 {
-	amount_of_blocks++;
-	blocks = (struct mem_block*)realloc(blocks, amount_of_blocks * sizeof(struct mem_block));
-	for (int i = amount_of_blocks - 1; i >= ptr; i--)
+	mem_block *block = (mem_block*)((char*)ptr - sizeof(size_t));
+	if (stack == NULL)
 	{
-		blocks[i].size = blocks[i - 1].size;
-		blocks[i].loccation = blocks[i - 1].loccation;
-		blocks[i].available = blocks[i - 1].available;
+		block->previous = NULL;
+		block->next = NULL;
+		stack = block;
+		return 0;
 	}
-	blocks[ptr + 1].available = blocks[ptr].available - size;
-	blocks[ptr].available = 0;
-	blocks[ptr].size = size;
-	if (ptr != 0) blocks[ptr].loccation = blocks[ptr - 1].loccation + blocks[ptr - 1].size;
-	else blocks[ptr].loccation = 0;
-	return 0;
-}
 
-void myFree(void* bp)
-{
-	int ptr;
-	for (int i = 0; i < amount_of_blocks; i++)
-	{
-		if (bp == &stack[blocks[i].loccation])
-		{
-			ptr = i;
-			break;
-		}
-	}
-	blocks[ptr].available = blocks[ptr].size;
-	blocks[ptr].size = 0;
-	combine_blocks(ptr);
-}
-
-int combine_blocks(int ptr)
-{
-	if (blocks[ptr - 1].available > 0 && blocks[ptr + 1].available > 0)
-	{
-		
-		struct mem_block *tmp_blocks = (struct mem_block*)malloc((amount_of_blocks - 2) * sizeof(struct mem_block));
-		blocks[ptr - 1].available += blocks[ptr].available + blocks[ptr + 1].available;
-		free_space += blocks[ptr - 1].available;
-
-		for (int i = 0; i <= ptr - 1; i++)
-		{
-			tmp_blocks[i].available = blocks[i].available;
-			tmp_blocks[i].loccation = blocks[i].loccation;
-			tmp_blocks[i].size = blocks[i].size;
-		}
-
-		for (int i = ptr + 2; i < amount_of_blocks; i++)
-		{
-			tmp_blocks[i - 2].available = blocks[i].available;
-			tmp_blocks[i - 2].loccation = blocks[i].loccation;
-			tmp_blocks[i - 2].size = blocks[i].size;
-		}
-
-		amount_of_blocks -= 2;
-		blocks = (struct mem_block*)realloc(blocks, amount_of_blocks * sizeof(struct mem_block));
-
-		for (int i = 0; i <amount_of_blocks; i++)
-		{
-			blocks[i].available = tmp_blocks[i].available;
-			blocks[i].loccation = tmp_blocks[i].loccation;
-			blocks[i].size = tmp_blocks[i].size;
-		}
-
-		free(tmp_blocks);
-	}
+	mem_block *tmp = stack;
+	while ((tmp->next != NULL) && (tmp->next < block))	tmp = tmp->next;
 	
-	else if (blocks[ptr - 1].available > 0)
+	if ((tmp->previous != NULL) && (tmp->next != NULL))
 	{
-		struct mem_block *tmp_blocks = (struct mem_block*)malloc((amount_of_blocks - 1) * sizeof(struct mem_block));
-		blocks[ptr - 1].available += blocks[ptr].available;
-		free_space += blocks[ptr - 1].available;
-
-		for (int i = 0; i <= ptr - 1; i++)
-		{
-			tmp_blocks[i].available = blocks[i].available;
-			tmp_blocks[i].loccation = blocks[i].loccation;
-			tmp_blocks[i].size = blocks[i].size;
-		}
-
-		for (int i = ptr + 1; i < amount_of_blocks; i++)
-		{
-			tmp_blocks[i - 1].available = blocks[i].available;
-			tmp_blocks[i - 1].loccation = blocks[i].loccation;
-			tmp_blocks[i - 1].size = blocks[i].size;
-		}
-
-		amount_of_blocks--;
-		blocks = (struct mem_block*)realloc(blocks, amount_of_blocks * sizeof(struct mem_block));
-
-		for (int i = 0; i < amount_of_blocks; i++)
-		{
-			blocks[i].available = tmp_blocks[i].available;
-			blocks[i].loccation = tmp_blocks[i].loccation;
-			blocks[i].size = tmp_blocks[i].size;
-		}
-
-		free(tmp_blocks);
+		tmp->next->previous = block;
+		tmp->previous->next = block;
+	}
+	else if (tmp->previous != NULL)
+	{
+		tmp->previous->next = block;
+	}
+	else if (tmp->next != NULL)
+	{
+		tmp->next->previous = block;
+	}
+	if ((block->next != NULL) && (block->next == (char *)block + sizeof(block)))
+	{
+		unite(&block, &(block->next));
+	}
+	if ((block->previous != NULL) && (block->previous == (char *)block - sizeof(block)))
+	{
+		unite((&block->previous), &block);
 	}
 
-	else if (blocks[ptr + 1].available > 0)
-	{
-		struct mem_block *tmp_blocks = (struct mem_block*)malloc((amount_of_blocks - 1) * sizeof(struct mem_block));
-		blocks[ptr].available += blocks[ptr + 1].available;
-		free_space += blocks[ptr].available;
 
-		for (int i = 0; i <= ptr; i++)
-		{
-			tmp_blocks[i].available = blocks[i].available;
-			tmp_blocks[i].loccation = blocks[i].loccation;
-			tmp_blocks[i].size = blocks[i].size;
-		}
-
-		for (int i = ptr + 1; i < amount_of_blocks; i++)
-		{
-			tmp_blocks[i - 1].available = blocks[i].available;
-			tmp_blocks[i - 1].loccation = blocks[i].loccation;
-			tmp_blocks[i - 1].size = blocks[i].size;
-		}
-
-		amount_of_blocks--;
-		blocks = (struct mem_block*)realloc(blocks, amount_of_blocks * sizeof(struct mem_block));
-
-		for (int i = 0; i < amount_of_blocks; i++)
-		{
-			blocks[i].available = tmp_blocks[i].available;
-			blocks[i].loccation = tmp_blocks[i].loccation;
-			blocks[i].size = tmp_blocks[i].size;
-		}
-
-		free(tmp_blocks);
-	}
-
-	else free_space += blocks[ptr].available;
-	return 0;
 }
 
-void* myRealloc(void* bp, size_t size) 
+int unite(mem_block **first, mem_block **second)
 {
-	myFree(bp);
-	bp = myMalloc(size);
-	return bp;
+	(*first)->next = (*second)->next;
+	if ((*second)->next != NULL)
+	{
+		(*second)->next->previous = (*first);
+	}
+	(*first)->size_of_block = (*first)->size_of_block + (*second)->size_of_block;
+}
+
+
+void *myRealloc(void *ptr, size_t newSize)
+{
+	mem_block *block = (char *)ptr - sizeof(size_t);
+
+	if (block->size_of_block - sizeof(size_t) >= newSize) return ptr;
+
+	mem_block *new = myMalloc(newSize);
+	if (new == NULL) return NULL;
+
+	memcpy(new, ptr, block->size_of_block - sizeof(size_t));
+	myFree(ptr);
+	return new;
 }
 
 int main()
 {
-
-	int *mas1 = myMalloc(10);
-	for (int i = 0; i < 10; i++) printf("%d%c", mas1[i], ' ');
+	int *mas1 = myMalloc(10 * sizeof(int));
+	for (int i = 0; i < 10; i++)
+	{
+		mas1[i] = 1;
+		printf("%d", mas1[i]);
+	}
+	endl;
+	char *mas2 = myMalloc(10 * sizeof(char));
+	for (int i = 0; i < 10; i++)
+	{
+		mas2[i] = 'a';
+		printf("%c", mas2[i]);
+	}
 	endl;
 
-	int *mas2 = myMalloc(10);
-	for (int i = 0; i < 10; i++) printf("%d%c", mas2[i],' ');
 	endl;
 
-	int *mas3 = myMalloc(20);
-	for (int i = 0; i < 10; i++) printf("%d%c", mas3[i], ' ');
+	for (int i = 0; i < 10; i++) printf("%d", mas1[i]);
 	endl;
+	for (int i = 0; i < 10; i++)printf("%c", mas2[i]);
 
-	myFree(mas3);
-	//myFree(mas1);
-	//myFree(mas2);
-
-	mas2 = myRealloc(mas2, 12);
-	for (int i = 0; i < 12; i++) printf("%d%c", mas2[i], ' ');
-	endl;
-
-	int *mas4 = myMalloc(10);
-	for (int i = 0; i < 10; i++) printf("%d%c", mas4[i], ' ');
-	endl;
-
-	int *mas5 = myMalloc(58);
-	for (int i = 0; i < 10; i++) printf("%d%c", mas5[i], ' ');
-	endl;
+	endl; endl;
+	float *mas3 = myMalloc(5 * sizeof(float));
+	for (int i = 0; i < 5; i++)
+	{
+		mas3[i] = 1.1 + i;
+		printf("%f%c", mas3[i], ' ');
+	}
 
 	myFree(mas2);
-	
-	mas5 = myRealloc(mas5,11);
-	for (int i = 0; i < 10; i++) printf("%d%c", mas5[i], ' ');
+
+	mas1 = myRealloc(mas1, 15 * sizeof(int));
+	mas3 = myRealloc(mas3, 10 * sizeof(float));
+	endl;
+
+	for (int i = 10; i < 15; i++) mas1[i] = 1;
+	for (int i = 0; i < 15; i++) printf("%d", mas1[i]);
+	endl; endl;
+
+	for (int i = 5; i < 10; i++) mas3[i] = 1.1 + i;
+	for (int i = 0; i < 10; i++) printf("%f%c", mas3[i], ' ');
+	endl;
 
 	system("pause");
-	return 0;
 }
+
