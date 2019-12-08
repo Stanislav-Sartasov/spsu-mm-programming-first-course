@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1575805106 source:/home/lyubov/Desktop/hw programming/task7/main.c
+1575824544 source:/home/lyubov/Desktop/task7/main.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
@@ -7,10 +7,5 @@
 	<string.h>
 	"myHashTable.h"
 
-1575806214 /home/lyubov/Desktop/hw programming/task7/myHashTable.h
-	<stdio.h>
-	<stdlib.h>
-	<malloc.h>
-	<math.h>
-	<string.h>
+1575824247 /home/lyubov/Desktop/task7/myHashTable.h
 
