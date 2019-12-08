@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 const int n = 1000000;
@@ -87,14 +88,20 @@ int find_max_root(int y, unsigned char *a)
 
 int main()
 {
-    unsigned char *v = (unsigned char*) malloc(sizeof(unsigned char) * n);
+    clock_t begin = clock();
+//    unsigned char *v = (unsigned char*) malloc(sizeof(unsigned char) * n);
+//    memset(v, 0, n);
+    unsigned char *v = (unsigned char*) calloc(n,sizeof(unsigned char));
     int ans = 0;
     for (int i = 2; i < n; i++)
     {
-        v[i] = 0;
+//        v[i] = 0;
         ans += find_max_root(i, v);
     }
     printf("sum of digital roots = %d", ans);
     free(v);
+    clock_t end = clock();
+    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    printf("\nTime of compilation = %f", time_spent);
     return 0;
 }

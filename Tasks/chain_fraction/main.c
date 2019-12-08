@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-const int size_of_precalculation = 519125;
+const int size_of_precalculation = 500000;
 
 void input(int *a)
 {

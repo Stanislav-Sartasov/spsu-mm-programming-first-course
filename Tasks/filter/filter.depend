@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1575802982 source:c:\users\pavel\desktop\proga_univer\filter\main.c
+	<stdio.h>
+	<math.h>
+	<string.h>
+	<stdlib.h>
+
