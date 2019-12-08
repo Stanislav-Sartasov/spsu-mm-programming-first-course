@@ -17,6 +17,7 @@ void* myRealloc(void* ptr, int size)
 {
     unsigned long long newstart = 0, start = (unsigned long long)( ((char*)ptr) - bufer);
     int flag = 0;
+    size_t k = 0;
 
     unsigned long long stop = start;
     do
@@ -26,22 +27,48 @@ void* myRealloc(void* ptr, int size)
     while (getBuferStat(stop) != 2);
     pushBuferStat(stop, 0);
 
+//    for (unsigned long long i = 0; i < bufersize; ++i)
+//    {
+//        if (getBuferStat(i) == 0)
+//        {
+//            flag = 1;
+//            for (unsigned long long k = i; k < i + (unsigned long long)size; ++k)
+//                if ((getBuferStat(k) != 0) || (bufersize < i + (unsigned long long)size))
+//                {
+//                    flag = 0;
+//                    i = k;
+//                    break;
+//                }
+//        }
+//        if (flag)
+//        {
+//            newstart = i;
+//            break;
+//        }
+//    }
     for (unsigned long long i = 0; i < bufersize; ++i)
     {
+        if (i + (size_t)size - k > bufersize)
+        {
+            flag = 0;
+            k = 0;
+            newstart = 0;
+            break;
+        }
         if (getBuferStat(i) == 0)
         {
+            newstart = k == 0 ? i : newstart;
             flag = 1;
-            for (unsigned long long k = i; k < i + (unsigned long long)size; ++k)
-                if ((getBuferStat(k) != 0) || (bufersize < i + (unsigned long long)size))
-                {
-                    flag = 0;
-                    i = k;
-                    break;
-                }
+            k += 1;
         }
-        if (flag)
+        else
         {
-            newstart = i;
+            flag = 0;
+            k = 0;
+            newstart = 0;
+        }
+        if (flag && (k == (size_t)size))
+        {
             break;
         }
     }
@@ -79,26 +106,31 @@ void myFree(void *ptr)
 void* myMalloc(size_t size)
 {
     int flagtrue = 0;
+    size_t k = 0;
     unsigned long long start = 0;
     for (unsigned long long i = 0; i < bufersize; ++i)
     {
-        if (i + size > bufersize)
+        if (i + size - k > bufersize)
+        {
+            flagtrue = 0;
+            k = 0;
+            start = 0;
             break;
+        }
         if (getBuferStat(i) == 0)
         {
+            start = k == 0 ? i : start;
             flagtrue = 1;
-            for (unsigned long long k = i; k < i + size; ++k)
-                if ((getBuferStat(k) != 0) || (bufersize < i + size))
-                {
-                    i = k;
-                    flagtrue = 0;
-                    break;
-                }
-
+            k += 1;
         }
-        if (flagtrue)
+        else
         {
-            start = i;
+            flagtrue = 0;
+            k = 0;
+            start = 0;
+        }
+        if (flagtrue && (k == size))
+        {
             break;
         }
     }
@@ -132,7 +164,7 @@ unsigned long long getBuferStat(unsigned long long i)
 {
     unsigned long long byte = i / 4;
     i = i - byte * 4;
-    short n1, n2;
+    short n1 = 0, n2 = 0;
     switch (i)
     {
     case 0:
@@ -159,7 +191,7 @@ void pushBuferStat(unsigned long long i, short n)
 {
     unsigned long long byte = i / 4;
     i = i - byte * 4;
-    short n1, n2;
+    short n1 = 0, n2 = 0;
     switch (i)
     {
     case 0:
