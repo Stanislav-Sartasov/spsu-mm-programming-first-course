@@ -121,12 +121,9 @@ int search(struct hash_table* q, int k)
 			if (q->keys[i] == k) return i;
 		}
 	}
-	if (1)
+	for (int i = 0; i < res; i++)
 	{
-		for (int i = 0; i < res; i++)
-		{
-			if (q->keys[i] == k) return i;
-		}
+		if (q->keys[i] == k) return i;
 	}
 	return -1;
 }
