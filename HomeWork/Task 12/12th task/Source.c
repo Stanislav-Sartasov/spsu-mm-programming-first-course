@@ -34,8 +34,6 @@ int main()
 
 	myPow(mas, 3, n);
 
-	n = 2000;
-	mas = realloc(mas, n * sizeof(int));
 
 	int zero = 0;
 	for (i = n - 1; i >= 0; i--)
@@ -45,6 +43,7 @@ int main()
 			break;
 		}
 
+	mas = realloc(mas, zero * sizeof(int));
 
 	for (i = zero - 1; i >= 0; i--) printf("%x", mas[i]);
 	printf("\n");
