@@ -3,6 +3,7 @@
 #include <malloc.h>
 #include <math.h>
 #include <string.h>
+
 #include "myHashTable.h"
 
 int main()
@@ -22,16 +23,12 @@ int main()
     }
     P = get_p();
     MOD = get_mod();
-    char s1[] = {'i', 'n', 's', 'e', 'r', 't', '\0'},
-         s2[] = {'f', 'i', 'n', 'd', '\0'},
-         s3[] = {'d', 'e', 'l', 'e', 't', 'e', '\0'},
-         s4[] = {'f', 'i', 'n', 'i', 's', 'h', '\0'};
     while (1)
     {
         char q[MAX_LEN];
         scanf("%s", &q);
         int fl = 0;
-        if (!strcmp(q, s1))
+        if (!strcmp(q, "insert"))
         {
             char k[MAX_LEN];
             char v[MAX_LEN];
@@ -43,7 +40,7 @@ int main()
                 printf("The value for this key already exists.\n");
             fl = 1;
         }
-        if (!strcmp(q, s2))
+        if (!strcmp(q, "find"))
         {
             char k[MAX_LEN];
             scanf("%s", &k);
@@ -58,7 +55,7 @@ int main()
             }
             fl = 1;
         }
-        if (!strcmp(q, s3))
+        if (!strcmp(q, "delete"))
         {
             char k[MAX_LEN];
             scanf("%s", &k);
@@ -68,7 +65,7 @@ int main()
                 printf("The value for this key doesn't exist.\n");
             fl = 1;
         }
-        if (!strcmp(q, s4))
+        if (!strcmp(q, "finish"))
         {
             for (int i = 0; i < LEN; i++)
                 free(a[i]);
