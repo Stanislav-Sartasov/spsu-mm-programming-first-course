@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "hash.h"
 
-
 int main()
 {
 	hash_table* head = hash_init();
@@ -12,14 +11,12 @@ int main()
 	{
 		code = (int)hash_add(head, &key, sizeof(int), &key, sizeof(int));
 		if (code)
-		{
 			head = (hash_table*)code;
-		}
 	}
 
 	char* str_key = "hello_hash";
 	char* str_data = "yes it's working";
-	hash_add(head, str_key, 11, str_data, 17);	
+	hash_add(head, str_key, 11, str_data, 17);
 
 	for (int i = 0; i < 2000000; i++)
 	{

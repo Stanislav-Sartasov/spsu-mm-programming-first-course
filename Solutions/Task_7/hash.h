@@ -6,15 +6,23 @@ typedef struct
 	unsigned key_size;
 	unsigned char* data;
 	unsigned data_size;
-	struct element* right;
-	struct element* left;
 } element;
+
+typedef struct
+{
+	unsigned char* key;
+	unsigned key_size;
+	unsigned char* data;
+	unsigned data_size;
+	struct element_back* right;
+	struct element_back* left;
+} element_back;
 
 typedef struct
 {
 	unsigned max_depth;
 	unsigned size;
-	element** table;
+	element_back** table;
 } hash_table;
 
 char compare(unsigned char* x, unsigned x_size, unsigned char* y, unsigned y_size);
