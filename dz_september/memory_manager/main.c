@@ -66,7 +66,7 @@ int main()
         }
 
     int *real = myRealloc(number, sizeof(int) * 3);
-    if(!real)
+    if (!real)
         printf("memory full for realloc\n");
 
     myFree(next);
