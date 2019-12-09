@@ -52,4 +52,5 @@ int main()
 	endl;
 
 	system("pause");
+	return 0;
 }
