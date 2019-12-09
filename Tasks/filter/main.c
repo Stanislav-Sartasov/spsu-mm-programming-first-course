@@ -104,34 +104,33 @@ void filter(unsigned char* input_binary_image, int height, int width, char type[
     }
 	unsigned char* image_copy = (unsigned char*)malloc(3 * height * width * sizeof(char));
     for (int i = 0; i < height; i++)
-            for (int j = 0; j < width; j++)
+        for (int j = 0; j < width; j++)
+        {
+            double result[3] = {0, 0, 0};
+            double divider = 0;
+            for (int iter_dir_x = 0; iter_dir_x < size; iter_dir_x++)
+                for (int iter_dir_y = 0; iter_dir_y < size; iter_dir_y++)
+                    if ((i + iter_dir_x - 1) >= 0  && (i + iter_dir_x - 1) <= (height - 1) && (j + iter_dir_y - 1) >= 0 && (j + iter_dir_y - 1) <= (width - 1))
+                    {
+                        result[0] += input_binary_image[((i + iter_dir_x - 1) * width + j + iter_dir_y - 1) * 3 + 0] * directions[iter_dir_x * size + iter_dir_y];
+                        result[1] += input_binary_image[((i + iter_dir_x - 1) * width + j + iter_dir_y - 1) * 3 + 1] * directions[iter_dir_x * size + iter_dir_y];
+                        result[2] += input_binary_image[((i + iter_dir_x - 1) * width + j + iter_dir_y - 1) * 3 + 2] * directions[iter_dir_x * size + iter_dir_y];
+                        divider += directions[iter_dir_x * size + iter_dir_y];
+                    }
+            if (fl)
             {
-                double result[3] = {0, 0, 0};
-                double divider = 0;
-
-                for (int iter_dir_x = 0; iter_dir_x < size; iter_dir_x++)
-                    for (int iter_dir_y = 0; iter_dir_y < size; iter_dir_y++)
-                        if ((i + iter_dir_x - 1) >= 0  && (i + iter_dir_x - 1) <= (height - 1) && (j + iter_dir_y - 1) >= 0 && (j + iter_dir_y - 1) <= (width - 1))
-                        {
-                            result[0] += input_binary_image[((i + iter_dir_x - 1) * width + j + iter_dir_y - 1) * 3 + 0] * directions[iter_dir_x * size + iter_dir_y];
-                            result[1] += input_binary_image[((i + iter_dir_x - 1) * width + j + iter_dir_y - 1) * 3 + 1] * directions[iter_dir_x * size + iter_dir_y];
-                            result[2] += input_binary_image[((i + iter_dir_x - 1) * width + j + iter_dir_y - 1) * 3 + 2] * directions[iter_dir_x * size + iter_dir_y];
-                            divider += directions[iter_dir_x * size + iter_dir_y];
-                        }
-                if (fl)
-                {
-                    image_copy[(i * width + j) * 3] = (unsigned char)(result[0] / divider);
-                    image_copy[(i * width + j) * 3 + 1] = (unsigned char)(result[1] / divider);
-                    image_copy[(i * width + j) * 3 + 2] = (unsigned char)(result[2] / divider);
-                }
-                else
-                {
-                    int x = step(((result[0] + result[1] + result[2]) / 3));
-                    image_copy[(i * width + j) * 3] = x;
-                    image_copy[(i * width + j) * 3 + 1] = x;
-                    image_copy[(i * width + j) * 3 + 2] = x;
-                }
+                image_copy[(i * width + j) * 3] = (unsigned char)(result[0] / divider);
+                image_copy[(i * width + j) * 3 + 1] = (unsigned char)(result[1] / divider);
+                image_copy[(i * width + j) * 3 + 2] = (unsigned char)(result[2] / divider);
             }
+            else
+            {
+                int x = step(((result[0] + result[1] + result[2]) / 3));
+                image_copy[(i * width + j) * 3] = x;
+                image_copy[(i * width + j) * 3 + 1] = x;
+                image_copy[(i * width + j) * 3 + 2] = x;
+            }
+        }
 	for (int i = 0; i < height * width * 3; i++)
 		input_binary_image[i] = image_copy[i];
 	free(image_copy);
