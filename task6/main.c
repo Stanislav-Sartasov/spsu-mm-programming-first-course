@@ -36,22 +36,22 @@ int main(int argc, char* argv[])
 {
     int fdin, fdout;
     void *src/*, *dst*/;
-	if (argc != 3)
-	{
-		printf("Check the parameters are correct");
-		exit(-1);
-	}
+    if (argc != 3)
+    {
+        printf("Check the parameters are correct");
+        exit(-1);
+    }
 
-	if ((fdin = open(argv[1], O_RDONLY)) == -1)
-	{
-		printf("Input file open failed");
-		exit(-1);
-	}
-	if ((fdout = open(argv[2], O_RDWR | O_CREAT | O_TRUNC, 0600)) == -1)
-	{
-		printf("Output file create failed");
-		exit(-1);
-	}
+    if ((fdin = open(argv[1], O_RDONLY)) == -1)
+    {
+        printf("Input file open failed");
+        exit(-1);
+    }
+    if ((fdout = open(argv[2], O_RDWR | O_CREAT | O_TRUNC, 0600)) == -1)
+    {
+        printf("Output file create failed");
+        exit(-1);
+    }
     struct stat st;
     fstat(fdin, &st);
     int size = st.st_size;
