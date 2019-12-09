@@ -1,2 +1,2 @@
-start: task5.c
-	gcc task5.c -lm -o start
+start: main.c
+	gcc main.c -lm -o start
