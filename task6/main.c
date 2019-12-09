@@ -21,7 +21,15 @@ int fail (char *filename, int linenumber)
 
 int cmp (const void *p1, const void *p2)
 {
-    return strcmp(* (char * const *) p1, * (char * const *) p2);
+    char *a = *(char * const *) p1;
+    char *b = *(char * const *) p2;
+    int i;
+    for (i = 0; (*(a + i)) != '\n' && (*(b + i)) != '\n'; i++)
+    {
+        if (*(a + i) != *(b + i))
+            return (*(a + i) > *(b + i));
+    }
+    return (i != 0 && *(a + i) != '\n');
 }
 
 int main(int argc, char* argv[])
@@ -57,64 +65,44 @@ int main(int argc, char* argv[])
 
     char *array = src;
 
-    int i = 0, max_len = 0, n = 0, sz = size / sizeof(char);
+    int i = 0, n = 0, sz = size / sizeof(char);
     while (i < sz)
     {
-        int cur = 0;
         while (i < sz && array[i] != '\n')
-        {
-            cur++;
             i++;
-        }
-        if (i < sz)
-            cur++;
-        if (cur > max_len)
-            max_len = cur;
         i++;
         n++;
     }
 
-    max_len++;
     char **words = (char**)malloc(n * sizeof(char*));
-    for (i = 0; i < n; i++)
-    {
-        words[i] = (char*)malloc(max_len * sizeof(char));
-        memset(words[i], '\0', max_len);
-    }
 
     i = 0;
     int k = 0;
     while (i < sz)
     {
-        int j = 0;
+        words[k] = &(array[i]);
         while (i < sz && array[i] != '\n')
-        {
-            words[k][j] = array[i];
-            i++; j++;
-        }
-        if (i < sz)
-            words[k][j] = array[i];
+            i++;
         i++;
         k++;
     }
 
-    qsort(words, n, sizeof(char *), cmp);
+    qsort(words, n, sizeof(char*), cmp);
 
     i = 0;
-
-    for (int j = 0; j < n; j++)
+    char ch = '\n';
+    for (int k = 0; k < n; k++)
     {
-        for (int l = 0; l < max_len && words[j][l] != '\0'; l++)
+        int j = 0;
+        while (*(words[k] + j) != '\n')
         {
-            array[i] = words[j][l];
-            i++;
+            write(fdout, (words[k] + j), sizeof(char));
+            j++;
         }
+        write(fdout, &ch, sizeof(char));
+        j++;
     }
 
-    write(fdout, src, size);
-
-    for (i = 0; i < n; i++)
-        free(words[i]);
     free(words);
 
     munmap(src, size);
