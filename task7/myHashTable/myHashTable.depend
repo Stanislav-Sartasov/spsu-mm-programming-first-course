@@ -1,8 +1,0 @@
-# depslib dependency file v1.0
-1575824073 source:/home/lyubov/Desktop/myHashTable/main.c
-	<stdio.h>
-	<stdlib.h>
-	<malloc.h>
-	<math.h>
-	<string.h>
-
