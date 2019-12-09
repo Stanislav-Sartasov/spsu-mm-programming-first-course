@@ -20,7 +20,7 @@ int main()
             if (((i + 2) % k == 0) && (max <= a[((i + 2) / k) - 2] + a[k - 2]))
                  max = a[((i + 2) / k) - 2] + a[k - 2];
         }
-        a[i] = max > dr(i+2) ? max : dr(i+2);
+        a[i] = max > dr(i + 2) ? max : dr(i + 2);
 
         maxsum += a[i];
     }
