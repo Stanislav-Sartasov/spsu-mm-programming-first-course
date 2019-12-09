@@ -10,7 +10,7 @@ typedef struct mem_block
 	struct mem_block *previous;
 } mem_block;
 
- static mem_block *stack = NULL;
+static mem_block *stack = NULL;
 
 
 void init();

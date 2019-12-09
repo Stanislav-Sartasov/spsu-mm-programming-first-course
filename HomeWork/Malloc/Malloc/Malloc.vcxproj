@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{3FE6754B-A14C-4794-99A6-CF336DC20D95}</ProjectGuid>
-    <RootNamespace>My9thTask</RootNamespace>
+    <ProjectGuid>{F85AC535-02DC-4314-B689-D085B56182D6}</ProjectGuid>
+    <RootNamespace>Malloc</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

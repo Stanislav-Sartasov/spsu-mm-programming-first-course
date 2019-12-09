@@ -5,7 +5,6 @@
 #include<malloc.h>
 #include "myMalloc.h"
 
-
 void init()
 {
 	has_initialized = 1;

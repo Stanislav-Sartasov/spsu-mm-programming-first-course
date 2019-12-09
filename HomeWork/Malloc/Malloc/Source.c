@@ -6,8 +6,6 @@
 #include "myMalloc.h"
 #define endl printf("\n")
 
-
-
 int main()
 {
 	int *mas1 = myMalloc(10 * sizeof(int));
@@ -55,4 +53,3 @@ int main()
 
 	system("pause");
 }
-
