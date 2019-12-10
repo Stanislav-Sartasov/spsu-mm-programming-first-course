@@ -1,5 +1,5 @@
 #pragma once
 
-int IntChecking(int check);
-void Sort(int* a, int* b, int* c);
-int Gcd(int a, int b);
+int inputCheck(int check);
+void sort(int* a, int* b, int* c);
+int gcd(int a, int b);

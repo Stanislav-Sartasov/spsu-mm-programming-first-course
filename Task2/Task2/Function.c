@@ -1,7 +1,6 @@
 #include <stdio.h>
 
-void Sort(int* a, int* b, int* c)			/* Не совсем сортировка,
-											ставим на последнее место максимальный из тройки элемент */
+void sort(int* a, int* b, int* c)	
 {
 	if ((*a > * b) && (*a > * c))
 	{
@@ -19,7 +18,7 @@ void Sort(int* a, int* b, int* c)			/* Не совсем сортировка,
 	}
 }
 
-int Gcd(int a, int b)			// Алгоритм Евклида
+int gcd(int a, int b)			// Алгоритм Евклида
 {
 	while (a && b)
 	{
@@ -35,13 +34,13 @@ int Gcd(int a, int b)			// Алгоритм Евклида
 }
 
 
-int IntChecking(int check)		// Проверка на корректность ввода
+int inputCheck(int check)		// Проверка на корректность ввода
 {
 	printf("Input a positive number:\n");
 	char t;
 	for(;;)
 	{
-		if (!scanf_s("%d", &check) || check == 0 || getchar() != '\n')
+		if (!scanf_s("%d", &check) || check <= 0 || getchar() != '\n')
 		{
 			while ((t = getchar()) != '\n' && t != EOF);
 			printf_s("Input error\nInput a positive number:\n");
