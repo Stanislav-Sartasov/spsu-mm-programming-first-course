@@ -8,7 +8,7 @@ void str_rev(char *str, char **new_str)
     int n = strlen(str);
 
     int j = 0;
-    for (int i = n-1; i >= 0; i--)
+    for (int i = n - 1; i >= 0; i--)
     {
         (*new_str)[j] = str[i];
         j++;
@@ -57,63 +57,52 @@ char* decimal_to_binary(int number)
     return rev_binary;
 }
 
-void single_precision(int number)
+void convert_number(int n, int mode)
 {
-    char binary[33];
+    int res_len;
+    int exp_bias;
+    int mantissa_bias;
+    char sign;
 
-    for (int i = 0; i < 32; i++)
+    // 0 - single precision; 1 - double precision
+    if (mode == 0)
     {
+        res_len = 32;
+        exp_bias = 127;
+        mantissa_bias = 9;
+        sign = '0';
+    }
+    else if (mode == 1)
+    {
+        res_len = 64;
+        exp_bias = 1023;
+        mantissa_bias = 12;
+        sign = '1';
+    }
+
+    char binary[res_len + 1];
+
+    for (int i = 0; i < res_len; i++) {
         binary[i] = '0';
     }
-    binary[32] = '\0';
+    binary[res_len] = '\0';
 
-    char* sub_binary = decimal_to_binary(number);
-
-    int exponent = 127 + strlen(sub_binary) - 1;
-
-    char* binary_exp = decimal_to_binary(exponent);
-
-    for (int i = 1; i < strlen(binary_exp) + 1; i++)
-    {
-        binary[i] = binary_exp[i-1];
-    }
-
-    for (int i = 9; i < 9 + strlen(sub_binary) - 1; i++)
-    {
-        binary[i] = sub_binary[i - 8];
-    }
-
-    printf("\n%s\n", binary);
-
-    free(sub_binary);
-    free(binary_exp);
-}
-
-void double_precision(int n)
-{
-    char binary[65];
-
-    for (int i = 0; i < 64; i++) {
-        binary[i] = '0';
-    }
-    binary[64] = '\0';
-
-    binary[0] = '1';
+    binary[0] = sign;
 
     char* sub_binary = decimal_to_binary(n);
 
-    int exponent = 1023 + strlen(sub_binary) - 1;
+    int exponent = exp_bias + strlen(sub_binary) - 1;
 
     char* binary_exp = decimal_to_binary(exponent);
 
     for (int i = 1; i < strlen(binary_exp) + 1; i++)
     {
-        binary[i] = binary_exp[i-1];
+        binary[i] = binary_exp[i - 1];
     }
 
-    for (int i = 12; i < 12 + strlen(sub_binary) - 1; i++)
+    for (int i = mantissa_bias; i < mantissa_bias + strlen(sub_binary) - 1; i++)
     {
-        binary[i] = sub_binary[i - 11];
+        binary[i] = sub_binary[i - mantissa_bias + 1];
     }
 
     printf("\n%s\n", binary);
@@ -124,6 +113,7 @@ void double_precision(int n)
 
 int main(void)
 {
+    setbuf(stdout, NULL);
     char* first_name = "ZEMIN";
     char* last_name = "LI";
 
@@ -132,7 +122,7 @@ int main(void)
 
     int c = a * b;
 
-    printf("%d\n", c);
+    printf("Found product: %d\n\n", c);
 
 
     // a
@@ -140,20 +130,24 @@ int main(void)
 
     char* binary_str = decimal_to_32binary(target_num);
 
+    printf("Negative 32-bit:\n");
     for (int i = 31; i >= 0; i--)
     {
         printf("%c", binary_str[i]);
     }
-    printf("\n");
+    printf("\n\n");
 
     free(binary_str);
 
     // b
+    printf("IEEE 754 (single precision):");
+    convert_number(c, 0);
 
-    single_precision(c);
+    printf("\n");
 
     // c
-    double_precision(c);
+    printf("IEEE 754 (double precision):");
+    convert_number(c, 1);
 
     return 0;
 }
