@@ -1,8 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include<malloc.h>
 #include "myMalloc.h"
 
 void init()
@@ -29,15 +24,15 @@ mem_block *find_free_memory(size_t size)
 
 void delete_block(mem_block *block)
 {
-	if (block = stack)
+	if (block == stack)
 	{
 		stack = block->next;
-		return;
+		return 0;
 	}
 	else if (block->next == NULL)
 	{
 		block->previous->next = NULL;
-		return;
+		return 0;
 	}
 	block->previous->next = block->next;
 	block->next->previous = block->previous;

@@ -1,4 +1,10 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include<malloc.h>
+
 static int amount_of_space = 10000;
 static void *memory;
 static int has_initialized = 0;
