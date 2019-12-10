@@ -1,2 +1,2 @@
 start: main.c
-	gcc main.c -lm -o start
+	gcc main.c -o start
