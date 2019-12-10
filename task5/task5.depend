@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1575927804 source:/home/lyubov/Desktop/hw programming/task5/main.c
+1576017323 source:/home/lyubov/Desktop/hw programming/task5/main.c
 	<stdio.h>
 	<string.h>
 	<stdlib.h>

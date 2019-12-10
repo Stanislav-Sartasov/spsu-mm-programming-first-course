@@ -36,17 +36,19 @@ int main()
         fl = 0;
     }
 
+    int size_of_period = 0;
     long long a0 = (long long)sqrt(x), a = 0;
     long long b = a0, c = x - a0 * a0;
     printf("[%lld", a0);
 
     while (c != 1)
     {
+        size_of_period++;
         a = (long long)((double)(a0 + b) / (double)c);
         printf(", %lld", a);
         b = a * c - b;
         c = (x - b * b) / c;
     }
-    printf(", %lld]", (a0 + b));
+    printf(", %lld] %d", (a0 + b), size_of_period + 1);
     return 0;
 }
