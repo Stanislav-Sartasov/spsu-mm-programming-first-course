@@ -6,14 +6,14 @@ void perevod(long long x, int size, int sign_bit)
 {
 	int i = 0;
 	int j = 0;
-	int* mas = (int*)calloc(size , sizeof(int));
+	int *mas = (int*)calloc(size , sizeof(int));
 	
-	if (sign_bit != -1)
+	if ( sign_bit != -1 )
 	{
 		printf("%d", sign_bit);
 	}
 
-	while (x !=0)
+	while (x != 0)
 	{
 		if ( x % 2 == 0 )
 		{
@@ -27,7 +27,7 @@ void perevod(long long x, int size, int sign_bit)
 		}
 		i++;
 	}
-	for (i = i-1 ; i>=0 ; i--)
+	for ( i = i - 1 ; i >= 0 ; i-- )
 	{
 		printf("%d", mas[i]);
 	}
@@ -55,11 +55,11 @@ int main()
 	printf_s("positive floating point number of unit precision according to the IEEE 754 standarda: \n");
 	float fp = (float)p;
 	int xf = &fp;
-	perevod(*(int*)xf, (sizeof(float) * 8 - 1), 0);
+	perevod( *(int*)xf, (sizeof(float) * 8 - 1), 0);
 
 	printf_s("negative double precision floating point number according to IEEE 754 standard: \n");
 	double dp = (double)p;
 	long long  xd = &dp;
-	perevod(*(long long*)xd, (sizeof(double) * 8 - 1), 1);
+	perevod( *(long long*)xd, (sizeof(double) * 8 - 1), 1);
 	return 0;
 }

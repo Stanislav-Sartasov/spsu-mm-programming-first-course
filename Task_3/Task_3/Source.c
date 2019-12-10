@@ -44,7 +44,7 @@ int main()
 
 		if (xscan && yscan && zscan && eol == '\n')
 		{
-			if (x * y > 0 && y * z > 0 && x * z > 0)
+			if (x * y > 0 && y * z > 0 && x * z > 0 && x * y * z > 0)
 			{
 				n = 1;
 				if ((x + y - z > eps) && (x + z -y > eps) && (z + y - x > eps))
