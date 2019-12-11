@@ -72,12 +72,14 @@ int pif(a, b, c)
 	{
 
 		if (a <= 0 || b <= 0 || c <= 0)
+		{
 			printf("Стороны треугольника должны быть больше 0\n");
+
+			return main();
+		}
 
 		else
 			printf("Не Пифагорова тройка\n");
-		
-		return main();
 	}
 }
 
@@ -88,7 +90,10 @@ int main()
 	printf("Введите стороны треугольника, чтобы узнать - являются ли они Пифагоровой тройкой, и если являются, то взаимно-просты ли они\n");
 
 	int a, b, c;
-	scanf_s("%d%d%d", &a, &b, &c);
+	while ((!scanf_s("%d", &a)) || (a < 1) || (!scanf_s("%d", &b)) || (b < 1) || (!scanf_s("%d", &c) || (c < 1))) {
+		while (getchar() != '\n');
+		printf("Enter positive number\ntry again: ");
+	}
 
 	pif(a, b, c);
 
