@@ -6,11 +6,11 @@
 int main()
 {
 	printf("Enter the amount of money in pennies to see the number of ways : ");
-	int penny[8] = { 1,2,5,10,20,50,100,200 };
+	int penny[8] = { 1, 2, 5, 10, 20, 50, 100, 200 };
 	long* methods;
 	int num;
 
-	while ((!scanf("%d", &num)) || num <1) {
+	while ((!scanf("%d", &num)) || num < 1) {
 		while (getchar() != '\n');
 		printf("Enter the positive number\ntry again: ");
 	}
