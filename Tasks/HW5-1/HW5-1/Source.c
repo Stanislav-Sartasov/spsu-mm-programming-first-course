@@ -10,7 +10,11 @@ int main()
 	long* methods;
 	int num;
 
-	scanf_s("%d", &num, 9);
+	while ((!scanf("%d", &num)) || num <1) {
+		while (getchar() != '\n');
+		printf("Enter the positive number\ntry again: ");
+	}
+	
 
 	methods = (long*)malloc((num + 1) * sizeof(long));
 		
