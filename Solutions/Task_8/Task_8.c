@@ -86,80 +86,87 @@ int read_and_write_bmp(FILE* file_in, FILE* file_out, unsigned int* width, unsig
 	return 0;
 }
 
-void median(rgb_24** image, unsigned int width, unsigned int height, int m_size)
+void megas(char type, rgb_24** image, unsigned int width, unsigned int height, int sz, double sg)
 {
-	unsigned char* arr = (unsigned char*)malloc(sizeof(unsigned char) * m_size * m_size);
-	if (!arr)
-		printf("no");
+	unsigned char* arr = 0;
+	double* kern = 0;
+	switch (type)
+	{
+	case 'm':
+		arr = (unsigned char*)malloc(sizeof(unsigned char) * sz * sz);
+		break;
+	case 'g':
+		kern = (double*)malloc(sizeof(double) * sz * sz);
+		break;
+	default:
+		return;
+	}
 	int size;
-	int m = m_size / 2;
+	double sum = 0.0;
+	double sum_kern = 0.0;
+	int m = sz / 2;
 	rgb_24* new_image = (rgb_24*)malloc(sizeof(rgb_24) * height * width);
+	if (type == 'g')
+		for (int i = -m; i <= m; i++)
+			for (int j = -m; j <= m; j++)
+				kern[(i + m) * sz + j + m] = exp(-(pow(i, 2.0) + pow(j, 2.0)) / (2 * pow(sg, 2.0))) / (2 * pi * pow(sg, 2.0));
 	for (unsigned y = 0; y < height; y++)
 		for (unsigned x = 0; x < width; x++)
 			for (int c = 0; c < 3; c++)
 			{
-				size = 0;
-				for (unsigned i = y - m; i <= y + m; i++)
-					for (unsigned j = x - m; j <= x + m; j++)
-						if ((i >= 0) && (i < height) && (j >= 0) && (j < width))
-						{
-							size++;
-							arr[size - 1] = *(*(*image + i * width + j) + c);
-						}
-				for (unsigned i = 0; i < size / 2 + 1; i++)
+				switch (type)
 				{
-					unsigned char min = arr[i];
-					short ind = i;
-					for (int j = 1; j < size; j++)
-						if (min > arr[j])
-						{
-							min = arr[j];
-							ind = j;
-						}
-					arr[ind] = arr[i];
-					arr[i] = min;
+				case 'm':
+					size = 0;
+					for (unsigned i = y - m; i <= y + m; i++)
+						for (unsigned j = x - m; j <= x + m; j++)
+							if ((i >= 0) && (i < height) && (j >= 0) && (j < width))
+							{
+								size++;
+								arr[size - 1] = *(*(*image + i * width + j) + c);
+							}
+					for (unsigned i = 0; i < size / 2 + 1; i++)
+					{
+						unsigned char min = arr[i];
+						short ind = i;
+						for (int j = 1; j < size; j++)
+							if (min > arr[j])
+							{
+								min = arr[j];
+								ind = j;
+							}
+						arr[ind] = arr[i];
+						arr[i] = min;
+					}
+					new_image[y * width + x][c] = arr[size / 2];
+					break;
+				case 'g':
+					sum = 0.0;
+					sum_kern = 0.0;
+					for (int i = -m; i <= m; i++)
+						for (int j = -m; j <= m; j++)
+							if ((y + i) >= 0 && (y + i) < height && (x + j) >= 0 && (x + j) < width)
+							{
+								sum += (double)(*(*(*image + (y + i) * width + x + j) + c)) * kern[(i + m) * sz + j + m];
+								sum_kern += kern[(i + m) * sz + j + m];
+							}
+					new_image[y * width + x][c] = (unsigned char)(sum / sum_kern);
+					break;
 				}
-				new_image[y * width + x][c] = arr[size / 2];
 			}
 	for (unsigned y = 0; y < height; y++)
 		for (unsigned x = 0; x < width; x++)
 			for (int c = 0; c < 3; c++)
 				* (*(*image + y * width + x) + c) = new_image[y * width + x][c];
 	free(new_image);
-	free(arr);
-}
-
-void gaussian(rgb_24** image, unsigned int width, unsigned int height, int size, double sigma)
-{
-	double sum = 0.0;
-	double sum_kern = 0.0;
-	double* kern = (double*)malloc(sizeof(double) * size * size);
-	int m = size / 2;
-	for (int i = -m; i <= m; i++)
-		for (int j = -m; j <= m; j++)
-			kern[(i + m) * size + j + m] = exp(-(pow(i, 2.0) + pow(j, 2.0)) / (2 * pow(sigma, 2.0))) / (2 * pi * pow(sigma, 2.0));
-	rgb_24* new_image = (rgb_24*)malloc(sizeof(rgb_24) * height * width);
-	for (unsigned y = 0; y < height; y++)
-		for (unsigned x = 0; x < width; x++)
-			for (int c = 0; c < 3; c++)
-			{
-				sum = 0.0;
-				sum_kern = 0.0;
-				for (int i = -m; i <= m; i++)
-					for (int j = -m; j <= m; j++)
-						if ((y + i) >= 0 && (y + i) < height && (x + j) >= 0 && (x + j) < width)
-						{
-							sum += (double)(*(*(*image + (y + i) * width + x + j) + c)) * kern[(i + m) * size + j + m];
-							sum_kern += kern[(i + m) * size + j + m];
-						}
-				new_image[y * width + x][c] = (unsigned char)(sum / sum_kern);
-			}
-	for (unsigned y = 0; y < height; y++)
-		for (unsigned x = 0; x < width; x++)
-			for (int c = 0; c < 3; c++)
-				*(*(*image + y * width + x) + c) = new_image[y * width + x][c];
-	free(new_image);
-	free(kern);
+	switch (type)
+	{
+	case 'm':
+		free(arr);
+		break;
+	case 'g':
+		free(kern);
+	}
 }
 
 void shade(rgb_24** image, unsigned int width, unsigned int height)
@@ -525,9 +532,9 @@ int main(int argc, char** argv)
 						bit_count = 24;
 
 					if (compare(function_name, "median"))
-						median(&image, width, height, sz);
+						megas('m',&image, width, height, sz, sg);
 					else if (compare(function_name, "gaussian"))
-						gaussian(&image, width, height, sz, sg);
+						megas('g',&image, width, height, sz, sg);
 					else if (compare(function_name, "sobel"))
 						sobel_xy(0, &image, width, height, th);
 					else if (compare(function_name, "sobel_x"))
@@ -664,9 +671,9 @@ int main(int argc, char** argv)
 			bit_count = 24;
 
 		if (compare(argv[2], "median"))
-			median(&image, width, height, sz);
+			megas('m',&image, width, height, sz,sg);
 		else if (compare(argv[2], "gaussian"))
-			gaussian(&image, width, height, sz, sg);
+			megas('g',&image, width, height, sz, sg);
 		else if (compare(argv[2], "sobel"))
 			sobel_xy(0, &image, width, height, th);
 		else if (compare(argv[2], "sobel_x"))
