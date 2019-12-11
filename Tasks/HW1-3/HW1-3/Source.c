@@ -20,7 +20,11 @@ int main()
 {
 	printf("Enter sides of triangle to find angles : \n");
 	float a, b, c;
-	scanf_s("%f%f%f", &a, &b, &c);
+
+	while ((!scanf_s("%f", &a)) || (a < 1) || (!scanf_s("%f", &b)) || (b < 1) || (!scanf_s("%f", &c) || (c < 1))) {
+		while (getchar() != '\n');
+		printf("Enter positive number\ntry again: ");
+	}
 	printf("%f %f %f\n\n", a, b, c);
 
 	if (a + b > c && a + c > b && c + b + a) 
