@@ -10,7 +10,10 @@ void degrees(float a, float b, float c)
 	float beta = acos((pow(a, 2.0) + pow(c, 2.0) - pow(b, 2.0)) / (2.0 * a * c)) * (180.0 / M_PI);
 	float gamma = acos((pow(c, 2.0) + pow(b, 2.0) - pow(a, 2.0)) / (2.0 * c * b)) * (180.0 / M_PI);
 
-	printf("%d deg, %d min, %d sec;\n%d deg, %d min, %d sec;\n%d deg, %d min, %d sec;\n", alpha, (int)(alpha * 60.0), (int)(alpha * 3600.0), beta, (int)(beta * 60.0), (int)(beta * 3600.0), gamma, (int)(gamma * 60.0), (int)(gamma * 3600.0));
+	printf("%d deg, %d min, %d sec;\n%d deg, %d min, %d sec;\n%d deg, %d min, %d sec;\n", 
+		(int)alpha, (int)((alpha - (int)alpha) * 60.0), (int)((((alpha - (int)alpha) * 60.0) - (int)((alpha - (int)alpha) * 60.0))*60.0),
+		(int)beta, (int)((beta - (int)beta) * 60.0), (int)((((beta - (int)beta) * 60.0) - (int)((beta - (int)beta) * 60.0)) * 60.0), 
+		(int)gamma, (int)((gamma - (int)gamma )* 60.0), (int)((((gamma - (int)gamma) * 60.0) - (int)((gamma - (int)gamma) * 60.0)) * 60.0));
 }
 
 int main() 
