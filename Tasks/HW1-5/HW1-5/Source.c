@@ -1,20 +1,25 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include <conio.h>
 #include <math.h>
 #include <stdlib.h>
 
 int main()
 {
-	printf("Enter the number from which you want to take the root\n");
+	printf("Enter the irrational number from which you want to take the root\n");
 	int period = 0;
 	double main_num;
 
+	while (!scanf("%lf", &main_num) )
+	{
+		while (getchar() != '\n');
+		printf("This is not a irrational number\ntry again: ");
+	}
 
-	scanf_s("%lf", &main_num);
 
 	if (sqrt(main_num) == (int)sqrt(main_num)) 
 	{
-		printf("number is rational, try again\n");
+		printf("Number is rational, try again\n");
 		return main();
 	}
 
