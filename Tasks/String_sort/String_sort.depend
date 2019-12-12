@@ -1,9 +1,8 @@
 # depslib dependency file v1.0
-1576077721 source:c:\users\pavel\documents\github\spsu-mm-programming-first-course\spsu-mm-programming-first-course\tasks\string_sort\main.c
+1576166579 source:c:\users\pavel\documents\github\spsu-mm-programming-first-course\spsu-mm-programming-first-course\tasks\string_sort\main.c
 	<stdio.h>
 	<string.h>
 	<fcntl.h>
-	<malloc.h>
 	<sys/stat.h>
 	"mman.h"
 
