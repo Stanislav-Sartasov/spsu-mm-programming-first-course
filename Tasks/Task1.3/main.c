@@ -36,7 +36,16 @@ void input(float* a, float* b, float* c)
         if (scanf("%f %f %f", a, b, c) != 3)
         {
             printf("Incorrect values\n\n");
-            fflush(stdin);
+            int symb;
+            while ((symb = getchar()) != '\n' && symb != EOF);
+            continue;
+        }
+
+        if (*a <= 0 || *b <= 0 || *c <= 0)
+        {
+            printf("Incorrect length\n\n");
+            int symb;
+            while ((symb = getchar()) != '\n' && symb != EOF);
             continue;
         }
         break;
