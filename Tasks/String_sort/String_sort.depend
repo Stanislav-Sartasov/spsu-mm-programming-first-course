@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1576166579 source:c:\users\pavel\documents\github\spsu-mm-programming-first-course\spsu-mm-programming-first-course\tasks\string_sort\main.c
+1576239527 source:c:\users\pavel\documents\github\spsu-mm-programming-first-course\spsu-mm-programming-first-course\tasks\string_sort\main.c
 	<stdio.h>
 	<string.h>
 	<fcntl.h>

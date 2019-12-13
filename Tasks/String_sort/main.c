@@ -9,7 +9,16 @@ int comparator(const void* a, const void* b)
 	const char* s1, * s2;
 	s1 = *(char**)a;
 	s2 = *(char**)b;
-	return strcmp(s1, s2);
+	if (s1 && !s2)
+		return 1;
+	if (!s1 && s2)
+		return -1;
+	if (!s1 && !s2)
+		return 0;
+	int i = 0;
+	while (s1[i] == s2[i] && s1[i] != '\n')
+		i++;
+	return (s1[i] - s2[i]);
 }
 
 int main(int argc, char* argv[])
@@ -47,19 +56,13 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 	int curr_string = 0;
-	int i = 0;
+	int i = 0, j = 0;
 	while (text[i])
 	{
-		if (text[i] != '\n')
+		if (text[i] == '\n')
 		{
-			int j = 0;
-			while (text[i + j] != '\n' && text[i + j] != '\0')
-				j++;
-            if (text[i + j] == '\0')
-				j++;
-			strings[curr_string] = malloc(j);
-			snprintf(strings[curr_string], j, &text[i]);
-			i += j;
+			strings[curr_string] = &text[j]; // copy only addresses (1 byte)
+			j = i + 1;
 			curr_string++;
 		}
 		i++;
@@ -69,16 +72,17 @@ int main(int argc, char* argv[])
 	{
 		int pos = 0;
 		if (strings[i])
-            while (strings[i][pos] != '\0')
-            {
-                fputc(strings[i][pos], file_out);
-                pos++;
-            }
-		fputc('\n', file_out);
+			while (strings[i][pos] != '\n')
+			{
+				fputc(strings[i][pos], file_out);
+				pos++;
+			}
+		//fputc('\n', file_out);
 	}
+	//fputc('\0', file_out);
 	munmap(text, len_input_file);
-	for (i = 0; i < count_of_string; i++)
-		free(strings[i]);
+//	for (i = 0; i < count_of_string; i++)
+//		free(strings[i]);
 	free(strings);
 	_close(file_in);
 	fclose(file_out);
