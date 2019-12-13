@@ -8,7 +8,7 @@
 #define FILTER_GAUSS5		"gauss5"
 #define FILTER_SOBELX		"sobelx"
 #define FILTER_SOBELY		"sobely"
-#define FILTER_GRAY			"gray"
+#define FILTER_GRAY			"grey"
 
 typedef unsigned int DWORD;
 typedef long LONG;
@@ -49,376 +49,334 @@ typedef struct tagRGB
 
 #pragma pack()
 
-RGB** get_bmp_image_data(char* input_file, BITMAPFILEHEADER* bmpHeader, BITMAPINFOHEADER* bmpInfo, int* vect, char** palette, unsigned int *paletteSize)
+int read_image_file(char* input_file, BITMAPFILEHEADER* file_header, BITMAPINFOHEADER* info_header, RGB** pImg, char** pPal, int* pPalSize, int* pStride)
 {
-	FILE* ifp;
-	RGB** pixel;
+	FILE* fp;
+	int k;
 
-	if (NULL == (ifp = fopen(input_file, "rb")))
+	if (NULL == (fp = fopen(input_file, "rb")))
 	{
 		printf("Can't open the input file.\n");
 		return 0;
 	}
-
-	fread(bmpHeader, sizeof(BITMAPFILEHEADER), 1, ifp);
-	fread(bmpInfo, sizeof(BITMAPINFOHEADER), 1, ifp);
-	if (bmpInfo->biBitCount != 24 && bmpInfo->biBitCount != 32)
+	fread(file_header, sizeof(BITMAPFILEHEADER), 1, fp);
+	fread(info_header, sizeof(BITMAPINFOHEADER), 1, fp);
+	if (info_header->biBitCount != 24 && info_header->biBitCount != 32)
 	{
-		fclose(ifp);
+		fclose(fp);
 		return 0;
 	}
 
-	*paletteSize = bmpHeader->bfOffBits - sizeof(BITMAPFILEHEADER) - sizeof(BITMAPINFOHEADER);
-	if (*paletteSize)
+	*pPalSize = file_header->bfOffBits - sizeof(BITMAPFILEHEADER) - sizeof(BITMAPINFOHEADER);
+	if (*pPalSize > 0)
 	{
-		*palette = (char*)malloc((int)paletteSize);	
-		fread(*palette, *paletteSize, 1, ifp);
-	}
-	pixel = (RGB**)calloc(sizeof(RGB*), bmpInfo->biHeight);
-	if (pixel == 0)
-	{
-		printf("Can't read palette information.\n");
-		fclose(ifp);
-		return 0;
-	}
-	for (int i = 0; i < bmpInfo->biHeight; i++)
-	{
-		pixel[i] = (RGB*)calloc(sizeof(RGB), bmpInfo->biWidth);
+		*pPal = (char*)malloc(*pPalSize);
+		fread(*pPal, 1, *pPalSize, fp);
 	}
 
-	*vect = (4 - (bmpInfo->biWidth * (bmpInfo->biBitCount / 8)) % 4) & 3;
-	for (int i = 0; i < bmpInfo->biHeight; i++)
+	*pImg = (RGB*)malloc(info_header->biWidth * info_header->biHeight * sizeof(RGB));
+	*pStride = (4 - (info_header->biWidth * (info_header->biBitCount / 8)) % 4) & 3;
+
+	k = 0;
+	for (int i = 0 ; i < info_header->biHeight ; i++)
 	{
-		for (int j = 0; j < bmpInfo->biWidth; j++)
+		for (int j = 0 ; j < info_header->biWidth ; j++)
 		{
-			pixel[i][j].rgbBlue = (unsigned char)getc(ifp);
-			pixel[i][j].rgbGreen = (unsigned char)getc(ifp);
-			pixel[i][j].rgbRed = (unsigned char)getc(ifp);
-			if (bmpInfo->biBitCount == 32)
-			{
-				getc(ifp);
-			}
+			fread(*pImg + k, sizeof(RGB), 1, fp);
+			k = k + 1;
+			if (info_header->biBitCount == 32)
+				fseek(fp, 1, SEEK_CUR);
 		}
-		for (int k = 0; k < *vect; k++)
-		{
-			getc(ifp);
-		}
+		fseek(fp, *pStride, SEEK_CUR);
 	}
 
-	fclose(ifp);
-	return pixel;
+	fclose(fp);
+	return 1;
 }
 
-RGB** copy_bmp_data(RGB** rgb, int height, int width)
+void set_average_filter(RGB* img, int width, int height)
 {
-	RGB** out_rgb;
+	int i, j;
+	int r, g, b;
+	RGB* t;
 
-	out_rgb = (RGB**)calloc(sizeof(RGB*), height);
-	for (int i = 0; i < height; i++)
+	t = (RGB*)malloc(width * height * sizeof(RGB));
+	memcpy(t, img, width * height * sizeof(RGB));
+
+	for (i = 1 ; i < height-1 ; i++)
 	{
-		out_rgb[i] = (RGB*)calloc(sizeof(RGB), width);
-		memcpy(out_rgb[i], rgb[i], sizeof(RGB) * width);
+		for (j = 1 ; j < width-1 ; j++)
+		{
+			r = t[(i-1)*width+j-1].rgbRed + t[(i-1)*width+j].rgbRed + t[(i-1)*width+j+1].rgbRed + 
+				t[(i-0)*width+j-1].rgbRed + t[(i-0)*width+j].rgbRed + t[(i-0)*width+j+1].rgbRed + 
+				t[(i+1)*width+j-1].rgbRed + t[(i+1)*width+j].rgbRed + t[(i+1)*width+j+1].rgbRed;
+
+			g = t[(i-1)*width+j-1].rgbGreen + t[(i-1)*width+j].rgbGreen + t[(i-1)*width+j+1].rgbGreen + 
+				t[(i-0)*width+j-1].rgbGreen + t[(i-0)*width+j].rgbGreen + t[(i-0)*width+j+1].rgbGreen + 
+				t[(i+1)*width+j-1].rgbGreen + t[(i+1)*width+j].rgbGreen + t[(i+1)*width+j+1].rgbGreen;
+
+			b = t[(i-1)*width+j-1].rgbBlue + t[(i-1)*width+j].rgbBlue + t[(i-1)*width+j+1].rgbBlue + 
+				t[(i-0)*width+j-1].rgbBlue + t[(i-0)*width+j].rgbBlue + t[(i-0)*width+j+1].rgbBlue + 
+				t[(i+1)*width+j-1].rgbBlue + t[(i+1)*width+j].rgbBlue + t[(i+1)*width+j+1].rgbBlue;
+
+			img[i*width+j].rgbRed = r / 9;
+			img[i*width+j].rgbGreen = g / 9;
+			img[i*width+j].rgbBlue = b / 9;
+		}
 	}
-	return out_rgb;
+
+	free(t);
 }
 
-void put_bmp_file_data(char* output_file, BITMAPFILEHEADER* bmpHeader, BITMAPINFOHEADER* bmpInfo, RGB** out_rgb, int vect, char* palette, unsigned int paletteSize)
+void set_gauss_filter_3(RGB* img, int width, int height)
 {
-	int i, j, k;
-	FILE* ofp;
+	int i, j;
+	int r, g, b;
+	RGB* t;
+	int gauss3[3][3] = { {1, 2, 1}, {2, 4, 2}, {1, 2, 1} };
 
-	if ((ofp = (fopen(output_file, "wb"))) == NULL)
+	t = (RGB*)malloc(width * height * sizeof(RGB));
+	memcpy(t, img, width * height * sizeof(RGB));
+
+	for (i = 1 ; i < height - 1 ; i++)
+	{
+		for(j = 1 ; j < width - 1 ; j++)
+		{
+			r = t[(i-1)*width+j-1].rgbRed * gauss3[0][0] + t[(i-1)*width+j].rgbRed * gauss3[0][1] + t[(i-1)*width+j+1].rgbRed * gauss3[0][2] + 
+				t[(i-0)*width+j-1].rgbRed * gauss3[1][0] + t[(i-0)*width+j].rgbRed * gauss3[1][1] + t[(i-0)*width+j+1].rgbRed * gauss3[1][2] + 
+				t[(i+1)*width+j-1].rgbRed * gauss3[2][0] + t[(i+1)*width+j].rgbRed * gauss3[2][1] + t[(i+1)*width+j+1].rgbRed * gauss3[2][2];
+
+			g = t[(i-1)*width+j-1].rgbGreen * gauss3[0][0] + t[(i-1)*width+j].rgbGreen * gauss3[0][1] + t[(i-1)*width+j+1].rgbGreen * gauss3[0][2] + 
+				t[(i-0)*width+j-1].rgbGreen * gauss3[1][0] + t[(i-0)*width+j].rgbGreen * gauss3[1][1] + t[(i-0)*width+j+1].rgbGreen * gauss3[1][2] + 
+				t[(i+1)*width+j-1].rgbGreen * gauss3[2][0] + t[(i+1)*width+j].rgbGreen * gauss3[2][1] + t[(i+1)*width+j+1].rgbGreen * gauss3[2][2];
+
+			b = t[(i-1)*width+j-1].rgbBlue * gauss3[0][0] + t[(i-1)*width+j].rgbBlue * gauss3[0][1] + t[(i-1)*width+j+1].rgbBlue * gauss3[0][2] + 
+				t[(i-0)*width+j-1].rgbBlue * gauss3[1][0] + t[(i-0)*width+j].rgbBlue * gauss3[1][1] + t[(i-0)*width+j+1].rgbBlue * gauss3[1][2] + 
+				t[(i+1)*width+j-1].rgbBlue * gauss3[2][0] + t[(i+1)*width+j].rgbBlue * gauss3[2][1] + t[(i+1)*width+j+1].rgbBlue * gauss3[2][2];
+
+			img[i*width+j].rgbRed = r / 16;
+			img[i*width+j].rgbGreen = g / 16;
+			img[i*width+j].rgbBlue = b / 16;
+		}
+	}
+
+	free(t);
+}
+
+void set_gauss_filter_5(RGB* img, int width, int height)
+{
+	int i, j;
+	int r, g, b;
+	RGB* t;
+	int gauss5[5][5] = { {1, 4,  6,  4,  1}, {4, 16, 24, 16, 4}, {6, 24, 36, 24, 6}, {4, 16, 24, 16, 4}, {1, 4,  6,  4,  1} };
+
+	t = (RGB*)malloc(width * height * sizeof(RGB));
+	memcpy(t, img, width * height * sizeof(RGB));
+
+	for (i = 2 ; i < height - 2 ; i++)
+	{
+		for(j = 2 ; j < width - 2 ; j++)
+		{
+			r = t[(i-2)*width+j-2].rgbRed * gauss5[0][0] + t[(i-2)*width+j-1].rgbRed * gauss5[0][1] + t[(i-2)*width+j].rgbRed * gauss5[0][2] + t[(i-2)*width+j+1].rgbRed * gauss5[0][3] + t[(i-2)*width+j+2].rgbRed * gauss5[0][4] + 
+				t[(i-1)*width+j-2].rgbRed * gauss5[1][0] + t[(i-1)*width+j-1].rgbRed * gauss5[1][1] + t[(i-1)*width+j].rgbRed * gauss5[1][2] + t[(i-1)*width+j+1].rgbRed * gauss5[1][3] + t[(i-1)*width+j+2].rgbRed * gauss5[1][4] + 
+				t[(i-0)*width+j-2].rgbRed * gauss5[2][0] + t[(i-0)*width+j-1].rgbRed * gauss5[2][1] + t[(i-0)*width+j].rgbRed * gauss5[2][2] + t[(i-0)*width+j+1].rgbRed * gauss5[2][3] + t[(i-0)*width+j+2].rgbRed * gauss5[2][4] + 
+				t[(i+1)*width+j-2].rgbRed * gauss5[3][0] + t[(i+1)*width+j-1].rgbRed * gauss5[3][1] + t[(i+1)*width+j].rgbRed * gauss5[3][2] + t[(i+1)*width+j+1].rgbRed * gauss5[3][3] + t[(i+1)*width+j+2].rgbRed * gauss5[3][4] + 
+				t[(i+2)*width+j-2].rgbRed * gauss5[4][0] + t[(i+2)*width+j-1].rgbRed * gauss5[4][1] + t[(i+2)*width+j].rgbRed * gauss5[4][2] + t[(i+2)*width+j+1].rgbRed * gauss5[4][3] + t[(i+2)*width+j+2].rgbRed * gauss5[4][4];
+
+			g = t[(i-2)*width+j-2].rgbGreen * gauss5[0][0] + t[(i-2)*width+j-1].rgbGreen * gauss5[0][1] + t[(i-2)*width+j].rgbGreen * gauss5[0][2] + t[(i-2)*width+j+1].rgbGreen * gauss5[0][3] + t[(i-2)*width+j+2].rgbGreen * gauss5[0][4] + 
+				t[(i-1)*width+j-2].rgbGreen * gauss5[1][0] + t[(i-1)*width+j-1].rgbGreen * gauss5[1][1] + t[(i-1)*width+j].rgbGreen * gauss5[1][2] + t[(i-1)*width+j+1].rgbGreen * gauss5[1][3] + t[(i-1)*width+j+2].rgbGreen * gauss5[1][4] + 
+				t[(i-0)*width+j-2].rgbGreen * gauss5[2][0] + t[(i-0)*width+j-1].rgbGreen * gauss5[2][1] + t[(i-0)*width+j].rgbGreen * gauss5[2][2] + t[(i-0)*width+j+1].rgbGreen * gauss5[2][3] + t[(i-0)*width+j+2].rgbGreen * gauss5[2][4] + 
+				t[(i+1)*width+j-2].rgbGreen * gauss5[3][0] + t[(i+1)*width+j-1].rgbGreen * gauss5[3][1] + t[(i+1)*width+j].rgbGreen * gauss5[3][2] + t[(i+1)*width+j+1].rgbGreen * gauss5[3][3] + t[(i+1)*width+j+2].rgbGreen * gauss5[3][4] + 
+				t[(i+2)*width+j-2].rgbGreen * gauss5[4][0] + t[(i+2)*width+j-1].rgbGreen * gauss5[4][1] + t[(i+2)*width+j].rgbGreen * gauss5[4][2] + t[(i+2)*width+j+1].rgbGreen * gauss5[4][3] + t[(i+2)*width+j+2].rgbGreen * gauss5[4][4];
+
+			b = t[(i-2)*width+j-2].rgbBlue * gauss5[0][0] + t[(i-2)*width+j-1].rgbBlue * gauss5[0][1] + t[(i-2)*width+j].rgbBlue * gauss5[0][2] + t[(i-2)*width+j+1].rgbBlue * gauss5[0][3] + t[(i-2)*width+j+2].rgbBlue * gauss5[0][4] + 
+				t[(i-1)*width+j-2].rgbBlue * gauss5[1][0] + t[(i-1)*width+j-1].rgbBlue * gauss5[1][1] + t[(i-1)*width+j].rgbBlue * gauss5[1][2] + t[(i-1)*width+j+1].rgbBlue * gauss5[1][3] + t[(i-1)*width+j+2].rgbBlue * gauss5[1][4] + 
+				t[(i-0)*width+j-2].rgbBlue * gauss5[2][0] + t[(i-0)*width+j-1].rgbBlue * gauss5[2][1] + t[(i-0)*width+j].rgbBlue * gauss5[2][2] + t[(i-0)*width+j+1].rgbBlue * gauss5[2][3] + t[(i-0)*width+j+2].rgbBlue * gauss5[2][4] + 
+				t[(i+1)*width+j-2].rgbBlue * gauss5[3][0] + t[(i+1)*width+j-1].rgbBlue * gauss5[3][1] + t[(i+1)*width+j].rgbBlue * gauss5[3][2] + t[(i+1)*width+j+1].rgbBlue * gauss5[3][3] + t[(i+1)*width+j+2].rgbBlue * gauss5[3][4] + 
+				t[(i+2)*width+j-2].rgbBlue * gauss5[4][0] + t[(i+2)*width+j-1].rgbBlue * gauss5[4][1] + t[(i+2)*width+j].rgbBlue * gauss5[4][2] + t[(i+2)*width+j+1].rgbBlue * gauss5[4][3] + t[(i+2)*width+j+2].rgbBlue * gauss5[4][4];
+
+			img[i*width+j].rgbRed = r / 256;
+			img[i*width+j].rgbGreen = g / 256;
+			img[i*width+j].rgbBlue = b / 256;
+		}
+	}
+
+	free(t);
+}
+
+void set_sobel_filter_x(RGB* img, int width, int height)
+{
+	int i, j;
+	int r, g, b;
+	RGB* t;
+	int sobelx[3][3] = { {1,  2,  1}, {0,  0,  0}, {-1, -2, -1} };
+
+	t = (RGB*)malloc(width * height * sizeof(RGB));
+	memcpy(t, img, width * height * sizeof(RGB));
+
+	for (i = 1 ; i < height - 1 ; i++)
+	{
+		for(j = 1 ; j < width - 1 ; j++)
+		{
+			r = t[(i-1)*width+j-1].rgbRed * sobelx[0][0] + t[(i-1)*width+j].rgbRed * sobelx[0][1] + t[(i-1)*width+j+1].rgbRed * sobelx[0][2] + 
+				t[(i-0)*width+j-1].rgbRed * sobelx[1][0] + t[(i-0)*width+j].rgbRed * sobelx[1][1] + t[(i-0)*width+j+1].rgbRed * sobelx[1][2] + 
+				t[(i+1)*width+j-1].rgbRed * sobelx[2][0] + t[(i+1)*width+j].rgbRed * sobelx[2][1] + t[(i+1)*width+j+1].rgbRed * sobelx[2][2];
+
+			g = t[(i-1)*width+j-1].rgbGreen * sobelx[0][0] + t[(i-1)*width+j].rgbGreen * sobelx[0][1] + t[(i-1)*width+j+1].rgbGreen * sobelx[0][2] + 
+				t[(i-0)*width+j-1].rgbGreen * sobelx[1][0] + t[(i-0)*width+j].rgbGreen * sobelx[1][1] + t[(i-0)*width+j+1].rgbGreen * sobelx[1][2] + 
+				t[(i+1)*width+j-1].rgbGreen * sobelx[2][0] + t[(i+1)*width+j].rgbGreen * sobelx[2][1] + t[(i+1)*width+j+1].rgbGreen * sobelx[2][2];
+
+			b = t[(i-1)*width+j-1].rgbBlue * sobelx[0][0] + t[(i-1)*width+j].rgbBlue * sobelx[0][1] + t[(i-1)*width+j+1].rgbBlue * sobelx[0][2] + 
+				t[(i-0)*width+j-1].rgbBlue * sobelx[1][0] + t[(i-0)*width+j].rgbBlue * sobelx[1][1] + t[(i-0)*width+j+1].rgbBlue * sobelx[1][2] + 
+				t[(i+1)*width+j-1].rgbBlue * sobelx[2][0] + t[(i+1)*width+j].rgbBlue * sobelx[2][1] + t[(i+1)*width+j+1].rgbBlue * sobelx[2][2];
+
+			if (r < 0) r = 0;
+			if (r > 255) r = 255;
+			if (g < 0) g = 0;
+			if (g > 255) g = 255;
+			if (b < 0) b = 0;
+			if (b > 255) b = 255;
+
+			img[i*width+j].rgbRed = r;
+			img[i*width+j].rgbGreen = g;
+			img[i*width+j].rgbBlue = b;
+		}
+	}
+
+	free(t);
+}
+
+void set_sobel_filter_y(RGB* img, int width, int height)
+{
+	int i, j;
+	int r, g, b;
+	RGB* t;
+	int sobely[3][3] = { {-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1} };
+
+	t = (RGB*)malloc(width * height * sizeof(RGB));
+	memcpy(t, img, width * height * sizeof(RGB));
+
+	for (i = 1 ; i < height - 1 ; i++)
+	{
+		for(j = 1 ; j < width - 1 ; j++)
+		{
+			r = t[(i-1)*width+j-1].rgbRed * sobely[0][0] + t[(i-1)*width+j].rgbRed * sobely[0][1] + t[(i-1)*width+j+1].rgbRed * sobely[0][2] + 
+				t[(i-0)*width+j-1].rgbRed * sobely[1][0] + t[(i-0)*width+j].rgbRed * sobely[1][1] + t[(i-0)*width+j+1].rgbRed * sobely[1][2] + 
+				t[(i+1)*width+j-1].rgbRed * sobely[2][0] + t[(i+1)*width+j].rgbRed * sobely[2][1] + t[(i+1)*width+j+1].rgbRed * sobely[2][2];
+
+			g = t[(i-1)*width+j-1].rgbGreen * sobely[0][0] + t[(i-1)*width+j].rgbGreen * sobely[0][1] + t[(i-1)*width+j+1].rgbGreen * sobely[0][2] + 
+				t[(i-0)*width+j-1].rgbGreen * sobely[1][0] + t[(i-0)*width+j].rgbGreen * sobely[1][1] + t[(i-0)*width+j+1].rgbGreen * sobely[1][2] + 
+				t[(i+1)*width+j-1].rgbGreen * sobely[2][0] + t[(i+1)*width+j].rgbGreen * sobely[2][1] + t[(i+1)*width+j+1].rgbGreen * sobely[2][2];
+
+			b = t[(i-1)*width+j-1].rgbBlue * sobely[0][0] + t[(i-1)*width+j].rgbBlue * sobely[0][1] + t[(i-1)*width+j+1].rgbBlue * sobely[0][2] + 
+				t[(i-0)*width+j-1].rgbBlue * sobely[1][0] + t[(i-0)*width+j].rgbBlue * sobely[1][1] + t[(i-0)*width+j+1].rgbBlue * sobely[1][2] + 
+				t[(i+1)*width+j-1].rgbBlue * sobely[2][0] + t[(i+1)*width+j].rgbBlue * sobely[2][1] + t[(i+1)*width+j+1].rgbBlue * sobely[2][2];
+
+			if (r < 0) r = 0;
+			if (r > 255) r = 255;
+			if (g < 0) g = 0;
+			if (g > 255) g = 255;
+			if (b < 0) b = 0;
+			if (b > 255) b = 255;
+
+			img[i*width+j].rgbRed = r;
+			img[i*width+j].rgbGreen = g;
+			img[i*width+j].rgbBlue = b;
+		}
+	}
+
+	free(t);
+}
+
+void set_grey_filter(RGB* img, int width, int height)
+{
+	int i, j;
+	int val;
+
+	for (i = 0 ; i < height ; i++)
+	{
+		for (j = 0 ; j < width ; j++)
+		{
+			val = (img[i*width+j].rgbRed + img[i*width+j].rgbGreen + img[i*width+j].rgbBlue) / 3;
+			img[i*width+j].rgbRed = val;
+			img[i*width+j].rgbGreen = val;
+			img[i*width+j].rgbBlue = val;
+		}
+	}
+}
+
+void write_image_file(char* output_file, BITMAPFILEHEADER* file_header, BITMAPINFOHEADER* info_header, RGB* img, char* pal, int palSize, int pStride)
+{
+	FILE* fp;
+
+	if ((fp = (fopen(output_file, "wb"))) == NULL)
 	{
 		printf("Can't open the output file");
 		return;
 	}
-	fwrite(bmpHeader, sizeof(BITMAPFILEHEADER), 1, ofp);
-	fwrite(bmpInfo, sizeof(BITMAPINFOHEADER), 1, ofp);
+	fwrite(file_header, sizeof(BITMAPFILEHEADER), 1, fp);
+	fwrite(info_header, sizeof(BITMAPINFOHEADER), 1, fp);
 
-	if (paletteSize)
+	if (palSize)
 	{
-		fwrite(palette, paletteSize, 1, ofp);
+		fwrite(pal, 1, palSize, fp);
 	}
 
-	for (i = 0; i < bmpInfo->biHeight; i++)
-	{
-		for (j = 0; j < bmpInfo->biWidth; j++)
-		{
-			fwrite(&out_rgb[i][j], sizeof(RGB), 1, ofp);
-			if (bmpInfo->biBitCount == 32)
-			{
-				putc(0, ofp);
-			}
-		}
+	fwrite(img, sizeof(RGB), info_header->biHeight * info_header->biWidth, fp);
 
-		for (k = 0; k < vect; k++)
-		{
-			fputc(0, ofp);
-		}
-	}
-
-	fclose(ofp);
+	fclose(fp);
 }
-
-void average_filter(RGB** rgb, RGB** out_rgb, int height, int width)
-{
-	int i, j;
-
-	for (i = 1; i < height - 1; i++)
-	{
-		for (j = 1; j < width - 1; j++)
-		{
-			unsigned int green = 0, blue = 0, red = 0;
-			for (int k = -1; k < 2; k++)
-			{
-				for (int m = -1; m < 2; m++)
-				{
-					red += rgb[i + k][j + m].rgbRed;
-					green += rgb[i + k][j + m].rgbGreen;
-					blue += rgb[i + k][j + m].rgbBlue;
-				}
-			}
-
-			out_rgb[i][j].rgbRed = (unsigned char)(red / 9);
-			out_rgb[i][j].rgbGreen = (unsigned char)(green / 9);
-			out_rgb[i][j].rgbBlue = (unsigned char)(blue / 9);
-		}
-	}
-}
-
-void create_gauss_33(RGB** rgb, RGB** out_rgb, int x, int y)
-{
-	const int matrix33[3][3] = { {1, 2, 1}, {2, 4, 2}, {1, 2, 1} };
-	int pop = 16;
-	int green = 0, blue = 0, red = 0;
-	int i;
-
-	for (i = 0; i < 3 * 3; i++)
-	{
-		RGB* pix = &rgb[y - 1 + i / 3][x - 1 + i % 3];
-
-		blue += pix->rgbBlue * matrix33[i / 3][i % 3];
-		green += pix->rgbGreen * matrix33[i / 3][i % 3];
-		red += pix->rgbRed * matrix33[i / 3][i % 3];
-	}
-	out_rgb[y][x].rgbRed = (unsigned char)(red / pop);
-	out_rgb[y][x].rgbBlue = (unsigned char)(blue / pop);
-	out_rgb[y][x].rgbGreen = (unsigned char)(green / pop);
-}
-
-void gauss_filter_33(RGB** rgb, RGB** out_rgb, int height, int width)
-{
-	int i, j;
-
-	for (i = 3 / 2; i < height - 3; i++)
-	{
-		for (j = 3 / 2; j < width - 3; j++)
-		{
-			create_gauss_33(rgb, out_rgb, j, i);
-		}
-	}
-}
-
-void create_gauss_55(RGB** rgb, RGB** out_rgb, int x, int y)
-{
-	const int matrix55[5][5] = { {1, 4,  6,  4,  1}, {4, 16, 24, 16, 4}, {6, 24, 36, 24, 6}, {4, 16, 24, 16, 4}, {1, 4,  6,  4,  1} };
-	int pop = 256;
-	int green = 0, blue = 0, red = 0;
-	int i;
-
-	for (i = 0; i < 5 * 5; i++)
-	{
-		RGB* pix = &rgb[y - 2 + i / 5][x - 2 + i % 5];
-
-		blue += pix->rgbBlue * matrix55[i / 5][i % 5];
-		green += pix->rgbGreen * matrix55[i / 5][i % 5];
-		red += pix->rgbRed * matrix55[i / 5][i % 5];
-	}
-
-	out_rgb[y][x].rgbRed = (unsigned char)(red / pop);
-	out_rgb[y][x].rgbBlue = (unsigned char)(blue / pop);
-	out_rgb[y][x].rgbGreen = (unsigned char)(green / pop);
-}
-
-void gauss_filter_55(RGB** rgb, RGB** out_rgb, int height, int width)
-{
-	int i, j;
-
-	for (i = 5 / 2; i < height - 5; i++)
-	{
-		for (j = 5 / 2; j < width - 5; j++)
-		{
-			create_gauss_55(rgb, out_rgb, j, i);
-		}
-	}
-}
-
-void create_sobel_x(RGB** rgb, RGB** out_rgb, int x, int y)
-{
-	const int matrix[3][3] = { {1,  2,  1}, {0,  0,  0}, {-1, -2, -1} };
-	int green = 0, blue = 0, red = 0;
-	int i;
-
-	for (i = 0; i < 9; i++)
-	{
-		RGB* pix = &rgb[y - 1 + i / 3][x - 1 + i % 3];
-
-		blue += pix->rgbBlue * matrix[i / 3][i % 3];
-		green += pix->rgbGreen * matrix[i / 3][i % 3];
-		red += pix->rgbRed * matrix[i / 3][i % 3];
-	}
-
-	if (red < 0)
-		red = 0;
-	if (red > 255)
-		red = 255;
-
-	if (blue < 0)
-		blue = 0;
-	if (blue > 255)
-		blue = 255;
-
-	if (green < 0)
-		green = 0;
-	if (green > 255)
-		green = 255;
-
-	out_rgb[y][x].rgbRed = (unsigned char)red;
-	out_rgb[y][x].rgbBlue = (unsigned char)blue;
-	out_rgb[y][x].rgbGreen = (unsigned char)green;
-}
-
-void sobel_x_filter(RGB** rgb, RGB** out_rgb, int height, int width)
-{
-	for (int i = 1; i < height - 3; i++)
-	{
-		for (int j = 1; j < width - 3; j++)
-		{
-			create_sobel_x(rgb, out_rgb, j, i);
-		}
-	}
-}
-
-void create_sobel_y(RGB** rgb, RGB** out_rgb, int x, int y)
-{
-	const int matrix[3][3] = { {-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1} };
-	int green = 0, blue = 0, red = 0;
-
-	for (int i = 0; i < 9; i++)
-	{
-		RGB* pix = &rgb[y - 1 + i / 3][x - 1 + i % 3];
-
-		blue += pix->rgbBlue * matrix[i / 3][i % 3];
-		green += pix->rgbGreen * matrix[i / 3][i % 3];
-		red += pix->rgbRed * matrix[i / 3][i % 3];
-	}
-
-	if (red < 0)
-		red = 0;
-	if (red > 255)
-		red = 255;
-
-	if (blue < 0)
-		blue = 0;
-	if (blue > 255)
-		blue = 255;
-
-	if (green < 0)
-		green = 0;
-	if (green > 255)
-		green = 255;
-
-	out_rgb[y][x].rgbRed = (unsigned char)red;
-	out_rgb[y][x].rgbBlue = (unsigned char)blue;
-	out_rgb[y][x].rgbGreen = (unsigned char)green;
-}
-
-
-void sobel_y_filter(RGB** rgb, RGB** out_rgb, int height, int width)
-{
-	for (int i = 1; i < height - 3; i++)
-	{
-		for (int j = 1; j < width - 3; j++)
-		{
-			create_sobel_y(rgb, out_rgb, j, i);
-		}
-	}
-}
-
-void grey_filter(RGB** rgb, RGB** out_rgb, int height, int width)
-{
-	unsigned char color;
-
-	for (int i = 0; i < height; i++)
-	{
-		for (int j = 0; j < width; j++)
-		{
-			color = (unsigned char)((rgb[i][j].rgbGreen + rgb[i][j].rgbBlue + rgb[i][j].rgbRed) / 3);
-
-			out_rgb[i][j].rgbBlue = color;
-			out_rgb[i][j].rgbGreen = color;
-			out_rgb[i][j].rgbRed = color;
-		}
-	}
-}
-
 
 int main(int argc, char* argv[])
 {
-	int i;
-	BITMAPFILEHEADER bmpHeader;
-	BITMAPINFOHEADER bmpInfo;
-	int vect;
-	char* palette;
-	unsigned int paletteSize;
-	RGB** rgb;
-	RGB** out_rgb;
-
+	BITMAPFILEHEADER file_header;
+	BITMAPINFOHEADER info_header;
+	RGB* img;
+	char* pal = 0;
+	int pal_size, stride;
 
 	if (argc != 4)
 	{
-		printf("<exe_name> INPUT_BMP FILTER_NAME OUTPUT_BMP\n");
+		printf("<exe_name> FILTER_NAME INPUT_BMP OUTPUT_BMP\n");
 		printf("for example\n");
-		printf("task8.exe imput.bmp %s output.bmp\n", FILTER_AVERAGE);
-		printf("task8.exe imput.bmp %s output.bmp\n", FILTER_GAUSS3);
-		printf("task8.exe imput.bmp %s output.bmp\n", FILTER_GAUSS5);
-		printf("task8.exe imput.bmp %s output.bmp\n", FILTER_SOBELX);
-		printf("task8.exe imput.bmp %s output.bmp\n", FILTER_SOBELY);
-		printf("task8.exe imput.bmp %s output.bmp\n", FILTER_GRAY);
+		printf("task8.exe %s imput.bmp output.bmp\n", FILTER_AVERAGE);
+		printf("task8.exe %s imput.bmp output.bmp\n", FILTER_GAUSS3);
+		printf("task8.exe %s imput.bmp output.bmp\n", FILTER_GAUSS5);
+		printf("task8.exe %s imput.bmp output.bmp\n", FILTER_SOBELX);
+		printf("task8.exe %s imput.bmp output.bmp\n", FILTER_SOBELY);
+		printf("task8.exe %s imput.bmp output.bmp\n", FILTER_GRAY);
 		return -1;
 	}
 
-	rgb = get_bmp_image_data(argv[1], &bmpHeader, &bmpInfo, &vect, &palette, &paletteSize);
-	if (rgb == 0)
+	if (0 == read_image_file(argv[2], &file_header, &info_header, &img, &pal, &pal_size, &stride))
 	{
-		printf("The bmp file format is invalid.\n");
+		printf("The bmp file is invalid.\n");
 		return -1;
 	}
-	out_rgb = copy_bmp_data(rgb, bmpInfo.biHeight, bmpInfo.biWidth);
 
-	if (strcmp(argv[2], FILTER_AVERAGE) == 0)
+	if (strcmp(argv[1], FILTER_AVERAGE) == 0)
 	{
-		average_filter(rgb, out_rgb, bmpInfo.biHeight, bmpInfo.biWidth);
+		set_average_filter(img, info_header.biWidth, info_header.biHeight);
 	}
-	else if (strcmp(argv[2], FILTER_GAUSS3) == 0)
+	else if (strcmp(argv[1], FILTER_GAUSS3) == 0)
 	{
-		gauss_filter_33(rgb, out_rgb, bmpInfo.biHeight, bmpInfo.biWidth);
+		set_gauss_filter_3(img, info_header.biWidth, info_header.biHeight);
 	}
-	else if (strcmp(argv[2], FILTER_GAUSS5) == 0)
+	else if (strcmp(argv[1], FILTER_GAUSS5) == 0)
 	{
-		gauss_filter_55(rgb, out_rgb, bmpInfo.biHeight, bmpInfo.biWidth);
+		set_gauss_filter_5(img, info_header.biWidth, info_header.biHeight);
 	}
-	else if (strcmp(argv[2], FILTER_SOBELX) == 0)
+	else if (strcmp(argv[1], FILTER_SOBELX) == 0)
 	{
-		sobel_x_filter(rgb, out_rgb, bmpInfo.biHeight, bmpInfo.biWidth);
+		set_sobel_filter_x(img, info_header.biWidth, info_header.biHeight);
 	}
-	else if (strcmp(argv[2], FILTER_SOBELY) == 0)
+	else if (strcmp(argv[1], FILTER_SOBELY) == 0)
 	{
-		sobel_y_filter(rgb, out_rgb, bmpInfo.biHeight, bmpInfo.biWidth);
+		set_sobel_filter_y(img, info_header.biWidth, info_header.biHeight);
 	}
-	else if (strcmp(argv[2], FILTER_GRAY) == 0)
+	else if (strcmp(argv[1], FILTER_GRAY) == 0)
 	{
-		grey_filter(rgb, out_rgb, bmpInfo.biHeight, bmpInfo.biWidth);
+		set_grey_filter(img, info_header.biWidth, info_header.biHeight);
 
 	}
 	else
@@ -427,18 +385,10 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
-	put_bmp_file_data(argv[3], &bmpHeader, &bmpInfo, out_rgb, vect, palette, paletteSize);
-	for (i = 0; i < bmpInfo.biHeight ; i++)
-	{
-		free(rgb[i]);
-	}
-	free(rgb);
+	write_image_file(argv[3], &file_header, &info_header, img, pal, pal_size, stride);
 
-	for (i = 0; i < bmpInfo.biHeight ; i++)
-	{
-		free(out_rgb[i]);
-	}
-	free(out_rgb);
+	if (img) free(img);
+	if (pal) free(pal);
 
 	return 0;
 }
