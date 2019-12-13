@@ -4,24 +4,31 @@
 
 int main()
 {
-    long long q, q0;
-    double b, r, a = savein();
+    long long q, q0, denum =0, number = 0;
+    //double a = saveIn();
+    long long a = saveInInt();
 
-    r = reminder(a, sqrt(a));
-    q = wholep(a, sqrt(a));
-    printf("%lld\n",q);
-    a=sqrt(a);
-    b=r;
-    q0=q;
-    do
+    q = (long long)trunc(sqrt(a));
+
+    if ((long long)a - q * q == 0)
     {
-        r = reminder(a, b);
-        q = wholep(a, b);
-        printf("%lld\n",q);
-        a=b;
-        b=r;
+        printf("%lld", q);
+        return 0;
     }
-    while(2*q0 != q);
 
+    printf("%lld ", q);
+    q0 = (long long)(q + q) % (long long)(a - q * q) - q;
+    denum = (long long)a - q * q;
+
+    number = (-q0 + q) / denum;
+    printf("%lld ", number);
+
+    for (;2 * q != number;)
+    {
+        denum = (long long)(a - q0 * q0) / (long long)(denum);
+        number = (-q0 + q) / denum;
+        printf("%lld ", number);
+        q0 = (long long)(q - q0) % (long long)(denum) - q;
+    }
     return 0;
 }
