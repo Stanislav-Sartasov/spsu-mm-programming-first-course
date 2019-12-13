@@ -8,24 +8,6 @@
 
 const int LEN = 1e4,
           MAX_LEN = 100;
-int P, MOD;
-
-void add(Node *cur, char k[], char v[])
-{
-	Node *new_node = (Node*) malloc(sizeof(Node));
-	strcpy(new_node->key, k);
-	strcpy(new_node->value, v);
-	new_node->next = NULL;
-	cur->next = new_node;
-}
-
-void del_node(Node *cur)
-{
-    if (cur == NULL)
-        return;
-    cur->next = (cur->next)->next;
-    free(cur->next);
-}
 
 int get_p()
 {
@@ -54,37 +36,64 @@ long long get_mod()
     return mod[k];
 }
 
-int hash(char x[])
+void create(Node *a[])
+{
+    int P = get_p(), MOD = get_mod();
+    for (int i = 0; i < LEN; i++)
+    {
+        a[i] = (Node*) malloc(sizeof(Node));
+        char e[] = {'\0'};
+        strcpy(a[i]->key, e);
+        strcpy(a[i]->value, e);
+        a[i]->next = NULL;
+        a[i]->p = P;
+        a[i]->mod = MOD;
+    }
+}
+
+void add(Node *cur, char k[], char v[])
+{
+	Node *new_node = (Node*) malloc(sizeof(Node));
+	strcpy(new_node->key, k);
+	strcpy(new_node->value, v);
+	new_node->next = NULL;
+	new_node->p = cur->p;
+	new_node->mod = cur->mod;
+	cur->next = new_node;
+}
+
+void del_node(Node *cur)
+{
+    if (cur == NULL)
+        return;
+    cur->next = (cur->next)->next;
+    free(cur->next);
+}
+
+
+int hash(char x[], int P, int MOD)
 {
     long long h = 0;
     //P = 1; MOD = 1e6;
     for (int i = 0; x[i] != '\0'; i++)
     {
         h = (h * P + (int)x[i]) % MOD;
+        //h = (h * P + (int)(x[i] - '0')) % MOD;
     }
     return h % LEN;
 }
 
-void rebalance(Node **a[])
+void rebalance(Node *a[])
 {
-    P = get_p();
-    MOD = get_mod();
     Node *b[LEN];
-    for (int i = 0; i < LEN; i++)
-    {
-        b[i] = (Node*) malloc(sizeof(Node));
-        char e[] = {'\0'};
-        strcpy(b[i]->key, e);
-        strcpy(b[i]->value, e);
-        b[i]->next = NULL;
-    }
+    create(b);
     for (int i = 0; i < LEN; i++)
     {
         Node *cur = a[i];
         cur = cur->next;
         while (cur != NULL)
         {
-            insert(&b, cur->key, cur->value);
+            insert(b, cur->key, cur->value);
             cur = cur->next;
         }
     }
@@ -93,9 +102,9 @@ void rebalance(Node **a[])
         free(b[i]);
 }
 
-int insert(Node **a[], char key[], char v[])
+int insert(Node *a[], char key[], char v[])
 {
-    int h = hash(key);
+    int h = hash(key, a[0]->p, a[0]->mod);
     Node *cur = a[h];
     int k = 0;
     while (cur->next != NULL)
@@ -113,9 +122,9 @@ int insert(Node **a[], char key[], char v[])
     return 1;
 }
 
-Node* find(Node **a[], char key[])
+Node* find(Node *a[], char key[])
 {
-    int h = hash(key);
+    int h = hash(key, a[0]->p, a[0]->mod);
     Node *cur = a[h];
     while (cur != NULL)
     {
@@ -126,11 +135,11 @@ Node* find(Node **a[], char key[])
     return NULL;
 }
 
-int del(Node **a[], char key[])
+int del(Node *a[], char key[])
 {
-    int h = hash(key);
+    int h = hash(key, a[0]->p, a[0]->mod);
     Node *cur = a[h];
-    Node *prev = *a[h];
+    Node *prev;
     while (cur != NULL)
     {
         if (!strcmp(cur->key, key))

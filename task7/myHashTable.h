@@ -7,25 +7,16 @@ struct Node
     char key[100];
     char value[100];
     Node *next;
+    int p;
+    int mod;
 };
 
 const int LEN, MAX_LEN;
-int P, MOD;
 
-void add(Node *cur, char k[], char v[]);
+void create(Node *a[]);
 
-void del_node(Node *cur);
+int insert(Node *a[], char key[], char v[]);
 
-int get_p();
+Node* find(Node *a[], char key[]);
 
-long long get_mod();
-
-int hash(char x[]);
-
-void rebalance(Node **a[]);
-
-int insert(Node **a[], char key[], char v[]);
-
-Node* find(Node **a[], char key[]);
-
-int del(Node **a[], char key[]);
+int del(Node *a[], char key[]);

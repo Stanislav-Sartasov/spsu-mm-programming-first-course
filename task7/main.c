@@ -13,16 +13,7 @@ int main()
     printf("To find the value by key, enter: find *key*\n");
     printf("To finish the program, enter: finish\n");
     Node *a[LEN];
-    for (int i = 0; i < LEN; i++)
-    {
-        a[i] = (Node*) malloc(sizeof(Node));
-        char e[] = {'\0'};
-        strcpy(a[i]->key, e);
-        strcpy(a[i]->value, e);
-        a[i]->next = NULL;
-    }
-    P = get_p();
-    MOD = get_mod();
+    create(a);
     while (1)
     {
         char q[MAX_LEN];
@@ -32,9 +23,9 @@ int main()
         {
             char k[MAX_LEN];
             char v[MAX_LEN];
-            scanf("%s", &k);
-            scanf("%s", &v);
-            if (insert(&a, k, v))
+            scanf("%s", k);
+            scanf("%s", v);
+            if (insert(a, k, v))
                 printf("Action completed successfully.\n");
             else
                 printf("The value for this key already exists.\n");
@@ -44,7 +35,7 @@ int main()
         {
             char k[MAX_LEN];
             scanf("%s", &k);
-            Node *ans = find(&a, k);
+            Node *ans = find(a, k);
             if (ans == NULL)
             {
                 printf("Not found.\n");
@@ -59,7 +50,7 @@ int main()
         {
             char k[MAX_LEN];
             scanf("%s", &k);
-            if (del(&a, k))
+            if (del(a, k))
                 printf("Action completed successfully.\n");
             else
                 printf("The value for this key doesn't exist.\n");
@@ -76,4 +67,5 @@ int main()
             printf("Please enter correct request!\n");
         }
     }
+    return 0;
 }

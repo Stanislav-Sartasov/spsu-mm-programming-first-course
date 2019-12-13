@@ -17,3 +17,21 @@
 	<string.h>
 	"myHashTable.h"
 
+1576278870 source:c:\users\milos-pc\downloads\spsu-mm-programming-first-course-miloserdovalyubov\spsu-mm-programming-first-course-miloserdovalyubov\task7\main.c
+	<stdio.h>
+	<stdlib.h>
+	<malloc.h>
+	<math.h>
+	<string.h>
+	"myHashTable.h"
+
+1576279395 c:\users\milos-pc\downloads\spsu-mm-programming-first-course-miloserdovalyubov\spsu-mm-programming-first-course-miloserdovalyubov\task7\myhashtable.h
+
+1576279034 source:c:\users\milos-pc\downloads\spsu-mm-programming-first-course-miloserdovalyubov\spsu-mm-programming-first-course-miloserdovalyubov\task7\myhashtable.c
+	<stdio.h>
+	<stdlib.h>
+	<malloc.h>
+	<math.h>
+	<string.h>
+	"myHashTable.h"
+
