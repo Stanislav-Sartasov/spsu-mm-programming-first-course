@@ -1,13 +1,6 @@
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include<malloc.h>
-
-static int amount_of_space = 10000;
-static void *memory;
-static int has_initialized = 0;
 
 typedef struct mem_block
 {
@@ -17,7 +10,6 @@ typedef struct mem_block
 } mem_block;
 
 static mem_block *stack = NULL;
-
 
 void init();
 mem_block *find_free_memory(size_t size);
