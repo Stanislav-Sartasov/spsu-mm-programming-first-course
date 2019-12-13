@@ -51,7 +51,7 @@ char* decimal_to_binary(int number)
         i++;
     }
 
-    char *rev_binary = (char *) calloc(strlen(binary)+1, sizeof(char));
+    char *rev_binary = (char *) calloc(strlen(binary) + 1, sizeof(char));
     str_rev(binary, &rev_binary);
 
     return rev_binary;
@@ -123,7 +123,6 @@ int main(void)
     int c = a * b;
 
     printf("Found product: %d\n\n", c);
-
 
     // a
     long long int target_num = pow(2, 32) - c;
