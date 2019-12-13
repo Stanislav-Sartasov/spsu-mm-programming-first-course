@@ -10,33 +10,40 @@ int check_numbers(int x, int y, int z)
     return 0;
 }
 
-int min3(int a, int b, int c)
+int gcd(int a, int b)
 {
-    if (a <= b && a <= c)
+    int buf;
+    while (b > 0)
     {
-        return a;
+        buf = a % b;
+        a = b;
+        b = buf;
     }
-    else if (b <= a && b <= c)
-    {
-        return b;
-    }
-    else
-    {
-        return c;
-    }
-
+    return a;
 }
 
-int check_three_prime(int x, int y, int z)
+void input(int* x, int* y, int* z)
 {
-    for (int i = 2; i < min3(x, y, z); i++)
+    while (1)
     {
-        if (x % i == 0 && y % i == 0 && z % i == 0)
+        printf("Input x y z: ");
+        if (scanf("%d %d %d", x, y, z) != 3)
         {
-            return 0;
+            printf("Incorrect values\n\n");
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF);
+            continue;
         }
+
+        if (*x < 1 || *y < 1 || *z < 1)
+        {
+            printf("One or more numbers are not natural\n\n");
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF);
+            continue;
+        }
+        break;
     }
-    return 1;
 }
 
 int main()
@@ -45,28 +52,12 @@ int main()
 
     int x, y, z;
 
-    printf("Input x y z: ");
-
-    if (scanf("%d %d %d", &x, &y, &z) != 3)
-    {
-        printf("Incorrect values\n\n");
-        printf("Input x y z: ");
-        setbuf(stdin, NULL);
-        scanf("%d %d %d", &x, &y, &z);
-    }
-
-    if (x < 1 || y < 1 || z < 1)
-    {
-        printf("One or more numbers are not natural\n\n");
-        printf("Input x y z: ");
-        setbuf(stdin, NULL);
-        scanf("%d %d %d", &x, &y, &z);
-    }
+    input(&x, &y, &z);
 
     if (check_numbers(x, y, z) || check_numbers(z, y, x) || check_numbers(z, x, y))
     {
         printf("Numbers are Pifagor triple\n");
-        if (check_three_prime(x, y, z))
+        if (gcd(gcd(x, y), z) == 1)
             printf("Pifagor triple is primitive\n");
         else
             printf("Pifagor triple is not primitive\n");
