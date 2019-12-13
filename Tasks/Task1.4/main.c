@@ -1,17 +1,9 @@
-//
-//  main.c
-//  task1.4_Числа Мерсенна
-//
-//  Created by 李泽民 on 20.10.2019.
-//  Copyright © 2019 Ли Цзэминь. All rights reserved.
-//
-
 #include "stdio.h"
 #include "math.h"
 
 int is_prime(long int n)
 {
-    for (int i = 2; i < n; i++)
+    for (int i = 2; i < ((int) sqrt(n - 1)) + 1; i++)
     {
         if (n % i == 0)
             return 0;
@@ -21,11 +13,12 @@ int is_prime(long int n)
 
 int main()
 {
-    int n_start = 1;
-    long int curr_mersenne = 1;
+    int n_start = 2;
+    long int curr_mersenne = 3;
 
     long int end = pow(2, 32) - 1;
 
+    printf("Prime Mersenne numbers:\n");
     while (curr_mersenne <= end)
     {
         if (is_prime(curr_mersenne))
