@@ -1,5 +1,9 @@
 #include "myMalloc.h"
 
+int amount_of_space = 10000;
+void *memory;
+int has_initialized = 0;
+
 void init()
 {
 	has_initialized = 1;
