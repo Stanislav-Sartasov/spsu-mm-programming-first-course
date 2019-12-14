@@ -29,6 +29,12 @@ void get_fraction(int number)
 	printf("\nPeriod length: %d\n", period);
 }
 
+void consume_input()
+{
+	int symb;
+	while ((symb = getchar()) != '\n' && symb != EOF);
+}
+
 void input(int* number)
 {
 	while (1)
@@ -37,16 +43,21 @@ void input(int* number)
 		if (scanf("%d", number) != 1)
 		{
 			printf("Incorrect input\n\n");
-			int symb;
-			while ((symb = getchar()) != '\n' && symb != EOF);
+			consume_input();
+			continue;
+		}
+
+		if (*number < 0)
+		{
+			printf("Number is negative\n\n");
+			consume_input();
 			continue;
 		}
 
 		if (!is_sqrt(*number))
 		{
 			printf("Number is a full square\n\n");
-			int symb;
-			while ((symb = getchar()) != '\n' && symb != EOF);
+			consume_input();
 			continue;
 		}
 		break;
