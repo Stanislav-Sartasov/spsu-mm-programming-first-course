@@ -22,19 +22,19 @@ int main()
 {
 	int n = 1000000, sum = 0, i;
 	//scanf("%d", &n);
-	int *MDRS = (int*)malloc(n * sizeof(int));
+	int *mdrs = (int*)malloc(n * sizeof(int));
 
-	for (i = 2; i < n; i++) MDRS[i] = digital_root(i);
+	for (i = 2; i < n; i++) mdrs[i] = digital_root(i);
 
 	for (i = 2; i < n; i++)
 	{
 		for (int j = 2; i * j < n && j <= i; j++)
 		{
-			if (MDRS[i * j] < MDRS[i] + MDRS[j]) MDRS[i * j] = MDRS[i] + MDRS[j];
+			if (mdrs[i * j] < mdrs[i] + mdrs[j]) mdrs[i * j] = mdrs[i] + mdrs[j];
 		}
 	}
 
-	for (i = 2; i < n; i++) sum += MDRS[i];
+	for (i = 2; i < n; i++) sum += mdrs[i];
 
 	printf("%d\n", sum);
 
