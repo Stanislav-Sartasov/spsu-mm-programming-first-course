@@ -15,16 +15,6 @@ void init()
 	stack = block;
 }
 
-mem_block *find_free_memory(size_t size)
-{
-	mem_block *tmp = stack;
-	while (tmp != NULL)
-	{
-		if (tmp->size_of_block >= size + sizeof(size_t)) return tmp;
-		tmp = tmp->next;
-	}
-	return NULL;
-}
 
 void delete_block(mem_block *block)
 {
@@ -45,9 +35,21 @@ void delete_block(mem_block *block)
 void *myMalloc(size_t size)
 {
 	if (has_initialized == 0) init();
+	int k = 0;
 
-	mem_block *block = find_free_memory(size);
-	if (block == NULL) return NULL;
+	mem_block *block = stack;
+	while (block != NULL)
+	{
+		if (block->size_of_block >= size + sizeof(size_t))
+		{
+			k = 1;
+			break;
+		}
+			
+		block = block->next;
+	}
+
+	if (k == NULL) return NULL;
 	if (size == block->size_of_block)
 	{
 		delete_block(block);
@@ -90,26 +92,29 @@ void myFree(void *ptr)
 	}
 	if ((block->next != NULL) && (block->next == (char *)block + sizeof(block)))
 	{
-		unite(&block, &(block->next));
+
+		(block)->next = (block->next)->next;
+		if ((block->next)->next != NULL)
+		{
+			(block->next)->next->previous = (block);
+		}
+		(block)->size_of_block = (block)->size_of_block + (block->next)->size_of_block;
+
 	}
 	if ((block->previous != NULL) && (block->previous == (char *)block - sizeof(block)))
 	{
-		unite((&block->previous), &block);
+
+		(block->previous)->next = (block)->next;
+		if ((block)->next != NULL)
+		{
+			(block)->next->previous = (block->previous);
+		}
+		(block->previous)->size_of_block = (block->previous)->size_of_block + (block)->size_of_block;
+
 	}
 
 
 }
-
-int unite(mem_block **first, mem_block **second)
-{
-	(*first)->next = (*second)->next;
-	if ((*second)->next != NULL)
-	{
-		(*second)->next->previous = (*first);
-	}
-	(*first)->size_of_block = (*first)->size_of_block + (*second)->size_of_block;
-}
-
 
 void *myRealloc(void *ptr, size_t newSize)
 {
