@@ -29,7 +29,7 @@ int main()
 
 	myPow(mas, 3, 5000, n);
 
-	for (i = n - 1; i >=0; i--) printf("%x", mas[i]);
+	for (i = n - 1; i >= 0; i--) printf("%x", mas[i]);
 	printf("\n");
 	free(mas);
 	system("pause");
