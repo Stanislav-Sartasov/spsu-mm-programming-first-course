@@ -12,9 +12,7 @@ typedef struct mem_block
 static mem_block *stack = NULL;
 
 void init();
-mem_block *find_free_memory(size_t size);
 void delete_block(mem_block *block);
 void *myMalloc(size_t size);
 void myFree(void *ptr);
-int unite(mem_block **first, mem_block **second);
 void *myRealloc(void *ptr, size_t newSize);
