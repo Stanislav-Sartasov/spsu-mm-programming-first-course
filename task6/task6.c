@@ -69,12 +69,16 @@ int main(int argc, char* argv[])
 	qsort(strings, n, sizeof(char*), compare);
 	
 	char end = '\n';
+	
 	for (int k = 0; k < n; k++)
 	{
+		int len = 0;
 		for (int i = 0; *(strings[k] + i) != '\n'; i++)
 		{
-			write(fdout, (strings[k] + i), sizeof(char));
+			len += 1;
+			
 		}
+		write(fdout, (strings[k]), sizeof(char) * len);
 		write(fdout, &end, sizeof(char));
 	}
 
