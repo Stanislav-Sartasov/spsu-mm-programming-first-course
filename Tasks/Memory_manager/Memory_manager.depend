@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1576349873 source:c:\users\pavel\desktop\proga_univer\memory_manager\main.c
+	"manager.h"
+
+1576349886 c:\users\pavel\desktop\proga_univer\memory_manager\manager.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1576349873 source:c:\users\pavel\desktop\proga_univer\memory_manager\manager.c
+	"manager.h"
+
