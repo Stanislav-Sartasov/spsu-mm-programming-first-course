@@ -1,5 +1,4 @@
 #ifndef _HASHTABLE_H
-//Запомни: меня зовут __MYMATH_H
 #define _HASHTABLE_H
 
 struct cell
