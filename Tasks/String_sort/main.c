@@ -72,12 +72,12 @@ int main(int argc, char* argv[])
 	{
 		int pos = 0;
 		if (strings[i])
-			while (strings[i][pos] != '\n')
+			while (strings[i][pos] != '\r' && strings[i][pos] != '\n')
 			{
 				fputc(strings[i][pos], file_out);
 				pos++;
 			}
-		//fputc('\n', file_out);
+		fputc('\n', file_out);
 	}
 	//fputc('\0', file_out);
 	munmap(text, len_input_file);
