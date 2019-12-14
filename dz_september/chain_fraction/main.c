@@ -6,13 +6,13 @@ int main()
 {
     long long q, q0, denum = 0, number = 0, a, period = 0;
 
-    printf("This programm give's elements of continious fraction for entred sqrt(x)\n");
+    printf("This programm give's elements of continious fraction for entred sqrt(x), x > 0\n");
     do
     {
         printf("enter yor number(not full square of number): ");
         a = saveInInt();
     }
-    while (sqrt(a) - trunc(sqrt(a)) == 0);
+    while ((sqrt(a) - trunc(sqrt(a)) == 0) || (a <= 0));
 
     q = (long long)trunc(sqrt(a));
 
