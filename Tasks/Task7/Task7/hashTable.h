@@ -15,11 +15,8 @@ struct hashTable
 	struct cell* list;
 };
 
-int hash(int a, int m);
 
 void create(struct hashTable* hashTable);
-
-void relocate(struct hashTable* hashTable);
 
 void insert(struct hashTable* hashTable, int value, int key);
 
