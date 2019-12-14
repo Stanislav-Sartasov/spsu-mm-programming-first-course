@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1576354924 source:c:\users\milos-pc\downloads\spsu-mm-programming-first-course-miloserdovalyubov\task9\main.c
+	<stdio.h>
+	<stdlib.h>
+	"allocators.h"
+
+1576355058 c:\users\milos-pc\downloads\spsu-mm-programming-first-course-miloserdovalyubov\task9\allocators.h
+
+1576354754 source:c:\users\milos-pc\downloads\spsu-mm-programming-first-course-miloserdovalyubov\task9\allocators.c
+	<unistd.h>
+	<malloc.h>
+	<stdlib.h>
+	<string.h>
+	"allocators.h"
+
