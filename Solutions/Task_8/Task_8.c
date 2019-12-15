@@ -351,7 +351,6 @@ int main(int argc, char** argv)
 					str = (char*)realloc(str, sizeof(char) * (i + 2));
 				}
 				argv = strgs(&str, &argc);
-				argc;
 			}
 			if (argc == 2)
 			{
