@@ -34,7 +34,7 @@ unsigned int fget_int(FILE* file)
 	char c[4];
 	for (int i = 0; i < 4; i++)
 		c[i] = fgetc(file);
-	return *((unsigned int*)&c);
+	return *((unsigned int*)& c);
 }
 
 int read_and_write_bmp(FILE* file_in, FILE* file_out, unsigned int* width, unsigned int* height, rgb_24** image, unsigned char** alpha)
@@ -66,7 +66,7 @@ int read_and_write_bmp(FILE* file_in, FILE* file_out, unsigned int* width, unsig
 	fprint_bit_unsigned_short(file_out, bit_count);
 	skip_and_write(file_in, file_out, image_begin - 30);
 	if (bit_count == 32)
-		*alpha = (char*)malloc(*width * *height);
+		* alpha = (char*)malloc(*width * *height);
 	else
 		*alpha = 0;
 	*image = (rgb_24*)malloc(sizeof(rgb_24) * *width * *height);
@@ -75,15 +75,26 @@ int read_and_write_bmp(FILE* file_in, FILE* file_out, unsigned int* width, unsig
 		for (unsigned j = 0; j < *width; j++)
 		{
 			for (int c = 2; c >= 0; c--)
-				*(*(*image + i * *width + j) + c) = fgetc(file_in);
+				* (*(*image + i * *width + j) + c) = fgetc(file_in);
 			if (bit_count == 32)
-				*alpha[i * *width + j] = fgetc(file_in);
+				* alpha[i * *width + j] = fgetc(file_in);
 		}
 		for (unsigned j = 0; j < (4 - ((*width * (bit_count / 8)) % 4)) % 4; j++)
 			fgetc(file_in);
 	}
 	fclose(file_in);
 	return 0;
+}
+
+double use_mask(rgb_24** image, unsigned int width, unsigned int height, unsigned x, unsigned y, int c, double* mask, unsigned sz)
+{
+	int m = sz / 2;
+	double sum = 0;
+	for (int i = -m; i <= m; i++)
+		for (int j = -m; j <= m; j++)
+			if ((y + i) >= 0 && (y + i) < height && (x + j) >= 0 && (x + j) < width)
+				sum += (double)(*(*(*image + (y + i) * width + x + j) + c)) * mask[(i + m) * sz + j + m];
+	return sum;
 }
 
 void megas(char type, rgb_24** image, unsigned int width, unsigned int height, int sz, double sg)
@@ -102,14 +113,17 @@ void megas(char type, rgb_24** image, unsigned int width, unsigned int height, i
 		return;
 	}
 	int size;
-	double sum = 0.0;
-	double sum_kern = 0.0;
 	int m = sz / 2;
+	double sum_kern;
+	double sum_kern_max = 0.0;
 	rgb_24* new_image = (rgb_24*)malloc(sizeof(rgb_24) * height * width);
 	if (type == 'g')
 		for (int i = -m; i <= m; i++)
 			for (int j = -m; j <= m; j++)
+			{
 				kern[(i + m) * sz + j + m] = exp(-(pow(i, 2.0) + pow(j, 2.0)) / (2 * pow(sg, 2.0))) / (2 * pi * pow(sg, 2.0));
+				sum_kern_max += kern[(i + m) * sz + j + m];
+			}
 	for (unsigned y = 0; y < height; y++)
 		for (unsigned x = 0; x < width; x++)
 			for (int c = 0; c < 3; c++)
@@ -141,16 +155,17 @@ void megas(char type, rgb_24** image, unsigned int width, unsigned int height, i
 					new_image[y * width + x][c] = arr[size / 2];
 					break;
 				case 'g':
-					sum = 0.0;
-					sum_kern = 0.0;
-					for (int i = -m; i <= m; i++)
-						for (int j = -m; j <= m; j++)
-							if ((y + i) >= 0 && (y + i) < height && (x + j) >= 0 && (x + j) < width)
-							{
-								sum += (double)(*(*(*image + (y + i) * width + x + j) + c)) * kern[(i + m) * sz + j + m];
-								sum_kern += kern[(i + m) * sz + j + m];
-							}
-					new_image[y * width + x][c] = (unsigned char)(sum / sum_kern);
+					if (y < m || y + m >= height || x < m || x + m >= width)
+					{
+						sum_kern = 0;
+						for (int i = -m; i <= m; i++)
+							for (int j = -m; j <= m; j++)
+								if ((y + i) >= 0 && (y + i) < height && (x + j) >= 0 && (x + j) < width)
+									sum_kern += kern[(i + m) * sz + j + m];
+						new_image[y * width + x][c] = (unsigned char)use_mask(image, width, height, x, y, c, kern, sz) / sum_kern;
+					}
+					else
+						new_image[y * width + x][c] = (unsigned char)use_mask(image, width, height, x, y, c, kern, sz) / sum_kern_max;
 					break;
 				}
 			}
@@ -177,15 +192,17 @@ void shade(rgb_24** image, unsigned int width, unsigned int height)
 		{
 			shade = 0.299 * (*(*(*image + y * width + x))) + 0.587 * (*(*(*image + y * width + x) + 1)) + 0.114 * (*(*(*image + y * width + x) + 2));
 			for (int c = 0; c < 3; c++)
-				*(*(*image + y * width + x) + c) = (unsigned char)shade;
+				* (*(*image + y * width + x) + c) = (unsigned char)shade;
 		}
 }
 
 void sobel_xy(char type, rgb_24** image, unsigned int width, unsigned int height, double threshold)
 {
 	rgb_24* new_image = (rgb_24*)malloc(sizeof(rgb_24) * height * width);
-	int g_x = 0;
-	int g_y = 0;
+	double g_x;
+	double g_y;
+	double g_x_mask[] = { 1, 2, 1, 0, 0, 0, -1, -2, -1 };
+	double g_y_mask[] = { -1, 0, 1, -2, 0, 2, -1, 0, 1 };
 	double shade;
 	double shade_coefficient[3] = { 0.299, 0.587, 0.114 };
 	for (unsigned y = 0; y < height; y++)
@@ -194,40 +211,24 @@ void sobel_xy(char type, rgb_24** image, unsigned int width, unsigned int height
 			shade = 0;
 			for (int c = 0; c < 3; c++)
 				if (y > 0 && y < height - 1 && x > 0 && x < width - 1)
+				{
+					if (type != 'y')
+						g_x = fabs(use_mask(image, width, height, x, y, c, g_x_mask, 3));
+					if (type != 'x')
+						g_y = fabs(use_mask(image, width, height, x, y, c, g_y_mask, 3));
 					if (type == 'x')
-					{
-						g_x = 0;
-						for (int i = -1; i <= 1; i += 2)
-							for (int j = -1; j <= 1; j++)
-								g_x += *(*(*image + (y + i) * width + x + j) + c) * i * (2 - j * j);
-						shade += abs(g_x) * shade_coefficient[c];
-					}
+						shade += g_x * shade_coefficient[c];
 					else if (type == 'y')
-					{
-						g_y = 0;
-						for (int j = -1; j <= 1; j += 2)
-							for (int i = -1; i <= 1; i++)
-								g_y += *(*(*image + (y + i) * width + x + j) + c) * j * (2 - i * i);
-						shade += abs(g_y) * shade_coefficient[c];
-					}
+						shade += g_y * shade_coefficient[c];
 					else
-					{
-						g_x = 0;
-						g_y = 0;
-						for (int i = -1; i <= 1; i += 2)
-							for (int j = -1; j <= 1; j++)
-								g_x += *(*(*image + (y + i) * width + x + j) + c) * i * (2 - j * j);
-						for (int j = -1; j <= 1; j += 2)
-							for (int i = -1; i <= 1; i++)
-								g_y += *(*(*image + (y + i) * width + x + j) + c) * j * (2 - i * i);
 						shade += sqrt(g_x * g_x + g_y * g_y) * shade_coefficient[c];
-					}
+				}
 			if (shade > threshold)
 				shade = 255;
 			else
 				shade = 0;
 			for (int c = 0; c < 3; c++)
-				new_image[y * width + x][c] = shade;
+				new_image[y * width + x][c] = (unsigned char)shade;
 		}
 	for (unsigned y = 0; y < height; y++)
 		for (unsigned x = 0; x < width; x++)
@@ -250,6 +251,51 @@ char compare(char* str1, char* str2)
 	return 1;
 }
 
+char** strgs(char** str_in, int* len)
+{
+	char* str = *str_in;
+	char** arr = (char**)malloc(sizeof(char*));
+	int ln = 0;
+	for (int i = 0; str[i] != '\0' && str[i] != '\n';)
+	{
+		if (str[i] != ' ' && str[i] != '\t')
+		{
+			if (str[i] == '"')
+			{
+				++i;
+				ln++;
+				arr = (char**)realloc(arr, sizeof(char*) * ln);
+				arr[ln - 1] = str + i;
+				for (i; str[i] != '"' && str[i] != '\0' && str[i] != '\n'; i++);
+				if (str[i] == '\0' || str[i] == '\n')
+				{
+					*len = 0;
+					free(arr);
+					return 0;
+				}
+				str[i] = '\0';
+				++i;
+			}
+			else
+			{
+				ln++;
+				arr = (char**)realloc(arr, sizeof(char*) * ln);
+				arr[ln - 1] = str + i;
+				for (; str[i] != '\0' && str[i] != '\n' && str[i] != ' ' && str[i] != '\t'; i++);
+				if (str[i] != '\0')
+				{
+					str[i] = '\0';
+					++i;
+				}
+			}
+		}
+		else
+			++i;
+	}
+	*len = ln;
+	return arr;
+}
+
 int main(int argc, char** argv)
 {
 	FILE* file_in;
@@ -259,449 +305,287 @@ int main(int argc, char** argv)
 	unsigned int bit_count;
 	unsigned int width;
 	unsigned int height;
-	int sz = 3;
-	double sg = 0.6;
-	double th = 255 / 2.0;
+	int sz;
+	double sg;
+	double th;
+	char is_auto = 0;
 
-	if (argc < 4)
+	for (;;)
 	{
-		if (argc == 2)
-			if (compare(argv[1], "help"))
-			{
-				printf("\n\tfilters supported:\n\n");
-				printf("\t<median>\n");
-				printf("\t\t/sz - matrix size\n\n");
-				printf("\t<gaussian>\n");
-				printf("\t\t/sz - matrix size\n");
-				printf("\t\t/sg - sigma\n\n");
-				printf("\t<sobel> <sobel_x> <sobel_y>\n");
-				printf("\t\t/th - threshold, pixels in shades of gray from (255 / th) is white, the rest are black\n");
-				printf("\n\t<shade>\n");
-				printf("\n\tyou can use modificators like <gaussian /sz = 5>\n");
-				printf("\n\twithout modifiers standard values will be taken:\n");
-				printf("\t\tsz = 3\n\t\tsg = 0.6\n\t\tth = 2.0\n\n");
-				return 0;
-			}
-		if (argc == 1)
+
+		sz = 3;
+		sg = 0.6;
+		th = 255 / 2.0;
+
+		char* str = 0;
+		if (is_auto)
 		{
-			char* c = 0;
-			char* str = 0;
-			char* modifier = 0;
-			char* function_name = 0;
-			int i;
-			char quotes;
-			int str_beg;
-			char start_flag;
-			printf("\n\tthis program allows you to use certain filters for bmp-24 and bmp-32 images\n");
-			printf("\tinput format: <input file name> <filter with modificators> <output file name>\n");
-			printf("\tenter <help> for details\n");
-			printf("\tenter <exit> for finish\n\n");
-			for (;;)
+			free(argv);
+			free(str);
+		}
+		str = (char*)malloc(sizeof(char) * 3);
+		str[0] = 'a';
+		str[1] = ' ';
+
+		if (argc < 4 || is_auto)
+		{
+			if (argc == 1 || is_auto)
 			{
-				start_flag = 0;
-				for (;;)
+				if (!is_auto)
 				{
-					printf("MyInst > ");
-					if (start_flag)
+					printf("\n\tthis program allows you to use certain filters for bmp-24 and bmp-32 images\n");
+					printf("\tinput format: <input file name> <filter with modificators> <output file name>\n");
+					printf("\tenter <help> for details\n");
+					printf("\tenter <exit> for finish\n\n");
+					is_auto = 1;
+				}
+				printf("My_inst > ");
+				for (int i = 2;; i++)
+				{
+					str[i] = getchar();
+					if (str[i] == '\n')
 					{
-						free(c);
-						free(str);
-						free(modifier);
-						free(function_name);
+						str[i] = '\0';
+						break;
 					}
-					start_flag = 1;
-					i = 0;
-					quotes = 0;
-					c = (char*)malloc(sizeof(char) * 256);
-					str = (char*)malloc(sizeof(char) * 256);
-					modifier = (char*)malloc(sizeof(char) * 256);
-					function_name = (char*)malloc(sizeof(char) * 256);
-					do
-					{
-						c[i++] = getchar();
-						if (i % 255 == 0)
-							c = (char*)realloc(c, sizeof(char) * (255 * (i / 255) + 1));
-					} while (c[i - 1] != '\n');
-
-					i = 0;
-					if (c[i] == '\n')
-						continue;
-					while (c[i] == ' ' || c[i] == '\t')
-						i++;
-					if (c[i] == '"')
-					{
-						quotes = 1;
-						i++;
-					}
-					if (c[i] == '\n')
-					{
-						printf("invalid input\n");
-						continue;
-					}
-					str_beg = i;
-					while (((c[i] != ' ' && c[i] != '\t' && !quotes) || (c[i] != '"' && quotes)) && c[i] != '\n')
-					{
-						str[i - str_beg] = c[i];
-						i++;
-						if ((i - str_beg) % 255 == 0 && (i - str_beg) != 0)
-							str = (char*)realloc(str, sizeof(char) * (255 * ((i - str_beg) / 255) + 1));
-					}
-					str[i - str_beg] = '\0';
-					if (c[i] == '"')
-						i++;
-					if (compare(str, "exit"))
+					str = (char*)realloc(str, sizeof(char) * (i + 2));
+				}
+				argv = strgs(&str, &argc);
+				argc;
+			}
+			if (argc == 2)
+			{
+				if (compare(argv[1], "help"))
+				{
+					printf("\n\tfilters supported:\n\n");
+					printf("\t<median>\n");
+					printf("\t\t/sz - matrix size\n\n");
+					printf("\t<gaussian>\n");
+					printf("\t\t/sz - matrix size\n");
+					printf("\t\t/sg - sigma\n\n");
+					printf("\t<sobel> <sobel_x> <sobel_y>\n");
+					printf("\t\t/th - threshold, pixels in shades of gray from (255 / th) is white, the rest are black\n");
+					printf("\n\t<shade>\n");
+					printf("\n\tyou can use modificators like <gaussian /sz = 5>\n");
+					printf("\n\twithout modifiers standard values will be taken:\n");
+					printf("\t\tsz = 3\n\t\tsg = 0.6\n\t\tth = 2.0\n\n");
+					if (!is_auto)
 						return 0;
-					if (compare(str, "help"))
-					{
-						printf("\n\tfilters supported:\n\n");
-						printf("\t<median>\n");
-						printf("\t\t/sz - matrix size\n\n");
-						printf("\t<gaussian>\n");
-						printf("\t\t/sz - matrix size\n");
-						printf("\t\t/sg - sigma\n\n");
-						printf("\t<sobel> <sobel_x> <sobel_y>\n");
-						printf("\t\t/th - threshold, pixels in shades of gray from (255 / th) is white, the rest are black\n");
-						printf("\n\t<shade>\n");
-						printf("\n\tyou can use modificators like <gaussian /sz = 5>\n");
-						printf("\n\twithout modifiers standard values will be taken:\n");
-						printf("\t\tsz = 3\n\t\tsg = 0.6\n\t\tth = 2.0\n");
-						printf("\n\tenter <exit> for finish\n\n");
-						continue;
-					}
-					if (c[i] == '\n')
-					{
-						printf("invalid input\n");
-						continue;
-					}
-					if (fopen_s(&file_in, str, "rb") != 0)
-					{
-						printf("invalid inputing file name\n");
-						continue;
-					}
-					free(str);
-					str = (char*)malloc(sizeof(char) * 256);
-
-
-					sz = 3;
-					sg = 0.6;
-					th = 255 / 2;
-
-					while (c[i] == ' ' || c[i] == '\t')
-						i++;
-					if (c[i] == '\n')
-					{
-						printf("invalid input\n");
-						fclose(file_in);
-						continue;
-					}
-					str_beg = i;
-					while (c[i] != ' ' && c[i] != '\t' && c[i] != '/' && c[i] != '\n')
-					{
-						function_name[i - str_beg] = c[i];
-						if (c[i] >= 'A' && c[i] <= 'Z')
-							function_name[i - str_beg] = c[i] - 'A' + 'a';
-						else if (c[i] >= 'a' && c[i] <= 'z')
-							function_name[i - str_beg] = c[i];
-						else if (c[i] != '_')
-							c[i + 1] = '\n';
-						i++;
-						if ((i - str_beg) % 255 == 0)
-							function_name = (char*)realloc(function_name, sizeof(char) * (255 * ((i - str_beg) / 255) + 1));
-					}
-					function_name[i - str_beg] = '\0';
-
-					if (!compare(function_name, "median")
-						&& !compare(function_name, "gaussian")
-						&& !compare(function_name, "sobel")
-						&& !compare(function_name, "sobel_x")
-						&& !compare(function_name, "sobel_y")
-						&& !compare(function_name, "shade"))
-					{
-						printf("invalid filter input\n");
-						fclose(file_in);
-						continue;
-					}
-
-					while (c[i] == ' ' || c[i] == '\t')
-						i++;
-
-					while (c[i] == '/')
-					{
-						i++;
-						str_beg = i;
-						while (c[i] != ' ' && c[i] != '\t' && c[i] != '\n' && (c[i] < '0' || c[i] > '9') && c[i] != '=')
-						{
-							modifier[i - str_beg] = c[i];
-							i++;
-							if ((i - str_beg) % 255 == 0)
-								modifier = (char*)realloc(modifier, sizeof(char) * (255 * ((i - str_beg) / 255) + 1));
-						}
-						modifier[i - str_beg] = '\0';
-						while (c[i] == ' ' || c[i] == '\t')
-							i++;
-						if (c[i] == '=')
-							i++;
-						while (c[i] == ' ' || c[i] == '\t')
-							i++;
-						free(str);
-						str = (char*)malloc(sizeof(char) * 256);
-						str_beg = i;
-						while ((c[i] >= '0' && c[i] <= '9') || c[i] == '.')
-						{
-							str[i - str_beg] = c[i];
-							i++;
-							if ((i - str_beg) % 255 == 0)
-								str = (char*)realloc(str, sizeof(char) * (255 * ((i - str_beg) / 255) + 1));
-						}
-						str[i - str_beg] = '\0';
-						if (c[i] != ' ' && c[i] != '\t' && c[i] != '/')
-							c[i] = '\n';
-						if (modifier[2] != '\0')
-							c[i] = '\n';
-						if (modifier[0] == 's')
-						{
-							if (modifier[1] == 'z' && atoi(str) != 0)
-								sz = atoi(str) - 1 + atoi(str) % 2;
-							else if (modifier[1] == 'g' && atof(str) != 0)
-								sg = atof(str);
-							else
-								c[i] = '\n';
-						}
-						else if (modifier[0] == 't' && modifier[1] == 'h' && atof(str) != 0)
-							th = 255 / atof(str);
-						else
-							c[i] = '\n';
-						while (c[i] == ' ' || c[i] == '\t')
-							i++;
-					}
-					if (c[i] == '\n')
-					{
-						printf("invalid modificator input\n");
-						fclose(file_in);
-						continue;
-					}
-
-					quotes = 0;
-					if (c[i] == '"')
-					{
-						quotes = 1;
-						i++;
-					}
-					str_beg = i;
-					while (((c[i] != ' ' && c[i] != '\t' && !quotes) || (c[i] != '"' && quotes)) && c[i] != '\n')
-					{
-						str[i - str_beg] = c[i];
-						i++;
-						if ((i - str_beg) % 255 == 0 && (i - str_beg) != 0)
-							str = (char*)realloc(str, sizeof(char) * (255 * ((i - str_beg) / 255) + 1));
-					}
-					str[i - str_beg] = '\0';
-					if (c[i] == '\n' && quotes)
-					{
-						printf("invalid input\n");
-						fclose(file_in);
-						continue;
-					}
-					if (c[i] == '"')
-						i++;
-					while (c[i] == ' ' || c[i] == '\t')
-						i++;
-					if (c[i] != '\n')
-					{
-						printf("invalid input\n");
-						fclose(file_in);
-						continue;
-					}
-					if (fopen_s(&file_out, str, "wb") != 0)
-					{
-						printf("invalid outputing file name\n");
-						fclose(file_in);
-						continue;
-					}
-					break;
-				}
-				free(c);
-				free(str);
-				free(modifier);
-
-				if (!read_and_write_bmp(file_in, file_out, &width, &height, &image, &alpha))
-				{
-					if (alpha)
-						bit_count = 32;
 					else
-						bit_count = 24;
-
-					if (compare(function_name, "median"))
-						megas('m',&image, width, height, sz, sg);
-					else if (compare(function_name, "gaussian"))
-						megas('g',&image, width, height, sz, sg);
-					else if (compare(function_name, "sobel"))
-						sobel_xy(0, &image, width, height, th);
-					else if (compare(function_name, "sobel_x"))
-						sobel_xy('x', &image, width, height, th);
-					else if (compare(function_name, "sobel_y"))
-						sobel_xy('y', &image, width, height, th);
-					else if (compare(function_name, "shade"))
-						shade(&image, width, height);
-
-					free(function_name);
-
-					for (unsigned i = 0; i < height; i++)
-					{
-						for (unsigned j = 0; j < width; j++)
-						{
-							for (int c = 2; c >= 0; c--)
-								fprintf(file_out, "%c", image[i * width + j][c]);
-							if (alpha != 0)
-								fprintf(file_out, "%c", 0);
-						}
-						for (unsigned j = 0; j < (4 - ((width * (bit_count / 8)) % 4)) % 4; j++)
-							fprintf(file_out, "%c", 0);
-					}
-					free(image);
-					if (!alpha)
-						free(alpha);
-					fclose(file_out);
+						continue;
 				}
+				else if (compare(argv[1], "exit"))
+					return 0;
 				else
 				{
-					free(function_name);
-					printf("input file reading error\n");
+					if (is_auto)
+					{
+						printf("invalid input\n");
+						continue;
+					}
+					else
+						return -1;
 				}
 			}
+			else if (argc == 1 && is_auto)
+				continue;
+			else if (argc < 4)
+			{
+				if (is_auto)
+				{
+					printf("invalid input\n");
+					continue;
+				}
+				else
+					return -1;
+			}
 		}
-		return -1;
-	}
-	if (fopen_s(&file_in, argv[1], "rb"))
-	{
-		printf("can't open file '%s'\n", argv[1]);
-		return -1;
-	}
-
-	if (!compare(argv[2], "median")
-		&& !compare(argv[2], "gaussian")
-		&& !compare(argv[2], "sobel")
-		&& !compare(argv[2], "sobel_x")
-		&& !compare(argv[2], "sobel_y")
-		&& !compare(argv[2], "shade"))
-	{
-		printf("invalid filter input\n");
-		fclose(file_in);
-		return -1;
-	}
-
-	int i = 3;
-	while (argv[i][0] == '/' && (i + 3) < argc)
-	{
-		if (argv[i + 1][0] != '=')
+		if (fopen_s(&file_in, argv[1], "rb"))
 		{
-			printf("modificator invalid input\n");
+			printf("can't open file '%s'\n", argv[1]);
+			if (!is_auto)
+				return -1;
+			else
+				continue;
+		}
+
+		if (!compare(argv[2], "median")
+			&& !compare(argv[2], "gaussian")
+			&& !compare(argv[2], "sobel")
+			&& !compare(argv[2], "sobel_x")
+			&& !compare(argv[2], "sobel_y")
+			&& !compare(argv[2], "shade"))
+		{
+			printf("invalid filter input\n");
 			fclose(file_in);
-			return -1;
+			if (!is_auto)
+				return -1;
+			else
+				continue;
 		}
-		char mod[2];
-		for (int j = 0; j < 2; j++)
+
+		int i = 3;
+		char err = 0;
+		while (argv[i][0] == '/' && (i + 3) < argc)
 		{
-			mod[j] = argv[i][j + 1];
-			if (mod[j] == '\0')
+			if (argv[i + 1][0] != '=')
 			{
 				printf("modificator invalid input\n");
 				fclose(file_in);
-				return -1;
+				if (!is_auto)
+					return -1;
+				else
+				{
+					err = 1;
+					break;
+				}
 			}
-		}
-		if (argv[i][3] != '\0')
-		{
-			printf("modificator invalid input\n");
-			fclose(file_in);
-			return -1;
-		}
-		i += 2;
-		for (int j = 0; argv[i][j] != '\0'; j++)
-			if (!((argv[i][j] >= '0' && argv[i][j] <= '9') || argv[i][j] == '.'))
+			char mod[2];
+			for (int j = 0; j < 2; j++)
+			{
+				mod[j] = argv[i][j + 1];
+				if (mod[j] == '\0')
+				{
+					printf("modificator invalid input\n");
+					fclose(file_in);
+					if (!is_auto)
+						return -1;
+					else
+					{
+						err = 1;
+						break;
+					}
+				}
+			}
+			if (err)
+				break;
+			if (argv[i][3] != '\0')
 			{
 				printf("modificator invalid input\n");
 				fclose(file_in);
-				return -1;
+				if (!is_auto)
+					return -1;
+				else
+				{
+					err = 1;
+					break;
+				}
 			}
-		if (mod[0] == 's')
-		{
-			if (mod[1] == 'z')
-				sz = atoi(argv[i]) - 1 + atoi(argv[i]) % 2;
-			else if (mod[1] == 'g')
-				sg = atof(argv[i]);
+			i += 2;
+			for (int j = 0; argv[i][j] != '\0'; j++)
+				if (!((argv[i][j] >= '0' && argv[i][j] <= '9') || argv[i][j] == '.'))
+				{
+					printf("modificator invalid input\n");
+					fclose(file_in);
+					if (!is_auto)
+						return -1;
+					else
+					{
+						err = 1;
+						break;
+					}
+				}
+			if (err)
+				break;
+			if (mod[0] == 's')
+			{
+				if (mod[1] == 'z')
+					sz = atoi(argv[i]) - 1 + atoi(argv[i]) % 2;
+				else if (mod[1] == 'g')
+					sg = atof(argv[i]);
+				else
+				{
+					printf("modificator invalid input\n");
+					fclose(file_in);
+					if (!is_auto)
+						return -1;
+					else
+					{
+						err = 1;
+						break;
+					}
+				}
+			}
+			else if (mod[0] == 't' && mod[1] == 'h')
+				th = 255 / atof(argv[i]);
 			else
 			{
 				printf("modificator invalid input\n");
 				fclose(file_in);
-				return -1;
+				if (!is_auto)
+					return -1;
+				else
+				{
+					err = 1;
+					break;
+				}
 			}
+			++i;
 		}
-		else if (mod[0] == 't' && mod[1] == 'h')
-			th = 255 / atof(argv[i]);
-		else
+		if (err)
+			continue;
+
+		if (fopen_s(&file_out, argv[i], "wb"))
 		{
-			printf("modificator invalid input\n");
+			printf("invalid input\n");
 			fclose(file_in);
-			return -1;
+			if (!is_auto)
+				return -1;
+			else
+				continue;
 		}
-		++i;
-	}
 
-	if (fopen_s(&file_out, argv[i], "wb"))
-	{
-		printf("invalid input\n");
-		fclose(file_in);
-		return -1;
-	}
-
-	if (i + 1 < argc)
-	{
-		printf("invalid input\n");
-		fclose(file_in);
-		fclose(file_out);
-		return -1;
-	}
-
-	if (!read_and_write_bmp(file_in, file_out, &width, &height, &image, &alpha))
-	{
-		if (alpha)
-			bit_count = 32;
-		else
-			bit_count = 24;
-
-		if (compare(argv[2], "median"))
-			megas('m',&image, width, height, sz,sg);
-		else if (compare(argv[2], "gaussian"))
-			megas('g',&image, width, height, sz, sg);
-		else if (compare(argv[2], "sobel"))
-			sobel_xy(0, &image, width, height, th);
-		else if (compare(argv[2], "sobel_x"))
-			sobel_xy('x', &image, width, height, th);
-		else if (compare(argv[2], "sobel_y"))
-			sobel_xy('y', &image, width, height, th);
-		else if (compare(argv[2], "shade"))
-			shade(&image, width, height);
-
-		for (unsigned i = 0; i < height; i++)
+		if (i + 1 < argc)
 		{
-			for (unsigned j = 0; j < width; j++)
+			printf("invalid input\n");
+			fclose(file_in);
+			fclose(file_out);
+			if (!is_auto)
+				return -1;
+			else
+				continue;
+		}
+
+		if (!read_and_write_bmp(file_in, file_out, &width, &height, &image, &alpha))
+		{
+			if (alpha)
+				bit_count = 32;
+			else
+				bit_count = 24;
+
+			if (compare(argv[2], "median"))
+				megas('m', &image, width, height, sz, sg);
+			else if (compare(argv[2], "gaussian"))
+				megas('g', &image, width, height, sz, sg);
+			else if (compare(argv[2], "sobel"))
+				sobel_xy(0, &image, width, height, th);
+			else if (compare(argv[2], "sobel_x"))
+				sobel_xy('x', &image, width, height, th);
+			else if (compare(argv[2], "sobel_y"))
+				sobel_xy('y', &image, width, height, th);
+			else if (compare(argv[2], "shade"))
+				shade(&image, width, height);
+
+			for (unsigned i = 0; i < height; i++)
 			{
-				for (int c = 2; c >= 0; c--)
-					fprintf(file_out, "%c", image[i * width + j][c]);
-				if (alpha != 0)
+				for (unsigned j = 0; j < width; j++)
+				{
+					for (int c = 2; c >= 0; c--)
+						fprintf(file_out, "%c", image[i * width + j][c]);
+					if (alpha != 0)
+						fprintf(file_out, "%c", 0);
+				}
+				for (unsigned j = 0; j < (4 - ((width * (bit_count / 8)) % 4)) % 4; j++)
 					fprintf(file_out, "%c", 0);
 			}
-			for (unsigned j = 0; j < (4 - ((width * (bit_count / 8)) % 4)) % 4; j++)
-				fprintf(file_out, "%c", 0);
+			free(image);
+			if (!alpha)
+				free(alpha);
+			fclose(file_out);
 		}
-		free(image);
-		if (!alpha)
-			free(alpha);
-		fclose(file_out);
-	}
-	else
-	{
-		printf("'%s' reading error\n", argv[0]);
+		else
+		{
+			printf("'%s' reading error\n", argv[0]);
+		}
 	}
 }
