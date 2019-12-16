@@ -86,7 +86,7 @@ int read_and_write_bmp(FILE* file_in, FILE* file_out, unsigned int* width, unsig
 	return 0;
 }
 
-double use_mask(rgb_24** image, unsigned int width, unsigned int height, unsigned x, unsigned y, int c, double* mask, unsigned sz)
+double use_mask(rgb_24** image, unsigned int width, unsigned int height, unsigned x, unsigned y, int c, double* mask, unsigned sz, double max_sum)
 {
 	int m = sz / 2;
 	double sum = 0;
@@ -94,7 +94,9 @@ double use_mask(rgb_24** image, unsigned int width, unsigned int height, unsigne
 		for (int j = -m; j <= m; j++)
 			if ((y + i) >= 0 && (y + i) < height && (x + j) >= 0 && (x + j) < width)
 				sum += (double)(*(*(*image + (y + i) * width + x + j) + c)) * mask[(i + m) * sz + j + m];
-	return sum;
+			else
+				max_sum -= mask[(i + m) * sz + j + m];
+	return sum / max_sum;
 }
 
 void megas(char type, rgb_24** image, unsigned int width, unsigned int height, int sz, double sg)
@@ -114,7 +116,6 @@ void megas(char type, rgb_24** image, unsigned int width, unsigned int height, i
 	}
 	int size;
 	int m = sz / 2;
-	double sum_kern;
 	double sum_kern_max = 0.0;
 	rgb_24* new_image = (rgb_24*)malloc(sizeof(rgb_24) * height * width);
 	if (type == 'g')
@@ -155,17 +156,7 @@ void megas(char type, rgb_24** image, unsigned int width, unsigned int height, i
 					new_image[y * width + x][c] = arr[size / 2];
 					break;
 				case 'g':
-					if (y < m || y + m >= height || x < m || x + m >= width)
-					{
-						sum_kern = 0;
-						for (int i = -m; i <= m; i++)
-							for (int j = -m; j <= m; j++)
-								if ((y + i) >= 0 && (y + i) < height && (x + j) >= 0 && (x + j) < width)
-									sum_kern += kern[(i + m) * sz + j + m];
-						new_image[y * width + x][c] = (unsigned char)(use_mask(image, width, height, x, y, c, kern, sz) / sum_kern);
-					}
-					else
-						new_image[y * width + x][c] = (unsigned char)(use_mask(image, width, height, x, y, c, kern, sz) / sum_kern_max);
+					new_image[y * width + x][c] = (unsigned char)use_mask(image, width, height, x, y, c, kern, sz, sum_kern_max);
 					break;
 				}
 			}
@@ -213,9 +204,9 @@ void sobel_xy(char type, rgb_24** image, unsigned int width, unsigned int height
 				if (y > 0 && y < height - 1 && x > 0 && x < width - 1)
 				{
 					if (type != 'y')
-						g_x = fabs(use_mask(image, width, height, x, y, c, g_x_mask, 3));
+						g_x = fabs(use_mask(image, width, height, x, y, c, g_x_mask, 3, 1));
 					if (type != 'x')
-						g_y = fabs(use_mask(image, width, height, x, y, c, g_y_mask, 3));
+						g_y = fabs(use_mask(image, width, height, x, y, c, g_y_mask, 3, 1));
 					if (type == 'x')
 						shade += g_x * shade_coefficient[c];
 					else if (type == 'y')
