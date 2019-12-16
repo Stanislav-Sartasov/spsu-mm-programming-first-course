@@ -10,6 +10,7 @@
 
 void qsortt(char **, long long len);
 
+
 int main(int argc, char* argv[])
 {
     int fIn, fOut;
@@ -85,7 +86,7 @@ int main(int argc, char* argv[])
     char endl = '\n';
     for(int i = 0; i < numberStr; ++i)
     {
-        write(fOut, strs[i], maxLen);
+        write(fOut, strs[i], strlen(strs[i]));
         write(fOut, &endl, 1);
     }
 
