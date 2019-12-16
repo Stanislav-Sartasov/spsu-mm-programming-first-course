@@ -1,7 +1,5 @@
 #pragma once
 
-int memory_size;
-int has_initialized;
 void *managed_memory_start;
 void *last_valid_address;
 

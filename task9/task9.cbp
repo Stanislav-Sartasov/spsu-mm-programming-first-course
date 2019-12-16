@@ -19,6 +19,10 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="allocators.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="allocators.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

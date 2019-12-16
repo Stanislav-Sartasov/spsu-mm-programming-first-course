@@ -74,7 +74,7 @@ void* myRealloc(void* ptr, size_t size)
 {
     void *memory_location;
     memory_location = myMalloc(size);
-    memset(memory_location, ptr, size + sizeof(mem_control_block));
+    memcpy(memory_location, ptr, size + sizeof(mem_control_block));
     myFree(ptr);
     return memory_location;
 }

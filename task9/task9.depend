@@ -13,3 +13,17 @@
 	<string.h>
 	"allocators.h"
 
+1576486084 source:c:\users\milos-pc\downloads\spsu-mm-programming-first-course-miloserdovalyubov (2)\spsu-mm-programming-first-course-miloserdovalyubov\task9\main.c
+	<stdio.h>
+	<stdlib.h>
+	"allocators.h"
+
+1576486156 c:\users\milos-pc\downloads\spsu-mm-programming-first-course-miloserdovalyubov (2)\spsu-mm-programming-first-course-miloserdovalyubov\task9\allocators.h
+
+1576486339 source:c:\users\milos-pc\downloads\spsu-mm-programming-first-course-miloserdovalyubov (2)\spsu-mm-programming-first-course-miloserdovalyubov\task9\allocators.c
+	<unistd.h>
+	<malloc.h>
+	<stdlib.h>
+	<string.h>
+	"allocators.h"
+
