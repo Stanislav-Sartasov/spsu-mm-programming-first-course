@@ -56,9 +56,9 @@ int compare(const void** arg_1, const void** arg_2)
 	char* in_2 = (char*)(*arg_2);
 	for (int i = 0; (in_1[i] != '\0' && in_1[i] != '\n' && in_1[i] != '\r') || (in_2[i] != '\0' && in_2[i] != '\n' && in_2[i] != '\r'); i++)
 		if ((in_1[i] == '\0' || in_1[i] == '\n' || in_1[i] == '\r') && (in_2[i] != '\0' && in_2[i] != '\n' && in_2[i] != '\r'))
-			return 1;
-		else if ((in_2[i] == '\0' || in_2[i] == '\n' || in_2[i] == '\r') && (in_1[i] != '\0' && in_1[i] != '\n' && in_1[i] != '\r'))
 			return -1;
+		else if ((in_2[i] == '\0' || in_2[i] == '\n' || in_2[i] == '\r') && (in_1[i] != '\0' && in_1[i] != '\n' && in_1[i] != '\r'))
+			return 1;
 		else if (in_1[i] > in_2[i])
 			return 1;
 		else if (in_1[i] < in_2[i])
@@ -124,34 +124,31 @@ int main(int argc, char** argv)
 
 	FILE* file_out = fopen(argv[2], "w");	
 
-	int arr_size = 1;
-	char r_flag = 0;
+	int arr_size = 0;
 
-	for (int i = 0; i < file_in_size; i++)
-		if (file_in_mmap[i] == '\n')
-			arr_size += 1;
-		else if (file_in_mmap[i] == '\r' && !r_flag)
-			r_flag = 1;
+	for (int i = 0; i <= file_in_size; i++)
+		if (file_in_mmap[i] == '\n' || (file_in_mmap[i] == '\0' && file_in_mmap[i - 1] != '\n'))
+			++arr_size;
 
 	char** arr_str = (char**)malloc(sizeof(char*) * arr_size);
 	arr_str[0] = file_in_mmap;
 	arr_size = 1;
 
 	for (int i = 0; i < file_in_size; i++)
-		if (file_in_mmap[i] == '\n')
+		if (file_in_mmap[i] == '\n' && i + 1 < file_in_size)
 			arr_str[arr_size++] = file_in_mmap + i + 1;
-		else if (file_in_mmap[i] == '\r')
-			arr_str[arr_size++] = file_in_mmap + ++i + 1;
 
 	qsort(arr_str, arr_size, sizeof(char*), compare);
 
 	for (int i = 0; i < arr_size; i++)
 	{
 		for (int j = 0; arr_str[i][j] != '\0' && arr_str[i][j] != '\n' && arr_str[i][j] != '\r'; j++)
-			fprintf(file_out, "%c", arr_str[i][j]);
-		if (i < arr_size - 1)
-			fprintf(file_out, "\n");
+			fputc(arr_str[i][j], file_out);
+		fputc('\n', file_out);
 	}
+
+	for (int j = 0; arr_str[0][j] != '\0' && arr_str[0][j] != '\n' && arr_str[0][j] != '\r'; j++)
+		printf("%c", arr_str[0][j]);
 
 	munmap(file_in_mmap, file_in_size);
 
