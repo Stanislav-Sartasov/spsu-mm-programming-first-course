@@ -162,10 +162,10 @@ void megas(char type, rgb_24** image, unsigned int width, unsigned int height, i
 							for (int j = -m; j <= m; j++)
 								if ((y + i) >= 0 && (y + i) < height && (x + j) >= 0 && (x + j) < width)
 									sum_kern += kern[(i + m) * sz + j + m];
-						new_image[y * width + x][c] = (unsigned char)use_mask(image, width, height, x, y, c, kern, sz) / sum_kern;
+						new_image[y * width + x][c] = (unsigned char)(use_mask(image, width, height, x, y, c, kern, sz) / sum_kern);
 					}
 					else
-						new_image[y * width + x][c] = (unsigned char)use_mask(image, width, height, x, y, c, kern, sz) / sum_kern_max;
+						new_image[y * width + x][c] = (unsigned char)(use_mask(image, width, height, x, y, c, kern, sz) / sum_kern_max);
 					break;
 				}
 			}
@@ -192,7 +192,7 @@ void shade(rgb_24** image, unsigned int width, unsigned int height)
 		{
 			shade = 0.299 * (*(*(*image + y * width + x))) + 0.587 * (*(*(*image + y * width + x) + 1)) + 0.114 * (*(*(*image + y * width + x) + 2));
 			for (int c = 0; c < 3; c++)
-				* (*(*image + y * width + x) + c) = (unsigned char)shade;
+				*(*(*image + y * width + x) + c) = (unsigned char)shade;
 		}
 }
 
