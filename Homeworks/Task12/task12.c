@@ -37,14 +37,11 @@ int main()
 	printf("the sum for 3 ^ %d is \n", NUM);
 	for (i = array_size - 1 ; i >= 0 ; i = i - 1)
 	{
-		if (digit[i] > 0)
-		{
-			printf("%X", digit[i]);
-		}
+		printf("%X", digit[i]);
 	}
 	printf("\n");
 
 	free(digit);
-	
+
 	return 0;
 }
