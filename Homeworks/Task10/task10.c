@@ -9,13 +9,16 @@ int main()
 	int coin_type[] = { 1, 2, 5, 10, 20, 50, 100, 200 };
 	int type_count, amount, i, j;
 	int* ways;
+	char str[1000];
 
 	type_count = sizeof(coin_type) / sizeof(int);
 
 	for (;;)
 	{
 		printf("Please a amount of money in pensions:");
-		scanf("%d", &amount);
+		scanf("%s", str);
+
+		amount = atoi(str);
 
 		if (amount > 0)
 		{
@@ -43,6 +46,6 @@ int main()
 	printf("the number of ways in which this amount can be dialed using any number of any English coins is %d\n", ways[amount]);
 
 	free(ways);
-
+	
 	return 0;
 }
