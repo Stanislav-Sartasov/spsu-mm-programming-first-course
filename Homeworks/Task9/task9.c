@@ -83,10 +83,18 @@ void myFree(void* ptr)
 			// register to free memory list
 			g_free_memory_list[g_free_memory_entry_count].postion = (char*)ptr;
 			g_free_memory_list[g_free_memory_entry_count].size = g_malloc_memory_list[i].size;
+			g_free_memory_entry_count = g_free_memory_entry_count + 1;
 
 			// clean malloced memory region
 			g_malloc_memory_list[i].postion = NULL;
 			g_malloc_memory_list[i].size = 0;
+
+			//decrease malloced memory entry count
+			if (i + 1 < g_malloc_memory_entry_count)
+			{
+				memmove(&g_malloc_memory_list[i], &g_malloc_memory_list[i+1], sizeof(struct MemoryEntry) * (g_malloc_memory_entry_count - (i + 1)));
+			}
+			g_malloc_memory_entry_count = g_malloc_memory_entry_count - 1;
 
 			break;
 		}
@@ -129,31 +137,35 @@ void printf_memory_state()
 	{
 		printf("%x - %d\n", (int)g_free_memory_list[i].postion, g_free_memory_list[i].size);
 	}
+	printf("\n");
 }
 
 int main()
 {
 	int i;
-	void* ptr;
+	void* ptr[10];
 
 	init();
 
-	for (i = 0 ; i < 10 ; i++)
-	{
-		ptr = myMalloc(1000);
-		myFree(ptr);
-	}
-
-	ptr = myMalloc(3000);
-
+	printf("after initialization\n");
 	printf_memory_state();
 
-	ptr = myRealloc(ptr, 5000);
-	myFree(ptr);
+	for (i = 0 ; i < 10 ; i++)
+	{
+		ptr[i] = myMalloc(1000);
+	}
 
+	printf("after allocation\n");
+	printf_memory_state();
+
+	for (i = 0 ; i < 10 ; i++)
+	{
+		myFree(ptr[i]);
+	}
+
+	printf("after free\n");
 	printf_memory_state();
 
 	end();
-
 	return 0;
 }
