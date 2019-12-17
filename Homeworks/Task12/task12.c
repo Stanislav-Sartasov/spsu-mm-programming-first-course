@@ -1,43 +1,50 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 
 #define NUM			5000
 #define BASE_NUM	16
 
-int g_digit[2000];
-
 int main()
 {
-	int i, j;
+	int i, j, array_size;
+	int* digit;
 
-	for (i = 0 ; i < sizeof(g_digit) / sizeof(g_digit[0]) ; i++)
+	array_size = (int)(NUM * log10(3.0) / log10(16.0)) + 1;
+	digit = (int*)calloc(array_size, sizeof(int));
+	if (!digit)
 	{
-		g_digit[i] = 0;
+		printf("Can't alloc the digit's table.\n");
+		return -1;
 	}
-	g_digit[0] = 1;
+
+	digit[0] = 1;
 
 	for (i = 0 ; i < NUM ; i++)
 	{
-		for (j = 0 ; j < sizeof(g_digit) / sizeof(g_digit[0]) ; j++)
+		for (j = 0 ; j < array_size ; j++)
 		{
-			g_digit[j] = g_digit[j] * 3;
+			digit[j] = digit[j] * 3;
 		}
 
-		for (j = 0 ; j < sizeof(g_digit) / sizeof(g_digit[0]) - 1 ; j++)
+		for (j = 0 ; j < array_size - 1 ; j++)
 		{
-			g_digit[j + 1] = g_digit[j + 1] + g_digit[j] / BASE_NUM;
-			g_digit[j] = g_digit[j] % BASE_NUM;
+			digit[j + 1] = digit[j + 1] + digit[j] / BASE_NUM;
+			digit[j] = digit[j] % BASE_NUM;
 		}
 	}
 
 	printf("the sum for 3 ^ %d is \n", NUM);
-	for (i = sizeof(g_digit) / sizeof(g_digit[0]) - 1 ; i >= 0 ; i = i - 1)
+	for (i = array_size - 1 ; i >= 0 ; i = i - 1)
 	{
-		if (g_digit[i] > 0)
+		if (digit[i] > 0)
 		{
-			printf("%X", g_digit[i]);
+			printf("%X", digit[i]);
 		}
 	}
 	printf("\n");
+
+	free(digit);
 	
 	return 0;
 }
