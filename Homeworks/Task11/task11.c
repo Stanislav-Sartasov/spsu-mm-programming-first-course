@@ -5,8 +5,6 @@
 
 #define MAX_NUM		1000000
 
-int g_mdrs[MAX_NUM];
-
 int digital_root(int num)
 {
 	int sum;
@@ -27,7 +25,7 @@ int digital_root(int num)
 	return num;
 }
 
-int mdrs(int num)
+int mdrs(int num, int* mdrs_table)
 {
 	int num_sqrt, i, sum, max_val;
 
@@ -37,7 +35,7 @@ int mdrs(int num)
 	{
 		if ((num % i) == 0)
 		{
-			max_val = digital_root(i) + g_mdrs[num / i];
+			max_val = digital_root(i) + mdrs_table[num / i];
 			if (sum < max_val)
 				sum = max_val;
 		}
@@ -49,19 +47,29 @@ int mdrs(int num)
 int main()
 {
 	int i, sum;
+	int* mdrs_table;
+
+	mdrs_table = (int*)malloc(MAX_NUM * sizeof(int));
+	if (!mdrs_table)
+	{
+		printf("Can't alloc the mdrs's table.\n");
+		return -1;
+	}
 
 	for (i = 0 ; i < MAX_NUM ; i++)
 	{
-		g_mdrs[i] = mdrs(i);
+		mdrs_table[i] = mdrs(i, mdrs_table);
 	}
 
 	sum = 0;
 	for (i = 2 ; i < MAX_NUM ; i++)
 	{
-		sum = sum + g_mdrs[i];
+		sum = sum + mdrs_table[i];
 	}
 
 	printf("the sum of all MDRS (n) for n = [2; %d] is %d\n", MAX_NUM - 1, sum);
+		
+	free(mdrs_table);
 
 	return 0;
 }
