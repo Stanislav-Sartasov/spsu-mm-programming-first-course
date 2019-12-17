@@ -13,13 +13,18 @@ double get_angle(double side1, double side2, double side3)
 int main()
 {
 	int sides[3] = {-1, -1, -1};
+	char strs[3][1000];
 	int i;
 	double angle[3], degree, minute, second;
 
 	for (;;)
 	{
 		printf("Please enter three numbers( for example, enter 1, 2, 3):");
-		scanf("%d %d %d", &sides[0], &sides[1], &sides[2]);
+		scanf("%s %s %s", strs[0], strs[1], strs[2]);
+
+		sides[0] = atoi(strs[0]);
+		sides[1] = atoi(strs[1]);
+		sides[2] = atoi(strs[2]);
 
 		if (sides[0] > 0 && sides[1] > 0 && sides[2] > 0)
 		{
@@ -36,7 +41,7 @@ int main()
 
 		angle[0] = get_angle(sides[0], sides[1], sides[2]);
 		angle[1] = get_angle(sides[1], sides[2], sides[0]);
-		angle[2] = 180.0 - angle[0] - angle[1];
+		angle[2] = ceil(180.0 - angle[0] - angle[1]);
 		for (i = 0; i < 3; i++)
 		{
 			minute = modf(angle[i], &degree);
@@ -49,6 +54,6 @@ int main()
 	{
 		printf("The numbers are impossible as triangle's side.\n");
 	}
-
+	
 	return 0;
 }
