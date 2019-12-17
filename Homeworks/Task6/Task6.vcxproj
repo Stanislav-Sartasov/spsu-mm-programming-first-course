@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{C537F0FB-9A8F-4CD6-88E9-2DD8E943A953}</ProjectGuid>
+    <ProjectGuid>{7DA42773-DB6A-4F74-8688-92B90C77D91F}</ProjectGuid>
     <RootNamespace>Task6</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -115,14 +115,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Homework1\2nd Homework\task6\mman.c" />
-    <ClCompile Include="..\..\Homework1\2nd Homework\task6\task6.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\Homework1\2nd Homework\task6\mman.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\Homework1\2nd Homework\task6\input.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
