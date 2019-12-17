@@ -4,4 +4,8 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        main.c
+        main.c \
+    ../mylib/functionToGo.c
+
+HEADERS += \
+    ../mylib/functionToGo.h

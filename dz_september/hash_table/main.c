@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../mylib/functionToGo.h"
 #define StartN 7
 
 
@@ -21,15 +22,54 @@ void create(struct table *tab);
 int hash(int key);
 int add(int key, int data, struct table *tab);
 struct list * find(int key, struct table *tab);
+void del(int key, struct table *tab);
 
 int main()
 {
 
+    int key, val;
     struct table mytab;
     create(&mytab);
-    add(2, 4, &mytab);
-    struct list *ptr = find(2, &mytab);
-    printf("%d", ptr->data);
+    do
+    {
+        printf("put your key(int): ");
+        key = (int)saveInInt();
+        printf("(value == 0 to exit)put your value(int): ");
+        val = (int)saveInInt();
+        if (val)
+            add(key, val, &mytab);
+
+    }
+    while (val != 0);
+
+    printf("\n---------------------\n");
+
+    do
+    {
+        printf("(key == 0 to exit)put your key(int) to delete the element: ");
+        key = (int)saveInInt();
+        del(key, &mytab);
+        printf("done\n");
+    }
+    while (key != 0);
+
+    printf("\n---------------------\n");
+
+    struct list *ptr;
+    do
+    {
+        printf("(key == 0 to exit)put your key(int) to find the value: ");
+        key = (int)saveInInt();
+        if (key)
+            ptr = find(key, &mytab);
+        else
+            break;
+        if (ptr)
+            printf(" data: %d\n", ptr->data);
+        else
+             printf("no such element\n");
+    }
+    while (key != 0);
 
     return 0;
 }
@@ -40,10 +80,38 @@ int hash(int key)
     return key;
 }
 
+void del(int key, struct table *tab)
+{
+    struct list *ptr = find(key, tab);
+    if (!ptr)
+        return;
+    int h = hash(key) % tab->len;
+    struct list *ptr1 = tab->bins[h];
+    if (ptr1 == ptr)
+    {
+        tab->bins[h] = ptr->next;
+    }
+    else
+    {
+        while (ptr1->next != ptr)
+        {
+            if (ptr1->key == key)
+            {
+                break;
+            }
+            ptr1 = ptr1->next;
+        }
+        ptr1->next = ptr->next;
+    }
+    free(ptr);
+}
+
 struct list * find(int key, struct table *tab)
 {
     int h = hash(key) % tab->len;
     struct list *ptr = tab->bins[h];
+    if (ptr == NULL)
+        return  NULL;
     while (ptr->next != NULL)
     {
         if (ptr->key == key)
@@ -58,7 +126,7 @@ struct list * find(int key, struct table *tab)
     }
     else
     {
-        return 0;
+        return NULL;
     }
 }
 
@@ -92,7 +160,7 @@ int add(int key, int data, struct table *tab)
 void create(struct table *tab)
 {
     tab->bins = (struct list**)malloc(sizeof (struct list*) * StartN);
-
+    tab->len = StartN;
     for (int i = 0; i < StartN; ++i)
         tab->bins[i] = NULL;
 }
