@@ -19,13 +19,16 @@ int is_square_of_integer(int num)
 int main()
 {
 	int number = -1;
-	int p, q, k, d;
-	double sqrt_num;
+	char str[1000];
+	int praction_value, numerator_value, period, denominator_value;
+	int sqrt_num;
 
 	for (;;)
 	{
 		printf("Please enter a positive integer is not a square of an integer:");
-		scanf("%d", &number);
+		scanf("%s", str);
+
+		number = atoi(str);
 
 		if (number > 0 && !is_square_of_integer(number))
 		{
@@ -34,28 +37,28 @@ int main()
 		printf("You entered incorrect integer\n");
 	}
 
-	sqrt_num = floor(sqrt(number*1.0));
-	printf("[%d;", (int)sqrt_num);
+	sqrt_num = (int)floor(sqrt(number*1.0));
+	printf("[%d;", sqrt_num);
 
-	q = 1;
-	k = 0;
-	d = 0;
+	numerator_value = 1;
+	period = 0;
+	denominator_value = 0;
 	for (;;)
 	{
-		k += 1;
-		p = sqrt_num - d;
-		d = sqrt_num + p;
-		q = (number - p * p) / q;
-		p = (sqrt_num + p) / q;
-		printf("%d ", p);
-		if(p == 2 * sqrt_num)
+		period += 1;
+		praction_value = sqrt_num - denominator_value;
+		denominator_value = sqrt_num + praction_value;
+		numerator_value = (number - praction_value * praction_value) / numerator_value;
+		praction_value = (sqrt_num + praction_value) / numerator_value;
+		printf("%d ", praction_value);
+		if(praction_value == 2 * sqrt_num)
 		{
 			break;
 		}
-		d = d % q;
+		denominator_value = denominator_value % numerator_value;
 	}
 	printf("]");
-	printf(" %d\n", k);
-	getchar();
+	printf(" %d\n", period);
+
 	return 0;
 }
