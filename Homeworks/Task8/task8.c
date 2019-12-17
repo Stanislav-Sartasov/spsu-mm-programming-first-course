@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -94,46 +93,91 @@ int read_image_file(char* input_file, BITMAPFILEHEADER* file_header, BITMAPINFOH
 	return 1;
 }
 
-void set_average_filter(RGB* img, int width, int height)
+void apply_matrix_to_filter(RGB* img, int width, int height, int* matrix, int dim)
 {
-	int i, j;
+	int i, j, k, l;
 	int r, g, b;
 	RGB* t;
+	int gap, weight;
 
 	t = (RGB*)malloc(width * height * sizeof(RGB));
 	memcpy(t, img, width * height * sizeof(RGB));
 
-	for (i = 1 ; i < height-1 ; i++)
+	gap = (dim - 1) / 2;
+
+	weight = 0;
+	for (i = -gap ; i <= gap ; i++)
 	{
-		for (j = 1 ; j < width-1 ; j++)
+		for (j = -gap; j <= gap ; j++)
 		{
-			r = t[(i-1)*width+j-1].rgbRed + t[(i-1)*width+j].rgbRed + t[(i-1)*width+j+1].rgbRed + 
-				t[(i-0)*width+j-1].rgbRed + t[(i-0)*width+j].rgbRed + t[(i-0)*width+j+1].rgbRed + 
-				t[(i+1)*width+j-1].rgbRed + t[(i+1)*width+j].rgbRed + t[(i+1)*width+j+1].rgbRed;
+			weight += matrix[(gap+i)*dim+gap+j];
+		}
+	}
 
-			g = t[(i-1)*width+j-1].rgbGreen + t[(i-1)*width+j].rgbGreen + t[(i-1)*width+j+1].rgbGreen + 
-				t[(i-0)*width+j-1].rgbGreen + t[(i-0)*width+j].rgbGreen + t[(i-0)*width+j+1].rgbGreen + 
-				t[(i+1)*width+j-1].rgbGreen + t[(i+1)*width+j].rgbGreen + t[(i+1)*width+j+1].rgbGreen;
+	for (i = gap ; i < height - gap ; i++)
+	{
+		for(j = gap ; j < width - gap ; j++)
+		{
+			r = 0; g = 0; b = 0;
+			for (k = -gap ; k <= gap ; k++)
+			{
+				for (l = -gap ; l <= gap ; l++)
+				{
+					r += t[(i+k)*width+j+l].rgbRed   * matrix[(gap+k)*dim+gap+l];
+					g += t[(i+k)*width+j+l].rgbGreen * matrix[(gap+k)*dim+gap+l];
+					b += t[(i+k)*width+j+l].rgbBlue  * matrix[(gap+k)*dim+gap+l];
+				}
+			}
 
-			b = t[(i-1)*width+j-1].rgbBlue + t[(i-1)*width+j].rgbBlue + t[(i-1)*width+j+1].rgbBlue + 
-				t[(i-0)*width+j-1].rgbBlue + t[(i-0)*width+j].rgbBlue + t[(i-0)*width+j+1].rgbBlue + 
-				t[(i+1)*width+j-1].rgbBlue + t[(i+1)*width+j].rgbBlue + t[(i+1)*width+j+1].rgbBlue;
-
-			img[i*width+j].rgbRed = r / 9;
-			img[i*width+j].rgbGreen = g / 9;
-			img[i*width+j].rgbBlue = b / 9;
+			img[i*width+j].rgbRed = r / weight;
+			img[i*width+j].rgbGreen = g / weight;
+			img[i*width+j].rgbBlue = b / weight;
 		}
 	}
 
 	free(t);
 }
 
+void set_average_filter(RGB* img, int width, int height)
+{
+	int matrix[] = {
+		1, 1, 1, 
+		1, 1, 1, 
+	    1, 1, 1
+	};
+
+	apply_matrix_to_filter(img, width, height, matrix, 3);
+}
+
 void set_gauss_filter_3(RGB* img, int width, int height)
 {
-	int i, j;
+	int gauss3[] = {
+		1, 2, 1,
+		2, 4, 2,
+		1, 2, 1
+	};
+
+	apply_matrix_to_filter(img, width, height, gauss3, 3);
+}
+
+void set_gauss_filter_5(RGB* img, int width, int height)
+{
+	int gauss5[] = {
+		1, 4,  6,  4,  1,
+		4, 16, 24, 16, 4,
+		6, 24, 36, 24, 6,
+		4, 16, 24, 16, 4,
+		1, 4,  6,  4,  1
+	};
+
+	apply_matrix_to_filter(img, width, height, gauss5, 5);
+}
+
+void apply_sobel_filter(RGB* img, int width, int height, int* matrix)
+{
+	int i, j, k, l;
 	int r, g, b;
 	RGB* t;
-	int gauss3[3][3] = { {1, 2, 1}, {2, 4, 2}, {1, 2, 1} };
 
 	t = (RGB*)malloc(width * height * sizeof(RGB));
 	memcpy(t, img, width * height * sizeof(RGB));
@@ -142,62 +186,27 @@ void set_gauss_filter_3(RGB* img, int width, int height)
 	{
 		for(j = 1 ; j < width - 1 ; j++)
 		{
-			r = t[(i-1)*width+j-1].rgbRed * gauss3[0][0] + t[(i-1)*width+j].rgbRed * gauss3[0][1] + t[(i-1)*width+j+1].rgbRed * gauss3[0][2] + 
-				t[(i-0)*width+j-1].rgbRed * gauss3[1][0] + t[(i-0)*width+j].rgbRed * gauss3[1][1] + t[(i-0)*width+j+1].rgbRed * gauss3[1][2] + 
-				t[(i+1)*width+j-1].rgbRed * gauss3[2][0] + t[(i+1)*width+j].rgbRed * gauss3[2][1] + t[(i+1)*width+j+1].rgbRed * gauss3[2][2];
+			r = 0; g = 0; b = 0;
+			for (k = -1 ; k <= 1 ; k++)
+			{
+				for (l = -1 ; l <= 1 ; l++)
+				{
+					r += t[(i+k)*width+j+l].rgbRed   * matrix[(1+k)*3+1+l];
+					g += t[(i+k)*width+j+l].rgbGreen * matrix[(1+k)*3+1+l];
+					b += t[(i+k)*width+j+l].rgbBlue  * matrix[(1+k)*3+1+l];
+				}
+			}
 
-			g = t[(i-1)*width+j-1].rgbGreen * gauss3[0][0] + t[(i-1)*width+j].rgbGreen * gauss3[0][1] + t[(i-1)*width+j+1].rgbGreen * gauss3[0][2] + 
-				t[(i-0)*width+j-1].rgbGreen * gauss3[1][0] + t[(i-0)*width+j].rgbGreen * gauss3[1][1] + t[(i-0)*width+j+1].rgbGreen * gauss3[1][2] + 
-				t[(i+1)*width+j-1].rgbGreen * gauss3[2][0] + t[(i+1)*width+j].rgbGreen * gauss3[2][1] + t[(i+1)*width+j+1].rgbGreen * gauss3[2][2];
+			if (r < 0) r = 0;
+			if (r > 255) r = 255;
+			if (g < 0) g = 0;
+			if (g > 255) g = 255;
+			if (b < 0) b = 0;
+			if (b > 255) b = 255;
 
-			b = t[(i-1)*width+j-1].rgbBlue * gauss3[0][0] + t[(i-1)*width+j].rgbBlue * gauss3[0][1] + t[(i-1)*width+j+1].rgbBlue * gauss3[0][2] + 
-				t[(i-0)*width+j-1].rgbBlue * gauss3[1][0] + t[(i-0)*width+j].rgbBlue * gauss3[1][1] + t[(i-0)*width+j+1].rgbBlue * gauss3[1][2] + 
-				t[(i+1)*width+j-1].rgbBlue * gauss3[2][0] + t[(i+1)*width+j].rgbBlue * gauss3[2][1] + t[(i+1)*width+j+1].rgbBlue * gauss3[2][2];
-
-			img[i*width+j].rgbRed = r / 16;
-			img[i*width+j].rgbGreen = g / 16;
-			img[i*width+j].rgbBlue = b / 16;
-		}
-	}
-
-	free(t);
-}
-
-void set_gauss_filter_5(RGB* img, int width, int height)
-{
-	int i, j;
-	int r, g, b;
-	RGB* t;
-	int gauss5[5][5] = { {1, 4,  6,  4,  1}, {4, 16, 24, 16, 4}, {6, 24, 36, 24, 6}, {4, 16, 24, 16, 4}, {1, 4,  6,  4,  1} };
-
-	t = (RGB*)malloc(width * height * sizeof(RGB));
-	memcpy(t, img, width * height * sizeof(RGB));
-
-	for (i = 2 ; i < height - 2 ; i++)
-	{
-		for(j = 2 ; j < width - 2 ; j++)
-		{
-			r = t[(i-2)*width+j-2].rgbRed * gauss5[0][0] + t[(i-2)*width+j-1].rgbRed * gauss5[0][1] + t[(i-2)*width+j].rgbRed * gauss5[0][2] + t[(i-2)*width+j+1].rgbRed * gauss5[0][3] + t[(i-2)*width+j+2].rgbRed * gauss5[0][4] + 
-				t[(i-1)*width+j-2].rgbRed * gauss5[1][0] + t[(i-1)*width+j-1].rgbRed * gauss5[1][1] + t[(i-1)*width+j].rgbRed * gauss5[1][2] + t[(i-1)*width+j+1].rgbRed * gauss5[1][3] + t[(i-1)*width+j+2].rgbRed * gauss5[1][4] + 
-				t[(i-0)*width+j-2].rgbRed * gauss5[2][0] + t[(i-0)*width+j-1].rgbRed * gauss5[2][1] + t[(i-0)*width+j].rgbRed * gauss5[2][2] + t[(i-0)*width+j+1].rgbRed * gauss5[2][3] + t[(i-0)*width+j+2].rgbRed * gauss5[2][4] + 
-				t[(i+1)*width+j-2].rgbRed * gauss5[3][0] + t[(i+1)*width+j-1].rgbRed * gauss5[3][1] + t[(i+1)*width+j].rgbRed * gauss5[3][2] + t[(i+1)*width+j+1].rgbRed * gauss5[3][3] + t[(i+1)*width+j+2].rgbRed * gauss5[3][4] + 
-				t[(i+2)*width+j-2].rgbRed * gauss5[4][0] + t[(i+2)*width+j-1].rgbRed * gauss5[4][1] + t[(i+2)*width+j].rgbRed * gauss5[4][2] + t[(i+2)*width+j+1].rgbRed * gauss5[4][3] + t[(i+2)*width+j+2].rgbRed * gauss5[4][4];
-
-			g = t[(i-2)*width+j-2].rgbGreen * gauss5[0][0] + t[(i-2)*width+j-1].rgbGreen * gauss5[0][1] + t[(i-2)*width+j].rgbGreen * gauss5[0][2] + t[(i-2)*width+j+1].rgbGreen * gauss5[0][3] + t[(i-2)*width+j+2].rgbGreen * gauss5[0][4] + 
-				t[(i-1)*width+j-2].rgbGreen * gauss5[1][0] + t[(i-1)*width+j-1].rgbGreen * gauss5[1][1] + t[(i-1)*width+j].rgbGreen * gauss5[1][2] + t[(i-1)*width+j+1].rgbGreen * gauss5[1][3] + t[(i-1)*width+j+2].rgbGreen * gauss5[1][4] + 
-				t[(i-0)*width+j-2].rgbGreen * gauss5[2][0] + t[(i-0)*width+j-1].rgbGreen * gauss5[2][1] + t[(i-0)*width+j].rgbGreen * gauss5[2][2] + t[(i-0)*width+j+1].rgbGreen * gauss5[2][3] + t[(i-0)*width+j+2].rgbGreen * gauss5[2][4] + 
-				t[(i+1)*width+j-2].rgbGreen * gauss5[3][0] + t[(i+1)*width+j-1].rgbGreen * gauss5[3][1] + t[(i+1)*width+j].rgbGreen * gauss5[3][2] + t[(i+1)*width+j+1].rgbGreen * gauss5[3][3] + t[(i+1)*width+j+2].rgbGreen * gauss5[3][4] + 
-				t[(i+2)*width+j-2].rgbGreen * gauss5[4][0] + t[(i+2)*width+j-1].rgbGreen * gauss5[4][1] + t[(i+2)*width+j].rgbGreen * gauss5[4][2] + t[(i+2)*width+j+1].rgbGreen * gauss5[4][3] + t[(i+2)*width+j+2].rgbGreen * gauss5[4][4];
-
-			b = t[(i-2)*width+j-2].rgbBlue * gauss5[0][0] + t[(i-2)*width+j-1].rgbBlue * gauss5[0][1] + t[(i-2)*width+j].rgbBlue * gauss5[0][2] + t[(i-2)*width+j+1].rgbBlue * gauss5[0][3] + t[(i-2)*width+j+2].rgbBlue * gauss5[0][4] + 
-				t[(i-1)*width+j-2].rgbBlue * gauss5[1][0] + t[(i-1)*width+j-1].rgbBlue * gauss5[1][1] + t[(i-1)*width+j].rgbBlue * gauss5[1][2] + t[(i-1)*width+j+1].rgbBlue * gauss5[1][3] + t[(i-1)*width+j+2].rgbBlue * gauss5[1][4] + 
-				t[(i-0)*width+j-2].rgbBlue * gauss5[2][0] + t[(i-0)*width+j-1].rgbBlue * gauss5[2][1] + t[(i-0)*width+j].rgbBlue * gauss5[2][2] + t[(i-0)*width+j+1].rgbBlue * gauss5[2][3] + t[(i-0)*width+j+2].rgbBlue * gauss5[2][4] + 
-				t[(i+1)*width+j-2].rgbBlue * gauss5[3][0] + t[(i+1)*width+j-1].rgbBlue * gauss5[3][1] + t[(i+1)*width+j].rgbBlue * gauss5[3][2] + t[(i+1)*width+j+1].rgbBlue * gauss5[3][3] + t[(i+1)*width+j+2].rgbBlue * gauss5[3][4] + 
-				t[(i+2)*width+j-2].rgbBlue * gauss5[4][0] + t[(i+2)*width+j-1].rgbBlue * gauss5[4][1] + t[(i+2)*width+j].rgbBlue * gauss5[4][2] + t[(i+2)*width+j+1].rgbBlue * gauss5[4][3] + t[(i+2)*width+j+2].rgbBlue * gauss5[4][4];
-
-			img[i*width+j].rgbRed = r / 256;
-			img[i*width+j].rgbGreen = g / 256;
-			img[i*width+j].rgbBlue = b / 256;
+			img[i*width+j].rgbRed = r;
+			img[i*width+j].rgbGreen = g;
+			img[i*width+j].rgbBlue = b;
 		}
 	}
 
@@ -206,86 +215,24 @@ void set_gauss_filter_5(RGB* img, int width, int height)
 
 void set_sobel_filter_x(RGB* img, int width, int height)
 {
-	int i, j;
-	int r, g, b;
-	RGB* t;
-	int sobelx[3][3] = { {1,  2,  1}, {0,  0,  0}, {-1, -2, -1} };
+	int sobelx[] = {
+		1,  2,  1,
+		0,  0,  0,
+		-1, -2, -1
+	};
 
-	t = (RGB*)malloc(width * height * sizeof(RGB));
-	memcpy(t, img, width * height * sizeof(RGB));
-
-	for (i = 1 ; i < height - 1 ; i++)
-	{
-		for(j = 1 ; j < width - 1 ; j++)
-		{
-			r = t[(i-1)*width+j-1].rgbRed * sobelx[0][0] + t[(i-1)*width+j].rgbRed * sobelx[0][1] + t[(i-1)*width+j+1].rgbRed * sobelx[0][2] + 
-				t[(i-0)*width+j-1].rgbRed * sobelx[1][0] + t[(i-0)*width+j].rgbRed * sobelx[1][1] + t[(i-0)*width+j+1].rgbRed * sobelx[1][2] + 
-				t[(i+1)*width+j-1].rgbRed * sobelx[2][0] + t[(i+1)*width+j].rgbRed * sobelx[2][1] + t[(i+1)*width+j+1].rgbRed * sobelx[2][2];
-
-			g = t[(i-1)*width+j-1].rgbGreen * sobelx[0][0] + t[(i-1)*width+j].rgbGreen * sobelx[0][1] + t[(i-1)*width+j+1].rgbGreen * sobelx[0][2] + 
-				t[(i-0)*width+j-1].rgbGreen * sobelx[1][0] + t[(i-0)*width+j].rgbGreen * sobelx[1][1] + t[(i-0)*width+j+1].rgbGreen * sobelx[1][2] + 
-				t[(i+1)*width+j-1].rgbGreen * sobelx[2][0] + t[(i+1)*width+j].rgbGreen * sobelx[2][1] + t[(i+1)*width+j+1].rgbGreen * sobelx[2][2];
-
-			b = t[(i-1)*width+j-1].rgbBlue * sobelx[0][0] + t[(i-1)*width+j].rgbBlue * sobelx[0][1] + t[(i-1)*width+j+1].rgbBlue * sobelx[0][2] + 
-				t[(i-0)*width+j-1].rgbBlue * sobelx[1][0] + t[(i-0)*width+j].rgbBlue * sobelx[1][1] + t[(i-0)*width+j+1].rgbBlue * sobelx[1][2] + 
-				t[(i+1)*width+j-1].rgbBlue * sobelx[2][0] + t[(i+1)*width+j].rgbBlue * sobelx[2][1] + t[(i+1)*width+j+1].rgbBlue * sobelx[2][2];
-
-			if (r < 0) r = 0;
-			if (r > 255) r = 255;
-			if (g < 0) g = 0;
-			if (g > 255) g = 255;
-			if (b < 0) b = 0;
-			if (b > 255) b = 255;
-
-			img[i*width+j].rgbRed = r;
-			img[i*width+j].rgbGreen = g;
-			img[i*width+j].rgbBlue = b;
-		}
-	}
-
-	free(t);
+	apply_sobel_filter(img, width, height, sobelx);
 }
 
 void set_sobel_filter_y(RGB* img, int width, int height)
 {
-	int i, j;
-	int r, g, b;
-	RGB* t;
-	int sobely[3][3] = { {-1, 0, 1}, {-2, 0, 2}, {-1, 0, 1} };
+	int sobely[] = {
+		-1, 0, 1,
+		-2, 0, 2,
+		-1, 0, 1
+	};
 
-	t = (RGB*)malloc(width * height * sizeof(RGB));
-	memcpy(t, img, width * height * sizeof(RGB));
-
-	for (i = 1 ; i < height - 1 ; i++)
-	{
-		for(j = 1 ; j < width - 1 ; j++)
-		{
-			r = t[(i-1)*width+j-1].rgbRed * sobely[0][0] + t[(i-1)*width+j].rgbRed * sobely[0][1] + t[(i-1)*width+j+1].rgbRed * sobely[0][2] + 
-				t[(i-0)*width+j-1].rgbRed * sobely[1][0] + t[(i-0)*width+j].rgbRed * sobely[1][1] + t[(i-0)*width+j+1].rgbRed * sobely[1][2] + 
-				t[(i+1)*width+j-1].rgbRed * sobely[2][0] + t[(i+1)*width+j].rgbRed * sobely[2][1] + t[(i+1)*width+j+1].rgbRed * sobely[2][2];
-
-			g = t[(i-1)*width+j-1].rgbGreen * sobely[0][0] + t[(i-1)*width+j].rgbGreen * sobely[0][1] + t[(i-1)*width+j+1].rgbGreen * sobely[0][2] + 
-				t[(i-0)*width+j-1].rgbGreen * sobely[1][0] + t[(i-0)*width+j].rgbGreen * sobely[1][1] + t[(i-0)*width+j+1].rgbGreen * sobely[1][2] + 
-				t[(i+1)*width+j-1].rgbGreen * sobely[2][0] + t[(i+1)*width+j].rgbGreen * sobely[2][1] + t[(i+1)*width+j+1].rgbGreen * sobely[2][2];
-
-			b = t[(i-1)*width+j-1].rgbBlue * sobely[0][0] + t[(i-1)*width+j].rgbBlue * sobely[0][1] + t[(i-1)*width+j+1].rgbBlue * sobely[0][2] + 
-				t[(i-0)*width+j-1].rgbBlue * sobely[1][0] + t[(i-0)*width+j].rgbBlue * sobely[1][1] + t[(i-0)*width+j+1].rgbBlue * sobely[1][2] + 
-				t[(i+1)*width+j-1].rgbBlue * sobely[2][0] + t[(i+1)*width+j].rgbBlue * sobely[2][1] + t[(i+1)*width+j+1].rgbBlue * sobely[2][2];
-
-			if (r < 0) r = 0;
-			if (r > 255) r = 255;
-			if (g < 0) g = 0;
-			if (g > 255) g = 255;
-			if (b < 0) b = 0;
-			if (b > 255) b = 255;
-
-			img[i*width+j].rgbRed = r;
-			img[i*width+j].rgbGreen = g;
-			img[i*width+j].rgbBlue = b;
-		}
-	}
-
-	free(t);
+	apply_sobel_filter(img, width, height, sobely);
 }
 
 void set_grey_filter(RGB* img, int width, int height)
