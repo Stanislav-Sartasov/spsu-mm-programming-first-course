@@ -16,11 +16,13 @@ struct table
 {
     struct list **bins;
     int len;
+    int elemnumber, maxlen;
 };
 
 void create(struct table *tab);
 int hash(int key);
 int add(int key, int data, struct table *tab);
+void rebalance(struct table *oldTab);
 struct list * find(int key, struct table *tab);
 void del(int key, struct table *tab);
 
@@ -38,7 +40,6 @@ int main()
         val = (int)saveInInt();
         if (val)
             add(key, val, &mytab);
-
     }
     while (val != 0);
 
@@ -74,10 +75,35 @@ int main()
     return 0;
 }
 
+void rebalance(struct table *oldTab)
+{
+    struct table *new = (struct table*)malloc(sizeof (struct table));
+    create(new);
+    free(new->bins);
+    new->bins = (struct list**)malloc(sizeof (struct list*) * (unsigned long long)oldTab->len * 2);
+    new->len = oldTab->len * 2;
+    for (int i = 0; i < new->len; ++i)
+        new->bins[i] = NULL;
+
+    for (int i = 0; i < oldTab->len; ++i)
+    {
+        while (oldTab->bins[i] != NULL)
+        {
+            add(oldTab->bins[i]->key, oldTab->bins[i]->data, new);
+            del(oldTab->bins[i]->key, oldTab);
+        }
+    }
+    free(oldTab->bins);
+    oldTab->len = new->len;
+    oldTab->bins = new->bins;
+    oldTab->maxlen = new->maxlen;
+    oldTab->elemnumber = new->elemnumber;
+}
+
 int hash(int key)
 {
-    key = 5 * key / 2;
-    return key;
+    key = (123 * key + 1) - 1;
+    return key > 0 ? key : -key;
 }
 
 void del(int key, struct table *tab)
@@ -104,6 +130,7 @@ void del(int key, struct table *tab)
         ptr1->next = ptr->next;
     }
     free(ptr);
+    tab->elemnumber -= 1;
 }
 
 struct list * find(int key, struct table *tab)
@@ -133,6 +160,7 @@ struct list * find(int key, struct table *tab)
 int add(int key, int data, struct table *tab)
 {
     int h = hash(key) % tab->len;
+    int i = 0;
     struct list *ptr = tab->bins[h];
     if (tab->bins[h] == NULL)
     {
@@ -145,12 +173,21 @@ int add(int key, int data, struct table *tab)
         while (ptr->next != NULL)
         {
             ptr = ptr->next;
+            ++i;
         }
 
         ptr->next = (struct list*)malloc(sizeof (struct list));
         ptr = ptr->next;
         ptr->next = NULL;
     }
+
+
+    tab->elemnumber += 1;
+    if (tab->maxlen < i)
+        tab->maxlen = i;
+
+    if ((20 * tab->maxlen > tab->elemnumber) && (tab->elemnumber > 25))
+        rebalance(tab);
 
     ptr->data = data;
     ptr->key = key;
@@ -161,6 +198,8 @@ void create(struct table *tab)
 {
     tab->bins = (struct list**)malloc(sizeof (struct list*) * StartN);
     tab->len = StartN;
+    tab->maxlen = 0;
+    tab->elemnumber = 0;
     for (int i = 0; i < StartN; ++i)
         tab->bins[i] = NULL;
 }
