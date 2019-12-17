@@ -1,7 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include <stdlib.h>
 
-int is_primitive(int num1, int num2)
+int get_largest_common_factor(int num1, int num2)
 {
 	int max_num, min_num, t;
 
@@ -24,22 +25,22 @@ int is_primitive(int num1, int num2)
 		min_num = t;
 	}
 
-	if (min_num > 1)
-	{
-		return 0;
-	}
-
-	return 1;
+	return min_num;
 }
 
 int main()
 {
 	int numbers[3] = {-1, -1, -1};
+	char strs[3][1000];
 
 	for (;;)
 	{
 		printf("Please enter three natural numbers( for example, enter 4, 5, 6):");
-		scanf("%d %d %d", &numbers[0], &numbers[1], &numbers[2]);
+		scanf("%s %s %s", strs[0], strs[1], strs[2]);
+
+		numbers[0] = atoi(strs[0]);
+		numbers[1] = atoi(strs[1]);
+		numbers[2] = atoi(strs[2]);
 
 		if (numbers[0] > 0 && numbers[1] > 0 && numbers[2] > 0)
 		{
@@ -48,13 +49,14 @@ int main()
 		printf("You entered incorrect numbers\n");
 	}
 
-	if (numbers[0] * numbers[0] + numbers[1] * numbers[1] == numbers[2] * numbers[2])
+	if (numbers[0] * numbers[0] + numbers[1] * numbers[1] == numbers[2] * numbers[2] && 
+		1 == get_largest_common_factor(get_largest_common_factor(numbers[0], numbers[1]), numbers[2]))
 	{
 		printf("The numbers are Pythagorean triple.\n");
 
-		if (is_primitive(numbers[0], numbers[1]) && 
-			is_primitive(numbers[1], numbers[2]) && 
-			is_primitive(numbers[2], numbers[0]))
+		if (1 == get_largest_common_factor(numbers[0], numbers[1]) && 
+			1 == get_largest_common_factor(numbers[1], numbers[2]) && 
+			1 == get_largest_common_factor(numbers[2], numbers[0]))
 		{
 			printf("Pythagorean triple are primitive.\n");
 		}
@@ -67,7 +69,6 @@ int main()
 	{
 		printf("The numbers are not Pythagorean triple.\n");
 	}
-
-
+	
 	return 0;
 }
