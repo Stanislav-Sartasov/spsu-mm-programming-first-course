@@ -6,7 +6,7 @@
 
 int is_square_of_integer(int num)
 {
-	int sqrt_num = (int)sqrt(num*1.0);
+	int sqrt_num = (int)sqrt(num * 1.0);
 
 	if (sqrt_num * sqrt_num == num)
 	{
