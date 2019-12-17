@@ -4,138 +4,135 @@
 #include <string.h>
 #include <stdlib.h>
 
-// Table size. Should be a prime number that is roughly 2x the number of expected records for optimal performance.
-#define MAX_ENTRY_COUNT 97
+int g_number;
 
-#define N        50
-#define MAXVAL  1000
-
-typedef struct
+struct Entry
 {
-	int key;
-	int value;
-} *Record;
+	int		key;
+	int		value;
+};
 
-// Our record table definition, an array of MAX_ENTRY_COUNT records.
-Record record_table[MAX_ENTRY_COUNT];
-
-// Hash function for integers.
-static int hash(int key)
+int hash(int key)
 {
-   return (key % MAX_ENTRY_COUNT);
+	return (key % g_number);
 }
 
-// Table initialization function. Sets all indexes to NULL.
-void init(void)
+int insert(int key, int value, struct Entry** table)
 {
-	int i;
-	for (i = 0; i < MAX_ENTRY_COUNT; ++i)
+	int hash_value = hash(key);
+	struct Entry* new_entry;
+	int init_value = hash_value;
+
+	while(table[hash_value] != NULL)
 	{
-		record_table[i] = NULL;
+		hash_value = (hash_value + 1) % g_number;
+		if (hash_value == init_value)
+		{
+			return 0;
+		}
 	}
+
+	new_entry = (struct Entry*)malloc(sizeof(struct Entry));
+	new_entry->key = key;
+	new_entry->value = value;
+
+	table[hash_value] = new_entry;
+	return 1;
 }
 
-// Insert function. Inserts record at the index determined by the hash function. Uses linear probing if already occupied.
-void insert(Record r)
+int search(int key, struct Entry** table, int* pValue)
 {
-   int i = hash(r->key);
-   while (record_table[i] != NULL)
-   {
-      i = (i + 1) % MAX_ENTRY_COUNT;
-   }
-   record_table[i] = r;
+	int hash_value = hash(key);
+
+	while (table[hash_value] != NULL)
+	{
+		if (key == table[hash_value]->key)
+		{
+			*pValue = table[hash_value]->value;
+			return 1;
+		}
+		else
+		{
+			hash_value = (hash_value + 1) % g_number;
+		}
+	}
+
+	return 0;
 }
 
-// Search Function. Returns the record with a matching key. Search starts at the index determined by the hash function. Uses linear probing until the matching key is found. Returns NULL on search miss.
-Record search(int key)
+int delete_entry(int key, struct Entry** table)
 {
-   int i = hash(key);
-   while (record_table[i] != NULL)
-   {
-      if (key == record_table[i]->key)
-	  {
-         return record_table[i];
-      }
-	  else
-	  {
-         i = (i + 1) % MAX_ENTRY_COUNT;
-      }
-   }
-   return NULL;
-}
+	int hash_value = hash(key);
 
-// Delete function. Searches for and deletes the table entry with a matching key. Search starts at the index determined by the hash function. 
-// Uses linear probing until the matching key is found. Re-inserts the records that follow the matching record until an unocupied index is found.
-void delete_record(int key)
-{
-   int i = hash(key);
-   Record r;
- 
-   while (record_table[i] != NULL)
-   {
-      if (key == record_table[i]->key)
-	  {
-         break;
-      }
-	  else
-	  {
-         i = (i + 1) % MAX_ENTRY_COUNT;
-      }
-   }
-   
-   if (record_table[i] == NULL)
-   {
-      return;
-   }
-   
-   record_table[i] = NULL;
-   
-   for (i = (i + 1) % MAX_ENTRY_COUNT; record_table[i] != NULL; i = (i + 1) % MAX_ENTRY_COUNT)
-   {
-      r = record_table[i];
-      record_table[i] = NULL;
-      insert(r);
-   }
+	while (table[hash_value] != NULL)
+	{
+		if (key == table[hash_value]->key)
+		{
+			free(table[hash_value]);
+			table[hash_value] = NULL;
+			return 1;
+		}
+		else
+		{
+			hash_value = (hash_value + 1) % g_number;
+		}
+	}
+
+	return 0;
 }
 
 int main()
 {
-	int i;
-	Record a;
+	struct Entry** table;
+	char str[1000];
+	int key, value, i;
+
+	for (;;)
+	{
+		printf("please input the number for hash table(this number need to be grater than all elements):");
+		scanf("%s", str);
+
+		g_number = atoi(str);
+
+		if (g_number > 0)
+		{
+			break;
+		}
+		printf("You entered incorrect numbers\n");
+	}
+
+	table = (struct Entry**)malloc(sizeof(struct Entry*) * g_number);
+	if (!table)
+	{
+		printf("Cant' alloc the hash's table.\n");
+		return -1;
+	}
+	memset(table, 0, sizeof(struct Entry*) * g_number);
 	
 	//srand(time(NULL));
 	
-	// Initialize the hash table
-	init();
-	
-	// Insert N random records
-	for (i = 0; i < N; ++i)
+	for (i = 0; i < 10 ; i++)
 	{
-	
-		// Generate new random record
-		a = (Record)malloc(sizeof(*a));
-		a->key = rand() % MAXVAL;
-		a->value = rand() % MAXVAL;
+		key = rand() % g_number;
+		value = rand();
 		
-		// Don't allow duplicate keys
-		if (search(a->key) != NULL)
+		if (insert(key, value, table))
 		{
-			--i;
-			continue;
+			printf("The insertion is successful: Key => %d, Value => %d\n", key, value);
 		}
-		
-		// Insert new record
-		printf("Inserting: Key => %i, Value => %i\n", a->key, a->value);
-		insert(a);
+		else
+		{
+			printf("The insertion(key=%d, value=%d) failed.\n", key, value);
+		}
 	}
 	
 	// Search and delete records for all possible keys
-	for (i = 0; i < MAXVAL; ++i)
+	for (i = 0; i < g_number ; ++i)
 	{
-		if ((a = search(i)) != NULL)
+		if (search(i, table, &value))
 		{
-			printf("Deleting: Key => %i, Value => %i\n", a->key, a->value);
-			delete_record(a->key);
+			printf("Deleting: Key => %i, Value => %i\n", i, value);
+			delete_entry(key, table);
 		}
 	}
 	
