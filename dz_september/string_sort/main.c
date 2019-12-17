@@ -8,8 +8,10 @@
 #include "sys/mman.h"
 #include <string.h>
 
-void qsortt(char **, long long len);
+//void qsortt(char **, long long len);
 
+int strcmpr(const void *ptr1, const void *ptr2);
+unsigned long long lengthstr(char *str);
 
 int main(int argc, char* argv[])
 {
@@ -72,21 +74,23 @@ int main(int argc, char* argv[])
     char **strs = (char **)malloc(sizeof (char*) * (unsigned long long)numberStr);
 
     strs[0] = strtok(map, "\n");
-    if (strs[0][strlen(strs[0]) - 1] == '\r')
-        strs[0][strlen(strs[0]) - 1] = '\0';
+    char *prev = map + strlen(strs[0]);
+    *prev = '\n';
     for (int i = 1; i < numberStr; ++i)
     {
-        strs[i] = strtok(NULL, "\n");
-        if (strs[i][strlen(strs[i]) - 1] == '\r')
-            strs[i][strlen(strs[i]) - 1] = '\0';
+        strs[i] = strtok(prev + 1, "\n");
+        prev = prev + 1 + strlen(strs[i]);
+        *prev = '\n';
     }
 
-    qsortt(strs, numberStr);
+
+    //qsortt(strs, numberStr);
+    qsort(strs, (size_t)numberStr, sizeof(char*), strcmpr);
 
     char endl = '\n';
     for(int i = 0; i < numberStr; ++i)
     {
-        write(fOut, strs[i], strlen(strs[i]));
+        write(fOut, strs[i], lengthstr(strs[i]));
         write(fOut, &endl, 1);
     }
 
@@ -98,84 +102,29 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-void qsortt(char **strs, long long numberStr)
+unsigned long long lengthstr(char *str)
 {
-    long long opr = (numberStr - 1) / 2, flagi = 0, flagj = 0, lasti = -1, oprflag = 0;
-    for (long long i = 0, j = numberStr - 1; i <= j; )
-    {
-        if ((strcmp(strs[i], strs[opr]) == 0) && (!(lasti + 1)))
-        {
-            lasti = i;
-        }
-        if (strcmp(strs[i], strs[opr]) > 0)
-        {
-            flagi = 1;
-        }
-        else
-        {
-            ++i;
-        }
+    unsigned long long i = 0;
+    while ((str[i] != '\n') && (str[i] != '\r') && (str[i] != '\0'))
+        ++i;
+    return i;
+}
 
-        if (strcmp(strs[opr], strs[j]) >= 0)
-        {
-            flagj = 1;
-        }
-        else
-        {
-            --j;
-        }
-        if (flagi && flagj)
-        {
-            char *temp = strs[i];
-            strs[i] = strs[j];
-            strs[j] = temp;
-            flagi = 0;
-            flagj = 0;
-            if (opr == i)
-                opr = j;
-            else
-                if (opr == j)
-                    opr = i;
-        }
-        if (i == j)
-        {
-            if (strcmp(strs[opr], strs[j]) >= 0)
-            {
-                flagj = 1;
-            }
-            if ((flagj) && (lasti + 1))
-            {
-                char *temp = strs[lasti];
-                strs[lasti] = strs[j];
-                strs[j] = temp;
-                flagj = 0;
-            }
-            opr = i;
-            break;
-        }
-        if (i > j)
-        {
-            opr = j;
-            oprflag = 1;
-            break;
-        }
-    }
-    ///////////////////////////////
-    if (oprflag)
-    {
-        if (opr + 1 > 1)
-            qsortt(strs, opr + 1);
-        if (numberStr - opr - 1 > 1)
-            qsortt(strs + opr + 1, numberStr - opr - 1);
-    }
+int strcmpr(const void *ptr1, const void *ptr2)
+{
+    char* str1 = *(char**)ptr1;
+    char* str2 = *(char**)ptr2;
+    unsigned long long l1 = lengthstr(str1), l2 = lengthstr(str2);
+    char c1 = str1[l1], c2 = str2[l2];
+    str1[l1] = '\0';
+    str2[l2] = '\0';
+    int result = strcmp(str1, str2);
+    str1[l1] = c1;
+    str2[l2] = c2;
+    if (result > 0)
+        result = 1;
     else
-    {
-        if ((flagj) && (numberStr > opr + 1))
-            ++opr;
-        if (opr > 1)
-            qsortt(strs, opr);
-        if (numberStr - opr > 1)
-            qsortt(strs + opr, numberStr - opr);
-    }
-    return ;
+        if (result < 0)
+            result = -1;
+    return result;
 }
