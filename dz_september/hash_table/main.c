@@ -45,6 +45,18 @@ int main()
 
     printf("\n---------------------\n");
 
+    struct list *ptr1 = mytab.bins[0];
+
+    for (int i = 0; i < mytab.len; ++i)
+    {
+        ptr1 = mytab.bins[i];
+        while (ptr1 != NULL)
+        {
+            printf("k: %d, v: %d, i: %d\n", ptr1->key, ptr1->data, i);
+            ptr1 = ptr1->next;
+        }
+    }
+
     do
     {
         printf("(key == 0 to exit)put your key(int) to delete the element: ");
@@ -77,6 +89,17 @@ int main()
 
 void rebalance(struct table *oldTab)
 {
+    struct list *ptr1;
+    printf("balansing\n");
+    for (int i = 0; i < oldTab->len; ++i)
+    {
+        ptr1 = oldTab->bins[i];
+        while (ptr1 != NULL)
+        {
+            printf("k: %d, v: %d, i: %d\n", ptr1->key, ptr1->data, i);
+            ptr1 = ptr1->next;
+        }
+    }
     struct table *new = (struct table*)malloc(sizeof (struct table));
     create(new);
     free(new->bins);
@@ -102,7 +125,7 @@ void rebalance(struct table *oldTab)
 
 int hash(int key)
 {
-    key = (123 * key + 1) - 1;
+    //key = (123 * (key + 1)) - 1;
     return key > 0 ? key : -key;
 }
 
@@ -170,15 +193,23 @@ int add(int key, int data, struct table *tab)
     }
     else
     {
-        while (ptr->next != NULL)
+        while ((ptr->next != NULL) || (ptr->key == key))
         {
             ptr = ptr->next;
             ++i;
         }
 
+        if (ptr->key == key)
+        {
+            ptr->data = data;
+        }
+        else
+        {
+
         ptr->next = (struct list*)malloc(sizeof (struct list));
         ptr = ptr->next;
         ptr->next = NULL;
+        }
     }
 
 
@@ -186,11 +217,11 @@ int add(int key, int data, struct table *tab)
     if (tab->maxlen < i)
         tab->maxlen = i;
 
-    if ((20 * tab->maxlen > tab->elemnumber) && (tab->elemnumber > 25))
-        rebalance(tab);
-
     ptr->data = data;
     ptr->key = key;
+
+    if ((20 * tab->maxlen > tab->elemnumber) && (tab->elemnumber > 25))
+        rebalance(tab);
     return  0;
 }
 
