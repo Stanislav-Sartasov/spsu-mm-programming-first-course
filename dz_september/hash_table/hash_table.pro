@@ -5,7 +5,9 @@ CONFIG -= qt
 
 SOURCES += \
         main.c \
-    ../mylib/functionToGo.c
+    ../mylib/functionToGo.c \
+    hash-table.c
 
 HEADERS += \
-    ../mylib/functionToGo.h
+    ../mylib/functionToGo.h \
+    hash-table.h
