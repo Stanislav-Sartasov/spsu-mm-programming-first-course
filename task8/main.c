@@ -10,26 +10,26 @@ const double sigma = 0.6;
 #pragma pack(push, 1)
 struct bmp_file
 {
-	unsigned short bf_type;
-	unsigned int bf_size;
-	unsigned short bf_reversed_one;
-	unsigned short bf_reversed_two;
-	unsigned int bf_off_bits;
+    unsigned short bf_type;
+    unsigned int bf_size;
+    unsigned short bf_reversed_one;
+    unsigned short bf_reversed_two;
+    unsigned int bf_off_bits;
 };
 
 struct bmp_info
 {
-	unsigned int size;
-	unsigned int widht;
-	unsigned int height;
-	unsigned short planes;
-	unsigned short bit_count;
-	unsigned int compression;
-	unsigned int size_image;
-	unsigned int x_pels_per_meter;
-	unsigned int y_pels_per_meter;
-	unsigned int color_used;
-	unsigned int color_important;
+    unsigned int size;
+    unsigned int widht;
+    unsigned int height;
+    unsigned short planes;
+    unsigned short bit_count;
+    unsigned int compression;
+    unsigned int size_image;
+    unsigned int x_pels_per_meter;
+    unsigned int y_pels_per_meter;
+    unsigned int color_used;
+    unsigned int color_important;
 };
 #pragma pack(pop)
 
@@ -69,9 +69,9 @@ void add_filter(unsigned char* input, int size, int fl, int height, int width, d
             }
         }
     }
-	for (int i = 0; i < height * width * 3; i++)
-		input[i] = output[i];
-	free(output);
+    for (int i = 0; i < height * width * 3; i++)
+        input[i] = output[i];
+    free(output);
 }
 
 void averaging(unsigned char* input, int height, int width, int size)
@@ -150,12 +150,12 @@ int main(int argc, char* argv[])
     }
 
     struct bmp_file file_header;
-	struct bmp_info info_header;
-	fread(&file_header, sizeof(file_header), 1, fin);
-	fread(&info_header, sizeof(info_header), 1, fin);
-	unsigned char* input = (unsigned char*)malloc(info_header.size_image);
-	fseek(fin, file_header.bf_off_bits, SEEK_SET);
-	fread(input, 1, info_header.size_image, fin);
+    struct bmp_info info_header;
+    fread(&file_header, sizeof(file_header), 1, fin);
+    fread(&info_header, sizeof(info_header), 1, fin);
+    unsigned char* input = (unsigned char*)malloc(info_header.size_image);
+    fseek(fin, file_header.bf_off_bits, SEEK_SET);
+    fread(input, 1, info_header.size_image, fin);
 
     if (!strcmp(argv[2], "Averaging3"))
         averaging(input, info_header.height, info_header.widht, 3);
