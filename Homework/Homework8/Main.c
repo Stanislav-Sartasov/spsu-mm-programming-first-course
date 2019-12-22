@@ -1,86 +1,88 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include "bmp.h"
+#include "filter.h"
+
 #include <stdio.h>
-#include <string.h>
-#include "Header.h"
 
-/*
-	To use this program in Visual Studio, right click at the project(not the solution) and click Properties.
-	A popup box should appear, choose Configuration Properties Debugging. In the Command Arguments section, fill in this line:
-	"input.bmp" "#filterName" "#outputName"
-	in which #filterName could be Average3x3, Gauss3x3, SobelX, SobelY or Grey
-	and #outputName is the output file's name, it should contains ".bmp". For example:
-	"input.bmp" "Average3x3" "Average3x3.bmp"
-	(see https://imgur.com/a/IhcDufk), please DO NOT delete the file "input.bmp".
-*/
-
-
-// The main program starts here.
-int main(unsigned int argc, char* argv[])
+void printUsage() 
 {
-	if (argc != 4) {
-		printf("The data you entered is incorrect.\nTry it again.\n");
-		return(4);
-	}
 
-	FILE* fileInput;
-	FILE* fileOutput;
-	char* filterName;
-	unsigned int flag = 0;
+    const char description[] = "Usage: progname <input> <filter_index> <output>"
+                               "\n\n\tavaialable filters: \n"
+                               "\t\t0. Averaging filter 3x3\n"
+                               "\t\t1. Gaussian averaging filter 3x3\n"
+                               "\t\t2. Sobel filter by X\n"
+                               "\t\t3. Sobel filter by Y\n"
+                               "\t\t4. GrayScale\n";
 
-	// Open the files
-	fopen_s(&fileInput, argv[1], "rb");
-	fopen_s(&fileOutput, argv[3], "wb");
-	filterName = argv[2];
+    printf("%s\n", description);
+}
 
-	if (!fileInput) {
-		printf("Cannot open the input file, please try again.\n");
-		_fcloseall();
-		return(3);
-	}
-	else {
-		printf("Successfully opened the input file.\n");
-	}
+int toNumber(const char* buffer, int* num) 
+{
 
-	if (!fileOutput) {
-		printf("Cannot open the ouput file, please try again.\n");
-		_fcloseall();
-		return(-3);
-	}
-	else {
-		printf("Successfully opened the ouput file.\n");
-	}
+    if (!buffer || !num)
+        return 0;
 
+    (*num) = 0;
+    int digits = 0;
+    while (*buffer)
+	{
+        int c = *buffer++;
+        if (!(c >= '0' && c <= '9'))
+            return 0;
+        (*num) = (*num) * 10 + (c - '0');
+        ++digits;
+    }
+    return digits;
+}
 
-	// Apply the filter
-	if (!strcmp(filterName, "Average3x3")) {
-		flag = useFilter(fileInput, 1, fileOutput);
-	}
-	else if (!strcmp(filterName, "Gauss3x3")) {
-		flag = useFilter(fileInput, 2, fileOutput);
-	}
-	else if (!strcmp(filterName, "SobelX")) {
-		flag = useFilter(fileInput, 3, fileOutput);
-	}
-	else if (!strcmp(filterName, "SobelY"))	{
-		flag = useFilter(fileInput, 4, fileOutput);
-	}
-	else if (!strcmp(filterName, "Grey")) {
-		flag = useFilter(fileInput, 5, fileOutput);
-	}
-	else {
-		printf("Failed detecting filter, please check the filter name.\n");
-		_fcloseall();
-		return(2);
-	}
+int main(int argc, const char** argv) 
+{
 
+    int filterIndex = 0;
 
-	if (!flag) {
-		printf("Failed to apply filter, please check the input and try again.\n");
-		_fcloseall();
-		return(-2);
-	}
-	else {
-		printf("Successfully applied the filter, please check the output file %s.\n", argv[3]);
-	}
+    if (argc != 4 ||
+            toNumber(argv[2], &filterIndex) != 1 ||
+            !(filterIndex >= 0 && filterIndex < 5)) 
+	{
+        printUsage();
+        return 0;
+    }
+    printf("\n");
 
-	return(0);
+    const char* inputFile = argv[1];
+    const char* outputFile = argv[3];
+
+    BMP* bmp = bmpRead(inputFile);
+    if (!bmp)
+        return -1;
+
+    switch (filterIndex) 
+	{
+        case 0:
+            averageFilter(bmp);
+            break;
+        case 1:
+            gaussianAvgerageFilter(bmp);
+            break;
+        case 2:
+            SobelXFilter(bmp);
+            break;
+        case 3:
+            SobelYFilter(bmp);
+            break;
+        case 4:
+            greyFilter(bmp);
+            break;
+        default:
+            break;
+    }
+
+    if (bmpSaveAs(bmp, outputFile))
+        return -1;
+
+    bmpClose(bmp);
+    printf("[*] %s closed\n", inputFile);
+    return 0;
 }
