@@ -1,91 +1,42 @@
 #include <stdio.h>
-#include <math.h>
 
-#define SIZE 999999
+#define MAX  (999999)
 
-
-/*
-	Calculates the didital root.
-	@param m_num:	The number that needs to be calculated.
-*/
-int digitRoot(int m_num){
-	int sum = 0;
-
-	while (m_num > 0)
-	{
-		sum += m_num % 10;
-		m_num /= 10;
-	}
-
-	return sum;
-}
-
+int mdrs[MAX + 1];
 
 /*
-	Calculates the maximum sum of digital roots.
-	@param m_num:	The number whoes MDR needs to be calculated.
-	@param ptr:		The pointer where the results will be stored.
+	Calculates the digital root.
+	@param x:	The number that needs to be calculated.
 */
-int mdrs(int m_num, int* ptr)
+int digitalRoot(int x) 
 {
-	int max = 0;
-
-	int i = m_num;
-	int rest = i % 2;
-	int j = 2 + rest;
-
-	while (m_num > 10) {
-		m_num = digitRoot(m_num);
-	}
-
-	max = digitRoot(m_num);
-	while (j < sqrt(i) + 1)
-	{
-		if ((i % j) == 0)
-		{
-			if (max < ptr[j - 2] + ptr[i / j - 2])
-			{
-				max = ptr[j - 2] + ptr[i / j - 2];
-			}
-		}
-		j += rest + 1;
-	}
-
-	return max;
+    return ((x - 1) % 9) + 1;
 }
 
+int main() 
+{
+    const char description[] = "This programs calculate's the sum of all MDRS(n)"
+                               " for n in interval [2, 999999]\n\n";
 
-// Main program starts here.
-int main(){
-	int* ptr;
-	ptr = (int*)malloc(SIZE * sizeof(int));
+    printf("%s", description);
 
+    for(int i = 2; i <= MAX; ++i)
+        mdrs[i] = digitalRoot(i);
 
-	if (ptr == NULL){
-		printf("Failed creating memory.\n");
-		return 0;
-	}
-	else{
-		int sum = 0;
-
-		for (int i = 0; i < 8; i++)
+    for (int i = 2; i <= MAX; ++i) 
+	{
+        for (int j = 2; i * j <= MAX && j <= i; ++j) 
 		{
-			ptr[i] = i + 2;
-			sum += ptr[i];
-		}
+            if (mdrs[i * j] < mdrs[i] + mdrs[j])
+                mdrs[i * j] = mdrs[i] + mdrs[j];
+        }
+    }
 
-		for (int i = 8; i < SIZE; i++)
-		{
-			ptr[i] = mdrs(i + 2, ptr);
-			sum += ptr[i];
-		}
+    unsigned long long res = 0;
+    for (int i = 2; i <= MAX; ++i)
+        res += mdrs[i];
 
-		printf("%d\n", sum);
-	}
+    printf("solution: %lld\n", res);
 
-
-
-	free(ptr);
-
-	return 0;
+    return 0;
 }
