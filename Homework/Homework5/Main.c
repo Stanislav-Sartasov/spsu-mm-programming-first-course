@@ -1,43 +1,67 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <math.h>
 
+#define MAX     (100005)
 
-// The main program starts here.
-int main() {
-	int num;
-	
-	printf("Enter a number that is not a square of an integer: ");
+typedef uint32_t u32;
 
-	while (1) {
-		scanf_s("%d", &num);
-		if (num <= 0 || floor(sqrt(num)) == sqrt(num)) {
-			printf("Incorrect input. Try again: ");
-		}
-		else {
-			break;
-		}
-	}
+int readNumberStdin(int maxDigits, u32* ret) 
+{
+    int digits = 0;
+    int c = 0;
+    (*ret) = 0;
 
-	
-	int sequence = 0;
-	double xi = sqrt(num);
-	int ai = floor(xi);
+    while ((c = getchar()) != '\n') 
+	{
+        if (!(c >= '0' && c <= '9') || (++digits > maxDigits)) 
+		{
+            while (getchar() != '\n');
+            return 1;
+        }
+        (*ret) = (*ret) * 10 + (c - '0');
+    }
 
-	int a0 = floor(xi);
-	printf("[%d; ", a0);
-
-	while(1){
-		xi = 1 / (xi - ai);
-		ai = floor(xi);
-		printf("%d, ", ai);
-		sequence++;
-
-		if (ai == 2 * a0) {
-			printf("...]\nWith the sequence %d", sequence);
-			break;
-		}
-	}
-
-
-	return 0;
+    return !digits;
 }
+
+int isPerfectSquare(u32 n) 
+{
+    u32 r = floor(sqrt(n));
+    return (r * r) == n;
+}
+
+int main()
+{
+
+    const char description[] = "This program finds the terms and period of continue"
+                               " fraction of sqrt(n)\n\n";
+
+    printf("%s", description);
+
+    u32 n;
+    do 
+	{
+        printf("enter a non-perfect square number(max digits=8): ");
+    } while(readNumberStdin(8, &n) || (n == 0) || isPerfectSquare(n));
+
+    u32 r = floor(sqrt(n));
+    u32 a = r;
+    u32 p = 0;
+    u32 q = 1;
+    u32 i = 0;
+
+    printf("\nsequence: [%d; ", r);
+    do 
+	{    
+        p = a * q - p;
+        q = (n - p * p) / q;
+        a = (r + p) / q;
+        ++i;
+        printf("%d, ", a);
+    } while(q != 1);
+    printf("...]\nperiod: %d\n", i);
+}
+
+
+
