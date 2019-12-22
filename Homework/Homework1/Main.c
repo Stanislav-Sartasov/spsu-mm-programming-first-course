@@ -1,35 +1,46 @@
-#include "Header.h"
+#include <stdio.h>
+#include <stdint.h>
 #include <string.h>
 
+void printBinary32(uint32_t num) 
+{
+    for(int i = 31; i >= 0; --i)
+        printf("%d", (num & (1u << i)) >= 1);
+    printf("\n");
+}
 
-int main() {
+void printBinary64(uint64_t num) 
+{
+    for(int i = 63; i >= 0; --i)
+        printf("%d", (num & (1ull << i)) >= 1);
+    printf("\n");
+}
 
-	char firstName[] = "Ilias";
-	char surName[] = "Mzoughi";
-	char patronymic[] = "Mzoughi";
+uint32_t twoComplement(uint32_t num) 
+{
+    return (~num) + 1;
+}
 
-	int product = strlen(firstName) * strlen(surName) * strlen(patronymic);
-	printf("Product found: %d\n", product);
+int main() 
+{
 
-	char result[BASE];
-	decimalToBinary(product, result, BASE);
-	twoCompliment(result, BASE);
+    char firstName[]  = "Ilias";
+    char middleName[] = "Mzoughi";
+    char lastName[]   = "Mzoughi";
 
-	printf("\tThe negative 32-bit integer: ");
-	printArray(result, BASE);
-	printf("\n");
+    uint32_t product = strlen(firstName) * strlen(lastName) * strlen(middleName);
 
-	singleIEEE754(positive, product, result);
-	printf("\tThe positive floating-point number: ");
-	printArray(result, SINGLE_PRECISION_BASE);
-	printf("\n");
+    uint32_t a = product;
+    float b = product;
+    double c = product;
 
-	product = strlen(firstName) * strlen(surName) * strlen(patronymic);
-	decimalToBinary(product, result, BASE);
-	doubleIEEE754(negative, product, result);
-	printf("\tThe negative floating-point number: ");
-	printArray(result, DOUBLE_PRECISION_BASE);	
-	printf("\n");
+    printf("The negative 32-bit integer: ");
+    printBinary32(twoComplement(a));
 
-	return 0;
+    printf("The positive floating-point number: ");
+    printBinary32((*((uint32_t*)&b)));
+
+    printf("The negative floating-point number: ");
+    printBinary64((*((uint64_t*)&c)));
+	
 }
