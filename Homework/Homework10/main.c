@@ -1,69 +1,87 @@
 #include <stdio.h>
 
-#define _CRT_SECURE_WARNINGS
+#define MAX_PENSION         (1005)
+#define MAX_COINS           (1005)
+#define NUM_ENGLISH_COINS   (9)
 
-#define COUNT_CURRENT_MONEY onePennies + twoPences * 2 + fivePences * 5 + tenPences * 10 + twentyPences * 20 + fiftyPences * 50 + onePounds * 100 + twoPounds * 200
+unsigned long long dp[NUM_ENGLISH_COINS][MAX_PENSION][MAX_COINS];
 
+void calculate(int pension) 
+{
 
-int main() {
-	int ammount = 0;
+    int coins[NUM_ENGLISH_COINS] = {0, 1, 2, 5, 10, 20, 50, 100, 200};
 
+    dp[0][0][0] = 1;
 
-	printf("Enter the ammount of money: ");
-	// Takes the user's input.
-	do {
-		scanf_s("%d", &ammount);
-	} while (ammount <= 0);
+    for(int i = 1; i < NUM_ENGLISH_COINS; ++i) 
+	{
+        for(int amount = 0; amount <= pension; ++amount) 
+		{
+            for(int j = 0; j <= pension; ++j) 
+			{
+                for(int k = 0; k <= j; ++k) 
+				{
+                    unsigned long long useAmt = 1LL * k * coins[i];
+                    if(useAmt > amount)
+                        break;
+                    unsigned long long remAmt = amount - useAmt;
+                    // add number of ways, if we use k coins[i]
+                    dp[i][amount][j] += dp[i-1][remAmt][j - k];
+                }
+            }
+        }
+    }
+}
 
+unsigned long long getSolution(int pension) 
+{
 
-	int onePennies = 0,
-		twoPences = 0,
-		fivePences = 0,
-		tenPences = 0,
-		twentyPences = 0,
-		fiftyPences = 0,
-		onePounds = 0,
-		twoPounds = 0;
+    unsigned long long count = 0;
+    for(int i = 1; i <= pension; ++i)
+        count += dp[NUM_ENGLISH_COINS - 1][pension][i];
+    return count;
+}
 
-	int count = 0;
+int readNumber(int maxDigits, int* ret) 
+{
+    int digits = 0;
+    int c = 0;
+    (*ret) = 0;
 
-	int currentMoney = COUNT_CURRENT_MONEY;
-	for (int twoPounds = 0; COUNT_CURRENT_MONEY <= ammount; twoPounds++){
-		for (int onePounds = 0; COUNT_CURRENT_MONEY <= ammount; onePounds++) {
-			currentMoney = COUNT_CURRENT_MONEY;
-			for (int fiftyPences = 0; COUNT_CURRENT_MONEY <= ammount; fiftyPences++) {
-				currentMoney = COUNT_CURRENT_MONEY;
-				for (int twentyPences = 0; COUNT_CURRENT_MONEY <= ammount; twentyPences++) {
-					currentMoney = COUNT_CURRENT_MONEY;
-					for (int tenPences = 0; COUNT_CURRENT_MONEY <= ammount; tenPences++) {
-						currentMoney = COUNT_CURRENT_MONEY;
-						for (int fivePences = 0; COUNT_CURRENT_MONEY <= ammount; fivePences++) {
-							currentMoney = COUNT_CURRENT_MONEY;
-							for (int twoPences = 0; COUNT_CURRENT_MONEY <= ammount; twoPences++) {
-								currentMoney = COUNT_CURRENT_MONEY;
-								for (int onePennies = 0; COUNT_CURRENT_MONEY <= ammount; onePennies++) {
-									currentMoney = COUNT_CURRENT_MONEY;
-									if (currentMoney == ammount) {
-										count++;
-									}
-								}
-								onePennies = 0;
-							}
-							twoPences = 0;
-						}
-						fivePences = 0;
-					}
-					tenPences = 0;
-				}
-				twentyPences = 0;
-			}
-			fiftyPences = 0;
-		}
-		onePounds = 0;
-	}
+    while ((c = getchar()) != '\n') 
+	{
+        if (!(c >= '0' && c <= '9') || (++digits > maxDigits)) 
+		{
+            while (getchar() != '\n');
+            return 1;
+        }
+        (*ret) = (*ret) * 10 + (c - '0');
+    }
 
+    return !digits;
+}
 
-	printf("the number of ways in which this amount can be dialed using any number of any English coins is %d", count);
+int main() 
+{
+    const char* description = "This program find's the number of ways an amount"
+                              " can be selected using denomination's of \n"
+                              "1, 2, 5, 10, 20, 50, 100, 200 coins\n"
+                              "\tinput:  integer (< 1005)\n"
+                              "\toutput: number of ways\n\n";
 
-	return 0;
+    printf("%s", description);
+
+    printf("enter a positive integer < 1005: ");
+    int pension = 0;
+    while (1) 
+	{
+        if (!readNumber(4, &pension) && (pension < MAX_PENSION))
+            break;
+        printf("enter a positive integer < 1005: ");
+    }
+
+    calculate(pension);
+    printf("number of ways: %lld\n", getSolution(pension));
+
+    return 0;
 }
