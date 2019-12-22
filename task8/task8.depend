@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1577026541 source:/home/lyubov/Documents/programs/task8/main.c
+	<stdio.h>
+	<math.h>
+	<stdlib.h>
+	<string.h>
+
