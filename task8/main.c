@@ -119,6 +119,15 @@ void toGrey(unsigned char* input, int height, int width)
     }
 }
 
+int checkFilterName(char *filter)
+{
+    if (strcmp(filter, "Averaging3") == 0 || strcmp(filter, "Averaging5") == 0 || strcmp(filter, "Gauss3") == 0 || strcmp(filter, "Gauss5") == 0
+                                          || strcmp(filter, "SobelX") == 0 || strcmp(filter, "SobelY") == 0 || strcmp(filter, "ToGrey") == 0) {
+        return 1;
+    }
+    return 0;
+}
+
 int main(int argc, char* argv[])
 {
     /*int argc = 4;
@@ -127,17 +136,23 @@ int main(int argc, char* argv[])
     argv[2] = "SobelY";
     argv[3] = "output2.bmp";*/
 
+    if (argc != 4)
+    {
+        printf("Check the parameters are correct");
+        exit(-1);
+    }
+    if (checkFilterName(argv[2]) == 0)
+    {
+        printf("Check filter name\n");
+        exit(-1);
+    }
+
     FILE* fin;
 	FILE* fout;
 
     fin = fopen(argv[1], "rb");
     fout = fopen(argv[3], "wb");
 
-    if (argc != 4)
-    {
-        printf("Check the parameters are correct");
-        exit(-1);
-    }
     if (fin == NULL)
     {
         printf("Input file open failed");
@@ -150,16 +165,16 @@ int main(int argc, char* argv[])
     }
 
     struct bmp_file file_header;
-    struct bmp_info info_header;
-    fread(&file_header, sizeof(file_header), 1, fin);
-    fread(&info_header, sizeof(info_header), 1, fin);
-    unsigned char* input = (unsigned char*)malloc(info_header.size_image);
-    fseek(fin, file_header.bf_off_bits, SEEK_SET);
-    fread(input, 1, info_header.size_image, fin);
+	struct bmp_info info_header;
+	fread(&file_header, sizeof(file_header), 1, fin);
+	fread(&info_header, sizeof(info_header), 1, fin);
+	unsigned char* input = (unsigned char*)malloc(info_header.size_image);
+	fseek(fin, file_header.bf_off_bits, SEEK_SET);
+	fread(input, 1, info_header.size_image, fin);
 
     if (!strcmp(argv[2], "Averaging3"))
         averaging(input, info_header.height, info_header.widht, 3);
-    else if (strcmp(argv[2], "Averaging5") == 0)
+    else if (!strcmp(argv[2], "Averaging5"))
         averaging(input, info_header.height, info_header.widht, 5);
     else if (!strcmp(argv[2], "Gauss3"))
         gauss(input, info_header.height, info_header.widht, 3);
@@ -171,11 +186,7 @@ int main(int argc, char* argv[])
         sobelY(input, info_header.height, info_header.widht, 3);
     else if (!strcmp(argv[2], "ToGrey"))
         toGrey(input, info_header.height, info_header.widht);
-    else
-    {
-        printf("Check filter name\n");
-        exit(-1);
-    }
+
     printf("Cool!\n");
     fwrite(&file_header, sizeof(file_header), 1, fout);
     fwrite(&info_header, sizeof(info_header), 1, fout);
