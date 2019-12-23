@@ -4,6 +4,8 @@
 	<stdlib.h>
 	"allocators.h"
 
+1576486339 s.h"
+
 1576355058 c:\users\milos-pc\downloads\spsu-mm-programming-first-course-miloserdovalyubov\task9\allocators.h
 
 1576354754 source:c:\users\milos-pc\downloads\spsu-mm-programming-first-course-miloserdovalyubov\task9\allocators.c
@@ -21,6 +23,20 @@
 1576486156 c:\users\milos-pc\downloads\spsu-mm-programming-first-course-miloserdovalyubov (2)\spsu-mm-programming-first-course-miloserdovalyubov\task9\allocators.h
 
 1576486339 source:c:\users\milos-pc\downloads\spsu-mm-programming-first-course-miloserdovalyubov (2)\spsu-mm-programming-first-course-miloserdovalyubov\task9\allocators.c
+	<unistd.h>
+	<malloc.h>
+	<stdlib.h>
+	<string.h>
+	"allocators.h"
+
+1577112962 source:/home/lyubov/Documents/spsu-mm-programming-first-course-MiloserdovaLyubov/task9/main.c
+	<stdio.h>
+	<stdlib.h>
+	"allocators.h"
+
+1577110229 /home/lyubov/Documents/spsu-mm-programming-first-course-MiloserdovaLyubov/task9/allocators.h
+
+1577112995 source:/home/lyubov/Documents/spsu-mm-programming-first-course-MiloserdovaLyubov/task9/allocators.c
 	<unistd.h>
 	<malloc.h>
 	<stdlib.h>
