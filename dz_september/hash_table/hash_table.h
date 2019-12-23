@@ -3,9 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define STARTN 7
-#define ALLOWED 5
-
 
 struct list
 {

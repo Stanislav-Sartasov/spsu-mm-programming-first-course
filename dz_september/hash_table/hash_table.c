@@ -1,4 +1,6 @@
-#include"hash-table.h"
+#include"hash_table.h"
+#define STARTN 7
+#define ALLOWED 5
 
 void drop(struct table *tab)
 {

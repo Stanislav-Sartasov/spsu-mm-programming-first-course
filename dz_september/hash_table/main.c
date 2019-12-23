@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../mylib/functionToGo.h"
-#include "hash-table.h"
+#include "hash_table.h"
 
 int main()
 {
