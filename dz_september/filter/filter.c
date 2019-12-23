@@ -43,33 +43,38 @@ void median(struct img *image)
     medPix(image, 2);
 }
 
+void goMatrix(long long i, long long j, struct img *image, long long *r, long long *g, long long *b, int matrix[3][3])
+{
+    long long m, n;
+    *r = 0;
+    *g = 0;
+    *b = 0;
+    for (int t = -1; t < 2; ++t)
+        for (int y = -1; y < 2; ++y)
+        {
+            m = (long long)i + t;
+            n = (long long)j + y;
+
+            if ((m > 0) && (n > 0) && (m < image->len) && (n < image->wid))
+            {
+                *r += image->bits[m][n].a[0] * matrix[t + 1][y + 1];
+                *g += image->bits[m][n].a[1] * matrix[t + 1][y + 1];
+                *b += image->bits[m][n].a[2] * matrix[t + 1][y + 1];
+            }
+        }
+}
+
 void gauss(struct img *image)
 {
-    unsigned char matrix[3][3]=\
+    int matrix[3][3]=\
     {{1, 2, 1},\
      {2, 4, 2},\
      {1, 2, 1}};
-    long long m, n;
     long long r = 0, g = 0, b = 0;
     for (long long i = 0; i < image->len; ++i)
         for (long long j = 0; j < image->wid; ++j)
         {
-            r = 0;
-            g = 0;
-            b = 0;
-            for (int t = -1; t < 2; ++t)
-                for (int y = -1; y < 2; ++y)
-                {
-                    m = i + t;
-                    n = j + y;
-
-                    if ((m > 0) && (n > 0) && (m < image->len) && (n < image->wid))
-                    {
-                        r += image->bits[m][n].a[0] * matrix[t + 1][y + 1];
-                        g += image->bits[m][n].a[1] * matrix[t + 1][y + 1];
-                        b += image->bits[m][n].a[2] * matrix[t + 1][y + 1];
-                    }
-                }
+            goMatrix(i, j, image, &r, &g, &b, matrix);
             image->bits[i][j].a[0] = (unsigned char)(r / 16);
             image->bits[i][j].a[1] = (unsigned char)(g / 16);
             image->bits[i][j].a[2] = (unsigned char)(b / 16);
@@ -78,8 +83,7 @@ void gauss(struct img *image)
 
 void sobel(struct img *image, int matrix[3][3])
 {
-    long long m, n;
-    int r = 0, g = 0, b = 0;
+    long long r = 0, g = 0, b = 0;
     struct pix **bits = (struct pix **)malloc(sizeof (struct pix *) * image->len);
     for (unsigned int i = 0; i < image->len; ++i)
         bits[i] = (struct pix *)malloc(sizeof (struct pix) * image->wid);
@@ -87,48 +91,14 @@ void sobel(struct img *image, int matrix[3][3])
     {
         for (long long j = 1; j < image->wid - 1; ++j)
         {
-            r = 0;
-            g = 0;
-            b = 0;
-            for (int t = -1; t < 2; ++t)
-                for (int y = -1; y < 2; ++y)
-                {
-                    m = i + t;
-                    n = j + y;
+            goMatrix(i, j, image, &r, &g, &b, matrix);
 
-
-                        r += image->bits[m][n].a[0] * matrix[t + 1][y + 1];
-                        g += image->bits[m][n].a[1] * matrix[t + 1][y + 1];
-                        b += image->bits[m][n].a[2] * matrix[t + 1][y + 1];
-
-                }
-
-            if (r < 0)
-                {
-                    r = 0;
-                }
-                else if (r > 255)
-                {
-                    r = 255;
-                }
-
-                if (g < 0)
-                {
-                    g = 0;
-                }
-                else if (g > 255)
-                {
-                    g = 255;
-                }
-
-                if (b < 0)
-                {
-                    b = 0;
-                }
-                else if (b > 255)
-                {
-                    b = 255;
-                }
+            r = r > 255 ? 255 : r;
+            r = r < 0 ? 0 : r;
+            g = g > 255 ? 255 : g;
+            g = g < 0 ? 0 : g;
+            b = b > 255 ? 255 : b;
+            b = b < 0 ? 0 : b;
 
             bits[i][j].a[0] = (unsigned char)(r);
             bits[i][j].a[1] = (unsigned char)(g);
