@@ -30,7 +30,7 @@ int get_largest_common_factor(int num1, int num2)
 
 int main()
 {
-	int numbers[3] = {-1, -1, -1};
+	int numbers[3] = { -1, -1, -1 };
 	char strs[3][1000];
 
 	for (;;)
@@ -49,13 +49,14 @@ int main()
 		printf("You entered incorrect numbers\n");
 	}
 
-	if (numbers[0] * numbers[0] + numbers[1] * numbers[1] == numbers[2] * numbers[2] && 
-		1 == get_largest_common_factor(get_largest_common_factor(numbers[0], numbers[1]), numbers[2]))
+	if (numbers[0] * numbers[0] + numbers[1] * numbers[1] == numbers[2] * numbers[2] ||
+		numbers[1] * numbers[1] + numbers[2] * numbers[2] == numbers[0] * numbers[0] ||
+		numbers[2] * numbers[2] + numbers[0] * numbers[0] == numbers[1] * numbers[1])
 	{
 		printf("The numbers are Pythagorean triple.\n");
 
-		if (1 == get_largest_common_factor(numbers[0], numbers[1]) && 
-			1 == get_largest_common_factor(numbers[1], numbers[2]) && 
+		if (1 == get_largest_common_factor(numbers[0], numbers[1]) &&
+			1 == get_largest_common_factor(numbers[1], numbers[2]) &&
 			1 == get_largest_common_factor(numbers[2], numbers[0]))
 		{
 			printf("Pythagorean triple are primitive.\n");
@@ -69,6 +70,6 @@ int main()
 	{
 		printf("The numbers are not Pythagorean triple.\n");
 	}
-	
+
 	return 0;
 }
