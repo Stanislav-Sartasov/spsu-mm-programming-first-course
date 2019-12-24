@@ -1,4 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
+
 #include <stdio.h> 
 #include <stdlib.h>
 
@@ -11,9 +12,10 @@ int dv(int a1, int a2)
 
 void ins(int *p, int *w, int *q)
 {
-	char sres[15];//inputed string
-	int res[3];//number array
+	char sres[15]; // inputed string
+	int res[3]; // number array
 	short check = 0;
+
 	while (check == 0)
 	{
 		for (int k = 0; k <= 2; k++)
@@ -53,10 +55,12 @@ int main()
 
 	printf("The program recognizes pythagorean triplets and tests them for primitiveness.\n");
 	printf("Input three natural numbers: ");
+
 	ins(&x, &y, &z);
 
 	int max = x;
 	x = max(max(x, y), z);
+
 	if (x != max)
 		if (y == x)
 			y = max;
