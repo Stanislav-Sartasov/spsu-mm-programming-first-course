@@ -15,26 +15,26 @@ int digitalRoot(int x)
 
 int main() 
 {
-    const char description[] = "This programs calculate's the sum of all MDRS(n)"
-                               " for n in interval [2, 999999]\n\n";
+    const char description[] =	"This programs calculate's the sum of all MDRS(n)"
+								" for n in interval [2, 999999]\n\n";
 
     printf("%s", description);
 
     for(int i = 2; i <= MAX; ++i)
-        mdrs[i] = digitalRoot(i);
+		mdrs[i] = digitalRoot(i);
 
     for (int i = 2; i <= MAX; ++i) 
 	{
-        for (int j = 2; i * j <= MAX && j <= i; ++j) 
+		for (int j = 2; i * j <= MAX && j <= i; ++j) 
 		{
-            if (mdrs[i * j] < mdrs[i] + mdrs[j])
-                mdrs[i * j] = mdrs[i] + mdrs[j];
-        }
-    }
+			if (mdrs[i * j] < mdrs[i] + mdrs[j])
+				mdrs[i * j] = mdrs[i] + mdrs[j];
+		}
+	}
 
     unsigned long long res = 0;
     for (int i = 2; i <= MAX; ++i)
-        res += mdrs[i];
+		res += mdrs[i];
 
     printf("solution: %lld\n", res);
 
