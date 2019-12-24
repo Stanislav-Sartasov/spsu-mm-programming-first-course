@@ -18,5 +18,13 @@
     <ClCompile Include="task7.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="hashmap.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="hashmap.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
