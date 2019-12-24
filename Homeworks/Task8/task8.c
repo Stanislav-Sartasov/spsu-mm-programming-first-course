@@ -1,19 +1,18 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define FILTER_AVERAGE       "average"
-#define FILTER_GAUSS3        "gauss3"
-#define FILTER_GAUSS5        "gauss5"
-#define FILTER_SOBELX        "sobelx"
-#define FILTER_SOBELY        "sobely"
-#define FILTER_GRAY          "gray"
+#define FILTER_AVERAGE		"average"
+#define FILTER_GAUSS3		"gauss3"
+#define FILTER_GAUSS5		"gauss5"
+#define FILTER_SOBELX		"sobelx"
+#define FILTER_SOBELY		"sobely"
+#define FILTER_GRAY			"gray"
 
 
 #pragma pack(push, 1)
 
-typedef struct
+typedef struct 
 {
 	unsigned int biSize;
 	unsigned int biWidth;
@@ -28,7 +27,7 @@ typedef struct
 	unsigned int biClrImportant;
 } BitmapInfoHeader;
 
-typedef struct
+typedef struct 
 {
 	unsigned short bfType;
 	unsigned int bfSize;
@@ -37,7 +36,7 @@ typedef struct
 	unsigned int bfOffBits;
 } BitmapFileHeader;
 
-typedef struct
+typedef struct 
 {
 	unsigned char blue;
 	unsigned char green;
@@ -50,6 +49,8 @@ typedef struct
 {
 	BitmapFileHeader file_header;
 	BitmapInfoHeader info_header;
+	char *palatee;
+	size_t palatee_size;
 	RGB *image_data;
 } BitmapImage;
 
@@ -57,7 +58,7 @@ typedef struct
 int read_image_file(char *input_file, BitmapImage *image)
 {
 	FILE *fp = fopen(input_file, "rb");
-	if (!fp)
+	if (!fp) 
 	{
 		printf("Can't open the input file.\n");
 		return -1;
@@ -65,7 +66,8 @@ int read_image_file(char *input_file, BitmapImage *image)
 
 	BitmapFileHeader *file_header = &image->file_header;
 	fread(file_header, sizeof(BitmapFileHeader), 1, fp);
-	if (file_header->bfType != 0x4D42) {
+	if (file_header->bfType != 0x4D42)
+	{
 		fclose(fp);
 		printf("Input file is not in bmp format.\n");
 		return -1;
@@ -73,7 +75,8 @@ int read_image_file(char *input_file, BitmapImage *image)
 	BitmapInfoHeader *info_header = &image->info_header;
 	fread(info_header, sizeof(BitmapInfoHeader), 1, fp);
 
-	/*if (info_header->biBitCount != 24 && info_header->biBitCount != 32) {
+	/*if (info_header->biBitCount != 24 && info_header->biBitCount != 32)
+	{
 		fclose(fp);
 		printf("Input file is neither 32-bit or 24-bit.\n");
 		return 0;
@@ -91,6 +94,17 @@ int read_image_file(char *input_file, BitmapImage *image)
 		return -1;
 	}
 
+	//storing palatee
+	size_t palateeSize = file_header->bfOffBits - sizeof(BitmapFileHeader) - sizeof(BitmapInfoHeader);
+	image->palatee = NULL;
+	image->palatee_size = 0;
+	if (palateeSize > 0)
+	{
+		image->palatee = (char *)malloc(palateeSize);
+		image->palatee_size = palateeSize;
+		fread(image->palatee, 1, palateeSize, fp);
+	}
+
 	int k = 0;
 	for (int i = 0; i < info_header->biHeight; i++)
 	{
@@ -103,26 +117,27 @@ int read_image_file(char *input_file, BitmapImage *image)
 	fclose(fp);
 	return 0;
 
-
 }
 
-int write_image_file(char *output_file, BitmapImage *image)
+int write_image_file(char *output_file, BitmapImage *image) 
 {
 	FILE *fp = fopen(output_file, "wb");
-	if (!fp)
+	if (!fp) 
 	{
 		printf("Can't open the output file");
 		return -1;
 	}
 	fwrite(&image->file_header, sizeof(BitmapFileHeader), 1, fp);
 	fwrite(&image->info_header, sizeof(BitmapInfoHeader), 1, fp);
+	if (image->palatee)
+		fwrite(&image->palatee, image->palatee_size, 1, fp);
 	for (int i = 0; i < image->info_header.biWidth * image->info_header.biHeight; i++)
 		fwrite(&image->image_data[i], sizeof(RGB), 1, fp);
 	fclose(fp);
 	return 0;
 }
 
-void apply_matrix_to_filter(RGB *img, int width, int height, int *matrix, int dim)
+void apply_matrix_to_filter(RGB *img, int width, int height, int *matrix, int dim) 
 {
 	int i, j, k, l;
 	int r, g, b;
@@ -137,21 +152,23 @@ void apply_matrix_to_filter(RGB *img, int width, int height, int *matrix, int di
 	weight = 0;
 	for (i = -gap; i <= gap; i++)
 	{
-		for (j = -gap; j <= gap; j++) {
+		for (j = -gap; j <= gap; j++)
+		{
 			weight += matrix[(gap + i) * dim + gap + j];
 		}
 	}
 
 	for (i = gap; i < height - gap; i++)
 	{
-		for (j = gap; j < width - gap; j++)
+		for (j = gap; j < width - gap; j++) 
 		{
 			r = 0;
 			g = 0;
 			b = 0;
 			for (k = -gap; k <= gap; k++)
 			{
-				for (l = -gap; l <= gap; l++) {
+				for (l = -gap; l <= gap; l++) 
+				{
 					r += t[(i + k) * width + j + l].red * matrix[(gap + k) * dim + gap + l];
 					g += t[(i + k) * width + j + l].green * matrix[(gap + k) * dim + gap + l];
 					b += t[(i + k) * width + j + l].blue * matrix[(gap + k) * dim + gap + l];
@@ -167,9 +184,10 @@ void apply_matrix_to_filter(RGB *img, int width, int height, int *matrix, int di
 	free(t);
 }
 
-void set_average_filter(RGB *img, int width, int height)
+void set_average_filter(RGB *img, int width, int height) 
 {
-	int matrix[] = {
+	int matrix[] = 
+	{
 			1, 1, 1,
 			1, 1, 1,
 			1, 1, 1
@@ -248,7 +266,8 @@ void apply_sobel_filter(RGB *img, int width, int height, int *matrix)
 
 void set_sobel_filter_x(RGB *img, int width, int height)
 {
-	int sobelx[] = {
+	int sobelx[] = 
+	{
 			1, 2, 1,
 			0, 0, 0,
 			-1, -2, -1
@@ -276,7 +295,8 @@ void set_grey_filter(RGB *img, int width, int height)
 
 	for (i = 0; i < height; i++)
 	{
-		for (j = 0; j < width; j++) {
+		for (j = 0; j < width; j++)
+		{
 			val = (img[i * width + j].red + img[i * width + j].green + img[i * width + j].blue) / 3;
 			img[i * width + j].red = val;
 			img[i * width + j].green = val;
@@ -287,8 +307,7 @@ void set_grey_filter(RGB *img, int width, int height)
 
 int main(int argc, char *argv[])
 {
-	if (argc != 4)
-	{
+	if (argc != 4) {
 		printf("<exe_name> FILTER_NAME INPUT_BMP OUTPUT_BMP\n");
 		printf("for example\n");
 		printf("a.out %s imput.bmp output.bmp\n", FILTER_AVERAGE);
@@ -311,7 +330,7 @@ int main(int argc, char *argv[])
 	{
 		set_average_filter(image.image_data, image.info_header.biWidth, image.info_header.biHeight);
 	}
-	else if (strcmp(argv[1], FILTER_GAUSS3) == 0)
+	else if (strcmp(argv[1], FILTER_GAUSS3) == 0) 
 	{
 		set_gauss_filter_3(image.image_data, image.info_header.biWidth, image.info_header.biHeight);
 	}
@@ -332,7 +351,7 @@ int main(int argc, char *argv[])
 		set_grey_filter(image.image_data, image.info_header.biWidth, image.info_header.biHeight);
 
 	}
-	else
+	else 
 	{
 		printf("The filter name is invalid.\n");
 		return -1;
