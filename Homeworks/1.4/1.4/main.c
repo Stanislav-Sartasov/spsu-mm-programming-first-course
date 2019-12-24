@@ -1,5 +1,6 @@
 #include <stdio.h> 
 #include <math.h>
+
 int main()
 {
 	long a = 4;
@@ -9,11 +10,13 @@ int main()
 	{
 		long b = a - 1;
 		int r = 0;
+
 		for (long j = 2; j < sqrt(b) + 1; j++)
 		{
 			if ((b % j) == 0)
 				r = 1;
 		}
+
 		if (r == 0)
 			printf("%ld ", b);
 		a = a * 2;
