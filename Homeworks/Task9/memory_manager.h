@@ -3,7 +3,7 @@
 
 #include <stddef.h>
 
-#define MAX_MEMORY_SIZE				(160)
+#define MAX_MEMORY_SIZE			(160)
 #pragma pack(1)
 typedef struct Meta
 {
