@@ -43,15 +43,16 @@ void median(struct img *image)
     medPix(image, 2);
 }
 
-void goMatrix(long long i, long long j, struct img *image, long long *r, long long *g, long long *b, int matrix[3][3])
+void goMatrix(long long i, long long j, struct img *image, long long *r, long long *g, long long *b, int xMatrix, int yMatrix, int matrix[][yMatrix] )
 {
     long long m, n;
     *r = 0;
     *g = 0;
     *b = 0;
-    for (int t = -1; t < 2; ++t)
-        for (int y = -1; y < 2; ++y)
+    for (int t = -((xMatrix - 1) / 2); t <= (xMatrix - 1) / 2; ++t)
+        for (int y = -((yMatrix - 1) / 2); y <= (yMatrix - 1) / 2; ++y)
         {
+            //m = *(*( matrix +t+1) + y+1);
             m = (long long)i + t;
             n = (long long)j + y;
 
@@ -74,7 +75,7 @@ void gauss(struct img *image)
     for (long long i = 0; i < image->len; ++i)
         for (long long j = 0; j < image->wid; ++j)
         {
-            goMatrix(i, j, image, &r, &g, &b, matrix);
+            goMatrix(i, j, image, &r, &g, &b, 3, 3,  matrix);
             image->bits[i][j].a[0] = (unsigned char)(r / 16);
             image->bits[i][j].a[1] = (unsigned char)(g / 16);
             image->bits[i][j].a[2] = (unsigned char)(b / 16);
@@ -91,7 +92,7 @@ void sobel(struct img *image, int matrix[3][3])
     {
         for (long long j = 1; j < image->wid - 1; ++j)
         {
-            goMatrix(i, j, image, &r, &g, &b, matrix);
+            goMatrix(i, j, image, &r, &g, &b, 3, 3, matrix);
 
             r = r > 255 ? 255 : r;
             r = r < 0 ? 0 : r;
