@@ -31,23 +31,23 @@ void printBinary(uint64_t num)
 int main() 
 {
 
-    char firstName[]  = "Ilias";
-    char middleName[] = "Mzoughi";
-    char lastName[]   = "Mzoughi";
+	char firstName[]  = "Ilias";
+	char middleName[] = "Mzoughi";
+	char lastName[]   = "Mzoughi";
 
-    uint32_t product = strlen(firstName) * strlen(lastName) * strlen(middleName);
+	uint32_t product = strlen(firstName) * strlen(lastName) * strlen(middleName);
 
-    uint32_t a = product;
-    float b = product;
-    double c = product;
+	uint32_t a = product;
+	float b = product;
+	double c = product;
 
-    printf("The negative 32-bit integer: ");
-    printBinary((~a) + 1);
+	printf("The negative 32-bit integer: ");
+	printBinary((~a) + 1);
 
-    printf("The positive floating-point number: ");
-    printBinary((*((uint64_t*)&b)));
+	printf("The positive floating-point number: ");
+	printBinary((*((uint64_t*)&b)));
 
-    printf("The negative floating-point number: ");
-    printBinary((*((uint64_t*)&c)));
+	printf("The negative floating-point number: ");
+	printBinary((*((uint64_t*)&c)));
 	
 }
