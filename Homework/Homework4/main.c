@@ -21,10 +21,10 @@ int main()
 
     calculatePow2();
 
-    int mersenneExp[8] = {2, 3, 5, 7, 13, 17, 19, 31};
+//    int mersenneExp[8] = {2, 3, 5, 7, 13, 17, 19, 31};
 
-    for (int i = 0; i < 8; ++i) 
+    for (int i = 0; i < 32; ++i) 
 	{
-        printf("%d\n", pows[mersenneExp[i]] - 1);
+		printf("%d\n", pows[i] - 1);
     }
 }
