@@ -10,20 +10,20 @@ int mdrs[MAX + 1];
 */
 int digitalRoot(int x) 
 {
-    return ((x - 1) % 9) + 1;
+	return ((x - 1) % 9) + 1;
 }
 
 int main() 
 {
-    const char description[] =	"This programs calculate's the sum of all MDRS(n)"
+	const char description[] =	"This programs calculate's the sum of all MDRS(n)"
 								" for n in interval [2, 999999]\n\n";
 
-    printf("%s", description);
+	printf("%s", description);
 
-    for(int i = 2; i <= MAX; ++i)
+	for(int i = 2; i <= MAX; ++i)
 		mdrs[i] = digitalRoot(i);
 
-    for (int i = 2; i <= MAX; ++i) 
+	for (int i = 2; i <= MAX; ++i) 
 	{
 		for (int j = 2; i * j <= MAX && j <= i; ++j) 
 		{
@@ -32,11 +32,11 @@ int main()
 		}
 	}
 
-    unsigned long long res = 0;
-    for (int i = 2; i <= MAX; ++i)
+	unsigned long long res = 0;
+	for (int i = 2; i <= MAX; ++i)
 		res += mdrs[i];
 
-    printf("solution: %lld\n", res);
+	printf("solution: %lld\n", res);
 
-    return 0;
+	return 0;
 }
