@@ -115,7 +115,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="memory_manager.c" />
     <ClCompile Include="task9.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="memory_manager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

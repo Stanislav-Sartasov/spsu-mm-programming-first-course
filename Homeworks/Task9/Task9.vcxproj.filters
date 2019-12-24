@@ -18,5 +18,13 @@
     <ClCompile Include="task9.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="memory_manager.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="memory_manager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
