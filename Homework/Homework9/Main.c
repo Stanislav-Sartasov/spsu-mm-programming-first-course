@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "allocator.h"
 
-#define MAX_NODES      (100005)
+#define MAX_NODES (100005)
 #define MIN_ALLOC_SIZE (1)
 #define MAX_ALLOC_SIZE (1005)
 
@@ -16,11 +16,11 @@ int fi = 0;
 // ui points to an oldest allocated memory in memptrs
 int ui = 0;
 
-int mallocSuccessCount   = 0;
-int mallocFailCount      = 0;
-int deallocCount         = 0;
-int reallocSuccessCount  = 0;
-int reallocFailCount     = 0;
+int mallocSuccessCount = 0;
+int mallocFailCount = 0;
+int deallocCount = 0;
+int reallocSuccessCount = 0;
+int reallocFailCount = 0;
 
 int genRandom(int a, int b) 
 {
@@ -97,17 +97,17 @@ void testcase()
 int readNumberStdin(int max_digits, int* ret)
 {
     int digits = 0;
-    int c = 0;
+    int symbol = 0;
     (*ret) = 0;
 
-    while ((c = getchar()) != '\n')
+    while ((symbol = getchar()) != '\n')
 	{
-        if (!(c >= '0' && c <= '9') || (++digits > max_digits))
+        if (!(symbol >= '0' && symbol <= '9') || (++digits > max_digits))
 		{
             while (getchar() != '\n');
             return 1;
         }
-        (*ret) = (*ret) * 10 + (c - '0');
+        (*ret) = (*ret) * 10 + (symbol - '0');
     }
 
     return !digits;
@@ -126,9 +126,9 @@ int main()
 {
     srand(time(NULL));
 
-    const char description[] = ""
-                               "This program checks the performance of custom"
-                               " my_malloc, my_free, my_realloc functions\n\n";
+    const char description[] =	""
+								"This program checks the performance of custom"
+								" my_malloc, my_free, my_realloc functions\n\n";
 
     printf("%s", description);
 

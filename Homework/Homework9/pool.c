@@ -19,69 +19,69 @@ typedef struct
  * */
 Pool pools[MAX_POOL_ID + 1];
 
-// finds if pools[p] has any free continues c blocks, of size (2 ^ p)
-static int poolBlockAvailable(int p, int c)
+// finds if pools[poolID] has any free continues numOfBlocks blocks, of size (2 ^ poolID)
+int poolBlockAvailable(int poolID, int numOfBlocks)
 {
-    if (pools[p].tree.root == NULL || !btreeQuery(&pools[p].tree, c))
+    if (pools[poolID].tree.root == NULL || !btreeQuery(&pools[poolID].tree, numOfBlocks))
         return 0;
     return 1;
 }
 
-// returns a memory location to (2 ^ p * c) bytes of free memory
-static void* poolBlockRemove(int p, int c)
+// returns a memory location to (2 ^ poolID * numOfBlocks) bytes of free memory
+void* poolBlockRemove(int poolID, int numOfBlocks)
 {
 
-    if (pools[p].tree.root == NULL) {
+    if (pools[poolID].tree.root == NULL) {
         fprintf(stderr, "[pool]: fatal error, root = NULL\n");
         exit(-1);
     }
 
-    // find a free node, whose has at least c blocks
-    BNode* freeNode = btreeQuery(&pools[p].tree, c);
+    // find a free node, whose has at least numOfBlocks blocks
+    BNode* freeNode = btreeQuery(&pools[poolID].tree, numOfBlocks);
 
     // This should not happen, this function should only be called when pool has free block's
-    if (freeNode == NULL || freeNode->nBlock < c)
+    if (freeNode == NULL || freeNode->nBlock < numOfBlocks)
 	{
         fprintf(stderr, "[pool]: fatal error\n");
         exit(-1);
     }
 
-    btreeDelete(&pools[p].tree, freeNode);
+    btreeDelete(&pools[poolID].tree, freeNode);
 
     // no extra blocks in free node
-    if (freeNode->nBlock == c)
+    if (freeNode->nBlock == numOfBlocks)
         return (void *)(freeNode->segMin);
 
     // we have some extra blocks in free node, re-add those back to tree
-    uintptr_t segMin = freeNode->segMin + (c * (1 << p));
+    uintptr_t segMin = freeNode->segMin + (numOfBlocks * (1 << poolID));
     uintptr_t segMax = freeNode->segMax;
-    uintptr_t nBlock = freeNode->nBlock - c;
+    uintptr_t nBlock = freeNode->nBlock - numOfBlocks;
 
-    btreeInsert(&pools[p].tree, segMin, segMax, nBlock);
+    btreeInsert(&pools[poolID].tree, segMin, segMax, nBlock);
 
     return (void *)(freeNode->segMin);
 }
 
-// add's a (2 ^ p * c) bytes of memory to pool
-// p = pool index
-// c = number of blocks to add
+// add's a (2 ^ poolID * numOfBlocks) bytes of memory to pool
+// poolID = pool index
+// numOfBlocks = number of blocks to add
 // blk = memory location of starting block
-static void poolBlockAdd(int p, int c, void* blk)
+void poolBlockAdd(int poolID, int numOfBlocks, void* blk)
 {
     // we need to insert this block back to pool, and join any left and right
     // continuous blocks
 
     // The node to insert
     uintptr_t segMin = (uintptr_t)(blk);
-    uintptr_t segMax = segMin + (c * (1 << p)) - 1;
-    uintptr_t nBlock = c;
+    uintptr_t segMax = segMin + (numOfBlocks * (1 << poolID)) - 1;
+    uintptr_t nBlock = numOfBlocks;
 
     {
         // find, if we have a right neighbouring block in tree, if yes combine it
-        BNode* nei = btreeFindNode(&pools[p].tree, segMax + 1, 0);
+        BNode* nei = btreeFindNode(&pools[poolID].tree, segMax + 1, 0);
         if (nei)
 		{
-            btreeDelete(&pools[p].tree, nei);
+            btreeDelete(&pools[poolID].tree, nei);
             segMax = nei->segMax;
             nBlock += nei->nBlock;
         }
@@ -89,58 +89,58 @@ static void poolBlockAdd(int p, int c, void* blk)
 
     {
         // find, if we have a left neighbouring block in tree, if yes combine it
-        BNode* nei = btreeFindNode(&pools[p].tree, 0, segMin - 1);
+        BNode* nei = btreeFindNode(&pools[poolID].tree, 0, segMin - 1);
         if (nei)
 		{
-            btreeDelete(&pools[p].tree, nei);
+            btreeDelete(&pools[poolID].tree, nei);
             segMin = nei->segMin;
             nBlock += nei->nBlock;
         }
     }
 
-    btreeInsert(&pools[p].tree, segMin, segMax, nBlock);
+    btreeInsert(&pools[poolID].tree, segMin, segMax, nBlock);
 }
 
-// returns a memory block of size (2 ^ p * c)
-// p = pool id
-// c = number of blocks to allocate
-void* poolAllocate(int p, int c)
+// returns a memory block of size (2 ^ poolID * numOfBlocks)
+// poolID = pool id
+// numOfBlocks = number of blocks to allocate
+void* poolAllocate(int poolID, int numOfBlocks)
 {
-    if (!(p >= MIN_POOL_ID && p <= MAX_POOL_ID))
+    if (!(poolID >= MIN_POOL_ID && poolID <= MAX_POOL_ID))
         return NULL;
 
-    // check if pool[p], is having free continuos c blocks
-    if (poolBlockAvailable(p, c))
+    // check if pool[poolID], is having free continuos numOfBlocks blocks
+    if (poolBlockAvailable(poolID, numOfBlocks))
 	{
-        return poolBlockRemove(p, c);
+        return poolBlockRemove(poolID, numOfBlocks);
     }
 
     // ask right side neighboring pools
-    for (int i = p + 1; i <= MAX_POOL_ID; ++i)
+    for (int i = poolID + 1; i <= MAX_POOL_ID; ++i)
 	{
-        int d = (1 << (i - p));
-        int r = (c / d) + ((c % d)? 1: 0);
-        int t = r * (1 << (i - p));
+        int d = (1 << (i - poolID));
+        int r = (numOfBlocks / d) + ((numOfBlocks % d)? 1: 0);
+        int t = r * (1 << (i - poolID));
 
         if (poolBlockAvailable(i, r))
 		{
             void* blk = poolBlockRemove(i, r);
-            poolBlockAdd(p, t, blk);
-            return poolBlockRemove(p, c);
+            poolBlockAdd(poolID, t, blk);
+            return poolBlockRemove(poolID, numOfBlocks);
         }
     }
 
     // ask left side neighboring pools
-    for (int i=p-1; i >= MIN_POOL_ID; --i)
+    for (int i=poolID-1; i >= MIN_POOL_ID; --i)
 	{
-        int r = c * (1 << (p - i));
-        int t = c;
+        int r = numOfBlocks * (1 << (poolID - i));
+        int t = numOfBlocks;
 
         if (poolBlockAvailable(i, r))
 		{
             void* blk = poolBlockRemove(i, r);
-            poolBlockAdd(p, t, blk);
-            return poolBlockRemove(p, c);
+            poolBlockAdd(poolID, t, blk);
+            return poolBlockRemove(poolID, numOfBlocks);
         }
     }
 
@@ -148,24 +148,24 @@ void* poolAllocate(int p, int c)
 }
 
 // deallocate's previously allocated memory block
-void poolDeallocate(int p, int c, void* addr)
+void poolDeallocate(int poolID, int numOfBlocks, void* addr)
 {
-    if (!(p >= MIN_POOL_ID && p <= MAX_POOL_ID)) 
+    if (!(poolID >= MIN_POOL_ID && poolID <= MAX_POOL_ID)) 
 	{
         fprintf(stderr, "[POOL]: fatal error, deleting block from wrong pool\n");
         exit(-1);
     }
 
-    poolBlockAdd(p, c, addr);
+    poolBlockAdd(poolID, numOfBlocks, addr);
 }
 
-void poolInit(int p, int c, void* addr)
+void poolInit(int poolID, int numOfBlocks, void* addr)
 {
     for (int i=0; i <= MAX_POOL_ID; ++i)
 	{
         pools[i].tree.root = NULL;
     }
-    poolBlockAdd(p, c, addr);
+    poolBlockAdd(poolID, numOfBlocks, addr);
 }
 
 

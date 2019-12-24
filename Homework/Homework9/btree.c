@@ -4,12 +4,12 @@
 #include <string.h>
 #include <stdio.h>
 
-static size_t max_t(size_t a, size_t b)
+size_t max_t(size_t a, size_t b)
 {
     return (a >= b) ? a : b;
 }
 
-static void updateNodeNBlockMax(BNode* node)
+void updateNodeNBlockMax(BNode* node)
 {
     node->nBlockMax = node->nBlock;
     if (node->left)
@@ -18,14 +18,14 @@ static void updateNodeNBlockMax(BNode* node)
         node->nBlockMax = max_t(node->nBlockMax, node->right->nBlockMax);
 }
 
-static BNode* subtreeMinimum(BNode* node) 
+BNode* subtreeMinimum(BNode* node) 
 {
     while (node->left != NULL)
         node = node->left;
     return node;
 }
 
-static void insertImpl(BNode* cur, BNode* node) 
+void insertImpl(BNode* cur, BNode* node) 
 {
     if (node->segMin < cur->segMin) {
         // node goes to left subtree of cur
@@ -66,8 +66,8 @@ void btreeInsert(BTree* tree, uintptr_t segMin, uintptr_t segMax, size_t nBlock)
     BNode* node = (BNode*) (segMin);
 
     node->parent = NULL;
-    node->left   = NULL;
-    node->right  = NULL;
+    node->left = NULL;
+    node->right = NULL;
     node->segMin = segMin;
     node->segMax = segMax;
     node->nBlock = nBlock;
@@ -82,7 +82,7 @@ void btreeInsert(BTree* tree, uintptr_t segMin, uintptr_t segMax, size_t nBlock)
     insertImpl(tree->root, node);
 }
 
-static void replace(BTree* tree, BNode* u, BNode* v) 
+void replace(BTree* tree, BNode* u, BNode* v) 
 {
     if (u->parent == NULL)
         tree->root = v;
@@ -96,7 +96,7 @@ static void replace(BTree* tree, BNode* u, BNode* v)
 
 }
 
-static void updateTreeNBlockMax(BNode* node)
+void updateTreeNBlockMax(BNode* node)
 {
     if (node->left)
         updateTreeNBlockMax(node->left);
@@ -136,7 +136,7 @@ void btreeDelete(BTree* tree, BNode* z)
 }
 
 
-static int findNodeAreEqual(BNode* cur, uintptr_t segMin, uintptr_t segMax)
+int findNodeAreEqual(BNode* cur, uintptr_t segMin, uintptr_t segMax)
 {
 
     if (segMin != 0 && segMax != 0)
@@ -148,7 +148,7 @@ static int findNodeAreEqual(BNode* cur, uintptr_t segMin, uintptr_t segMax)
     return 0;
 }
 
-static BNode* btreeFindNodeImpl(BNode* cur, uintptr_t segMin, uintptr_t segMax)
+BNode* btreeFindNodeImpl(BNode* cur, uintptr_t segMin, uintptr_t segMax)
 {
     if (findNodeAreEqual(cur, segMin, segMax))
         return cur;

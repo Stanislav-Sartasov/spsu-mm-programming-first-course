@@ -7,10 +7,10 @@ typedef uint8_t u8;
 typedef struct 
 {
     // pool id
-    int p;
+    int poolID;
 
-    // number of (1 << p) blocks
-    int c;
+    // number of (1 << poolID) blocks
+    int numOfBlocks;
 
     // size of memory user requested
     size_t reqUserSize;
@@ -47,32 +47,32 @@ static size_t max(size_t a, size_t b)
 }
 
 // round size to pool requirements
-static void roundPC(size_t size, int* p, int* c) 
+static void roundPC(size_t size, int* poolID, int* numOfBlocks) 
 {
     size = max((1ULL << MIN_POOL_ID), roundNextPow2(size));
 
-    (*p) = whichPower(size);
-    (*c) = 1;
-    if ((*p) > MAX_POOL_ID)
+    (*poolID) = whichPower(size);
+    (*numOfBlocks) = 1;
+    if ((*poolID) > MAX_POOL_ID)
 	{
-        (*c) = (1 << ((*p) - MAX_POOL_ID));
-        (*p) = MAX_POOL_ID;
+        (*numOfBlocks) = (1 << ((*poolID) - MAX_POOL_ID));
+        (*poolID) = MAX_POOL_ID;
     }
 }
 
 void* allocate(size_t size)
 {
-    int p, c;
+    int poolID, numOfBlocks;
 
     // apart from user memory, we want extra memory region to store header
-    roundPC(sizeof(MemHeader) + size, &p, &c);
+    roundPC(sizeof(MemHeader) + size, &poolID, &numOfBlocks);
 
-    MemHeader* header = (MemHeader*)poolAllocate(p, c);
+    MemHeader* header = (MemHeader*)poolAllocate(poolID, numOfBlocks);
     if (header == NULL)
         return NULL;
 
-    header->p = p;
-    header->c = c;
+    header->poolID = poolID;
+    header->numOfBlocks = numOfBlocks;
     header->reqUserSize = size;
 
     void* userMem = (u8*)header + sizeof(MemHeader);
@@ -82,13 +82,13 @@ void* allocate(size_t size)
 void deallocate(void* addr) 
 {
     MemHeader* header = (MemHeader*)((u8*)addr - sizeof(MemHeader));
-    poolDeallocate(header->p, header->c, header);
+    poolDeallocate(header->poolID, header->numOfBlocks, header);
 }
 
 void* reallocate(void* addr, size_t newSize)
 {
     MemHeader* header = (MemHeader*)((u8*)addr - sizeof(MemHeader));
-    size_t tsize = (1ULL << header->p) * header->c;
+    size_t tsize = (1ULL << header->poolID) * header->numOfBlocks;
     size_t usize = tsize - sizeof(MemHeader);
 
     // old memory location is capable of holding newSize elements
@@ -134,12 +134,12 @@ void* myRealloc(void* ptr, size_t size)
 // initialize a base memory block, to be used by pool
 void init(size_t size) 
 {
-    int p, c;
+    int poolID, numOfBlocks;
 
     printf("[*] rounding %lu to ", size);
 
-    roundPC(size, &p, &c);
-    size = (1 << p) * c;
+    roundPC(size, &poolID, &numOfBlocks);
+    size = (1 << poolID) * numOfBlocks;
 
     printf("%lu\n", size);
     printf("[*] allocating %lld bytes of memory\n", size * 1ULL);
@@ -152,5 +152,5 @@ void init(size_t size)
         exit(-1);
     }
 
-    poolInit(p, c, memory);
+    poolInit(poolID, numOfBlocks, memory);
 }
