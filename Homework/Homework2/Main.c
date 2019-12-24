@@ -25,7 +25,8 @@ void getNumber(const char* prompt, int* number)
     do 
 	{
         printf("%s", prompt);
-    } while(readNumberStdin(8, number));
+    }
+	while(readNumberStdin(8, number));
 }
 
 /*
@@ -73,7 +74,8 @@ int main()
         else
             printf("(%d, %d, %d) is not a primitive\n", x, y, z);
 
-    } else 
+    }
+	else 
 	{
         printf("(%d, %d, %d) is not a Pythagorean triple\n", x, y, z);
     }
