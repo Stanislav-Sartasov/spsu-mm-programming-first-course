@@ -2,27 +2,12 @@
 #include <string.h>
 #include <math.h>
 
-int f(long aa, int ff);
-int f_(long aa);
-
-int main()
+int num_IEEE754(long aa, int ff)
 {
-	long a = strlen("Kuznetsov") * strlen("Dmitriy") * strlen("Vladimirovich");
-	printf("The program calculates the lengths of my name, surname and patronymic and displays its binary representation in certain data formats.\n");
-	printf("The product is equal to %ld.\n", a);
-
-	f_(a);
-	f(a, 1);
-	f(a, 2);
-	return 0;
-}
-
-int f(long aa, int ff)
-{
-	long b = aa; 
+	long b = aa;
 	int p1, p2, i, s;
-
 	printf("Presentation as a ");
+
 	if (ff == 1)
 	{
 		printf("positive");
@@ -32,6 +17,7 @@ int f(long aa, int ff)
 		printf("negative");
 	}
 	printf(" floating point number with ");
+
 	if (ff == 1)
 	{
 		printf("unit accuracy");
@@ -74,7 +60,7 @@ int f(long aa, int ff)
 			}
 			else
 				array_2[i] = 0;
-				
+
 		}
 	}
 
@@ -101,11 +87,12 @@ int f(long aa, int ff)
 			array_2[i] = 0;
 		printf("%d", array_2[i]);
 	}
+
 	printf(".\n");
 	return 0;
 }
 
-int f_(long aa)
+int num_32_Negative(long aa)
 {
 	long b = aa;
 	int array_1[32];
@@ -128,11 +115,28 @@ int f_(long aa)
 			}
 			else
 				array_1[i] = 1;
-				
+
 		}
 		printf("%d", array_1[i]);
 	}
+
 	printf(".\n");
+	return 0;
+}
+
+int main()
+{
+	long a = strlen("Kuznetsov") * strlen("Dmitriy") * strlen("Vladimirovich");
+
+	printf("The program calculates the lengths of my name, surname and patronymic and displays its binary representation in certain data formats.\n");
+	printf("The product is equal to %ld.\n", a);
+
+	num_32_Negative(a);
+
+	num_IEEE754(a, 1);
+
+	num_IEEE754(a, 2);
+
 	return 0;
 }
 
