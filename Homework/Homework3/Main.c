@@ -30,7 +30,8 @@ void readDouble(const char* prompt, double* num)
 {
     do {
         printf("%s", prompt);
-    } while (readDoubleStdin(num));
+    }
+	while (readDoubleStdin(num));
 }
 
 int isTriangle(double a, double b, double c) 
@@ -91,5 +92,5 @@ int main()
 	{
         printf("(%f, %f, %f) forms a degenerate triangle\n", a, b, c);
     }
-	getchar(); getchar(); getchar(); getchar();
+//	getchar(); getchar(); getchar(); getchar();
 }
