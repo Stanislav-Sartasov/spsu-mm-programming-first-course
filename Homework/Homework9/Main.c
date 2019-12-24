@@ -24,47 +24,49 @@ int reallocFailCount = 0;
 
 int genRandom(int a, int b) 
 {
-    int len = (b - a + 1);
-    return a + (rand() % len);
+	int len = (b - a + 1);
+	return a + (rand() % len);
 }
 
 // allocate a random sized memory, and store it in memptrs[fi]
 void mallocTest() 
 {
-    int random_size = genRandom(MIN_ALLOC_SIZE, MAX_ALLOC_SIZE);
-    void* addr = myMalloc(random_size);
-    if (addr)
+	int random_size = genRandom(MIN_ALLOC_SIZE, MAX_ALLOC_SIZE);
+	void* addr = myMalloc(random_size);
+	if (addr)
 	{
-        ++mallocSuccessCount;
-        memptrs[fi] = addr;
-        fi = (fi + 1) % MAX_NODES;
-    } else
+		++mallocSuccessCount;
+		memptrs[fi] = addr;
+		fi = (fi + 1) % MAX_NODES;
+    }
+	else
 	{
-        ++mallocFailCount;
+		++mallocFailCount;
     }
 }
 
 // deallocate memptrs[ui], memptrs[ui] points to an oldest allocated memory
 void deallocTest()
 {
-    myFree(memptrs[ui]);
-    ++deallocCount;
-    memptrs[ui] = NULL;
-    ui = (ui + 1) % MAX_NODES;
+	myFree(memptrs[ui]);
+	++deallocCount;
+	memptrs[ui] = NULL;
+	ui = (ui + 1) % MAX_NODES;
 }
 
 // realloc memptrs[ui], with a random size
 void reallocTest() 
 {
-    int random_size = genRandom(MIN_ALLOC_SIZE, MAX_ALLOC_SIZE);
-    void* addr = myRealloc(memptrs[ui], random_size);
-    if (addr)
+	int random_size = genRandom(MIN_ALLOC_SIZE, MAX_ALLOC_SIZE);
+	void* addr = myRealloc(memptrs[ui], random_size);
+	if (addr)
 	{
-        ++reallocSuccessCount;
-        memptrs[ui] = addr;
-    } else 
+		++reallocSuccessCount;
+		memptrs[ui] = addr;
+    }
+	else 
 	{
-        ++reallocFailCount;
+		++reallocFailCount;
     }
 }
 
@@ -72,42 +74,44 @@ void reallocTest()
 void testcase()
 {
     // can allocate, free, realloc, select a random one
-    if (memptrs[fi] == NULL && memptrs[ui] != NULL) {
-        int r = genRandom(0, 2);
-        if (r == 0)
-            mallocTest();
-        else if (r == 1)
-            deallocTest();
-        else
-            reallocTest();
-    } else if(memptrs[fi] == NULL) 
+	if (memptrs[fi] == NULL && memptrs[ui] != NULL) {
+		int r = genRandom(0, 2);
+		if (r == 0)
+			mallocTest();
+		else if (r == 1)
+			deallocTest();
+		else
+			reallocTest();
+    }
+	else if(memptrs[fi] == NULL) 
 	{
         // can only allocate
-        mallocTest();
-    } else
+		mallocTest();
+    }
+	else
 	{
         // can free, realloc, select a random one
-        if (genRandom(0, 1))
-            reallocTest();
-        else
-            deallocTest();
+		if (genRandom(0, 1))
+			reallocTest();
+		else
+			deallocTest();
     }
 }
 
 int readNumberStdin(int max_digits, int* ret)
 {
-    int digits = 0;
-    int symbol = 0;
-    (*ret) = 0;
+	int digits = 0;
+	int symbol = 0;
+	(*ret) = 0;
 
-    while ((symbol = getchar()) != '\n')
+	while ((symbol = getchar()) != '\n')
 	{
-        if (!(symbol >= '0' && symbol <= '9') || (++digits > max_digits))
+		if (!(symbol >= '0' && symbol <= '9') || (++digits > max_digits))
 		{
-            while (getchar() != '\n');
-            return 1;
-        }
-        (*ret) = (*ret) * 10 + (symbol - '0');
+			while (getchar() != '\n');
+			return 1;
+		}
+		(*ret) = (*ret) * 10 + (symbol - '0');
     }
 
     return !digits;
@@ -116,52 +120,53 @@ int readNumberStdin(int max_digits, int* ret)
 void getNumber(const char* prompt, int* number)
 {
 
-    do 
+	do 
 	{
-        printf("%s", prompt);
-    } while(readNumberStdin(8, number) || !*number);
+		printf("%s", prompt);
+	}
+	while(readNumberStdin(8, number) || !*number);
 }
 
 int main()
 {
-    srand(time(NULL));
+	srand(time(NULL));
 
-    const char description[] =	""
+	const char description[] =	""
 								"This program checks the performance of custom"
 								" my_malloc, my_free, my_realloc functions\n\n";
 
-    printf("%s", description);
+	printf("%s", description);
 
-    int iterations = 0;
-    getNumber("number of iterations(> 0): ", &iterations);
-    printf("\n");
+	int iterations = 0;
+	getNumber("number of iterations(> 0): ", &iterations);
+	printf("\n");
 
-    int base_memory_size = 0;
-    getNumber("base memory size(> 0 bytes): ", &base_memory_size);
-    printf("\n");
+	int base_memory_size = 0;
+	getNumber("base memory size(> 0 bytes): ", &base_memory_size);
+	printf("\n");
 
-    init(base_memory_size);
+	init(base_memory_size);
 
-    printf("[*] running...\n");
-    for(int i=0; i<iterations; ++i)
+	printf("[*] running...\n");
+	for(int i=0; i<iterations; ++i)
 	{
-        testcase();
-    }
-    printf("[*] done...\n\n");
+		testcase();
+	}
+	printf("[*] done...\n\n");
 
-    printf("\tResults: \n");
-    printf("\nmy_malloc: \n");
-    printf("\trequested: %8d\n", mallocSuccessCount + mallocFailCount);
-    printf("\tsuccess  : %8d\n", mallocSuccessCount);
-    printf("\tfailed   : %8d\n", mallocFailCount);
+	printf("\tResults: \n");
+	printf("\nmy_malloc: \n");
+	printf("\trequested: %8d\n", mallocSuccessCount + mallocFailCount);
+	printf("\tsuccess  : %8d\n", mallocSuccessCount);
+	printf("\tfailed   : %8d\n", mallocFailCount);
 
-    printf("\nmy_free: \n");
-    printf("\trequested: %8d\n", deallocCount);
-    printf("\tsuccess  : %8d\n", deallocCount);
-    printf("\tfailed   : %8d\n", 0);
+	printf("\nmy_free: \n");
+	printf("\trequested: %8d\n", deallocCount);
+	printf("\tsuccess  : %8d\n", deallocCount);
+	printf("\tfailed   : %8d\n", 0);
 
-    printf("\nmy_realloc: \n");
-    printf("\trequested: %8d\n", reallocSuccessCount + reallocFailCount);
-    printf("\tsuccess  : %8d\n", reallocSuccessCount);
-    printf("\tfailed   : %8d\n", reallocFailCount);
+	printf("\nmy_realloc: \n");
+	printf("\trequested: %8d\n", reallocSuccessCount + reallocFailCount);
+	printf("\tsuccess  : %8d\n", reallocSuccessCount);
+	printf("\tfailed   : %8d\n", reallocFailCount);
 }
