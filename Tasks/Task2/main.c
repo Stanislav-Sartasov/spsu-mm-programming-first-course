@@ -7,60 +7,100 @@
 
 void str_strip(char* init_str, int n, char*** str_array, int *str_array_size)
 {
-	*str_array = calloc(1, sizeof(char*));
+	*str_array = calloc(1, sizeof(char **));
+	int str_count = 1;
 
-	char* sub_str = strtok(init_str, "\n");
+	(*str_array)[0] = &init_str[0];
+
+	int data_length = n;
 
 	int i = 0;
-	while (sub_str != NULL)
+	while (i < data_length - 1)
 	{
-		*str_array = realloc(*str_array, (i + 1) * sizeof(char*));
-		(*str_array)[i] = sub_str;
+		if (init_str[i] == '\n' && i != data_length)
+		{
+			i++;
+			*str_array = realloc(*str_array, (str_count + 1) * sizeof(char **));
+			(*str_array)[str_count] = &init_str[i];
+			str_count++;
+		}
 		i++;
-
-		sub_str = strtok(NULL, "\n");
 	}
-
-	*str_array_size = i;
+	*str_array_size = str_count;
 }
 
 int cmp_str(const void *a, const void *b)
 {
-	const char **first_str = (const char **) a;
-	const char **second_str = (const char **) b;
+	const char *first_str = *(const char **) a;
+	const char *second_str = *(const char **) b;
 
-	return strcmp(*first_str, *second_str);
+	while (*first_str != '\n' && *second_str != '\n' && *first_str == *second_str)
+	{
+		first_str++;
+		second_str++;
+	}
+
+	if (*first_str == *second_str)
+	{
+		return 0;
+	}
+	return *first_str - *second_str;
 }
 
 void print_array(char** array, int n)
 {
 	for (int i = 0; i < n; i++)
 	{
-		printf("%s\n", array[i]);
+		int j = 0;
+		do
+		{
+			printf("%c", array[i][j]);
+			j++;
+		} while (array[i][j] != '\n');
+		printf("\n");
 	}
-	printf("\n");
 }
 
-void write_to_file(char** array, int n)
+void write_to_file(FILE* file, char** array, int n)
 {
-	FILE *out = fopen("out.txt", "w");
-
 	for (int i = 0; i < n; i++)
 	{
-		fwrite(array[i], strlen(array[i]), 1, out);
-		fwrite("\n", sizeof(char), 1, out);
+		int j = 0;
+		do
+		{
+			fwrite(&array[i][j], sizeof(char), 1, file);
+			j++;
+		} while (array[i][j] != '\n');
+		fwrite("\n", sizeof(char), 1, file);
 	}
-	fclose(out);
 }
 
-int main()
+int main(int argv, char* argc[])
 {
+	if (argv != 3)
+	{
+		printf("Usage: ./start <input_filename> <output_filename>\n");
+		return 0;
+	}
+
 	int fd;
 	struct stat file_data;
 
-	char* file_name = "text.txt";
+	fd = open(argc[1], O_RDWR);
 
-	fd = open(file_name, O_RDWR);
+	if (fd == -1)
+	{
+		printf("Unable to open input file\n");
+		return 0;
+	}
+
+	FILE* out = fopen(argc[2], "w");
+
+	if (out == NULL)
+	{
+		printf("Unable to open output file\n");
+		return 0;
+	}
 
 	fstat(fd, &file_data);
 
@@ -75,7 +115,9 @@ int main()
 
 	qsort(str_array, str_array_size, sizeof(char *), cmp_str);
 
-	write_to_file(str_array, str_array_size);
+	write_to_file(out, str_array, str_array_size);
+
+	fclose(out);
 
 	free(str_array);
 
