@@ -2,7 +2,7 @@
 #include <math.h>
 #include <time.h>
 
-void LLT(int p)								//Lucas-Lehmer test
+void lucasLehmerTest(int p)								//Lucas-Lehmer test
 {
 	long long seq = 4;
 	long long mers = pow(2, p) - 1;
@@ -21,6 +21,6 @@ int main()
 {
 	for (int i = 1; i < 32; i++)
 	{
-		LLT(i);
+		lucasLehmerTest(i);
 	}
 }
