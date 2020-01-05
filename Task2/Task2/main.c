@@ -1,10 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
-int inputCheck(int check);
-void sort(int *a, int *b, int *c);
-int gcd(int a, int b);
-	
+
 int main()
 {
 	int a = 0, b = 0, c = 0;
