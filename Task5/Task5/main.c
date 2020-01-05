@@ -9,7 +9,7 @@ int inputCheck(int check)
 	for (;;)
 
 	{
-		if (!scanf_s("%d", &check) || sqrt(check) == (int)(sqrt(check)) || getchar() != '\n')
+		if (!scanf_s("%d", &check) || check <= 0 || sqrt(check) == (int)(sqrt(check)) || getchar() != '\n')
 		{
 			while ((t = getchar()) != '\n' && t != EOF);
 			printf_s("Input error\nInput a positive number:\n");
