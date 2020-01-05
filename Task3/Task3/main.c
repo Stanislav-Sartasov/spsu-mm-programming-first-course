@@ -9,7 +9,7 @@ double inputCheck(double check)
 	char t;
 	for (;;)
 	{
-		if (!scanf_s("%lf", &check) || getchar() != '\n')
+		if (!scanf_s("%lf", &check) || check <= 0 || getchar() != '\n')
 		{
 			while ((t = getchar()) != '\n' && t != EOF);
 			printf_s("Input error\nInput a positive number:\n");
