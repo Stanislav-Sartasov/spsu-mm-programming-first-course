@@ -73,28 +73,31 @@ void deletePair(hashTable* table, int key)
 {
 	if (table)
 	{
-		int pos = hash(key, table->NumOfLists);
-		Node* pointer = table->arrayOfLists[pos];
-		if (pointer->key == key)
+		if (findValue(table, key))
 		{
-			table->arrayOfLists[pos] = pointer->next;
-			table->LenOfList[pos]--;
-			free(pointer);
-		}
-		else
-		{
-			Node* next = pointer->next;
-			while (next)
+			int pos = hash(key, table->NumOfLists);
+			Node* pointer = table->arrayOfLists[pos];
+			if (pointer->key == key)
 			{
-				if (next->key == key)
+				table->arrayOfLists[pos] = pointer->next;
+				table->LenOfList[pos]--;
+				free(pointer);
+			}
+			else
+			{
+				Node* next = pointer->next;
+				while (next)
 				{
-					pointer->next = next->next;
-					table->LenOfList[pos]--;
-					free(next);
-					break;
+					if (next->key == key)
+					{
+						pointer->next = next->next;
+						table->LenOfList[pos]--;
+						free(next);
+						break;
+					}
+					pointer = next;
+					next = next->next;
 				}
-				pointer = next;
-				next = next->next;
 			}
 		}
 	}
