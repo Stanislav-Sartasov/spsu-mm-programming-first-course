@@ -7,9 +7,14 @@
 #include "mman.h"
 #include <string.h>
 
-int cmp(const void* p1, const void* p2)
+int cmp_inc(const void* p1, const void* p2)
 {
 	return strcmp(*(char**)p1, *(char**)p2);
+}
+
+int cmp_dec(const void* p1, const void* p2)
+{
+	return (-1) * strcmp(*(char**)p1, *(char**)p2);
 }
 
 int main(int argc, char* argv[])
@@ -19,14 +24,22 @@ int main(int argc, char* argv[])
 	char* map;
 	char** lines;
 	int countOfLines = 1;
+	int key = 0;
 
-	if (argc != 3)
+	if (argc != 4)
 		exit(-1);
 
 	if ((fin = open(argv[1], O_RDWR)) == -1)
 		exit(-1);
 
 	if ((fout = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, S_IWRITE)) == -1)
+		exit(-1);
+
+	if (!strcmp(argv[3], "increase"))
+		key = 1;
+	else if (!strcmp(argv[3], "decrease"))
+		key = 2;
+	else
 		exit(-1);
 
 	fstat(fin, &info);
@@ -50,9 +63,13 @@ int main(int argc, char* argv[])
 		}
 
 	}
-	qsort(lines, countOfLines, sizeof(char*), cmp);
+	if (key == 1)
+		qsort(lines, countOfLines, sizeof(char*), cmp_inc);
+	if (key == 2)
+		qsort(lines, countOfLines, sizeof(char*), cmp_dec);
+
 	char eol = '\n';
-	for (int i = 1; i < countOfLines; i++)
+	for (int i = 0; i < countOfLines; i++)
 	{
 		int len = 0;
 		while (*(lines[i] + len) != '\r' && *(lines[i] + len) != '\n' && *(lines[i] + len) != '\0')
