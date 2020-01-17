@@ -7,12 +7,12 @@
 #include "mman.h"
 #include <string.h>
 
-int cmp_inc(const void* p1, const void* p2)
+int cmpInc(const void* p1, const void* p2)
 {
 	return strcmp(*(char**)p1, *(char**)p2);
 }
 
-int cmp_dec(const void* p1, const void* p2)
+int cmpDec(const void* p1, const void* p2)
 {
 	return (-1) * strcmp(*(char**)p1, *(char**)p2);
 }
@@ -64,9 +64,9 @@ int main(int argc, char* argv[])
 
 	}
 	if (key == 1)
-		qsort(lines, countOfLines, sizeof(char*), cmp_inc);
+		qsort(lines, countOfLines, sizeof(char*), cmpInc);
 	if (key == 2)
-		qsort(lines, countOfLines, sizeof(char*), cmp_dec);
+		qsort(lines, countOfLines, sizeof(char*), cmpDec);
 
 	char eol = '\n';
 	for (int i = 0; i < countOfLines; i++)
