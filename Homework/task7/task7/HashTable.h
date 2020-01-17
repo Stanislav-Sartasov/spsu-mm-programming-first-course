@@ -1,23 +1,23 @@
 #pragma once
 
-typedef struct Node 
+typedef struct node 
 {
 	int value;               //значение
 	int key;                 //ключ
-	struct Node* next;       //адрес следующего узла
-} Node;
+	struct node* next;       //адрес следующего узла
+} node;
 
 typedef struct hashTable
 {
-	int NumOfLists;          //количество списков
-	int MaxLenOfList;        //лимит длины списка
-	int* LenOfList;          //длина каждого списка
-	Node** arrayOfLists;     //массив списков
+	int numOfLists;          //количество списков
+	int maxLenOfList;        //лимит длины списка
+	int* lenOfList;          //длина каждого списка
+	node** arrayOfLists;     //массив списков
 } hashTable;
 
 void initHashTable(hashTable** table, int num);
 
-void TableResize(hashTable** table);
+void tableResize(hashTable** table);
 
 int addPair(hashTable** table, int key, int value);
 

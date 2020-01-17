@@ -7,18 +7,19 @@ int main()
 {
 	hashTable* test;
 	initHashTable(&test, 2);
-	printf("%d\n", test->NumOfLists);
+	printf("%d\n", test->numOfLists);
 	for (int i = 0; i < 10000; i++)
 	{
 		addPair(&test, i, i);
 	}
-	printf("%d\n", test->NumOfLists);
+	printf("%d\n", test->numOfLists);
 	for (int i = 500; i < 700; i++)
 		printf("%d\n", findValue(test, i));
 	for (int i = 0; i < 9999; i++)
 	{
 		deletePair(test, i);
 	}
+	deletePair(test, 5);
 	printAllPairs(test);
 	deleteHashTable(&test);
 	initHashTable(&test, 2);
