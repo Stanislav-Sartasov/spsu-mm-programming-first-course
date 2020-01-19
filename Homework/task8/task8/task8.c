@@ -9,28 +9,28 @@ char comp(const char* i, const char* j)
 }
 
 #pragma pack(push, 1)
-struct bmpheader
+struct bmpHeader
 {
 	unsigned char	b1, b2;			// BM
 	unsigned int	bfSize;			// размер файла в байтах	
 	unsigned short	bfReserved1;	// резерв    
-	unsigned short	bfReserved2;	// резеов 
+	unsigned short	bfReserved2;	// резерв 
 	unsigned int	bfOffBits;		// смещение до байтов изображения
 };
 
-struct bmpheaderinfo
+struct bmpHeaderInfo
 {
-	unsigned int Size;              // длина заголовка
-	unsigned int Width;             // ширина
-	unsigned int Height;            // высота
-	unsigned short Planes;          // число плоскостей
-	unsigned short BitCount;        // глубина цвета
-	unsigned int Compression;       // тип компрессии
-	unsigned int SizeImage;         // размер изображения
-	unsigned int XpelsPerMeter;     // горизонтальное разрешение
-	unsigned int YpelsPerMeter;     // вертикальное разрешение
-	unsigned int ColorsUsed;        // 0 - макс
-	unsigned int ColorsImportant;   // число основных цветов
+	unsigned int size;              // длина заголовка
+	unsigned int width;             // ширина
+	unsigned int height;            // высота
+	unsigned short planes;          // число плоскостей
+	unsigned short bitCount;        // глубина цвета
+	unsigned int compression;       // тип компрессии
+	unsigned int sizeImage;         // размер изображения
+	unsigned int xPelsPerMeter;     // горизонтальное разрешение
+	unsigned int yPelsPerMeter;     // вертикальное разрешение
+	unsigned int colorsUsed;        // 0 - макс
+	unsigned int colorsImportant;   // число основных цветов
 };
 #pragma pack(pop)
 
@@ -84,8 +84,8 @@ void filtersByKey(unsigned char* bitmap, int width, int height, int bitcount, in
 		bitmapcopy[i] = bitmap[i];
 
 	double matrix[3][9] = { {-1, -2, -1,  0,  0,  0,  1,  2,  1},
-	                        {-1,  0,  1, -2,  0,  2, -1,  0,  1},
-	                        { 1,  2,  1,  2,  4,  2,  1,  2,  1} };
+							{-1,  0,  1, -2,  0,  2, -1,  0,  1},
+							{ 1,  2,  1,  2,  4,  2,  1,  2,  1} };
 
 	for (int j = 0; j < 3; j++)
 	{
@@ -93,7 +93,7 @@ void filtersByKey(unsigned char* bitmap, int width, int height, int bitcount, in
 		{
 			if ((i % (width * bc) < bc) || ((i + bc) % (width * bc) < bc))
 				continue;
-			unsigned char pixel_value = matrix[k][0] * bitmap[i + bc * width - bc] + matrix[k][1] * bitmap[i + bc * width] + matrix[k][2] * bitmap[i + bc * width + bc]
+			double pixel_value = matrix[k][0] * bitmap[i + bc * width - bc] + matrix[k][1] * bitmap[i + bc * width] + matrix[k][2] * bitmap[i + bc * width + bc]
 				+ matrix[k][3] * bitmap[i - bc] + matrix[k][4] * bitmap[i] + matrix[k][5] * bitmap[i + bc] + matrix[k][6] * bitmap[i - bc * width - bc]
 				+ matrix[k][7] * bitmap[i - bc * width] + matrix[k][8] * bitmap[i - bc * width + bc];
 			if (k < 2)
@@ -103,11 +103,11 @@ void filtersByKey(unsigned char* bitmap, int width, int height, int bitcount, in
 				if (pixel_value < 0)
 					pixel_value = 0;
 			}
-			else 
+			else
 			{
-				pixel_value *= 0.625;
+				pixel_value /= 16;
 			}
-			bitmapcopy[i] = pixel_value;
+			bitmapcopy[i] = (unsigned char)pixel_value;
 		}
 	}
 	for (int i = 0; i < height * width * bc; i++)
@@ -123,7 +123,7 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
-	char* name_of_filter[5] = { "sobelFilterX", "sobelFilterY", "gaussianFilter", "blackAndWhite", "medianFilter" };
+	char* nameOfFilter[5] = { "sobelFilterX", "sobelFilterY", "gaussianFilter", "blackAndWhite", "medianFilter" };
 	void (*filter[4])(void);
 	filter[0] = &filtersByKey;
 	filter[1] = &blackAndWhite;
@@ -132,9 +132,8 @@ int main(int argc, char* argv[])
 	FILE* fin;
 	FILE* fout;
 
-
-	struct bmpheader bmpheader;
-	struct bmpheaderinfo bmpinfo;
+	struct bmpHeader bmpheader;
+	struct bmpHeaderInfo bmpinfo;
 
 	char b[] = ".bmp";
 	for (int i = 1; i < 5; i++)
@@ -147,13 +146,13 @@ int main(int argc, char* argv[])
 	}
 
 	int check = 0;
-	int num_of_filter;
+	int numOfFilter;
 	for (int i = 0; i < 5; i++)
 	{
-		if (strcmp(name_of_filter[i], argv[2]) == 0)
+		if (strcmp(nameOfFilter[i], argv[2]) == 0)
 		{
 			check = 1;
-			num_of_filter = i;
+			numOfFilter = i;
 		}
 	}
 
@@ -172,29 +171,29 @@ int main(int argc, char* argv[])
 
 	fread(&bmpheader, sizeof(bmpheader), 1, fin);
 	fread(&bmpinfo, sizeof(bmpinfo), 1, fin);
+	unsigned char* bitmap = (unsigned char*)malloc(bmpinfo.sizeImage);
 
 	unsigned char* colorTable = (unsigned char*)malloc(bmpheader.bfOffBits - 54);
 
 	fread(colorTable, 1, bmpheader.bfOffBits - 54, fin);
 
-	unsigned char* bitmap = (unsigned char*)malloc(bmpinfo.SizeImage);
 	fseek(fin, bmpheader.bfOffBits, SEEK_SET);
-	fread(bitmap, 1, bmpinfo.SizeImage, fin);
+	fread(bitmap, 1, bmpinfo.sizeImage, fin);
 
 	fwrite(&bmpheader, sizeof(bmpheader), 1, fout);
 	fwrite(&bmpinfo, sizeof(bmpinfo), 1, fout);
+
 	for (int i = 0; i < bmpheader.bfOffBits - 54; i++)
 	{
 		fwrite(&colorTable[i], 1, 1, fout);
 	}
 
-	if (num_of_filter < 3)
-		filter[0](bitmap, bmpinfo.Width, bmpinfo.Height, bmpinfo.BitCount, num_of_filter);
+	if (numOfFilter < 3)
+		filter[0](bitmap, bmpinfo.width, bmpinfo.height, bmpinfo.bitCount, numOfFilter);
 	else
-		filter[num_of_filter - 2](bitmap, bmpinfo.Width, bmpinfo.Height, bmpinfo.BitCount, num_of_filter);
+		filter[numOfFilter - 2](bitmap, bmpinfo.width, bmpinfo.height, bmpinfo.bitCount, numOfFilter);
 
-
-	for (int i = 0; i < bmpinfo.SizeImage; i++)
+	for (int i = 0; i < bmpinfo.sizeImage; i++)
 	{
 		fwrite(&bitmap[i], 1, 1, fout);
 	}
