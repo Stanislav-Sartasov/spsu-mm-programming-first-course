@@ -47,28 +47,33 @@ int main()
 {
 	printf("This program calculates the sequence and period for chain shots.\n");
 	printf("Insert number: ");
-	double n;
+	double num;
 
-	ins(&n);
+	ins(&num);
 
-	n = sqrt(n);
-	double n0 = trunc(n);
-	printf("[%d;", (int)n0);
+	int a = 0;
+	int b = 1;
+	int n0 = sqrt(num); // zero number in sequence
+	printf("[%d;", n0);
 
+	int n = n0; // current number in sequence
 	short f = 0;
-	n = n - n0;
 	int count = 0;
 
 	while (f == 0)
 		{
-			n = 1 / n;
-			if (trunc(n) == 2*n0)
-				f = 1;
-			printf(" %d", (int)trunc(n));
-			count++;
-			n = n - trunc(n);
+		a = n * b - a;
+		b = (num - a * a) / b;
+		n = (n0 + a) / b;
+
+		if (n == 2 * n0)
+			f = 1;
+		count++;
+
+		printf(" %d", n);
 		}
-		printf("]\n");
-		printf("Period: %d", count);
+
+	printf("]\n");
+	printf("Period: %d", count);
 	return 0;
 }
