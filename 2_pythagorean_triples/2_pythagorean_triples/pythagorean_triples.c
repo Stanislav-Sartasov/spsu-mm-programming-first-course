@@ -39,6 +39,9 @@ long long max(long long x, long long y)
 
 long long gcd(long long x, long long y)
 {
+	if (x == 0 && y == 0) return 1;
+	if (x == 0) return y;
+	if (y == 0) return x;
 	for (long long temp; y; )
 	{
 		temp = x % y;
