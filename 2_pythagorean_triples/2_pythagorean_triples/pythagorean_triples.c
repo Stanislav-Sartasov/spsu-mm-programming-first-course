@@ -1,4 +1,34 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+
+int extraSymbols()
+{
+	char symbol;
+	int extra = 0;
+	while ((symbol = getchar()) != '\n' && symbol != EOF)
+	{
+		if (symbol != ' ' && (symbol < '0' || symbol > '9'))
+			extra = 1;
+	}
+
+	return extra;
+}
+
+int getInteger(int* number)
+{
+	int result = scanf("%d", number);
+	int extra = extraSymbols();
+
+	while (result != 1 || extra == 1)
+	{
+		printf("Wrong input, try again:\n");
+		result = scanf("%d", number);
+		extra = extraSymbols();
+	}
+
+	return *number;
+
+}
 
 long long max(long long x, long long y)
 {
@@ -20,9 +50,12 @@ long long gcd(long long x, long long y)
 
 int main()
 {
-	long long a, b, c;
-	printf("Please, enter three numbers separated by a space:\n");
-	scanf_s("%lli %lli %lli", &a, &b, &c);
+	printf("Please, enter the first number:\n");
+	int a = getInteger(&a);
+	printf("Please, enter the second number:\n");
+	int b = getInteger(&b);
+	printf("Please, enter the third number:\n");
+	int c = getInteger(&c);
 
 	if (a == max(a, (b, c)))
 	{

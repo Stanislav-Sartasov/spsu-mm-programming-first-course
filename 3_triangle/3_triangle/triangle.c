@@ -1,7 +1,36 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <math.h>
 
 const double M_PI = 3.14159265358979323846;;
+
+int extraSymbols()
+{
+	char symbol;
+	int extra = 0;
+	while ((symbol = getchar()) != '\n' && symbol != EOF)
+	{
+		if (symbol != ' ' && (symbol < '0' || symbol > '9'))
+			extra = 1;
+	}
+
+	return extra;
+}
+
+double getDouble(double* number)
+{
+	double result = scanf("%lf", number);
+	int extra = extraSymbols();
+
+	while (result != 1 || extra == 1)
+	{
+		printf("Wrong input, try again:\n");
+		result = scanf("%lf", number);
+		extra = extraSymbols();
+	}
+
+	return *number;
+}
 
 int isATriangle(double x, double y, double z)
 {
@@ -48,10 +77,13 @@ void printTheAngle(double x, double y, double z)
 
 int main()
 {
-	double a, b, c;
+	printf("Please, enter the length of the first side:\n");
+	double a = getDouble(&a);
+	printf("Please, enter the length of the second side:\n");
+	double b = getDouble(&b);
+	printf("Please, enter the length of the third side:\n");
+	double c = getDouble(&c);
 
-	printf("Please, enter three numbers separated by a space:\n");
-	scanf_s("%lf %lf %lf", &a, &b, &c);
 
 	if (isATriangle(a, b, c) == 1 && isATriangle(b, a, c) == 1 && isATriangle(c, a, b) == 1)
 	{
