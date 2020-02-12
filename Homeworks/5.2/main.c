@@ -6,40 +6,33 @@
 
 long sumNum(long a)
 {
-	while (!(a < 10))
-	{
-		int s = 0;
-		while (a > 0)
-		{
-			s = s + (a % 10);
-			a = a / 10;
-		}
-		a = s;
-	}
-	return a;
+	return (((a - 1) % 9) + 1);
 }
 
-int main()
+void main()
 {
 	printf("The program calculates the sum of all maximal sums of digital roots among all number multiplier expansions from the interval [2; 999999].\n");
 	long sumResult = 0;
-	long* sumDiv = malloc(sizeof(long) * (999999 + 1));
+	long n = 999999;
+	long i;
+	long* sumDiv = malloc(sizeof(long) * (n + 1));
 
-	for (long i = 2; i <= 999999; i++)
+	for (i = 2; i <= n; i++)
 	{
 		sumDiv[i] = sumNum(i);
-
-		for (long j = 2; j <= (long)(trunc(sqrt(i))) + 1; j++)
-		{
-			if (i % j == 0)
-			{
-				sumDiv[i] = max(sumDiv[i], (sumDiv[j] + sumDiv[i / j]));
-			}
-		}
-		sumResult = sumResult + sumDiv[i];
 	}
-	printf("The answer is %ld.\n", sumResult);
 
+	for (i = 2; i <= n; i++)
+	{
+		long j = 1;
+		long r;
+		sumResult = sumResult + sumDiv[i];
+		while ((r = ++j * i) <= n)
+		{
+			sumDiv[r] = max(sumDiv[r], (sumNum(j) + sumDiv[i]));
+		}
+	}
+
+	printf("The answer is %ld.\n", sumResult);
 	free(sumDiv);
-	return 0;
 }
