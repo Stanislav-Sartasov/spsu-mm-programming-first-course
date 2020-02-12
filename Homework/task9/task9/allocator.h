@@ -7,9 +7,7 @@
 
 void init();
 
-void* findFreeMemory(size_t size);
-
-void coalescing(size_t* ptr);
+void uninit();
 
 void* myMalloc(size_t size);
 

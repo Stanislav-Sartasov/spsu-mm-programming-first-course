@@ -12,6 +12,11 @@ void init()
 	flag = 1;
 }
 
+void uninit()
+{
+	free(memory);
+}
+
 void* findFreeMemory(size_t size)
 {
 	for (int i = 0; i < MEMORY_SIZE / 4; i += ((size_t*)memory)[i] / 4)
@@ -131,3 +136,4 @@ void* myRealloc(void* ptr, size_t size)
 		return (void*)(p + 2);
 	}
 }
+

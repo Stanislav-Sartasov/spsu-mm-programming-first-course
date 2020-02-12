@@ -2,7 +2,7 @@
 
 int main()
 {
-	int n = 60 ;
+	int n = 60;
 	init();
 	int** a = (int**)myMalloc(sizeof(int*) * n * n);
 	if (!a)
@@ -40,11 +40,11 @@ int main()
 	if (!c)
 		printf("Memory allocation error!\n");
 	myFree(c);
-	printf("%d\n", b);
+	printf("%u\n", b);
 	b = myRealloc(b, sizeof(int) * 5);
-	printf("%d\n", b);
+	printf("%u\n", b);
 	b = myRealloc(b, sizeof(int) * (n + 5));
-	printf("%d\n", b);
+	printf("%u\n", b);
 
 	for (int i = 4; i < n + 5; i++)
 	{
@@ -58,6 +58,6 @@ int main()
 	myFree(a);
 	myFree(b);
 	myFree(c);
+	uninit();
 	return 0;
 }
-
