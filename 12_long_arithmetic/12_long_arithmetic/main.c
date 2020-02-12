@@ -6,7 +6,7 @@ int main()
 {
 	int power = 5000;
 	int numberOfDigits = (log(3) / log(16)) * power + 1;
-	int *longHex = (int*)calloc(numberOfDigits, sizeof(int));
+	unsigned char* longHex = (unsigned char*)calloc(numberOfDigits, sizeof(unsigned char));
 	if (longHex == NULL)
 	{
 		printf("Allocation failure.");
@@ -16,8 +16,8 @@ int main()
 
 	for (int i = 1; i <= power; i++)
 	{
-		int carry = 0;
-		int current = 0;
+		unsigned char carry = 0;
+		unsigned char current = 0;
 		for (int j = numberOfDigits - 1; j >= 0; j--)
 		{
 			current = 3 * longHex[j] + carry;
