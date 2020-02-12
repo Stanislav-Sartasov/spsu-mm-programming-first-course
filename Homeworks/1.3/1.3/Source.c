@@ -22,21 +22,31 @@ void ins(double* a, double* b, double* c)
 	}
 }
 
-void deg(double n1, double n2, double n3)
+double degCalcBase(double a, double b, double c)
 {
 	double p = 180 / 3.1415926535;
-	double d1, d2, d3;
-
-	d1 = acos((n1 * n1 + n2 * n2 - n3 * n3) / (2 * n1 * n2)) * p;
-	d2 = acos((n3 * n3 + n2 * n2 - n1 * n1) / (2 * n3 * n2)) * p;
-	d3 = acos((n1 * n1 + n3 * n3 - n2 * n2) / (2 * n1 * n3)) * p;
-
-	printf("%d %d' %d''\n", (int)d1, ((int)(d1 * 60)) % 60, ((int)(d1 * 360)) % 60);
-	printf("%d %d' %d''\n", (int)d2, ((int)(d2 * 60)) % 60, ((int)(d2 * 360)) % 60);
-	printf("%d %d' %d''\n", (int)d3, ((int)(d3 * 60)) % 60, ((int)(d3 * 360)) % 60);
+	return (acos((a * a + b * b - c * c) / (2 * a * b)) * p);
 }
 
-int main()
+double degCalcThird(double a, double b)
+{
+	printf("%d %d' %d''\n", (int)a, ((int)(a * 60)) % 60, ((int)(a * 360)) % 60);
+	printf("%d %d' %d''\n", (int)b, ((int)(b * 60)) % 60, ((int)(b * 360)) % 60);
+	int c = (180 * 3600) - (((int)a) * 3600 + (((int)(a * 60)) % 60) * 60 + ((int)(a * 360)) % 60) - (((int)b) * 3600 + (((int)(b * 60)) % 60) * 60 + ((int)(b * 360)) % 60);
+	printf("%d %d' %d''\n", (int)(c / 3600), (int)((c % 3600) / 60), (c % 60));
+}
+
+void deg(double side1, double side2, double side3)
+{
+	double deg1 = degCalcBase(side1, side2, side3);
+
+	double deg2 = degCalcBase(side3, side2, side1);
+
+	degCalcThird(deg1, deg2);
+
+}
+
+void main()
 {
 	double x, y, z;
 	printf("The program calculates the angles of an unborn triangle with specified sides, if it exists.\n");
@@ -52,5 +62,4 @@ int main()
 	}
 	else
 		printf("The triangle doesn't exist.");
-	return 0;
 }
