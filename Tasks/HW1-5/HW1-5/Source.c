@@ -12,10 +12,10 @@ int is_square(int n)
 
 int main()
 {
-	int n;
+	int n, period = 0;
 
 	printf("Enter the natural number whose continued fraction you want to get\n");
-	while ((!scanf_s("%d", &n)) || (is_square(n) == 0))
+	while ((!scanf_s("%d", &n)) || (is_square(n) == 0) || (n < 0))
 	{
 		while (getchar() != '\n');
 		printf("Input Error\nEnter not square natural number\ntry again: ");
@@ -28,6 +28,7 @@ int main()
 
 	while (1)
 	{
+		period++;
 		m = a * s - m;
 		s = (n - m * m) / s;
 		x = (m + sqrt(n)) / s;
@@ -38,7 +39,7 @@ int main()
 			break;
 	}
 
-	printf("%.0f]\n", a);
+	printf("%.0f] period is %d\n", a, period);
 
 	return 0;
 }
