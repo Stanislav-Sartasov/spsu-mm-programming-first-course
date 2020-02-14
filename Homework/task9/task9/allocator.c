@@ -15,6 +15,7 @@ void init()
 void uninit()
 {
 	free(memory);
+	flag = 0;
 }
 
 void* findFreeMemory(size_t size)
