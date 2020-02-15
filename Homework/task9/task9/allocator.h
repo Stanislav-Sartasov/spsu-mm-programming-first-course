@@ -5,6 +5,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+typedef unsigned long long ull;
+
 void init();
 
 void uninit();

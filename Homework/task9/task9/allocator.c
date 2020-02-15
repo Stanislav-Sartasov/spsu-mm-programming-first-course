@@ -1,14 +1,16 @@
 #include "allocator.h"
-#define MEMORY_SIZE 1024
+#define MEMORY_SIZE 2048
+#define ULL_SIZE sizeof(ull)
 
 void* memory;
 int flag = 0;
 
+
 void init()
 {
 	memory = malloc(MEMORY_SIZE);
-	((size_t*)memory)[0] = ((size_t*)memory)[MEMORY_SIZE / 4 - 2] = MEMORY_SIZE;
-	((size_t*)memory)[1] = ((size_t*)memory)[MEMORY_SIZE / 4 - 1] = 0;
+	((ull*)memory)[0] = ((ull*)memory)[MEMORY_SIZE / ULL_SIZE - 2] = MEMORY_SIZE;
+	((ull*)memory)[1] = ((ull*)memory)[MEMORY_SIZE / ULL_SIZE - 1] = 0;
 	flag = 1;
 }
 
@@ -18,35 +20,35 @@ void uninit()
 	flag = 0;
 }
 
-void* findFreeMemory(size_t size)
+void* findFreeMemory(ull size)
 {
-	for (int i = 0; i < MEMORY_SIZE / 4; i += ((size_t*)memory)[i] / 4)
+	for (ull i = 0; i < MEMORY_SIZE / ULL_SIZE; i += ((ull*)memory)[i] / ULL_SIZE)
 	{
-		if ((((size_t*)memory)[i] - 16 >= size) && (((size_t*)memory)[i + 1] == 0))
-			return (void*)((size_t*)memory + i);
+		if ((((ull*)memory)[i] - ULL_SIZE * 4 >= size) && (((ull*)memory)[i + 1] == 0))
+			return (void*)((ull*)memory + i);
 	}
 	return NULL;
 }
 
-void coalescing(size_t* ptr)
+void coalescing(ull* ptr)
 {
-	int size = ptr[0] / 4;
+	ull size = ptr[0] / ULL_SIZE;
 	if (ptr > memory)
 	{
 		if (!ptr[-1])
 		{
-			int prev_size = ptr[-2] / 4;
-			ptr[size - 2] = ptr[-prev_size] = (size + prev_size) * 4;
+			long long prev_size = ptr[-2] / ULL_SIZE;
+			ptr[size - 2] = ptr[-prev_size] = (size + prev_size) * ULL_SIZE;
 			ptr -= prev_size;
 			size += prev_size;
 		}
 	}
-	if (ptr + size - 1 < ((size_t*)memory + MEMORY_SIZE / 4 - 1))
+	if (ptr + size - 1 < ((ull*)memory + MEMORY_SIZE / ULL_SIZE - 1))
 	{
 		if (!ptr[size + 1])
 		{
-			int next_size = ptr[size] / 4;
-			ptr[0] = ptr[size + next_size - 2] = (size + next_size) * 4;
+			ull next_size = ptr[size] / ULL_SIZE;
+			ptr[0] = ptr[size + next_size - 2] = (size + next_size) * ULL_SIZE;
 		}
 	}
 
@@ -56,27 +58,27 @@ void* myMalloc(size_t size)
 {
 	if (!flag)
 		init();
-	if (size > MEMORY_SIZE - 16)
+	if (size > MEMORY_SIZE - ULL_SIZE * 4)
 		return NULL;
-	int blocks = (size + 3) / 4;
-	size_t* ptr = (size_t*)findFreeMemory(size);
+	long long blocks = (size + ULL_SIZE - 1) / ULL_SIZE;
+	ull* ptr = (ull*)findFreeMemory(size);
 	if (!ptr)
 	{
 		return NULL;
 	}
 	else
 	{
-		if (ptr[0] / 4 - 4 - blocks >= 4)
+		if (ptr[0] / ULL_SIZE - 4 - blocks >= 4)
 		{
-			ptr[blocks + 4] = ptr[ptr[0] / 4 - 2] = ptr[0] - (blocks + 4) * 4;
+			ptr[blocks + 4] = ptr[ptr[0] / ULL_SIZE - 2] = ptr[0] - (blocks + 4) * ULL_SIZE;
 			ptr[blocks + 5] = 0;
-			ptr[0] = ptr[blocks + 2] = (blocks + 4) * 4;
+			ptr[0] = ptr[blocks + 2] = (blocks + 4) * ULL_SIZE;
 			ptr[1] = ptr[blocks + 3] = 1;
 			return (void*)(ptr + 2);
 		}
 		else
 		{
-			ptr[1] = ptr[ptr[0] / 4 - 1] = 1;
+			ptr[1] = ptr[ptr[0] / ULL_SIZE - 1] = 1;
 			return (void*)(ptr + 2);
 		}
 	}
@@ -86,8 +88,8 @@ void myFree(void* ptr)
 {
 	if (!ptr)
 		return;
-	size_t* p = (size_t*)ptr - 2;
-	size_t size = p[0] / 4;
+	ull* p = (ull*)ptr - 2;
+	ull size = p[0] / ULL_SIZE;
 	p[1] = p[size - 1] = 0;
 	coalescing(p);
 }
@@ -100,41 +102,40 @@ void* myRealloc(void* ptr, size_t size)
 		return NULL;
 	}
 
-	if (!ptr || *((size_t*)ptr - 1) == 0)
+	if (!ptr || *((ull*)ptr - 1) == 0)
 		return myMalloc(size);
-	size_t* p = (size_t*)ptr - 2;
-	size_t block_size = p[0] / 4;
-	if ((block_size - 4) * 4 >= size)
+	ull* p = (ull*)ptr - 2;
+	long long block_size = p[0] / ULL_SIZE;
+	if ((block_size - 4) * ULL_SIZE >= size)
 		return (void*)(p + 2);
 	else
 	{
-		if (p + block_size - 1 < ((size_t*)memory + MEMORY_SIZE / 4 - 1))
+		if (p + block_size - 1 < ((ull*)memory + MEMORY_SIZE / ULL_SIZE - 1))
 		{
-			int next_size = p[block_size] / 4;
-			if (!p[block_size + 1] && (next_size + block_size - 4) * 4 > size)
+			long long next_size = p[block_size] / ULL_SIZE;
+			if (!p[block_size + 1] && (next_size + block_size - 4) * ULL_SIZE > size)
 			{
-				int blocks = (size + 3) / 4;
-				p[0] = p[block_size + next_size - 2] = (block_size + next_size) * 4;
+				long long blocks = (size + ULL_SIZE - 1) / ULL_SIZE;
+				p[0] = p[block_size + next_size - 2] = (block_size + next_size) * ULL_SIZE;
 				p[block_size + next_size - 1] = 1;
 				block_size += next_size;
-				if (p[0] - 16 - size >= 16)
+				if (p[0] - ULL_SIZE * 4 - size >= ULL_SIZE * 4)
 				{
-					p[blocks + 4] = p[block_size - 2] = (block_size - blocks - 4) * 4;
+					p[blocks + 4] = p[block_size - 2] = (block_size - blocks - 4) * ULL_SIZE;
 					p[blocks + 5] = p[block_size - 1] = 0;
-					p[0] = p[blocks + 2] = block_size * 4 + 16;
+					p[0] = p[blocks + 2] = (block_size + 4) * ULL_SIZE;
 					p[1] = p[blocks + 3] = 1;
 				}
 				return (void*)(p + 2);
 			}
 		}
-		size_t* new_ptr = (size_t*)myMalloc(size);
+		ull* new_ptr = (ull*)myMalloc(size);
 		if (new_ptr)
 		{
-			memcpy(new_ptr, ptr, p[0] - 16);
+			memcpy(new_ptr, ptr, p[0] - ULL_SIZE * 4);
 			myFree(ptr);
 			return (void*)(new_ptr);
 		}
 		return (void*)(p + 2);
 	}
 }
-

@@ -13,10 +13,13 @@ int main()
 		for (int i = 0; i < 8; i++)
 		{
 			a[i] = (int*)myMalloc(sizeof(int) * 8);
-			for (int j = 0; j < 8; j++)
+			if (a[i])
 			{
-				a[i][j] = i + j;
-				printf("%d\n", a[i][j]);
+				for (int j = 0; j < 8; j++)
+				{
+					a[i][j] = i + j;
+					printf("%d\n", a[i][j]);
+				}
 			}
 		}
 		for (int i = 0; i < 8; i++)
@@ -40,11 +43,11 @@ int main()
 	if (!c)
 		printf("Memory allocation error!\n");
 	myFree(c);
-	printf("%u\n", b);
+	printf("%p\n", b);
 	b = myRealloc(b, sizeof(int) * 5);
-	printf("%u\n", b);
+	printf("%p\n", b);
 	b = myRealloc(b, sizeof(int) * (n + 5));
-	printf("%u\n", b);
+	printf("%p\n", b);
 
 	for (int i = 4; i < n + 5; i++)
 	{
