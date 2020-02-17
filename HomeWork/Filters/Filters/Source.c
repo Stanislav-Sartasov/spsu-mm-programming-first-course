@@ -60,12 +60,12 @@ void filter(unsigned char* input, int height, int width, int choice)
         for (int i = 0; i < 9; i++)
             mask[i] = matrix[0][i];
     }
-    else if (choice == 3) // соболь Х
+    else if (choice == 3) // собель Х
     {
         for (int i = 0; i < 3 * 3; i++)
             mask[i] = matrix[1][i];
     }
-    else if (choice == 4)   //соболь У
+    else if (choice == 4)   //собель У
     {
         for (int i = 0; i < 3 * 3; i++)
             mask[i] = matrix[2][i];
@@ -99,7 +99,7 @@ void filter(unsigned char* input, int height, int width, int choice)
             else
             {
                 int x = 0;
-                if ((result[0] + result[1] + result[2]) > 384)
+                if ((result[0] + result[1] + result[2]) > 384)  // вычсляем значения пикселя
                     x = 255;
                 for (int k = 0; k < 3; k++)
                     output[(i * width + j) * 3 + k] = x;
@@ -109,17 +109,30 @@ void filter(unsigned char* input, int height, int width, int choice)
     for (int i = 0; i < height * width * 3; i++)
         input[i] = output[i];
     free(output);
+    free(mask);
 }
 
 int main(int argc, char* argv[])
 {
+    char* name_of_filters[5] = { "grey", "averaging", "sobelX", "sobelY", "gauss "};
 
-    int chek = 1;
-    if (chek) printf("%d", 777);
-    else printf("%d", 000);
+    int check = 0;
     if (argc != 4)
     {
         printf("Wrong input");
+        exit(-1);
+    }
+
+    for (int i = 0; i < 5; i++)
+    {
+        if (strcmp(name_of_filters[i], argv[2]) == 0)
+           check = 1;
+           
+    }
+
+    if (!check)
+    {
+        printf("Invalid name of filter");
         exit(-1);
     }
 
@@ -148,9 +161,9 @@ int main(int argc, char* argv[])
 
     unsigned char* bitmap = (unsigned char*)malloc(info_header.size_image);
 
-    unsigned char* colorTable = (unsigned char*)malloc(file_header.bf_off_bits - 54);
+    unsigned char* color_table = (unsigned char*)malloc(file_header.bf_off_bits - 54);
 
-    fread(colorTable, 1, file_header.bf_off_bits - 54, fin);
+    fread(color_table, 1, file_header.bf_off_bits - 54, fin);
 
     fseek(fin, file_header.bf_off_bits, SEEK_SET);
     fread(bitmap, 1, info_header.size_image, fin);
@@ -160,18 +173,18 @@ int main(int argc, char* argv[])
 
     for (int i = 0; i < file_header.bf_off_bits - 54; i++)
     {
-        fwrite(&colorTable[i], 1, 1, fout);
+        fwrite(&color_table[i], 1, 1, fout);
     }
 
     if (!strcmp(argv[2], "grey"))
         grey(bitmap, info_header.height, info_header.widht, info_header.bit_count);
-    if (!strcmp(argv[2], "fveraging"))
+    if (!strcmp(argv[2], "averaging"))
         filter(bitmap, info_header.height, info_header.widht, 1);
      if (!strcmp(argv[2], "gauss"))
          filter(bitmap, info_header.height, info_header.widht, 2);
-    if (!strcmp(argv[2], "sobolX"))
+    if (!strcmp(argv[2], "sobelX"))
         filter(bitmap, info_header.height, info_header.widht, 3);
-    if (!strcmp(argv[2], "sobolY"))
+    if (!strcmp(argv[2], "sobelY"))
         filter(bitmap, info_header.height, info_header.widht, 4);
 
 
@@ -183,7 +196,7 @@ int main(int argc, char* argv[])
 
 
     free(bitmap);
-    free(colorTable);
+    free(color_table);
 
     fclose(fin);
     fclose(fout);
