@@ -18,5 +18,13 @@
     <ClCompile Include="Source.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="func.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Header.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
