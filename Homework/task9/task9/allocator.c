@@ -123,7 +123,7 @@ void* myRealloc(void* ptr, size_t size)
 				{
 					p[blocks + 4] = p[block_size - 2] = (block_size - blocks - 4) * ULL_SIZE;
 					p[blocks + 5] = p[block_size - 1] = 0;
-					p[0] = p[blocks + 2] = (block_size + 4) * ULL_SIZE;
+					p[0] = p[blocks + 2] = (blocks + 4) * ULL_SIZE;
 					p[1] = p[blocks + 3] = 1;
 				}
 				return (void*)(p + 2);
