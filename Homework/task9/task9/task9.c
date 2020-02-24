@@ -7,7 +7,7 @@ int main()
 	int** a = (int**)myMalloc(sizeof(int*) * n * n);
 	if (!a)
 		printf("Memory allocation error!\n");
-	a = (int**)malloc(sizeof(int*) * 8);
+	a = (int**)myMalloc(sizeof(int*) * 8);
 	if (a)
 	{
 		for (int i = 0; i < 8; i++)
