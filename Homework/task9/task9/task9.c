@@ -7,7 +7,7 @@ int main()
 	int** a = (int**)myMalloc(sizeof(int*) * n * n);
 	if (!a)
 		printf("Memory allocation error!\n");
-	a = (int**)malloc(sizeof(int*) * 8);
+	a = (int**)myMalloc(sizeof(int*) * 8);
 	if (a)
 	{
 		for (int i = 0; i < 8; i++)
@@ -27,8 +27,9 @@ int main()
 			myFree(a[i]);
 		}
 	}
+	myFree(a);
 
-	a = (int**)myMalloc(sizeof(int) * n * 4);
+	a = (int**)myMalloc(sizeof(int*) * n * 4);
 	int* b = (int*)myMalloc(sizeof(int) * 4);
 	for (int i = 0; i < 4; i++)
 	{

@@ -14,6 +14,7 @@ void init()
 	flag = 1;
 }
 
+
 void uninit()
 {
 	free(memory);
