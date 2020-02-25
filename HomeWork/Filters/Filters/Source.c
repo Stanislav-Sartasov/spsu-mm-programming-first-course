@@ -114,7 +114,7 @@ void filter(unsigned char* input, int height, int width, int choice)
 
 int main(int argc, char* argv[])
 {
-    char* name_of_filters[5] = { "grey", "averaging", "sobelX", "sobelY", "gauss "};
+    char* name_of_filters[5] = { "grey", "averaging", "sobelX", "sobelY", "gauss"};
 
     int check = 0;
     if (argc != 4)
