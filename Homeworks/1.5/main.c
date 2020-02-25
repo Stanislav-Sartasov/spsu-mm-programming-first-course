@@ -43,7 +43,7 @@ void ins(double* p)
 	*p = a;
 }
 
-void main()
+int main()
 {
 	printf("This program calculates the sequence and period for chain shots.\n");
 	printf("Insert number: ");
@@ -75,4 +75,5 @@ void main()
 
 	printf("]\n");
 	printf("Period: %d", count);
+	return 0;
 }

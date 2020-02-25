@@ -22,31 +22,47 @@ void ins(double* a, double* b, double* c)
 	}
 }
 
-double degCalcBase(double a, double b, double c)
+double angCalc(double a, double b, double c)
 {
-	double p = 180 / 3.1415926535;
+	double p = 180 / 3.141592653589793;
 	return (acos((a * a + b * b - c * c) / (2 * a * b)) * p);
 }
 
-double degCalcThird(double a, double b)
+void angPrint(double ang)
 {
-	printf("%d %d' %d''\n", (int)a, ((int)(a * 60)) % 60, ((int)(a * 360)) % 60);
-	printf("%d %d' %d''\n", (int)b, ((int)(b * 60)) % 60, ((int)(b * 360)) % 60);
-	int c = (180 * 3600) - (((int)a) * 3600 + (((int)(a * 60)) % 60) * 60 + ((int)(a * 360)) % 60) - (((int)b) * 3600 + (((int)(b * 60)) % 60) * 60 + ((int)(b * 360)) % 60);
-	printf("%d %d' %d''\n", (int)(c / 3600), (int)((c % 3600) / 60), (c % 60));
+	double deg = (int)ang;
+	double min = (ang - (int)ang) * 60;
+	double sec = round((min - (int)min) * 60);
+
+	if ((int)sec == 60)
+	{
+		sec = 0;
+		min++;
+	}
+	if (min == 60)
+	{
+		min = 0;
+		deg++;
+	}
+	printf("%d %d' %d''\n", (int)deg, (int)min, (int)sec);
 }
 
-void deg(double side1, double side2, double side3)
+void ang(double side1, double side2, double side3)
 {
-	double deg1 = degCalcBase(side1, side2, side3);
+	double ang1 = angCalc(side1, side2, side3);
 
-	double deg2 = degCalcBase(side3, side2, side1);
+	double ang2 = angCalc(side3, side2, side1);
 
-	degCalcThird(deg1, deg2);
+	double ang3 = angCalc(side3, side1, side2);
 
+	angPrint(ang1);
+
+	angPrint(ang2);
+
+	angPrint(ang3);
 }
 
-void main()
+int main()
 {
 	double x, y, z;
 	printf("The program calculates the angles of an unborn triangle with specified sides, if it exists.\n");
@@ -58,8 +74,9 @@ void main()
 	{
 		printf("The triangle exists. The angles:\n");
 
-		deg(x, y, z);
+		ang(x, y, z);
 	}
 	else
 		printf("The triangle doesn't exist.");
+	return 0;
 }
