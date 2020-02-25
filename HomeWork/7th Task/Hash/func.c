@@ -1,4 +1,8 @@
 #include"Header.h"
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <malloc.h>
 
 hash_table* init(int limit)
 {
@@ -12,8 +16,8 @@ hash_table* init(int limit)
 
 int hash_func(int value)
 {
-	int key = value * 100;
-	return key % 100;
+	int key = value * 1024;
+	return key % 1024;
 }
 
 void add(hash_table** table, int value, int key)
@@ -88,7 +92,7 @@ void delete (hash_table* table, int key)
 
 int rebalance(hash_table** table)
 {
-	hash_table* new_table = init((*table)->limit + 1);
+	hash_table* new_table = init((*table)->limit + 10);
 	hash* pointer = NULL;
 	for (int i = 0; i < (*table)->limit; i++)
 	{
@@ -98,6 +102,29 @@ int rebalance(hash_table** table)
 			add(&new_table, pointer->key, pointer->value);
 			pointer = pointer->next;
 		}
+		free(pointer);
 	}
-	return new_table;
+	free(new_table);
+
+}
+
+void delete_hash_table(hash_table** table)
+{
+	for (int i = 0; i < (*table)->size; i++)
+	{
+		hash* pointer = (*table)->array_list[i];
+		if (pointer)
+		{
+			while (pointer)
+			{
+				hash* tmp = pointer;
+				pointer = pointer->next;
+				free(tmp);
+			}
+		}
+	}
+	free((*table)->array_list);
+	free((*table));
+	*table = NULL;
+	printf("Deleted\n");
 }

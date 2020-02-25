@@ -1,8 +1,5 @@
 #pragma once
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <malloc.h>
+
 typedef struct hash {
 	int key;
 	int value;
@@ -20,3 +17,5 @@ typedef struct hash_table {
 void add(hash_table** table, int value, int key);
 int find(hash_table** table, int key);
 void delete (hash_table* table, int key);
+void delete_hash_table(hash_table** table);
+hash_table* init(int limit);
