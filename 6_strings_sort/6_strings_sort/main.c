@@ -9,15 +9,42 @@
 
 int compare(const void* ptr1, const void* ptr2)
 {
-	return strcmp(*(char**)ptr1, *(char**)ptr2);
+	return strcmp(*(char**)ptr2, *(char**)ptr1);
 }
 
 int len(char* string)
 {
-	int counter = 1;
-	for (int i = 2; string[i] != '\n'; i++)
+	int counter = 0;
+	for (int i = 0; string[i] != '\n' && string[i] != '\r'; i++)
 		counter++;
 	return counter;
+}
+
+int spacesInFront(char* string)
+{
+	int i = 0;
+	while (string[i] == ' ')
+	{
+		i++;
+	}
+	return i;
+}
+
+int spacesInBack(char* string, int len)
+{
+	int i = len - 1;
+	while (i > 0 && string[i] == ' ')
+	{
+		i--;
+	}
+	return i;
+}
+
+char* deleteSpaces(char* copy, char* string, int front, int back)
+{
+	for (int i = 0; i < back - front + 1; i++)
+		copy[i] = string[i + front];
+	return copy;
 }
 
 int main(int argc, char* argv[])
@@ -69,20 +96,22 @@ int main(int argc, char* argv[])
 	{
 		strings[k] = &map[j];
 		while (map[j] != '\n' && j < numOfChars)
-		{
-			j += 1;
-		}
-		j += 1;
-		k += 1;
+			j++;
+		j++;
+		k++;
 	}
 
 	qsort(strings, lines, sizeof(char*), compare);
-
 	char endl = '\n';
 	for (int i = 0; i < lines; i++)
 	{
-		write(fOut, strings[i], len(strings[i]));
+		int front = spacesInFront(strings[i]);
+		int back = spacesInBack(strings[i], len(strings[i]));
+		char* copy = (char*)malloc(sizeof(char) * (back - front + 1));
+		copy = deleteSpaces(copy, strings[i], front, back);
+		write(fOut, copy, back - front + 1);
 		write(fOut, &endl, sizeof(char));
+		free(copy);
 	}
 
 	free(strings);
