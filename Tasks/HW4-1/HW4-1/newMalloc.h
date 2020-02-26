@@ -4,7 +4,7 @@
 
 typedef struct mem_block
 {
-	size_t size_of_block;
+	size_t block_size;
 	struct mem_block* next;
 	struct mem_block* previous;
 } mem_block;

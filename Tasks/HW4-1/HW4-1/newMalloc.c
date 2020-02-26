@@ -11,7 +11,7 @@ void init()
 	mem_block* block = (mem_block*)memory;
 	block->next = NULL;
 	block->previous = NULL;
-	block->size_of_block = amount_of_space;
+	block->block_size = amount_of_space;
 	stack = block;
 }
 
@@ -40,7 +40,7 @@ void* newMalloc(size_t size)
 	mem_block* block = stack;
 	while (block != NULL)
 	{
-		if (block->size_of_block >= size + sizeof(size_t))
+		if (block->block_size >= size + sizeof(size_t))
 		{
 			k = 1;
 			break;
@@ -50,15 +50,15 @@ void* newMalloc(size_t size)
 	}
 
 	if (k == NULL) return NULL;
-	if (size == block->size_of_block)
+	if (size == block->block_size)
 	{
 		delete_block(block);
 		return (char*)block + sizeof(size_t);
 	}
 
-	block->size_of_block = block->size_of_block - sizeof(size_t) - size;
-	mem_block* new = (mem_block*)((char*)block + block->size_of_block);
-	new->size_of_block = size + sizeof(size_t);
+	block->block_size = block->block_size - sizeof(size_t) - size;
+	mem_block* new = (mem_block*)((char*)block + block->block_size);
+	new->block_size = size + sizeof(size_t);
 	return (char*)new + sizeof(size_t);
 
 }
@@ -98,7 +98,7 @@ void newFree(void* ptr)
 		{
 			(block->next)->next->previous = (block);
 		}
-		(block)->size_of_block = (block)->size_of_block + (block->next)->size_of_block;
+		(block)->block_size = (block)->block_size + (block->next)->block_size;
 
 	}
 	if ((block->previous != NULL) && (block->previous == (char*)block - sizeof(block)))
@@ -109,7 +109,7 @@ void newFree(void* ptr)
 		{
 			(block)->next->previous = (block->previous);
 		}
-		(block->previous)->size_of_block = (block->previous)->size_of_block + (block)->size_of_block;
+		(block->previous)->block_size = (block->previous)->block_size + (block)->block_size;
 
 	}
 
@@ -120,12 +120,12 @@ void* newRealloc(void* ptr, size_t newSize)
 {
 	mem_block* block = (char*)ptr - sizeof(size_t);
 
-	if (block->size_of_block - sizeof(size_t) >= newSize) return ptr;
+	if (block->block_size - sizeof(size_t) >= newSize) return ptr;
 
 	mem_block* new = newMalloc(newSize);
 	if (new == NULL) return NULL;
 
-	memcpy(new, ptr, block->size_of_block - sizeof(size_t));
+	memcpy(new, ptr, block->block_size - sizeof(size_t));
 	newFree(ptr);
 	return new;
 }
