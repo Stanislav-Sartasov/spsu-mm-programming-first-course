@@ -138,10 +138,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="mMalloc.h" />
+    <ClInclude Include="newMalloc.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="mMalloc.c" />
+    <ClCompile Include="newMalloc.c" />
     <ClCompile Include="Source.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

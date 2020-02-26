@@ -1,50 +1,82 @@
-#include "mMalloc.h"
+#include "newMalloc.h"
 #define endl printf("\n")
+#define SIZE 10
+
+//int main()
+//{
+//	int* arr1 = newMalloc(10 * sizeof(int));
+//	for (int i = 0; i < 10; i++)
+//	{
+//		arr1[i] = 1;
+//		printf("%d", arr1[i]);
+//	}
+//	endl;
+//	char* arr2 = newMalloc(10 * sizeof(char));
+//	for (int i = 0; i < 10; i++)
+//	{
+//		arr2[i] = 'a';
+//		printf("%c", arr2[i]);
+//	}
+//	endl;
+//
+//	endl;
+//
+//	for (int i = 0; i < 10; i++) printf("%d", arr1[i]);
+//	endl;
+//	for (int i = 0; i < 10; i++)printf("%c", arr2[i]);
+//
+//	endl; endl;
+//	float* arr3 = newMalloc(5 * sizeof(float));
+//	for (int i = 0; i < 5; i++)
+//	{
+//		arr3[i] = 1.1 + i;
+//		printf("%f%c", arr3[i], ' ');
+//	}
+//
+//	newFree(arr2);
+//
+//	arr1 = newRealloc(arr1, 15 * sizeof(int));
+//	arr3 = newRealloc(arr3, 10 * sizeof(float));
+//	endl;
+//
+//	for (int i = 10; i < 15; i++) arr1[i] = 1;
+//	for (int i = 0; i < 15; i++) printf("%d", arr1[i]);
+//	endl; endl;
+//
+//	for (int i = 5; i < 10; i++) arr3[i] = 1.1 + i;
+//	for (int i = 0; i < 10; i++) printf("%f%c", arr3[i], ' ');
+//	endl;
+//
+//	system("pause");
+//} 
 
 int main()
 {
-	int* mas1 = myMalloc(10 * sizeof(int));
-	for (int i = 0; i < 10; i++)
-	{
-		mas1[i] = 1;
-		printf("%d", mas1[i]);
-	}
-	endl;
-	char* mas2 = myMalloc(10 * sizeof(char));
-	for (int i = 0; i < 10; i++)
-	{
-		mas2[i] = 'a';
-		printf("%c", mas2[i]);
-	}
-	endl;
+    int** A;
+    int i, j;
+    A = (int**)newMalloc(SIZE * sizeof(int*));
 
-	endl;
+    for (i = 0; i < SIZE; i++) {
+        A[i] = (int*)newMalloc((i + 1) * sizeof(int));
+    }
 
-	for (int i = 0; i < 10; i++) printf("%d", mas1[i]);
-	endl;
-	for (int i = 0; i < 10; i++)printf("%c", mas2[i]);
+    for (i = 0; i < SIZE; i++) {
+        for (j = i; j > 0; j--) {
+            A[i][j] = i * j;
+        }
+    }
 
-	endl; endl;
-	float* mas3 = myMalloc(5 * sizeof(float));
-	for (int i = 0; i < 5; i++)
-	{
-		mas3[i] = 1.1 + i;
-		printf("%f%c", mas3[i], ' ');
-	}
+    for (i = 0; i < SIZE; i++) {
+        for (j = i; j > 0; j--) {
+            printf("%d ", A[i][j]);
+        }
+        printf("\n");
+    }
 
-	myFree(mas2);
+    for (i = SIZE - 1; i > 0; i--) {
+        newFree(A[i]);
+    }
+    newFree(A);
 
-	mas1 = myRealloc(mas1, 15 * sizeof(int));
-	mas3 = myRealloc(mas3, 10 * sizeof(float));
-	endl;
-
-	for (int i = 10; i < 15; i++) mas1[i] = 1;
-	for (int i = 0; i < 15; i++) printf("%d", mas1[i]);
-	endl; endl;
-
-	for (int i = 5; i < 10; i++) mas3[i] = 1.1 + i;
-	for (int i = 0; i < 10; i++) printf("%f%c", mas3[i], ' ');
-	endl;
-
-	system("pause");
+    _getch();
 }
