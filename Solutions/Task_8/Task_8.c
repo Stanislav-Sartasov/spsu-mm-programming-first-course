@@ -125,26 +125,26 @@ void megas(char type, rgb_24** image, unsigned int width, unsigned int height, i
 				kern[(i + m) * sz + j + m] = exp(-(pow(i, 2.0) + pow(j, 2.0)) / (2 * pow(sg, 2.0))) / (2 * pi * pow(sg, 2.0));
 				sum_kern_max += kern[(i + m) * sz + j + m];
 			}
-	for (unsigned y = 0; y < height; y++)
-		for (unsigned x = 0; x < width; x++)
+	for (int y = 0; y < height; y++)
+		for (int x = 0; x < width; x++)
 			for (int c = 0; c < 3; c++)
 			{
 				switch (type)
 				{
 				case 'm':
 					size = 0;
-					for (unsigned i = y - m; i <= y + m; i++)
-						for (unsigned j = x - m; j <= x + m; j++)
-							if ((i >= 0) && (i < height) && (j >= 0) && (j < width))
+					for (int i = - m; i <= m; i++)
+						for (int j = - m; j <= m; j++)
+							if ((y + i >= 0) && (y + i < height) && (x + j >= 0) && (x + j < width))
 							{
 								size++;
-								arr[size - 1] = *(*(*image + i * width + j) + c);
+								arr[size - 1] = *(*(*image + (y + i) * width + x + j) + c);
 							}
-					for (unsigned i = 0; i < size / 2 + 1; i++)
+					for (unsigned i = 0; i < size; i++)
 					{
 						unsigned char min = arr[i];
 						short ind = i;
-						for (int j = 1; j < size; j++)
+						for (int j = i; j < size; j++)
 							if (min > arr[j])
 							{
 								min = arr[j];
