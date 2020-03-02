@@ -11,6 +11,15 @@ int main()
 	add(&map, 15, 10);
 	add(&map, 5, 10);
 	add(&map, 10, 20);
+	add(&map, 11, 20);
+	add(&map, 12, 20);
+	add(&map, 13, 20);
+	add(&map, 14, 20);
+	add(&map, 16, 20);
+	add(&map, 17, 20);
+	add(&map, 18, 20);
+	add(&map, 19, 20);
+
 
 	find(&map, 10);
 	printf("\n");
