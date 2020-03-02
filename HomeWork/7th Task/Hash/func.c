@@ -16,8 +16,6 @@ hash_table* init(int limit)
 
 int hash_func(int value, int size)
 {
-	/*int key = value * 1024;
-	return key % 1024;*/
 	return value % size;
 }
 
@@ -129,5 +127,4 @@ void delete_hash_table(hash_table** table)
 	free((*table)->array_list);
 	free((*table));
 	*table = NULL;
-	printf("Deleted\n");
 }
