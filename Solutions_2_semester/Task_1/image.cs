@@ -7,13 +7,13 @@ namespace Task_1
 {
     public class image
     {
-        public const byte file_not_exist = 1;
-        public const byte file_read_error = 2;
-        public const byte unexpected_error = 3;
-        public const byte invalid_input = 4;
-        public const byte image_not_created = 5;
+        public const int file_not_exist = 1;
+        public const int file_read_error = 2;
+        public const int unexpected_error = 3;
+        public const int invalid_input = 4;
+        public const int image_not_created = 5;
 
-        public static int write_error_name(byte code)
+        public static int write_error_name(int code)
         {
             switch (code)
             {
@@ -399,7 +399,7 @@ namespace Task_1
                                     }
                             if (len == 0)
                                 return invalid_input;
-                            Array.Sort(arr, 0, len - 1);
+                            Array.Sort(arr, 0, len);
                             new_bit_map[x, y, c] = arr[len / 2];
                         }
                 bit_map = new_bit_map;
@@ -582,8 +582,8 @@ namespace Task_1
 
                 double g_x = 0;
                 double g_y = 0;
-                double[,] g_x_mask = new double[,] { { 1, 2, 1 }, { 0, 0, 0 }, { -1, -2, -1 } };
-                double[,] g_y_mask = new double[,] { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 1 } };
+                double[,] g_x_mask = new double[,] { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 1 } };
+                double[,] g_y_mask = new double[,] { { 1, 2, 1 }, { 0, 0, 0 }, { -1, -2, -1 } };
                 double shade;
 
                 byte[,,] new_bit_map = new byte[width, height, bit_count];
