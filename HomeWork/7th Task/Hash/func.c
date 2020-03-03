@@ -106,6 +106,7 @@ int rebalance(hash_table** table, int value, int key)
 		free(pointer);
 	}
 	add(&new_table, value, key);
+	free((*table)->array_list);
 	free(*table);
 	*table = new_table;
 }
