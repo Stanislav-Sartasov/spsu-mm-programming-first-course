@@ -19,13 +19,16 @@ int main()
 	add(&map, 17, 20);
 	add(&map, 18, 20);
 	add(&map, 19, 20);
+	add(&map, 20, 20);
+	add(&map, 21, 20);
+	add(&map, 22, 20);
 
 
 	find(&map, 10);
 	printf("\n");
 	find(&map, 20);
 	delete(map, 10);
-	
+	printf("\n");
 	find(&map, 10);
 	delete(map, 10);
 	find(&map, 10);
