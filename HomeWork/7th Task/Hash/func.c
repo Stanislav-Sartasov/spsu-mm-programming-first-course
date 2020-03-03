@@ -9,7 +9,7 @@ hash_table* init(int limit)
 	hash_table* tmp = (hash_table*)malloc(sizeof(hash_table));
 	tmp->size = 0;
 	tmp->limit = limit;
-	tmp->array_size = limit;
+	tmp->array_size = (int*)calloc(tmp->limit, sizeof(int));;
 	tmp->array_list = (hash**)calloc(tmp->array_size, sizeof(hash*));
 	return tmp;
 }
@@ -33,6 +33,7 @@ void add(hash_table** table, int value, int key)
 		element->key = key;
 		element->value = value;
 		(*table)->array_list[index] = element;
+		(*table)->array_size[index] ++;
 	}
 	else
 	{
@@ -42,6 +43,7 @@ void add(hash_table** table, int value, int key)
 		tmp->key = key;
 		tmp->next = (*table)->array_list[index];
 		(*table)->array_list[index] = tmp;
+		(*table)->array_size[index] ++;
 	}
 
 
@@ -54,24 +56,27 @@ void add(hash_table** table, int value, int key)
 
 int find(hash_table** table, int key)
 {
-	hash* pointer = ((*table)->array_list)[hash_func(key, (*table)->array_size)];
-	while (pointer)
+	hash* pointer = ((*table)->array_list)[hash_func(key, (*table)->limit)];
+	while (pointer != NULL)
 	{
 		if (pointer->key == key)
 			printf("%d%c", pointer->value, ' ');
 		pointer = pointer->next;
 	}
+
 	return NULL;
 }
 
 void delete (hash_table* table, int key)
 {
-	int index = hash_func(key, table->array_size);
+	int index = hash_func(key, table->limit);
+	//printf(" %d", table->array_size[index], " ");
 	if (table->array_list[index] != NULL)
 	{
 		if (table->array_list[index]->key == key)
 		{
 			table->array_list[index] = table->array_list[index]->next;
+			table->array_size[index]--;
 			table->size--;
 		}
 		else
@@ -82,20 +87,25 @@ void delete (hash_table* table, int key)
 				if (next->key == key)
 				{
 					table->array_list[index]->next = next->next;
+					table->array_size[index]--;
 					table->size--;
+					free(next);
 					break;
 				}
 				next = next->next;
 			}
+			
 		}
 	}
+	//printf(" %d", table->array_size[index], " ");
 }
 
 int rebalance(hash_table** table, int value, int key)
 {
 	hash_table* new_table = init((*table)->limit + 10);
 	hash* pointer = NULL;
-	for (int i = 0; i < (*table)->limit; i++)
+	int limit = (*table)->limit;
+	for (int i = 0; i < limit; i++)
 	{
 		pointer = (*table)->array_list[i];
 		while (pointer)
@@ -106,16 +116,19 @@ int rebalance(hash_table** table, int value, int key)
 		free(pointer);
 	}
 	add(&new_table, value, key);
-	free((*table)->array_list);
-	free(*table);
+	//free((*table)->array_list);
+	//free(*table);
+	delete_hash_table(&(*table));
 	*table = new_table;
+	return NULL;
 }
 
 void delete_hash_table(hash_table** table)
 {
 	//printf("\n %d %s", (*table)->limit, "		");
 	hash* pointer = NULL;
-	int mas_size = (*table)->array_size;
+	hash* tmp = NULL;
+	int mas_size = (*table)->limit;
 	for (int i = 0; i < mas_size; i++)
 	{
 		pointer = (*table)->array_list[i];
@@ -123,12 +136,15 @@ void delete_hash_table(hash_table** table)
 		{
 			while (pointer)
 			{
+				tmp = pointer;
 				pointer = pointer->next;
+				free(tmp);
 			}
 		}
 		free(pointer);
 	}
 	free((*table)->array_list);
+	free((*table)->array_size);
 	free((*table));
 	*table = NULL;
 	//printf("Deleted\n");
