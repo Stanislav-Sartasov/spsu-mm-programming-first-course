@@ -1,24 +1,26 @@
+#include "command.h"
 #include "startfilter.h"
 #include <cstring>
 
-StartFilter::StartFilter(int argc, char* argv[])
+StartFilter::StartFilter(int argc, char* argv[]) : a(argc, argv)
 {
-    this->argc = argc;
-    this->argv = new char* [argc];
-    for (int i = 0; i < argc; ++i)
-    {
-        this->argv[i] = new char [strlen(argv[i])];
-        strcpy(this->argv[i], argv[i]);
-    }
+
+}
+
+StartFilter::StartFilter(): a(0, 0)
+{
+
 }
 
 StartFilter::~StartFilter()
 {
-    for (int i = 0; i < argc; i++)
-    {
-        delete [] argv[i];
-    }
-    delete [] argv;
+    a.~Command();
+}
+
+void StartFilter::getCommand(int argc, char *argv[])
+{
+    a.~Command();
+    a = Command(argc, argv);
 }
 
 void StartFilter::goFilter()

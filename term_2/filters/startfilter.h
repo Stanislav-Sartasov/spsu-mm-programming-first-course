@@ -1,17 +1,17 @@
 #ifndef STARTFILTER_H
 #define STARTFILTER_H
-
+#include "command.h"
 
 class StartFilter
 {
 private:
-    int argc;
-    char **argv;
+    Command a;
 
 public:
     StartFilter(int argc, char* argv[]);
+    StartFilter();
     ~StartFilter();
-
+    void getCommand(int argc, char* argv[]);
     void goFilter();
 };
 
