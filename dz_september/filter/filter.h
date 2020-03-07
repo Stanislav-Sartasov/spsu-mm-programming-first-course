@@ -41,6 +41,6 @@ struct img
     unsigned int len, wid;
 };
 
-void filter(struct img *, char *);
+void filter(struct img *, char *, double, double);
 int getReady(FILE *fIn, struct BITMAPFILEHEADER *bmpFileH, struct BITMAPINFOHEADER *bmpInfoH, struct img *image, unsigned int *paleteSize, char *palete, unsigned int *padLine);
 int getDone(FILE *fOut, struct BITMAPFILEHEADER bmpFileH, struct BITMAPINFOHEADER bmpInfoH, struct img *image, unsigned int paleteSize, char *palete, unsigned int padLine);

@@ -13,6 +13,54 @@ void gray(struct img *image)
         }
 }
 
+void greenGray(struct img *image, double indexX, double indexY)
+{
+    unsigned char res;
+    for (unsigned int i = 0; i < image->len; ++i)
+        for (unsigned int j = 0; j < image->wid; ++j)
+        {
+            res = (unsigned char)(0.3 * image->bits[i][j].a[0] +  0.5 * image->bits[i][j].a[1] + 0.2 * image->bits[i][j].a[2]) ;
+            if ( ! ((image->bits[i][j].a[1] > image->bits[i][j].a[2] * indexY) && (image->bits[i][j].a[1] > image->bits[i][j].a[0] * indexX)))
+            {
+                image->bits[i][j].a[0] = res;
+                image->bits[i][j].a[1] = res;
+                image->bits[i][j].a[2] = res;
+            }
+        }
+}
+
+void blueGray(struct img *image, double indexX, double indexY)
+{
+    unsigned char res;
+    for (unsigned int i = 0; i < image->len; ++i)
+        for (unsigned int j = 0; j < image->wid; ++j)
+        {
+            res = (unsigned char)(0.3 * image->bits[i][j].a[0] +  0.5 * image->bits[i][j].a[1] + 0.2 * image->bits[i][j].a[2]) ;
+            if ( ! ((image->bits[i][j].a[0] > image->bits[i][j].a[2] * indexY) && (image->bits[i][j].a[0] > image->bits[i][j].a[1] * indexX)))
+            {
+                image->bits[i][j].a[0] = res;
+                image->bits[i][j].a[1] = res;
+                image->bits[i][j].a[2] = res;
+            }
+        }
+}
+
+void redGray(struct img *image, double indexX, double indexY)
+{
+    unsigned char res;
+    for (unsigned int i = 0; i < image->len; ++i)
+        for (unsigned int j = 0; j < image->wid; ++j)
+        {
+            res = (unsigned char)(0.3 * image->bits[i][j].a[0] +  0.5 * image->bits[i][j].a[1] + 0.2 * image->bits[i][j].a[2]) ;
+            if ( ! ((image->bits[i][j].a[2] > image->bits[i][j].a[1] * indexX) && (image->bits[i][j].a[2] > image->bits[i][j].a[0] * indexY)))
+            {
+                image->bits[i][j].a[0] = res;
+                image->bits[i][j].a[1] = res;
+                image->bits[i][j].a[2] = res;
+            }
+        }
+}
+
 void medPix(struct img *image, int z)
 {
     unsigned char matrix[9];
@@ -113,6 +161,113 @@ void sobel(struct img *image, int matrix[3][3])
     image->bits = bits;
 }
 
+void sobelWB(struct img *image, int matrix[3][3])
+{
+    long long r = 0, g = 0, b = 0;
+    struct pix **bits = (struct pix **)malloc(sizeof (struct pix *) * image->len);
+    for (unsigned int i = 0; i < image->len; ++i)
+        bits[i] = (struct pix *)malloc(sizeof (struct pix) * image->wid);
+    for (long long i = 1; i < image->len - 1; ++i)
+    {
+        for (long long j = 1; j < image->wid - 1; ++j)
+        {
+            goMatrix(i, j, image, &r, &g, &b, 3, 3, matrix);
+
+            r = r > 255 ? 255 : r;
+            r = r < 0 ? 0 : r;
+            g = g > 255 ? 255 : g;
+            g = g < 0 ? 0 : g;
+            b = b > 255 ? 255 : b;
+            b = b < 0 ? 0 : b;
+
+            if ((r < 68) && (g < 68) && (b < 68))
+            {
+                r = 0;
+                g = 0;
+                b = 0;
+            }
+            else
+            {
+                r = 255;
+                g = 255;
+                b = 255;
+            }
+
+            bits[i][j].a[0] = (unsigned char)(r);
+            bits[i][j].a[1] = (unsigned char)(g);
+            bits[i][j].a[2] = (unsigned char)(b);
+        }
+    }
+
+    for (unsigned int i = 0; i < image->len; ++i)
+        free(image->bits[i]);
+    free(image->bits);
+    image->bits = bits;
+}
+
+void bwInvert(struct img *image, double indexX)
+{
+    struct img next;
+    next.len = image->len;
+    next.wid = image->wid;
+    next.bits = (struct pix **)malloc(sizeof (struct pix *) * next.len);
+    for (unsigned int i = 0; i < next.len; ++i)
+        next.bits[i] = (struct pix *)malloc(sizeof (struct pix) * next.wid);
+    for (unsigned int i = 0; i < next.len; ++i)
+        for (unsigned int j = 0; j < next.wid; ++j)
+            for (int u = 0; u < 3; ++u)
+                next.bits[i][j].a[u] = image->bits[i][j].a[u];
+
+    int matrix[3][3]=\
+    {{1, 2, 1},\
+     {0, 0, 0},\
+     {-1, -2, -1}};
+    sobelWB(image, matrix);
+
+    int secMatrix[3][3]=\
+    {{-1, 0, 1},\
+     {-2, 0, 2},\
+     {-1, 0, 1}};
+    sobelWB(&next, secMatrix);
+    long long z = 0;
+    for (unsigned int i = 0; i < next.len; ++i)
+        for (unsigned int j = 0; j < next.wid; ++j)
+            for (int u = 0; u < 3; ++u)
+            {
+                z = (long long)trunc(sqrt(image->bits[i][j].a[u] * image->bits[i][j].a[u] + next.bits[i][j].a[u] * next.bits[i][j].a[u]));
+                if (z > 255)
+                    z = 255;
+                else
+                    if (z < 0)
+                        z = 0;
+                image->bits[i][j].a[u] = (unsigned char)z;
+            }
+
+    for (unsigned int i = 0; i < next.len; ++i)
+        free(next.bits[i]);
+    free(next.bits);
+    if ((long long)(indexX))
+    {
+        for (unsigned int i = 0; i < next.len; ++i)
+            for (unsigned int j = 0; j < next.wid; ++j)
+            {
+                if ((image->bits[i][j].a[0] == 0) && (image->bits[i][j].a[1] == 0) && (image->bits[i][j].a[2] == 0))
+                {
+                    image->bits[i][j].a[0] = 255;
+                    image->bits[i][j].a[1] = 255;
+                    image->bits[i][j].a[2] = 255;
+                }
+                else
+                {
+                    image->bits[i][j].a[0] = 0;
+                    image->bits[i][j].a[1] = 0;
+                    image->bits[i][j].a[2] = 0;
+                }
+            }
+    }
+}
+
+
 void multisobel(struct img *image)
 {
     struct img next;
@@ -154,10 +309,9 @@ void multisobel(struct img *image)
     for (unsigned int i = 0; i < next.len; ++i)
         free(next.bits[i]);
     free(next.bits);
-
 }
 
-void filter(struct img *image, char *str)
+void filter(struct img *image, char *str, double indexX, double indexY)
 {
     if (strcmp(str, "gray") == 0)
     {
@@ -195,6 +349,26 @@ void filter(struct img *image, char *str)
     if (strcmp(str, "sobelAll") == 0)
     {
         multisobel(image);
+        return;
+    }
+    if (strcmp(str, "blueGray") == 0)
+    {
+        blueGray(image, indexX, indexY);
+        return;
+    }
+    if (strcmp(str, "redGray") == 0)
+    {
+        redGray(image, indexX, indexY);
+        return;
+    }
+    if (strcmp(str, "greenGray") == 0)
+    {
+        greenGray(image, indexX, indexY);
+        return;
+    }
+    if (strcmp(str, "bwInvert") == 0)
+    {
+        bwInvert(image, indexX);
         return;
     }
 }
