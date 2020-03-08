@@ -4,7 +4,7 @@ using BMPfilters;
 using System;
 using System.IO;
 
-namespace BMPFilter.Tests
+namespace BMPfilters.Tests
 {
     [TestClass]
     public class BMPfiltersTest

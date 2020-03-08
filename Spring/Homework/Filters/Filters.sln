@@ -3,16 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Program", "Filters\Program.csproj", "{A90432D5-D4DF-434A-AE7E-304916E3EBF0}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BMPfilters", "BMPfilters\BMPfilters.csproj", "{80015741-686F-4C0C-BA98-AC266A927479}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BMPFilter.Tests", "BMPFilter.Tests\BMPFilter.Tests.csproj", "{345D7099-4FEA-4D55-891C-8ED8BE60560C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E86923F6-9727-42BF-AC5F-A6A8FF4CFF14}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Program", "Task1.Filters\Program.csproj", "{5CD5CC31-5E1F-4DA1-823F-CB00F873EC81}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BMPfilters.Tests", "BMPfilters.Tests\BMPfilters.Tests.csproj", "{A75E0765-377D-4818-8DC2-54133FD3D09B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,18 +20,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A90432D5-D4DF-434A-AE7E-304916E3EBF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A90432D5-D4DF-434A-AE7E-304916E3EBF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A90432D5-D4DF-434A-AE7E-304916E3EBF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A90432D5-D4DF-434A-AE7E-304916E3EBF0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{80015741-686F-4C0C-BA98-AC266A927479}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{80015741-686F-4C0C-BA98-AC266A927479}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80015741-686F-4C0C-BA98-AC266A927479}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80015741-686F-4C0C-BA98-AC266A927479}.Release|Any CPU.Build.0 = Release|Any CPU
-		{345D7099-4FEA-4D55-891C-8ED8BE60560C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{345D7099-4FEA-4D55-891C-8ED8BE60560C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{345D7099-4FEA-4D55-891C-8ED8BE60560C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{345D7099-4FEA-4D55-891C-8ED8BE60560C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CD5CC31-5E1F-4DA1-823F-CB00F873EC81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CD5CC31-5E1F-4DA1-823F-CB00F873EC81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CD5CC31-5E1F-4DA1-823F-CB00F873EC81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CD5CC31-5E1F-4DA1-823F-CB00F873EC81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A75E0765-377D-4818-8DC2-54133FD3D09B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A75E0765-377D-4818-8DC2-54133FD3D09B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A75E0765-377D-4818-8DC2-54133FD3D09B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A75E0765-377D-4818-8DC2-54133FD3D09B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BMPFilter.Tests {
+namespace BMPfilters.Tests {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace BMPFilter.Tests {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BMPFilter.Tests.TestImages", typeof(TestImages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BMPfilters.Tests.TestImages", typeof(TestImages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
