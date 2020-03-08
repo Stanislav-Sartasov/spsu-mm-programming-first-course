@@ -1,6 +1,9 @@
 #ifndef STARTFILTER_H
 #define STARTFILTER_H
+
 #include "command.h"
+#include <cstring>
+#include "image.h"
 
 class StartFilter
 {

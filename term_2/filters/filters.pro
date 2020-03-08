@@ -5,9 +5,11 @@ CONFIG -= qt
 
 SOURCES += \
         command.cpp \
+        image.cpp \
         main.cpp \
         startfilter.cpp
 
 HEADERS += \
     command.h \
+    image.h \
     startfilter.h
