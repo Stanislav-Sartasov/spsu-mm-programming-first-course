@@ -32,7 +32,6 @@ namespace SimpleHierarchy.Tests
         [TestMethod]
         public void CorrectIngredients()
         {
-
             Assert.IsTrue(Enumerable.SequenceEqual(expIngredients, fruitIce.Ingredients));
         }
 
@@ -70,7 +69,6 @@ namespace SimpleHierarchy.Tests
         [TestMethod]
         public void CorrectIngredients()
         {
-
             Assert.IsTrue(Enumerable.SequenceEqual(expIngredientsTopping, sundaeWithTopping.Ingredients));
             Assert.IsTrue(Enumerable.SequenceEqual(expIngredients, sundaeWithoutTopping.Ingredients));
         }
@@ -103,7 +101,6 @@ namespace SimpleHierarchy.Tests
         [TestMethod]
         public void CorrectIngredients()
         {
-
             Assert.IsTrue(Enumerable.SequenceEqual(expIngredients, classicIC.Ingredients));
         }
     }

@@ -24,12 +24,14 @@ namespace AbstractIceCream
         {
             Console.WriteLine($"\nKind of ice cream: {Kind}\nFlavour: {Flavour}\nWeight: {ServingWeight}");
         }
+
         public virtual void GetIngredients()
         {
             Console.WriteLine($"\nMain ingredients of {Kind}: ");
             foreach (var ingredient in Ingredients)
                 Console.WriteLine($"{ingredient.Key}: {ingredient.Value} grams");
         }
+
         public virtual void GetFullInfo()
         {
             GetMainInfo();
