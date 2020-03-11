@@ -44,7 +44,7 @@ void Command::verify()
                 cout << "Comands: median, gray, gauss, sobelX, sobelY, sobelAll\npatern of input: <filein.bmp> <comand> <fileout.bmp>\nExample of input: in.bmp gauss out.bmp\n";
             else
             {
-                if (argc == 0)
+                if ((argc == 0) || (argc == 1))
                 {
                     cout << "Comands: median, gray, gauss, sobelX, sobelY, sobelAll\npatern of input: <filein.bmp> <comand> <fileout.bmp>\nExample of input: in.bmp gauss out.bmp\n";
                     enterCommand();
@@ -52,7 +52,7 @@ void Command::verify()
                 }
                 else
                 {
-                    cout << " Mumble command.\n Try to type \"/help\"\n";
+                    cout << " Mumble command.\n Try to type \"/help\"\n" << argc << "\n";
                 }
             }
             return;

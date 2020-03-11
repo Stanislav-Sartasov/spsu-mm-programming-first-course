@@ -239,8 +239,8 @@ void Image::sobelX()
 {
     if (xMatr != 3)
         createMatrix(3);
-    matrix[0][0] = 1; matrix[0][1] = 2; matrix[0][2] = 1;
-    matrix[1][0] = 0;  matrix[1][1] = 0;  matrix[1][2] = 0;
+    matrix[0][0] = 1;   matrix[0][1] = 2;   matrix[0][2] = 1;
+    matrix[1][0] = 0;   matrix[1][1] = 0;   matrix[1][2] = 0;
     matrix[2][0] = -1;  matrix[2][1] = -2;  matrix[2][2] = -1;
 
     sobel();
@@ -291,6 +291,12 @@ void Image::sobel()
     struct pix<unsigned char> **bits = new struct pix<unsigned char>* [image.len];
     for (unsigned int i = 0; i < image.len; ++i)
         bits[i] = new struct pix<unsigned char> [image.wid];
+
+    for (unsigned int i = 0; i < image.len; ++i)
+        for (unsigned int j = 0; j < image.wid; ++j)
+            for (int u = 0; u < 3; ++u)
+                bits[i][j].a[u] = 0;
+
     for (long long i = 1; i < image.len - 1; ++i)
     {
         for (long long j = 1; j < image.wid - 1; ++j)

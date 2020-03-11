@@ -55,7 +55,7 @@ void StartFilter::goFilter()
         cout << load.mod << " is done good\n";
         return;
     }
-    if (strcmp(load.mod, " sobelX") == 0)
+    if (strcmp(load.mod, "sobelX") == 0)
     {
         im.sobelX();
         im.closeBMP(load.fileOut);
