@@ -3,60 +3,56 @@
 #include <math.h>
 
 
-
 int main()
 {
-
-	int x = 0; int n = 1; char eol = ' ';
-	float numbersq = 0;
-	int total = 0;
-	float decimal = 0;
-	float revdecimal = 0;
+	int n = 1; char eol = ' ';
+	int x = 0;
+	int total = 0; 
+	int num = 0;
+	int remainder = 1;
 	int count = 0;
-	
+
 	printf("The program decomposes the number into a chain fraction and finds its period\n");
 	printf("Input a positive number:\n");
+
 	while (n == 1)
 	{
 		int xscan = scanf("%d%c", &x, &eol);
-		numbersq = sqrt(x);
-		total = (int) numbersq;
-
+		total = (int)sqrt(x);
 		if (xscan && eol == '\n')
 		{
 			if (x <= 0)
 			{
 				printf("You entered non-positive number - try again\n");
 			}
-			else if  (numbersq- total == 0) 
+			else if (total - sqrt(x) == 0)
 			{
 				printf("A number is the square of an integer");
-
 			}
 			else
 			{
 				n = 0;
 				printf("[%d", total);
-				decimal = numbersq - (int)total;
 
-				while (total != 2 * (int)numbersq)
+				while (total != 2 * (int)sqrt(x))
 				{
-					revdecimal = (1 / decimal);
-					total = (int)revdecimal;
-					decimal = revdecimal - (int)revdecimal;
+
+					num = num - total * remainder;
+					remainder = (int)((x - pow(num , 2)) / remainder);
+					num = -num;
+					total = (int)((sqrt(x) + num) / remainder);
 					count++;
-					if (total == 2 * (int)numbersq)
+					
+					if (total == 2 * (int)sqrt(x))
 					{
 						printf(", %d] period is %d", total, count);
 					}
-					else 
+					else
 					{
 						printf(", %d", total);
 					}
 				}
-
 			}
-
 		}
 		else
 		{
@@ -64,5 +60,5 @@ int main()
 			scanf("%*[^\n]");
 		}
 	}
-
 }
+
