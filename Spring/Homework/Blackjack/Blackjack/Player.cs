@@ -11,6 +11,7 @@ namespace Blackjack
         public int Chips { get; set; }
 
         public bool InGame;
+
         public Player(int chips, string name, PlayerStatus status) :
             base(name, status)
         {
@@ -30,6 +31,7 @@ namespace Blackjack
                 if ((int)Hands[0].Cards[0].Value + (int)Hands[0].Cards[1].Value == 21)
                     BlackJack = true;
         }
+
         public override void FreeHands()
         {
             Hands.Clear();

@@ -48,6 +48,7 @@ namespace Blackjack
                     throw new Exception();
             }
         }
+
         public void MakeBet(int minBet, Player player, int numOfHand)
         {
             switch (player.Status)

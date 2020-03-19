@@ -13,9 +13,6 @@ namespace Blackjack
         public int Aces { get; private set; }
         public int AcesAs11 { get; private set; }
 
-        
-
-
         public Hand()
         {
             Cards = new List<Card>();

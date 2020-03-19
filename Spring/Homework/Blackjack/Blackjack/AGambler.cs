@@ -9,6 +9,7 @@ namespace Blackjack
         Bot,
         RealPlayer
     }
+
     public abstract class AGambler
     {
         public string Name { get; set; }

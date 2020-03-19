@@ -15,7 +15,6 @@ namespace Blackjack
         private List<Command> AvailableCommands { get; set; }
         private BJCommands Commands { get; set; }
         private int MinBet { get; set; }
-
         private int CountOfRounds { get; set; }
 
         public Game(List<Player> players, Deck gameDeck, Croupier gameCroupier, int minBet, int countOfRounds)

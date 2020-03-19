@@ -7,8 +7,8 @@ namespace Blackjack
     public class Deck
     {
         public List<Card> Cards { get; private set; }
-
         public int NumOfCards { get; private set; }
+
         public Deck(int number)
         {
             Cards = new List<Card>();
