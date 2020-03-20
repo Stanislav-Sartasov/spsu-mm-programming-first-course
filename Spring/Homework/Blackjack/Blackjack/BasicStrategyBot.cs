@@ -149,6 +149,5 @@ namespace Blackjack
                 new Hand()
             };
         }
-
     }
 }

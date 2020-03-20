@@ -22,16 +22,15 @@ namespace Blackjack
 
         public abstract void FreeHands();
       
-        public AGambler(string name, PlayerStatus status)
+        public AGambler(string name, PlayerStatus status):
+            this(status)
         {
-            Name = name;
-            Status = status;
-            BlackJack = false;
-            
+            Name = name; 
         }
 
         public AGambler(PlayerStatus status)
         {
+            Name = null;
             Status = status;
             BlackJack = false;
         }

@@ -125,6 +125,5 @@ namespace Blackjack
                     throw new Exception();
             }
         }
-
     }
 }

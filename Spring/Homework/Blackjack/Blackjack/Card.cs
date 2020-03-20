@@ -18,6 +18,5 @@ namespace Blackjack
         {
             Console.WriteLine($"{Suit}:\t{Value}");
         }
-
     }
 }

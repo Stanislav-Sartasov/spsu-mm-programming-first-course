@@ -64,8 +64,6 @@ namespace Blackjack
             {
                 if (AcesAs11 < Aces) //проверяем, есть ли тузы со значением 1
                     Points -= 1;
-                //else
-                //иная ситуация не реализуется
                 Aces--;
                 AcesAs11--;
             }
