@@ -12,6 +12,19 @@ void calculatePow2()
 	}
 }
 
+int is_prime(int n)
+{
+	int flag = 1;
+	for (int i = 2; i < (n - n%2)/2; i++)
+	{
+		if (n%i==0)
+		{
+			flag = 0;
+			break;
+		}
+	}
+	return flag;
+}
 int main() 
 {
 	const char* description = "This program print's all the Mersenne primes in"
@@ -25,6 +38,12 @@ int main()
 
 	for (int i = 0; i < 32; ++i) 
 	{
-		printf("%d\n", pows[i] - 1);
+		int loc = pows[i] - 1;
+		if (is_prime(loc))
+		{
+			printf("%d\n", pows[i] - 1);
+		}
+		
+		
     }
 }
