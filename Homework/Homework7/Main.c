@@ -47,7 +47,7 @@ int main()
 	{
 		printf("[*] failed to create hash table\n");
 		return -1;
-    }
+	}
 
 	insert(table, 1, 23);
 	insert(table, 2, 45);

@@ -23,16 +23,15 @@ HashTable* hashTableCreate()
 
 HashTable* HashTableCreateImpl(size_t size) 
 {
-
     size_t* buckets = malloc(size * sizeof(size_t));
     DataNode* data = malloc(size * sizeof(DataNode));
 
     if (!buckets || !data)
         return NULL;
-
+    
     HashTable* table = malloc(sizeof(HashTable));
-
-    if (!table) {
+    if (!table) 
+    {
         free(buckets);
         free(data);
         return NULL;
@@ -44,7 +43,8 @@ HashTable* HashTableCreateImpl(size_t size)
     table->buckets = buckets;
     table->data = data;
 
-    for(int i=0; i<size; ++i) {
+    for(int i=0; i<size; ++i) 
+    {
         data[i].next = (i + 1);
         data[i].isFree = 1;
         buckets[i] = HASH_TABLE_END(table);
@@ -107,7 +107,7 @@ void freeNode(HashTable* t, size_t bucketIndex, size_t nodeIndex,
         t->buckets[bucketIndex] = t->data[nodeIndex].next;
         t->data[nodeIndex].next = HASH_TABLE_END(t);
     } else 
-	{
+    {
         // delete node in middle
         t->data[prevNodeIndex].next = t->data[nodeIndex].next;
         t->data[nodeIndex].next = HASH_TABLE_END(t);
