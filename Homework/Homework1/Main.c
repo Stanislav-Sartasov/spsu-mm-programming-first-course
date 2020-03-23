@@ -2,9 +2,9 @@
 #include <stdint.h>
 #include <string.h>
 
-void printBinary(uint64_t num)
+void printBinary(uint64_t num, int bits)
 {
-	for (int i = 31; i >= 0; --i)
+	for (int i = bits - 1; i >= 0; --i)
 		printf("%d", (num & (1ull << i)) >= 1);
 	printf("\n");
 }
@@ -35,19 +35,19 @@ int main()
 	char middleName[] = "Mzoughi";
 	char lastName[]   = "Mzoughi";
 
-	uint32_t product = strlen(firstName) * strlen(lastName) * strlen(middleName);
+	int product = strlen(firstName) * strlen(lastName) * strlen(middleName);
 
 	uint32_t a = product;
 	float b = product;
-	double c = product;
+	double c = -product;
 
 	printf("The negative 32-bit integer: ");
-	printBinary((~a) + 1);
+	printBinary((~a) + 1, 32);
 
 	printf("The positive floating-point number: ");
-	printBinary((*((uint64_t*)&b)));
+	printBinary((*((uint64_t*)&b)), 32);
 
 	printf("The negative floating-point number: ");
-	printBinary((*((uint64_t*)&c)));
+	printBinary((*((uint64_t*)&c)),64);
 	
 }
