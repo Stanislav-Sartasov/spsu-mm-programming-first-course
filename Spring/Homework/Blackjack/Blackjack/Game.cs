@@ -135,7 +135,15 @@ namespace Blackjack
 
                     if (Command.Stand.CompareTo(command) == 0)
                         break;
+                    
                     Commands.ApplyCommand(player, command, i, GameDeck);
+
+                    if (Command.Double.CompareTo(command) == 0)
+                    {
+                        Console.WriteLine($"\nYour cards on hand #{i}:");
+                        player.Hands[i].PrintCards();
+                        break;
+                    }
 
                     if (Command.Surrender.CompareTo(command) == 0)
                     {

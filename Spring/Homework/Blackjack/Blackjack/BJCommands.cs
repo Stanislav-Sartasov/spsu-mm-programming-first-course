@@ -35,7 +35,7 @@ namespace Blackjack
                     while (true)
                     {
                         numOfCommand = CorrectInput();
-                        if (numOfCommand >= 1 && numOfCommand <= availableCommands.Count)
+                        if (availableCommands.Contains((Command)numOfCommand))
                             return (Command)numOfCommand;
                         else
                             Console.WriteLine("Incorrect number of command!\n");
