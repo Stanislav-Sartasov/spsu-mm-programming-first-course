@@ -7,7 +7,7 @@ namespace HashTableLib
     {
         public int NumOfLists { get; private set; } = 4;
         public int MaxLenOfList { get; private set; } = 1;
-        public int NumOfNodes { get; private set; } = 0;
+        public int Count { get; private set; } = 0;
         LinkedList<Node<TKey, TValue>>[] arrayOfNodes;
 
         public int HashFunc(TKey key) => Math.Abs((key.GetHashCode() % 67) % NumOfLists);
@@ -23,7 +23,7 @@ namespace HashTableLib
             arrayOfNodes = new LinkedList<Node<TKey, TValue>>[NumOfLists * 2];
             NumOfLists *= 2;
             MaxLenOfList = NumOfLists / 4;
-            NumOfNodes = 0;
+            Count = 0;
 
             for (int i = 0; i < oldNodes.Length; i++)
             {
@@ -50,7 +50,7 @@ namespace HashTableLib
                 if (arrayOfNodes[index] == null)
                     arrayOfNodes[index] = new LinkedList<Node<TKey, TValue>>();
                 arrayOfNodes[index].AddLast(new Node<TKey, TValue>(key, value));
-                NumOfNodes++;
+                Count++;
                 if (arrayOfNodes[index].Count > MaxLenOfList)
                 {
                     Resize();
@@ -69,7 +69,7 @@ namespace HashTableLib
                     if (curNode.Value.Key.Equals(key))
                     {
                         arrayOfNodes[index].Remove(curNode);
-                        NumOfNodes--;
+                        Count--;
                         break;
                     }
                     curNode = curNode.Next;
@@ -139,14 +139,14 @@ namespace HashTableLib
             return value;
         }
 
-        public void DeleteTable()
+        public void Clear()
         {
             for (int i = 0; i < NumOfLists; i++)
             {
                 arrayOfNodes[i].Clear();
             }
             arrayOfNodes = null;
-            NumOfNodes = 0;
+            Count = 0;
             NumOfLists = 4;
             MaxLenOfList = 1;
         }

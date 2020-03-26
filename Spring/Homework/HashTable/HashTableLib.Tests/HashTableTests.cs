@@ -62,7 +62,7 @@ namespace HashTableLib.Tests
             {
                 table.AddPair(i, $"{i}");
             }
-            Assert.AreEqual(104, table.NumOfNodes);
+            Assert.AreEqual(104, table.Count);
             Assert.AreEqual(table.MaxLenOfList, table.NumOfLists / 4);
         }
     }
