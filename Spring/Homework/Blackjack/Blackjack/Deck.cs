@@ -34,7 +34,7 @@ namespace Blackjack
             Cards.Clear();
             Cards = new List<Card>();
 
-            for (int i = 0; i < NumOfDecks; i++) //default value of decks is 8
+            for (int i = 0; i < NumOfDecks; i++) //default number of decks is 8
             {
                 foreach (var cardSuit in Enum.GetValues(typeof(CardSuit)).Cast<CardSuit>())
                 {
