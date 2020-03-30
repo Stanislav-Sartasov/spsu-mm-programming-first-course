@@ -102,7 +102,7 @@ void filter(unsigned char* input_binary_image, int height, int width, char type[
         for(int i = 0; i < 9; i++)
             directions[i] = b[i];
     }
-	unsigned char* image_copy = (unsigned char*)malloc(3 * height * width * sizeof(char));
+    unsigned char* image_copy = (unsigned char*)malloc(3 * height * width * sizeof(char));
     for (int i = 0; i < height; i++)
         for (int j = 0; j < width; j++)
         {
