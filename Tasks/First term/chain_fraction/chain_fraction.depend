@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1572366580 source:c:\users\pavel\desktop\proga_univer\chain_fraction\main.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+
+1575383765 source:c:\users\pavel\documents\github\spsu-mm-programming-first-course\university_program\first_course_sartasov\chain_fraction\main.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+
