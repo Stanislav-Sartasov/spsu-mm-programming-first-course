@@ -12,9 +12,9 @@ namespace Casino
             public string parity; // 3 - zero, 1 - odd, 0 - even
             public string tier;
         }
-        public Table()
+        public Table(int money)
         {
-            CashTable = 1_000_000;
+            CashTable = money;
             Wheel[0].color = "Green";
             Wheel[0].parity = "Zero";
             Wheel[0].tier = "Tier 0";

@@ -10,7 +10,7 @@ namespace Roullete
         static void Main(string[] args)
         {
             Player player = new Player();
-            Table table = new Table();
+            Table table = new Table(1_000_000);
             player.Initialization();
             Console.WriteLine("Enter the number of bots");
             int numberOfBots = int.Parse(Console.ReadLine());
@@ -18,7 +18,7 @@ namespace Roullete
             var rand = new Random();
             for (int j = 0; j < numberOfBots; j++)
             {
-                byte temp = (byte)rand.Next(1, 3);
+                byte temp = (byte)rand.Next(1, 4);
                 bots.Add(new Bot(temp));
             }
 

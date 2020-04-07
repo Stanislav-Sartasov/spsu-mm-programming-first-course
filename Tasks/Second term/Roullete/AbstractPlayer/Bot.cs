@@ -78,6 +78,7 @@ namespace Players
             else
             {
                 calculateBet = Math.Min(maxBet, PlayerCash / 20);
+                PreviousCashBet = calculateBet;
             }
             return calculateBet;
         }
@@ -102,11 +103,11 @@ namespace Players
         {
             if (PreviousGamesResult[0] == 2)
             {
-                switch (Humanfactor.Next(1, 2))
+                switch (Humanfactor.Next(1, 3))
                 {
                     case 1:
                         {
-                            switch (Humanfactor.Next(1, 2))
+                            switch (Humanfactor.Next(1, 3))
                             {
                                 case 1:
                                     {
@@ -125,7 +126,7 @@ namespace Players
                         }
                     case 2:
                         {
-                            switch (Humanfactor.Next(1, 2))
+                            switch (Humanfactor.Next(1, 3))
                             {
                                 case 1:
                                     {
