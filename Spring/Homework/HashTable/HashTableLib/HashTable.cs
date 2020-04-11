@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HashTableLib
 {
@@ -40,6 +41,7 @@ namespace HashTableLib
                 }
             }
         }
+
 
         public void AddPair(TKey key, TValue value)
         {
@@ -99,25 +101,16 @@ namespace HashTableLib
 
         public bool ContainsValue(TValue value)
         {
-            for (int i = 0; i < arrayOfNodes.Length; i++)
-            {
-                if (arrayOfNodes[i] != null)
-                {
-                    var curNode = arrayOfNodes[i].First;
-                    while (curNode != null)
-                    {
-                        if (curNode.Value.Value.Equals(value))
-                        {
-                            return true;
-                        }
-                        curNode = curNode.Next;
-                    }
-                }
-            }
-            return false;
+
+            return this
+                .Where(node => node.Value.Equals(value) == true)
+                .Count()
+                .Equals(1) ? true : false;
         }
 
-        public TValue TryGetValue(TKey key, out TValue value)
+
+
+        public bool TryGetValue(TKey key, out TValue value)
         {
             value = default;
             if (ContainsKey(key))
@@ -131,13 +124,13 @@ namespace HashTableLib
                         if (curNode.Value.Key.Equals(key))
                         {
                             value = curNode.Value.Value;
-                            break;
+                            return true;
                         }
                         curNode = curNode.Next;
                     }
                 }
             }
-            return value;
+            return false;
         }
 
         public void Clear()
