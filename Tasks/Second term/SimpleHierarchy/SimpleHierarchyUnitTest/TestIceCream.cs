@@ -4,7 +4,7 @@ using SimpleHierarchyInheritorClasses;
 namespace SimpleHierarchyUnitTest
 {
     [TestClass]
-    public class UnitTest1
+    public class TestIceCream
     {
         [TestMethod]
         public void CreamTest()
@@ -40,7 +40,7 @@ namespace SimpleHierarchyUnitTest
             Assert.AreEqual((uint)500, cream.WhippedCream);
         }
         [TestMethod]
-        public void Popsicle()
+        public void PopsicleTest()
         {
             Popsicle cream = new Popsicle();
             Assert.AreEqual("Popsicle", cream.IceCreamName);

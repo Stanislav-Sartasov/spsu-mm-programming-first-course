@@ -23,7 +23,7 @@ namespace Players
         // 24
         // Even
         // Black
-        public void SetBet(int maxBet)
+        public override void SetBet(int maxBet)
         {
             Console.WriteLine("Select the amount of money you want to bet");
             CurrentCashBet = int.Parse(Console.ReadLine());

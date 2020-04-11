@@ -37,7 +37,7 @@ namespace Players
             }
         }
 
-        public void SetBet(int maxBet)
+        public override void SetBet(int maxBet)
         {
             switch (LogicLevel / 10)
             {

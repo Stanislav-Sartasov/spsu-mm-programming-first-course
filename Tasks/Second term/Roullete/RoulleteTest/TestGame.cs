@@ -12,7 +12,7 @@ namespace RoulleteTest
         [TestMethod]
         public void GameOfBots()
         {
-            int numberOfGames = 50;
+            int numberOfGames = 400;
             int numberOfBots = 3;
             List<Bot> bots = new List<Bot>(3);
             bots.Add(new Bot(1));
@@ -29,6 +29,7 @@ namespace RoulleteTest
                     table.MoneyRecount(bots[j]);
                 for (int j = 0; j < numberOfBots; j++)
                     bots[j].DisplayInfo();
+                table.DisplayInfo();
                 for (int j = 0; j < numberOfBots; j++)
                     if (bots[j].PlayerCash < 1)
                     {
@@ -42,6 +43,7 @@ namespace RoulleteTest
                     break;
                 }
             }
+            Assert.IsTrue(true);
         }
     }
 }

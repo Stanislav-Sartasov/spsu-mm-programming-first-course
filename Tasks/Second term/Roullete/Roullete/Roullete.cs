@@ -17,10 +17,7 @@ namespace Roullete
             List<Bot> bots = new List<Bot>(numberOfBots);
             var rand = new Random();
             for (int j = 0; j < numberOfBots; j++)
-            {
-                byte temp = (byte)rand.Next(1, 4);
-                bots.Add(new Bot(temp));
-            }
+                bots.Add(new Bot((byte)rand.Next(1, 4)));
 
             Console.WriteLine("Enter the maximum number of games");
             int numberOfGames = int.Parse(Console.ReadLine());
