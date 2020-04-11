@@ -74,7 +74,7 @@ namespace Blackjack
                     for (int i = 0; i < player.Hands.Count; i++)
                     {
                         Commands.MakeBet(MinBet, player, i);
-                        Console.WriteLine($"\n{player.Name} made a bet of {player.Hands[i].CurrentBet}\n");
+                        Console.WriteLine($"\n{player.Name} bet {player.Hands[i].CurrentBet}\n");
                     }
             }
         }
@@ -248,7 +248,7 @@ namespace Blackjack
             int eliminatedPlayers = 0;
             for (int numOfRound = 0 ; numOfRound < CountOfRounds; numOfRound++)
             {
-                if (GameDeck.Cards.Count > (Players.Count + 1 - eliminatedPlayers) * 4)
+                if (GameDeck.Cards.Count < (Players.Count + 1) * 6)
                 {
                     GameDeck.Reset();
                 }

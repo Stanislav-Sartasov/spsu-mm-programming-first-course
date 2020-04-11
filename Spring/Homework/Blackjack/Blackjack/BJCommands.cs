@@ -97,6 +97,8 @@ namespace Blackjack
             var newHand = new Hand();
             newHand.TakeCard(splitCard);
             newHand.TakeCard(deck.GetCard());
+            player.Chips -= player.Hands[numOfHand].CurrentBet;
+            newHand.CurrentBet += player.Hands[numOfHand].CurrentBet;
             player.Hands.Add(newHand);
         }
 

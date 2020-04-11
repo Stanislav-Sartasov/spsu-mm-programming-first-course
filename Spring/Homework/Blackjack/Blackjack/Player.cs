@@ -10,7 +10,7 @@ namespace Blackjack
         public List<Hand> Hands { get; set; }
         public int Chips { get; set; }
 
-        public bool InGame;
+        public bool InGame { get; set; }
 
         public Player(int chips, string name, PlayerStatus status) :
             base(name, status)

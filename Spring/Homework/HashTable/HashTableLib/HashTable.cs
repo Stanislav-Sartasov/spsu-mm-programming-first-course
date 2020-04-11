@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace HashTableLib
 {
-    public class Hashtable<TKey, TValue>
+    public class Hashtable<TKey, TValue> : IEnumerable<Node<TKey, TValue>>
     {
         public int NumOfLists { get; private set; } = 4;
         public int MaxLenOfList { get; private set; } = 1;
@@ -150,6 +151,33 @@ namespace HashTableLib
             NumOfLists = 4;
             MaxLenOfList = 1;
         }
+
+        public IEnumerator<Node<TKey, TValue>> GetEnumerator()
+        {
+            for (int i = 0; i < NumOfLists; i++)
+            {
+                if (arrayOfNodes[i] != null)
+                {
+                    var curNode = arrayOfNodes[i].First;
+                    while (curNode != null)
+                    {
+                        yield return curNode.Value;
+                        curNode = curNode.Next;
+                    }
+                }
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public void Print()
+        {
+            foreach (var node in this)
+                Console.WriteLine(node);
+        }
     }
 
     public class Node<TKey, TValue>
@@ -160,6 +188,11 @@ namespace HashTableLib
         {
             Key = key;
             Value = value;
+        }
+
+        public override string ToString()
+        {
+            return $"[{Key}, {Value}]";
         }
     }
 }
