@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HashTableLib\HashTableLib.csproj" />
+    <ProjectReference Include="..\HashTableLib\WeakRefHashTableLib.csproj" />
   </ItemGroup>
 
 </Project>
