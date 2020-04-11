@@ -1,52 +1,39 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Linq;
 
 namespace HashTableLib
 {
     public class Hashtable<TKey, TValue> : IEnumerable<Node<TKey, TValue>>
+        where TValue : class
     {
         public int NumOfLists { get; private set; } = 4;
         public int MaxLenOfList { get; private set; } = 1;
         public int Count { get; private set; } = 0;
+        public int StorageTime { get; private set; }
+
         LinkedList<Node<TKey, TValue>>[] arrayOfNodes;
 
         public int HashFunc(TKey key, int arrSize) => Math.Abs((key.GetHashCode() % 67) % arrSize);
 
+        public Hashtable(int storageTime)
+            : this()
+        {
+            StorageTime = storageTime;
+        }
+
         public Hashtable()
         {
             arrayOfNodes = new LinkedList<Node<TKey, TValue>>[NumOfLists];
+            StorageTime = 100000;
         }
-
-        //public void Resize()
-        //{
-        //    LinkedList<Node<TKey, TValue>>[] oldNodes = arrayOfNodes;
-        //    arrayOfNodes = new LinkedList<Node<TKey, TValue>>[NumOfLists * 2];
-        //    NumOfLists *= 2;
-        //    MaxLenOfList = NumOfLists / 4;
-        //    Count = 0;
-
-        //    for (int i = 0; i < oldNodes.Length; i++)
-        //    {
-        //        if (oldNodes[i] != null)
-        //        {
-        //            while (oldNodes[i].Count != 0)
-        //            {
-        //                TKey key = oldNodes[i].Last.Value.Key;
-        //                TValue value = oldNodes[i].Last.Value.Value;
-        //                AddPair(key, value);
-        //                oldNodes[i].RemoveLast();
-        //            }
-        //        }
-        //    }
-        //}
-
 
         public void Resize()
         {
 
-            int newNumOfLists = NumOfLists * 2;
+            int newNumOfLists = CountPairs() > 4 ? CountPairs() : 4;
             int newMaxLenOfList = newNumOfLists / 4;
             var newNodes = new LinkedList<Node<TKey, TValue>>[newNumOfLists];
 
@@ -62,7 +49,8 @@ namespace HashTableLib
             NumOfLists = newNumOfLists;
             MaxLenOfList = newMaxLenOfList;
         }
-
+           
+        
 
         public void AddPair(TKey key, TValue value)
         {
@@ -73,12 +61,9 @@ namespace HashTableLib
                 int index = HashFunc(key, NumOfLists);
                 if (arrayOfNodes[index] == null)
                     arrayOfNodes[index] = new LinkedList<Node<TKey, TValue>>();
-                arrayOfNodes[index].AddLast(new Node<TKey, TValue>(key, value));
-                Count++;
+                arrayOfNodes[index].AddLast(new Node<TKey, TValue>(StorageTime, key, value));
                 if (arrayOfNodes[index].Count > MaxLenOfList)
-                {
                     Resize();
-                }
             }
         }
 
@@ -104,32 +89,27 @@ namespace HashTableLib
         public bool ContainsKey(TKey key)
         {
             int index = HashFunc(key, NumOfLists);
- 
             if (arrayOfNodes[index] != null)
             {
                 var curNode = arrayOfNodes[index].First;
                 while (curNode != null)
                 {
-                    if (curNode.Value.Key.Equals(key))
-                    {
+                    if (curNode.Value.Key.Equals(key) && curNode.Value.Value.TryGetTarget(out TValue _))
                         return true;
-                    }
                     curNode = curNode.Next;
                 }
             }
             return false;
         }
 
+
         public bool ContainsValue(TValue value)
         {
-
             return this
-                .Where(node => node.Value.Equals(value) == true)
+                .Where(node => node.Value.TryGetTarget(out TValue _value) == true && value.Equals(_value) == true)
                 .Count()
                 .Equals(1) ? true : false;
         }
-
-
 
         public bool TryGetValue(TKey key, out TValue value)
         {
@@ -144,8 +124,11 @@ namespace HashTableLib
                     {
                         if (curNode.Value.Key.Equals(key))
                         {
-                            value = curNode.Value.Value;
-                            return true;
+                            if (curNode.Value.Value.TryGetTarget(out TValue target))
+                            {
+                                value = target;
+                                return true;
+                            }
                         }
                         curNode = curNode.Next;
                     }
@@ -157,7 +140,6 @@ namespace HashTableLib
         public void Clear()
         {
             arrayOfNodes = null;
-            Count = 0;
             NumOfLists = 4;
             MaxLenOfList = 1;
         }
@@ -171,7 +153,10 @@ namespace HashTableLib
                     var curNode = arrayOfNodes[i].First;
                     while (curNode != null)
                     {
-                        yield return curNode.Value;
+                        if (curNode.Value.Value.TryGetTarget(out _))
+                        {
+                            yield return curNode.Value;
+                        }
                         curNode = curNode.Next;
                     }
                 }
@@ -183,6 +168,12 @@ namespace HashTableLib
             return GetEnumerator();
         }
 
+        public int CountPairs()
+        {
+            return this
+                    .Where(node => node.Value.TryGetTarget(out _) == true)
+                    .Count();
+        }
         public void Print()
         {
             foreach (var node in this)
@@ -191,18 +182,35 @@ namespace HashTableLib
     }
 
     public class Node<TKey, TValue>
+        where TValue : class
     {
         public TKey Key { get; private set; }
-        public TValue Value { get; private set; }
-        public Node(TKey key, TValue value) 
+        public WeakReference<TValue> Value { get; private set; }
+        private int storageTime;
+        public Node(int storageTime, TKey key, TValue value)
+        {
+            this.storageTime = storageTime;
+            SetPair(key, value);
+        }
+
+        public Node(TKey key, TValue value)
         {
             Key = key;
-            Value = value;
+            Value = new WeakReference<TValue>(value);
+        }
+        async public void SetPair(TKey key, TValue value) 
+        {
+            Key = key;
+            Value = new WeakReference<TValue>(value);
+            await Task.Delay(storageTime);
         }
 
         public override string ToString()
         {
-            return $"[{Key}, {Value}]";
+            if (Value.TryGetTarget(out TValue target))
+                return $"[{Key}, {target}]";
+            else
+                return $"[{Key}, collected]";
         }
     }
 }
