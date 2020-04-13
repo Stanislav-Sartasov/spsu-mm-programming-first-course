@@ -1,143 +1,214 @@
 #include "allocator.h"
 
-const size_t sizeToAllocate = (1 << 16);
+char* heap = NULL;
+unsigned char* blockInfo;
+size_t memorySize = 128;
+size_t numberOfBlocks;
+size_t memoryBeginning;
+size_t initFlag = 0;
+size_t newArray;
 
-struct memoryBlock
+struct node
 {
-	size_t blockSize;
-	struct memoryBlock* previous;
-	struct memoryBlock* next;
+	struct node* next;
+	struct node* previous;
+	size_t blocks;
+	size_t indexOfFirst;
+	size_t address;
 };
 
-typedef struct memoryBlock memoryBlock;
-memoryBlock* memory;
-void* memoryStart = NULL;
+typedef struct node listNode;
 
-void init()
+listNode* head = NULL;
+listNode* insertion = NULL;
+
+size_t findNextFreeBlock(size_t size)
 {
-	memoryStart = malloc(sizeToAllocate * sizeof(size_t));
-	if (!memoryStart)
+	for (size_t firstFreeBlock = 0; firstFreeBlock < numberOfBlocks; firstFreeBlock++)
 	{
-		printf("Allocation failure.");
-		exit(-1);
-	}
-	memory = (memoryBlock*)memoryStart;
-	memory->blockSize = sizeToAllocate;
-	memory->previous = NULL;
-	memory->next = NULL;
-}
+		if (blockInfo[firstFreeBlock] == 0)
+		{
+			size_t freeSize = 1;
+			size_t nextBlock = firstFreeBlock + 1;
+			while (nextBlock < numberOfBlocks && blockInfo[nextBlock] == 0 && freeSize < size)
+			{
+				nextBlock++;
+				freeSize++;
+			}
 
-void myFree(void* ptr)
-{
-	if (!memoryStart)
-		exit(-1);
-
-	memoryBlock* block = (memoryBlock*)((unsigned char*)ptr - sizeof(size_t));
-	if (!memory)
-	{
-		memory = block;
-		block->previous = NULL;
-		block->next = NULL;
-		return;
+			if (freeSize < size)
+			{
+				if (nextBlock == numberOfBlocks)
+					return -1;
+				firstFreeBlock = nextBlock;
+				continue;
+			}
+			return firstFreeBlock;
+		}
 	}
-
-	memoryBlock* current = memory;
-	memoryBlock* prev = NULL;
-	while (current && current->next < block)
-	{
-		prev = current;
-		current = current->next;
-	}
-	if (!prev)
-	{
-		block->next = memory;
-		memory = block;
-	}
-	else
-	{
-		prev->next = block;
-		block->previous = prev;
-	}
-	if (current)
-		current->previous = block;
-	block->next = current;
-
-	if (((unsigned char*)block + block->blockSize) == (unsigned char*)current)
-	{
-		block->next = current->next;
-		block->blockSize = block->blockSize + current->blockSize;
-	}
-	if (prev && (((unsigned char*)prev + prev->blockSize) == (unsigned char*)block))
-	{
-		prev->next = block->next;
-		prev->blockSize = prev->blockSize + block->blockSize;
-	}
-}
-
-memoryBlock* findNextFreeBlock(size_t size)
-{
-	memoryBlock* block = memory;
-	while (block && block->blockSize < size + sizeof(size_t))
-		block = block->next;
-	return block;
-}
-
-void deleteBlock(memoryBlock* block)
-{
-	if (block->next && block->previous)
-	{
-		block->next->previous = block->previous;
-		block->previous->next = block->next;
-	}
-	if (!block->next && block->previous)
-	{
-		block->previous->next = NULL;
-	}
-	if (block->next && !block->previous)
-	{
-		block->next->previous = NULL;
-	}
+	return -1;
 }
 
 void* myMalloc(size_t size)
 {
-	if (!memoryStart)
-		init();
+	newArray = 0;
+	init();
 
-	memoryBlock* block = findNextFreeBlock(size + sizeof(size_t));
-	if (!block)
-		return NULL;
-
-	if (block->blockSize < size + sizeof(size_t) + sizeof(memoryBlock))
+	size_t blocks = (size % 4 == 0) ? (size / 4) : (size / 4 + 1);
+	size_t firstFreeBlock = findNextFreeBlock(blocks);
+	while (firstFreeBlock == -1)
 	{
-		deleteBlock(block);
-		return (unsigned char*)block + sizeof(size_t);
+		initFlag = 2;
+		init();
+		firstFreeBlock = findNextFreeBlock(blocks);
 	}
 
-	block->blockSize = block->blockSize - size - sizeof(size_t);
-	memoryBlock* ptr = (memoryBlock*)((unsigned char*)block + block->blockSize);
-	ptr->blockSize = size + sizeof(size_t);
-	return (unsigned char*)ptr + sizeof(size_t);
+	listNode* node;
+	node = insertion;
+	node->blocks = blocks;
+	node->indexOfFirst = firstFreeBlock;
+	node->address = memoryBeginning + firstFreeBlock * 4;
+	listNode* next = head;
+	listNode* current = NULL;
+	while (next != NULL && next->indexOfFirst < node->indexOfFirst)
+	{
+		current = next;
+		next = next->next;
+	}
+	node->next = next;
+	node->previous = current;
+	if (node->previous)
+		node->previous->next = node;
+	else
+		head = node;
+	if (node->next)
+		node->next->previous = node;
+	insertion = NULL;
+
+	for (long long i = 0; i < blocks; i++)
+		blockInfo[firstFreeBlock + i] = 1;
+		
+	return (void*)&heap[node->indexOfFirst * 4];
 }
 
-void* myRealloc(void* ptr, size_t newSize)
+void myFree(void* ptr)
 {
-	if (!memoryStart)
-		exit(-1);
+	if (ptr == NULL) return;
+	size_t address = (size_t)ptr;
+	listNode* temp = head;
+	while (temp != NULL && temp->address != address)
+		temp = temp->next;
 
-	memoryBlock* block = (memoryBlock*)((unsigned char*)ptr - sizeof(size_t));
-
-	if (block->blockSize < newSize + sizeof(size_t))
+	if (temp != NULL)
 	{
-		void* newPtr = myMalloc(newSize);
-		if (!newPtr)
-			return NULL;
-		memcpy(newPtr, ptr, block->blockSize - sizeof(size_t));
-		myFree(ptr);
-		return newPtr;
+		for (size_t i = 0; i < temp->blocks; i++)
+			blockInfo[temp->indexOfFirst + i] = 0;
+
+		if (temp->next)
+			temp->next->previous = temp->previous;
+		if (!temp->previous)
+			head = temp->next;
+		else
+			temp->previous->next = temp->next;
+		ptr = NULL;
 	}
 	else
 	{
-		return ptr;
+		printf("Incorrect pointer value.\n");
+		exit(-1);
+	}
+}
+
+void* myRealloc(void* ptr, size_t size)
+{
+	if (ptr == NULL) return myMalloc(size);
+	if (size == 0)
+	{
+		myFree(ptr);
+		return;
+	}
+
+	size_t address = (size_t)ptr;
+	listNode* temp = head;
+	while (temp != NULL && temp->address != address)
+		temp = temp->next;
+
+	if (temp != NULL)
+	{
+		size = (size % 4 == 0) ? size : (size / 4 + 1);
+		size_t firstFreeBlock = findNextFreeBlock(size / 4);
+		while (firstFreeBlock == -1)
+		{
+			initFlag = 2;
+			init();
+			firstFreeBlock = findNextFreeBlock(size / 4);
+		}
+		for (size_t i = 0; i < temp->blocks * 4; i++)
+		{
+			heap[firstFreeBlock * 4 + i] = heap[temp->indexOfFirst * 4 + i];
+		}
+		for (size_t i = 0; i < temp->blocks; i++)
+		{
+			blockInfo[temp->indexOfFirst + i] = 0;
+		}
+		for (size_t i = 0; i < size / 4; i++)
+		{
+			blockInfo[firstFreeBlock + i] = 1;
+		}
+		temp->blocks = size / 4;
+		temp->indexOfFirst = firstFreeBlock;
+		temp->address = memoryBeginning + firstFreeBlock * 4;
+
+		return (void*)&heap[temp->indexOfFirst * 4];
+	}
+	else
+	{
+		printf("Incorrect pointer value.\n");
+		exit(-1);
+	}
+}
+
+void init()
+{
+	if (!newArray)
+	{
+		listNode* temp = (listNode*)malloc(sizeof(listNode));
+		insertion = temp;
+		newArray = 1;
+	}
+
+	if (initFlag == 0)
+	{
+		initFlag = 1;
+		heap = (char*)malloc(sizeof(char) * memorySize);
+		memoryBeginning = heap;
+		numberOfBlocks = memorySize / 4;
+		blockInfo = (unsigned char*)malloc(sizeof(unsigned char) * numberOfBlocks);
+		for (size_t i = 0; i < numberOfBlocks; i++)
+			blockInfo[i] = 0;
+	}
+	else  if (initFlag == 2)
+	{
+		initFlag = 1;
+		memorySize += 128;
+		char* newHeap = (char*)realloc(heap, sizeof(char) * memorySize);
+		if (newHeap)
+		{
+			heap = newHeap;
+			memoryBeginning = heap;
+			size_t oldBlockNum = numberOfBlocks;
+			numberOfBlocks = memorySize / 4;
+			unsigned char* newBlockInfo = (unsigned char*)realloc(blockInfo, sizeof(unsigned char) * numberOfBlocks);
+			if (newBlockInfo)
+			{
+				blockInfo = newBlockInfo;
+				for (size_t i = oldBlockNum; i < numberOfBlocks; i++)
+					blockInfo[i] = 0;
+			}
+		}
+		else
+		{
+			memorySize -= 128;
+		}
 	}
 }
