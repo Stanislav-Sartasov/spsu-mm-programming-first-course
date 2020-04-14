@@ -38,7 +38,7 @@ namespace DynamicArray
         public T GetByIndex(int index)
         {
             T res = default(T);
-            if (-1 < index && index < firstFreeIndex)
+            if (-1 < index && index < arraySize)
                 if (body[index].TryGetTarget(out res))
                     return res;
             return res;
@@ -46,7 +46,7 @@ namespace DynamicArray
 
         public void SetAtIndex(T value, int index)
         {
-            if (-1 < index && index < firstFreeIndex)
+            if (-1 < index && index < arraySize)
             {
                 WeakReference<T> weakRef = new WeakReference<T>(value);
                 body[index] = (weakRef);

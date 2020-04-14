@@ -19,6 +19,16 @@ namespace TestRef
             dynamicArray.AddToEnd(o3);
         }
 
+        static void SetAtIndexToArray(WeakDynamicArray<String> dynamicArray)
+        {
+            var o1 = new String("1");
+            var o2 = new String("2");
+            var o3 = new String("3");
+
+            dynamicArray.SetAtIndex(o1, 0);
+            dynamicArray.SetAtIndex(o2, 1);
+            dynamicArray.SetAtIndex(o3, 2);
+        }
 
         [TestMethod]
         public void TestAddToEndAndGetByIndex()
@@ -36,7 +46,7 @@ namespace TestRef
         {
             WeakDynamicArray<String> dynamicArray = new WeakDynamicArray<String>(5000);
 
-            AddToArray(dynamicArray);
+            SetAtIndexToArray(dynamicArray);
             string actual = dynamicArray.GetByIndex(1);
 
             Assert.AreEqual("2", actual);
