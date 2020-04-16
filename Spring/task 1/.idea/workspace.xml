@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="5ad75b41-4e54-461b-8de4-238355c37786" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../first semester/task8/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/../../first semester/task8/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../first semester/task8/task8.depend" beforeDir="false" afterPath="$PROJECT_DIR$/../../first semester/task8/task8.depend" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../first semester/task8/task8.layout" beforeDir="false" afterPath="$PROJECT_DIR$/../../first semester/task8/task8.layout" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JUnit5 Test Class" />
+        <option value="JUnit4 Test Class" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectId" id="1Zw3z8XnMM5FdC8bI5dJPxK2Mux" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
+    <property name="create.test.in.the.same.root" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.company" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.ImageTest">
+    <configuration name="Main" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.company.Main" />
+      <module name="task 1" />
+      <option name="PROGRAM_PARAMETERS" value="pics/input.bmp ToGrey output.bmp" />
+      <shortenClasspath name="NONE" />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ImageTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="task 1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.company.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.company" />
+      <option name="MAIN_CLASS_NAME" value="com.company.ImageTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ImageTest.averaging" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="task 1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.company.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.company" />
+      <option name="MAIN_CLASS_NAME" value="com.company.ImageTest" />
+      <option name="METHOD_NAME" value="averaging" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="task 1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.company.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.company" />
+      <option name="MAIN_CLASS_NAME" value="com.company.MainTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Main" />
+      <item itemvalue="JUnit.ImageTest" />
+      <item itemvalue="JUnit.ImageTest.averaging" />
+      <item itemvalue="JUnit.MainTest" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.ImageTest" />
+        <item itemvalue="JUnit.MainTest" />
+        <item itemvalue="JUnit.ImageTest.averaging" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5ad75b41-4e54-461b-8de4-238355c37786" name="Default Changelist" comment="" />
+      <created>1585736588040</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1585736588040</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="414" y="207" width="1139" height="698" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586682669233">
+      <screen x="0" y="35" width="1920" height="1045" />
+    </state>
+    <state x="414" y="207" width="1139" height="698" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.35.1920.1045@0.35.1920.1045" timestamp="1586682669233" />
+    <state width="1862" height="274" key="GridCell.Tab.0.bottom" timestamp="1586683044999">
+      <screen x="0" y="35" width="1920" height="1045" />
+    </state>
+    <state width="1862" height="274" key="GridCell.Tab.0.bottom/0.35.1920.1045@0.35.1920.1045" timestamp="1586683044999" />
+    <state width="1862" height="274" key="GridCell.Tab.0.center" timestamp="1586683044997">
+      <screen x="0" y="35" width="1920" height="1045" />
+    </state>
+    <state width="1862" height="274" key="GridCell.Tab.0.center/0.35.1920.1045@0.35.1920.1045" timestamp="1586683044997" />
+    <state width="1862" height="274" key="GridCell.Tab.0.left" timestamp="1586683044997">
+      <screen x="0" y="35" width="1920" height="1045" />
+    </state>
+    <state width="1862" height="274" key="GridCell.Tab.0.left/0.35.1920.1045@0.35.1920.1045" timestamp="1586683044997" />
+    <state width="1862" height="274" key="GridCell.Tab.0.right" timestamp="1586683044998">
+      <screen x="0" y="35" width="1920" height="1045" />
+    </state>
+    <state width="1862" height="274" key="GridCell.Tab.0.right/0.35.1920.1045@0.35.1920.1045" timestamp="1586683044998" />
+    <state x="523" y="432" width="863" height="250" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1585817333814">
+      <screen x="0" y="35" width="1920" height="1045" />
+    </state>
+    <state x="523" y="432" width="863" height="250" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.35.1920.1045@0.35.1920.1045" timestamp="1585817333814" />
+    <state x="517" y="88" width="876" height="939" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1585736663235">
+      <screen x="0" y="35" width="1920" height="1045" />
+    </state>
+    <state x="517" y="88" width="876" height="939" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.35.1920.1045@0.35.1920.1045" timestamp="1585736663235" />
+    <state x="682" y="197" width="545" height="720" key="com.intellij.testIntegration.createTest.CreateTestDialog" timestamp="1586277530089">
+      <screen x="0" y="35" width="1920" height="1045" />
+    </state>
+    <state x="682" y="197" width="545" height="720" key="com.intellij.testIntegration.createTest.CreateTestDialog/0.35.1920.1045@0.35.1920.1045" timestamp="1586277530089" />
+    <state width="1008" height="506" key="javadoc.popup" timestamp="1586682617207">
+      <screen x="0" y="35" width="1920" height="1045" />
+    </state>
+    <state width="1008" height="506" key="javadoc.popup/0.35.1920.1045@0.35.1920.1045" timestamp="1586682617207" />
+    <state x="36" y="59" width="1838" height="997" key="new project wizard" timestamp="1585817250464">
+      <screen x="0" y="35" width="1920" height="1045" />
+    </state>
+    <state x="36" y="59" width="1838" height="997" key="new project wizard/0.35.1920.1045@0.35.1920.1045" timestamp="1585817250464" />
+    <state x="631" y="113" width="647" height="889" key="refactoring.ChangeSignatureDialog" timestamp="1585744809635">
+      <screen x="0" y="35" width="1920" height="1045" />
+    </state>
+    <state x="631" y="113" width="647" height="889" key="refactoring.ChangeSignatureDialog/0.35.1920.1045@0.35.1920.1045" timestamp="1585744809635" />
+    <state x="540" y="251" key="run.anything.popup" timestamp="1586681186040">
+      <screen x="0" y="35" width="1920" height="1045" />
+    </state>
+    <state x="540" y="251" key="run.anything.popup/0.35.1920.1045@0.35.1920.1045" timestamp="1586681186040" />
+  </component>
+</project>
