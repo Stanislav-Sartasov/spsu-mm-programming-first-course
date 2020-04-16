@@ -1,5 +1,4 @@
-﻿using System;
-using IceCreamRecipes;
+﻿using IceCreamRecipes;
 
 namespace SimpleHierarchy
 {

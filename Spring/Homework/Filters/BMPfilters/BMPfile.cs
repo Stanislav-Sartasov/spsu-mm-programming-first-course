@@ -57,7 +57,7 @@ namespace BMPfilters
 
 		public byte[] ColorTable { get; private set; }
 
-		public Pixel[,] Pixels;
+		public Pixel[,] pixels;
 
 		public BMPfile(string path)
 		{
@@ -97,16 +97,16 @@ namespace BMPfilters
 					for (int color = 0; color < HeaderBMP.BfOffBits - 54; color++)
 						ColorTable[color] = reader.ReadByte();
 					NumOfChannels = HeaderInfoBMP.BitCount;
-					Pixels = new Pixel[HeaderInfoBMP.Height, HeaderInfoBMP.Width];
+					pixels = new Pixel[HeaderInfoBMP.Height, HeaderInfoBMP.Width];
 
 					for (int height = 0; height < HeaderInfoBMP.Height; height++)
 					{
 						for (int width = 0; width < HeaderInfoBMP.Width; width++)
 						{
-							Pixels[height, width].Channel = new byte[NumOfChannels];
+							pixels[height, width].Channel = new byte[NumOfChannels];
 							for (int numOfChannel = 0; numOfChannel < NumOfChannels; numOfChannel++)
 							{
-								Pixels[height, width].Channel[numOfChannel] = reader.ReadByte();
+								pixels[height, width].Channel[numOfChannel] = reader.ReadByte();
 							}
 						}
 					}
@@ -122,7 +122,7 @@ namespace BMPfilters
 
 		public void SetPixels(Filter filter)
 		{
-			Pixels = filter.ApplyFilter(Pixels);
+			pixels = filter.ApplyFilter(pixels);
 		}
 
 		public void WriteBMP(string path)
@@ -158,7 +158,7 @@ namespace BMPfilters
 
 							for (int numOfChannel = 0; numOfChannel < NumOfChannels; numOfChannel++)
 							{
-								writer.Write(Pixels[height, width].Channel[numOfChannel]);
+								writer.Write(pixels[height, width].Channel[numOfChannel]);
 							}
 						}
 					}

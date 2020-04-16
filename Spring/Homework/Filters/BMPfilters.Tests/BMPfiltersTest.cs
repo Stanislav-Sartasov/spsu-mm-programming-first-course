@@ -57,14 +57,14 @@ namespace BMPfilters.Tests
         [TestMethod]
         public void CorrectBitmap()
         {
-            Assert.IsTrue(PixelCompare(expectedInput, actualInput.Pixels));
+            Assert.IsTrue(PixelCompare(expectedInput, actualInput.pixels));
         }
 
         [TestMethod]
         public void CorrectBWfilter()
         {
             BWfilter bw = new BWfilter();
-            BMPfile.Pixel[,] actualPixels = bw.ApplyFilter(actualInput.Pixels);
+            BMPfile.Pixel[,] actualPixels = bw.ApplyFilter(actualInput.pixels);
             Assert.IsTrue(PixelCompare(expectedBW, actualPixels));
         }
 
@@ -72,7 +72,7 @@ namespace BMPfilters.Tests
         public void CorrectGauss5X5filter()
         {
             GaussFilter g5 = new GaussFilter("5X5");
-            BMPfile.Pixel[,] actualPixels = g5.ApplyFilter(actualInput.Pixels);
+            BMPfile.Pixel[,] actualPixels = g5.ApplyFilter(actualInput.pixels);
             Assert.IsTrue(PixelCompare(expectedGauss5X5, actualPixels));
         }
 
@@ -80,7 +80,7 @@ namespace BMPfilters.Tests
         public void CorrectGauss3X3filter()
         {
             GaussFilter g3 = new GaussFilter("3X3");
-            BMPfile.Pixel[,] actualPixels = g3.ApplyFilter(actualInput.Pixels);
+            BMPfile.Pixel[,] actualPixels = g3.ApplyFilter(actualInput.pixels);
             Assert.IsTrue(PixelCompare(expectedGauss3X3, actualPixels));
         }
 
@@ -88,7 +88,7 @@ namespace BMPfilters.Tests
         public void CorrectSobelXfilter()
         {
             SobelFilter sX = new SobelFilter("X");
-            BMPfile.Pixel[,] actualPixels = sX.ApplyFilter(actualInput.Pixels);
+            BMPfile.Pixel[,] actualPixels = sX.ApplyFilter(actualInput.pixels);
             Assert.IsTrue(PixelCompare(expectedSobelX, actualPixels));
         }
 
@@ -96,7 +96,7 @@ namespace BMPfilters.Tests
         public void CorrectSobelYfilter()
         {
             SobelFilter sY = new SobelFilter("Y");
-            BMPfile.Pixel[,] actualPixels = sY.ApplyFilter(actualInput.Pixels);
+            BMPfile.Pixel[,] actualPixels = sY.ApplyFilter(actualInput.pixels);
             Assert.IsTrue(PixelCompare(expectedSobelY, actualPixels));
         }
 
@@ -104,7 +104,7 @@ namespace BMPfilters.Tests
         public void CorrectMedianfilter()
         {
             MedianFilter mdn = new MedianFilter();
-            BMPfile.Pixel[,] actualPixels = mdn.ApplyFilter(actualInput.Pixels);
+            BMPfile.Pixel[,] actualPixels = mdn.ApplyFilter(actualInput.pixels);
             Assert.IsTrue(PixelCompare(expectedMedian, actualPixels));
         }
     }

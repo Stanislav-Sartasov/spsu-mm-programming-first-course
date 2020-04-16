@@ -5,11 +5,11 @@ namespace AbstractIceCream
 {
     public abstract class IceCream
     {
-        public string Kind { get; set; }
-        public string Flavour { get; set; }
-        public int ServingWeight { get; set; }
+        public string Kind { get; private set; }
+        public string Flavour { get; private set; }
+        public int ServingWeight { get; private set; }
 
-        public Dictionary<string, int> Ingredients { get; set; }
+        public Dictionary<string, int> Ingredients { get; private set; }
 
         public IceCream(string kind, string flavour, int weight, Dictionary<string, int> ingredients)
         {
@@ -18,7 +18,6 @@ namespace AbstractIceCream
             ServingWeight = weight;
             Ingredients = ingredients;
         }
-
 
         public virtual void GetMainInfo()
         {

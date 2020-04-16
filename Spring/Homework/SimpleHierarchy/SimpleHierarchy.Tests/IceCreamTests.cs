@@ -9,7 +9,7 @@ namespace SimpleHierarchy.Tests
     public class FruitIceTest
     {
         FruitIce fruitIce = new FruitIce();
-        Dictionary<string, int> expIngredients =new Dictionary<string, int> { { "Water", 200 }, { "Kiwi", 150 }, { "Sugar", 20 }, { "Lemon juice", 50 } };
+        Dictionary<string, int> expIngredients = new Dictionary<string, int> { { "Water", 200 }, { "Kiwi", 150 }, { "Sugar", 20 }, { "Lemon juice", 50 } };
         
         [TestMethod]
         public void CorrectKind()
