@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AbstractPlayer\Players.csproj" />
+    <ProjectReference Include="..\Roullete.AbstractPlayer\Roullete.Players.csproj" />
   </ItemGroup>
 
 </Project>

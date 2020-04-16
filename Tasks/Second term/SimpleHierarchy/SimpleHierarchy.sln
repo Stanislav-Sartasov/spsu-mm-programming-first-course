@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleHierarchy", "SimpleHierarchy\SimpleHierarchy.csproj", "{F3EC4E63-1172-449E-A8A8-CF5FD1D91CD4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleHierarchyBaseClass", "SimpleHierarchyBaseClass\SimpleHierarchyBaseClass.csproj", "{0A909B1D-2AD9-424A-969A-80F0F6E32D18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleHierarchy.BaseClass", "SimpleHierarchy.BaseClass\SimpleHierarchy.BaseClass.csproj", "{17F7ECF8-6CF3-4DCF-B541-AE08C97BB9FA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleHierarchyInheritorClasses", "SimpleHierarchyInheritorClasses\SimpleHierarchyInheritorClasses.csproj", "{54288AFD-5487-4B79-B59B-519B7CF21F04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleHierarchy.InheritorClasses", "SimpleHierarchy.InheritorClasses\SimpleHierarchy.InheritorClasses.csproj", "{941CC3D9-366D-4CFB-8B93-F7CCE33F7B73}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleHierarchyUnitTest", "SimpleHierarchyUnitTest\SimpleHierarchyUnitTest.csproj", "{60462DBC-3691-4877-8C91-E0F548F9E0B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleHierarchy.Tests", "SimpleHierarchy.Tests\SimpleHierarchy.Tests.csproj", "{4D837481-55B4-443D-8221-97424D9EEBF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,18 +21,18 @@ Global
 		{F3EC4E63-1172-449E-A8A8-CF5FD1D91CD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3EC4E63-1172-449E-A8A8-CF5FD1D91CD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3EC4E63-1172-449E-A8A8-CF5FD1D91CD4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0A909B1D-2AD9-424A-969A-80F0F6E32D18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0A909B1D-2AD9-424A-969A-80F0F6E32D18}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0A909B1D-2AD9-424A-969A-80F0F6E32D18}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0A909B1D-2AD9-424A-969A-80F0F6E32D18}.Release|Any CPU.Build.0 = Release|Any CPU
-		{54288AFD-5487-4B79-B59B-519B7CF21F04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{54288AFD-5487-4B79-B59B-519B7CF21F04}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{54288AFD-5487-4B79-B59B-519B7CF21F04}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{54288AFD-5487-4B79-B59B-519B7CF21F04}.Release|Any CPU.Build.0 = Release|Any CPU
-		{60462DBC-3691-4877-8C91-E0F548F9E0B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{60462DBC-3691-4877-8C91-E0F548F9E0B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{60462DBC-3691-4877-8C91-E0F548F9E0B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{60462DBC-3691-4877-8C91-E0F548F9E0B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17F7ECF8-6CF3-4DCF-B541-AE08C97BB9FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17F7ECF8-6CF3-4DCF-B541-AE08C97BB9FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17F7ECF8-6CF3-4DCF-B541-AE08C97BB9FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17F7ECF8-6CF3-4DCF-B541-AE08C97BB9FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{941CC3D9-366D-4CFB-8B93-F7CCE33F7B73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{941CC3D9-366D-4CFB-8B93-F7CCE33F7B73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{941CC3D9-366D-4CFB-8B93-F7CCE33F7B73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{941CC3D9-366D-4CFB-8B93-F7CCE33F7B73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D837481-55B4-443D-8221-97424D9EEBF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D837481-55B4-443D-8221-97424D9EEBF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D837481-55B4-443D-8221-97424D9EEBF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D837481-55B4-443D-8221-97424D9EEBF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

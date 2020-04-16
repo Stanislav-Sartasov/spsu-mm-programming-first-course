@@ -1,17 +1,24 @@
 ﻿using System;
-using Players;
-using Casino;
+using Roullete.Players;
 using System.Collections.Generic;
+using Roullete.Casino;
 
 namespace Roullete
 {
     class Roullete
     {
+
+        // Example of bet:
+        // Zero
+        // 0 // equivalent to Zero
+        // Tier 2
+        // 24
+        // Even
+        // Black
         static void Main(string[] args)
         {
             Player player = new Player();
-            Table table = new Table(1_000_000);
-            player.Initialization();
+
             Console.WriteLine("Enter the number of bots");
             int numberOfBots = int.Parse(Console.ReadLine());
             List<Bot> bots = new List<Bot>(numberOfBots);
@@ -19,22 +26,31 @@ namespace Roullete
             for (int j = 0; j < numberOfBots; j++)
                 bots.Add(new Bot((byte)rand.Next(1, 4)));
 
+            Table table = new Table(1_000_000);
+            
             Console.WriteLine("Enter the maximum number of games");
             int numberOfGames = int.Parse(Console.ReadLine());
+
             for (int i = 0; i < numberOfGames; i++)
             {
                 Console.WriteLine($"Game - {i + 1}");
-                player.SetBet(Table.CashTable);
+
+                player.SetBet(table.CashTable);
                 for (int j = 0; j < numberOfBots; j++)
-                    bots[j].SetBet(Table.CashTable);
+                    bots[j].SetBet(table.CashTable);
+
                 table.Iteration();
-                table.MoneyRecount(player);
+
+                player.UpdateInformation(table.ReturnRoundResult(), table.MoneyRecount(player));
+
                 for (int j = 0; j < numberOfBots; j++)
-                    table.MoneyRecount(bots[j]);
+                    bots[j].UpdateInformation(table.ReturnRoundResult(), table.MoneyRecount(bots[j]));
+
                 table.DisplayInfo();
                 player.DisplayInfo();
                 for (int j = 0; j < numberOfBots; j++)
                     bots[j].DisplayInfo();
+
                 if (player.PlayerCash < 1)
                 {
                     Console.WriteLine("You are bankrupt");
@@ -47,7 +63,7 @@ namespace Roullete
                         bots.RemoveAt(j);
                         numberOfBots--;
                     }
-                if (Table.CashTable < 1)
+                if (table.CashTable < 1)
                 {
                     Console.WriteLine("Casino are bankrupt, congratulations, you won");
                     break;

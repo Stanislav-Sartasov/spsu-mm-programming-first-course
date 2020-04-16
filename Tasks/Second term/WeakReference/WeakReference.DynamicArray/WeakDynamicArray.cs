@@ -8,14 +8,15 @@ namespace DynamicArray
     {
         private int arraySize = 3;
         private int firstFreeIndex = 0;
-        public int Lifetime;
-
+        private int lifetime;
         private WeakReference<T>[] body;
+
         public WeakDynamicArray(int time)
         {
             body = new WeakReference<T>[arraySize];
-            Lifetime = time;
+            lifetime = time;
         }
+
         public int Find(T value)
         {
             int index = -1;
@@ -52,6 +53,7 @@ namespace DynamicArray
                 body[index] = (weakRef);
             }
         }
+
         public async void AddToEnd(T value)
         {
             if (firstFreeIndex == arraySize)
@@ -65,13 +67,15 @@ namespace DynamicArray
             WeakReference<T> weakRef = new WeakReference<T>(value);
             body[firstFreeIndex] = (weakRef);
             firstFreeIndex++;
-            await Task.Delay(Lifetime);
+            await Task.Delay(lifetime);
         }
+
         public void Delete(int index)
         {
             if (-1 < index && index < arraySize)
                 body[index] = null;
         }
+
         public void PrintArray()
         {
             for (int i = 0; i < firstFreeIndex; i++)

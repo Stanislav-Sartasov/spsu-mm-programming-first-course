@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DynamicArray\DynamicArray.csproj" />
+    <ProjectReference Include="..\Generics.DynamicArray\Generics.DynamicArray.csproj" />
   </ItemGroup>
 
 </Project>

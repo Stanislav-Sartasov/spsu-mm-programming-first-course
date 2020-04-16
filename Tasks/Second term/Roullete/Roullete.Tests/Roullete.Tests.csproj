@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <RootNamespace>Roullete.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +17,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AbstractPlayer\Players.csproj" />
+    <ProjectReference Include="..\Roullete.AbstractPlayer\Roullete.Players.csproj" />
+    <ProjectReference Include="..\Roullete.Table\Roullete.Casino.csproj" />
     <ProjectReference Include="..\Table\Casino.csproj" />
   </ItemGroup>
 

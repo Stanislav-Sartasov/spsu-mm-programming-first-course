@@ -1,8 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DynamicArray;
-using System;
 
-namespace GenericsUnitTest
+namespace Generics.Tests
 {
     [TestClass]
     public class UnitTest

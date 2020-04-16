@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SimpleHierarchyInheritorClasses\SimpleHierarchyInheritorClasses.csproj" />
+    <ProjectReference Include="..\SimpleHierarchy.InheritorClasses\SimpleHierarchy.InheritorClasses.csproj" />
   </ItemGroup>
 
 </Project>

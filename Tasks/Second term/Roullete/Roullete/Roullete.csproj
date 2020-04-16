@@ -7,6 +7,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AbstractPlayer\Players.csproj" />
+    <ProjectReference Include="..\Roullete.AbstractPlayer\Roullete.Players.csproj" />
+    <ProjectReference Include="..\Roullete.Table\Roullete.Casino.csproj" />
     <ProjectReference Include="..\Table\Casino.csproj" />
   </ItemGroup>
 

@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SimpleHierarchyInheritorClasses;
+using SimpleHierarchy.InheritorClasses;
 
-namespace SimpleHierarchyUnitTest
+namespace SimpleHierarchy.Tests
 {
     [TestClass]
     public class TestIceCream

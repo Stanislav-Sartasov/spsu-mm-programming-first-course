@@ -1,4 +1,4 @@
-﻿using SimpleHierarchyInheritorClasses;
+﻿using SimpleHierarchy.InheritorClasses;
 using System;
 
 namespace SimpleHierarchy

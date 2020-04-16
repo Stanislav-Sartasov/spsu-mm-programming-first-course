@@ -3,12 +3,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Threading;
 
-namespace TestRef
+namespace WeakReference.Tests
 {
     [TestClass]
     public class TestWeakArray
     {
-        static void AddToArray(WeakDynamicArray<String> dynamicArray)
+        private void AddToArray(WeakDynamicArray<String> dynamicArray)
         {
             var o1 = new String("1");
             var o2 = new String("2");
@@ -19,7 +19,7 @@ namespace TestRef
             dynamicArray.AddToEnd(o3);
         }
 
-        static void SetAtIndexToArray(WeakDynamicArray<String> dynamicArray)
+        private void SetAtIndexToArray(WeakDynamicArray<String> dynamicArray)
         {
             var o1 = new String("1");
             var o2 = new String("2");

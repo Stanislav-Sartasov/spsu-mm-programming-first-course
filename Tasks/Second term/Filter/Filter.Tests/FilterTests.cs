@@ -1,8 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static Filter.Picture;
-using System.Resources.Extensions;
 using System.IO;
-using System;
 
 namespace Filter.Tests
 {
