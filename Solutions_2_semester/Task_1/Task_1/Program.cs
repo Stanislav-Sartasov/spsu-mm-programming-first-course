@@ -1,24 +1,24 @@
 ﻿using System;
 
-namespace Task_1
+namespace Task1
 {
-    public class filters
+    public class Filters
     {
         public static int Main(string[] args)
         {
-            const int n_mask = 0;
-            const int n_size = 5;
-            const double n_sigma = 0.6;
-            const double n_threshold = 2;
-            int err_code = 0;
+            const int nMask = 0;
+            const int nSize = 5;
+            const double nSigma = 0.6;
+            const double nThreshold = 2;
+            int errCode = 0;
             bool auto = false;
 
-            int invalid_input()
+            int InvalidInput()
             {
                 Console.WriteLine(" > invalid input");
                 if (auto)
                     return -1;
-                return image.invalid_input;
+                return Image.InvalidInput;
             }
             
             for (; ; )
@@ -32,9 +32,12 @@ namespace Task_1
                     auto = true;
                 }
 
-                err_code = 0;
+                errCode = 0;
                 if (auto)
                 {
+                    while (Console.KeyAvailable)
+                        Console.ReadKey(true);
+
                     Console.Write(" > ");
                     string str = Console.ReadLine().Trim();
 
@@ -47,14 +50,14 @@ namespace Task_1
 
                     if (a > 0)
                     {
-                        if ((err_code = invalid_input()) > 0)
-                            return err_code;
+                        if ((errCode = InvalidInput()) > 0)
+                            return errCode;
                     }
                     else
                         args = str.Split("\"", StringSplitOptions.RemoveEmptyEntries);
                 }
 
-                if (err_code < 0)
+                if (errCode < 0)
                     continue;
 
                 if (args.Length < 3)
@@ -74,7 +77,7 @@ namespace Task_1
                             Console.WriteLine("\t\t/sz - matrix size");
                             Console.WriteLine("\t\t/sg - sigma");
                             Console.WriteLine("\t\t/m - matrix type");
-                            Console.WriteLine("\n\t<sobel> <sobel_x> <sobel_y>");
+                            Console.WriteLine("\n\t<sobel> <Sobel_x> <Sobel_y>");
                             Console.WriteLine("\t\t/th - threshold, pixels in shades of gray from (255 / th) is white, the rest are black");
                             Console.WriteLine("\n\t<shade>");
                             Console.WriteLine("\n\t</m> types:");
@@ -85,38 +88,38 @@ namespace Task_1
                             Console.WriteLine("\t\tempty_square");
                             Console.WriteLine("\n\tyou can use modificators like <gaussian /sz = 5>");
                             Console.WriteLine("\n\twithout modifiers standard values will be taken:");
-                            Console.WriteLine("\n\t\tsz = " + n_size + "\n\t\tsg = " + n_sigma + "\n\t\tm = square\n\t\tth = " + n_threshold);
+                            Console.WriteLine("\n\t\tsz = " + nSize + "\n\t\tsg = " + nSigma + "\n\t\tm = square\n\t\tth = " + nThreshold);
                             Console.WriteLine();
                             continue;
                         }
                         else if (args[0] == "exit")
                             return 0;
                         else
-                            if ((err_code = invalid_input()) > 0)
-                                return err_code;
+                            if ((errCode = InvalidInput()) > 0)
+                                return errCode;
                     }
                     else
-                        if ((err_code = invalid_input()) > 0)
-                            return err_code;
+                        if ((errCode = InvalidInput()) > 0)
+                            return errCode;
                 }
 
-                if (err_code < 0)
+                if (errCode < 0)
                     continue;
 
                 int filter = -1;
-                int set_filter(int type)
+                int SetFilter(int type)
                 {
                     if (filter >= 0)
-                        return invalid_input();
+                        return InvalidInput();
                     filter = type;
                     return 0;
                 }
 
                 int mask = -1;
-                int set_mask(int type)
+                int SetMask(int type)
                 {
                     if (mask >= 0)
-                        return invalid_input();
+                        return InvalidInput();
                     mask = type;
                     return 0;
                 }
@@ -131,159 +134,159 @@ namespace Task_1
                         switch (args[i])
                         {
                             case "median":
-                                err_code = set_filter(0);
+                                errCode = SetFilter(0);
                                 break;
                             case "middle":
-                                err_code = set_filter(1);
+                                errCode = SetFilter(1);
                                 break;
                             case "gaussian":
-                                err_code = set_filter(2);
+                                errCode = SetFilter(2);
                                 break;
                             case "shade":
-                                err_code = set_filter(3);
+                                errCode = SetFilter(3);
                                 break;
                             case "sobel_x":
-                                err_code = set_filter(4);
+                                errCode = SetFilter(4);
                                 break;
                             case "sobel_y":
-                                err_code = set_filter(5);
+                                errCode = SetFilter(5);
                                 break;
                             case "sobel":
-                                err_code = set_filter(6);
+                                errCode = SetFilter(6);
                                 break;
                             case "/m":
                                 if (++i >= args.Length - 1)
                                 {
-                                    err_code = invalid_input();
+                                    errCode = InvalidInput();
                                     break;
                                 }
                                 if (args[i] == "=")
                                     if (++i >= args.Length - 1)
                                     {
-                                        err_code = invalid_input();
+                                        errCode = InvalidInput();
                                         break;
                                     }
                                 switch (args[i])
                                 {
                                     case "square":
-                                        err_code = set_mask(0);
+                                        errCode = SetMask(0);
                                         break;
                                     case "circle":
-                                        err_code = set_mask(1);
+                                        errCode = SetMask(1);
                                         break;
                                     case "cross":
-                                        err_code = set_mask(2);
+                                        errCode = SetMask(2);
                                         break;
                                     case "diagonal_cross":
-                                        err_code = set_mask(3);
+                                        errCode = SetMask(3);
                                         break;
                                     case "empty_square":
-                                        err_code = set_mask(4);
+                                        errCode = SetMask(4);
                                         break;
                                     default:
-                                        err_code = invalid_input();
+                                        errCode = InvalidInput();
                                         break;
                                 }
                                 break;
                             case "/sz":
                                 if (++i >= args.Length - 1)
                                 {
-                                    err_code = invalid_input();
+                                    errCode = InvalidInput();
                                     break;
                                 }
                                 if (args[i] == "=")
                                     if (++i >= args.Length - 1)
                                     {
-                                        err_code = invalid_input();
+                                        errCode = InvalidInput();
                                         break;
                                     }
                                 if (size >= 0 || (size = int.Parse(args[i])) <= 0)
-                                    err_code = invalid_input();
+                                    errCode = InvalidInput();
                                 break;
                             case "/sg":
                                 if (filter != 2 || ++i >= args.Length - 1)
                                 {
-                                    err_code = invalid_input();
+                                    errCode = InvalidInput();
                                     break;
                                 }
                                 if (args[i] == "=")
                                     if (++i >= args.Length - 1)
                                     {
-                                        err_code = invalid_input();
+                                        errCode = InvalidInput();
                                         break;
                                     }
                                 if (sigma >= 0 || (sigma = double.Parse(args[i])) <= 0)
-                                    err_code = invalid_input();
+                                    errCode = InvalidInput();
                                 break;
                             case "/th":
                                 if (filter < 4 || ++i >= args.Length - 1)
                                 {
-                                    err_code = invalid_input();
+                                    errCode = InvalidInput();
                                     break;
                                 }
                                 if (args[i] == "=")
                                     if (++i >= args.Length - 1)
                                     {
-                                        err_code = invalid_input();
+                                        errCode = InvalidInput();
                                         break;
                                     }
                                 if (threshold >= 0 || (threshold = double.Parse(args[i])) <= 0)
-                                    err_code = invalid_input();
+                                    errCode = InvalidInput();
                                 break;
                             default:
-                                err_code = invalid_input();
+                                errCode = InvalidInput();
                                 break;
                         }
-                        if (err_code != 0)
+                        if (errCode != 0)
                             break;
                     }
-                    if (err_code < 0)
+                    if (errCode < 0)
                         continue;
-                    if (err_code > 0)
-                        return err_code;
+                    if (errCode > 0)
+                        return errCode;
                 }
                 catch
                 {
-                    if ((err_code = invalid_input()) > 0)
-                        return err_code;
+                    if ((errCode = InvalidInput()) > 0)
+                        return errCode;
                     else
                         continue;
                 }
 
                 if (filter == -1)
-                    if ((err_code = invalid_input()) > 0)
-                        return err_code;
+                    if ((errCode = InvalidInput()) > 0)
+                        return errCode;
                     else
                         continue;
 
-                image paint = new image();
+                Image paint = new Image();
 
-                if ((err_code = image.write_error_name(paint.get_from_file(args[0]))) != 0)
+                if ((errCode = Image.WriteErrorName(paint.GetFromFile(args[0]))) != 0)
                     if (auto)
                         continue;
                     else
-                        return err_code;
+                        return errCode;
 
                 if (mask == -1)
-                    mask = n_mask;
+                    mask = nMask;
                 if (size == -1)
-                    size = n_size;
+                    size = nSize;
                 if (sigma == -1)
-                    sigma = n_sigma;
+                    sigma = nSigma;
                 if (threshold == -1)
-                    threshold = n_threshold;
+                    threshold = nThreshold;
 
-                if ((err_code = image.write_error_name(paint.filter_by_code(filter, size, mask, sigma, threshold))) != 0)
+                if ((errCode = Image.WriteErrorName(paint.FilterByCode(filter, size, mask, sigma, threshold))) != 0)
                     if (auto)
                         continue;
                     else
-                        return err_code;
+                        return errCode;
 
-                if ((err_code = image.write_error_name(paint.put_in_file(args[args.Length - 1]))) != 0)
+                if ((errCode = Image.WriteErrorName(paint.PutInFile(args[args.Length - 1]))) != 0)
                     if (auto)
                         continue;
                     else
-                        return err_code;
+                        return errCode;
 
                 if (!auto)
                     return 0;

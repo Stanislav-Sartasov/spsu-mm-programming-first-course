@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Task_1_tests.Properties {
+namespace Task1Tests.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Task_1_tests.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Task_1_tests.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Task1Tests.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -63,9 +63,9 @@ namespace Task_1_tests.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
-        internal static byte[] gaussian_sz_15_sg_3_m_square_ref {
+        internal static byte[] GaussianSz15Sg3MSquareRef {
             get {
-                object obj = ResourceManager.GetObject("gaussian_sz_15_sg_3_m_square_ref", resourceCulture);
+                object obj = ResourceManager.GetObject("GaussianSz15Sg3MSquareRef", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace Task_1_tests.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
-        internal static byte[] gaussian_sz_5_sg_1_6_m_square_ref {
+        internal static byte[] GaussianSz5Sg1_6MSquareRef {
             get {
-                object obj = ResourceManager.GetObject("gaussian_sz_5_sg_1_6_m_square_ref", resourceCulture);
+                object obj = ResourceManager.GetObject("GaussianSz5Sg1_6MSquareRef", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace Task_1_tests.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
-        internal static byte[] median_sz_15_m_diagonal_cross_ref {
+        internal static byte[] MedianSz15MDiagonalCrossRef {
             get {
-                object obj = ResourceManager.GetObject("median_sz_15_m_diagonal_cross_ref", resourceCulture);
+                object obj = ResourceManager.GetObject("MedianSz15MDiagonalCrossRef", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -93,9 +93,9 @@ namespace Task_1_tests.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
-        internal static byte[] median_sz_15_m_square_ref {
+        internal static byte[] MedianSz15MSquareRef {
             get {
-                object obj = ResourceManager.GetObject("median_sz_15_m_square_ref", resourceCulture);
+                object obj = ResourceManager.GetObject("MedianSz15MSquareRef", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -103,9 +103,9 @@ namespace Task_1_tests.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
-        internal static byte[] median_sz_5_m_square_ref {
+        internal static byte[] MedianSz5MSquareRef {
             get {
-                object obj = ResourceManager.GetObject("median_sz_5_m_square_ref", resourceCulture);
+                object obj = ResourceManager.GetObject("MedianSz5MSquareRef", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -113,9 +113,9 @@ namespace Task_1_tests.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
-        internal static byte[] middle_sz_15_m_square_ref {
+        internal static byte[] MiddleSz15MSquareRef {
             get {
-                object obj = ResourceManager.GetObject("middle_sz_15_m_square_ref", resourceCulture);
+                object obj = ResourceManager.GetObject("MiddleSz15MSquareRef", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -123,9 +123,9 @@ namespace Task_1_tests.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
-        internal static byte[] middle_sz_5_m_square_ref {
+        internal static byte[] MiddleSz5MSquareRef {
             get {
-                object obj = ResourceManager.GetObject("middle_sz_5_m_square_ref", resourceCulture);
+                object obj = ResourceManager.GetObject("MiddleSz5MSquareRef", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -133,9 +133,9 @@ namespace Task_1_tests.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
-        internal static byte[] shade_ref {
+        internal static byte[] ShadeRef {
             get {
-                object obj = ResourceManager.GetObject("shade_ref", resourceCulture);
+                object obj = ResourceManager.GetObject("ShadeRef", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -143,9 +143,9 @@ namespace Task_1_tests.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
-        internal static byte[] sobel_th_2_ref {
+        internal static byte[] SobelTh2Ref {
             get {
-                object obj = ResourceManager.GetObject("sobel_th_2_ref", resourceCulture);
+                object obj = ResourceManager.GetObject("SobelTh2Ref", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -153,9 +153,9 @@ namespace Task_1_tests.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
-        internal static byte[] sobel_x_th_2_ref {
+        internal static byte[] SobelXTh2Ref {
             get {
-                object obj = ResourceManager.GetObject("sobel_x_th_2_ref", resourceCulture);
+                object obj = ResourceManager.GetObject("SobelXTh2Ref", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -163,9 +163,9 @@ namespace Task_1_tests.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
-        internal static byte[] sobel_y_th_2_ref {
+        internal static byte[] SobelYTh2Ref {
             get {
-                object obj = ResourceManager.GetObject("sobel_y_th_2_ref", resourceCulture);
+                object obj = ResourceManager.GetObject("SobelYTh2Ref", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -173,9 +173,9 @@ namespace Task_1_tests.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
-        internal static byte[] test {
+        internal static byte[] Test {
             get {
-                object obj = ResourceManager.GetObject("test", resourceCulture);
+                object obj = ResourceManager.GetObject("Test", resourceCulture);
                 return ((byte[])(obj));
             }
         }

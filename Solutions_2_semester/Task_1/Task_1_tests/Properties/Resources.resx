@@ -118,40 +118,40 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="gaussian_sz_15_sg_3_m_square_ref" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>gaussian_sz_15_sg_3_m_square_ref.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="GaussianSz15Sg3MSquareRef" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>gaussiansz15sg3msquareref.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="gaussian_sz_5_sg_1_6_m_square_ref" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>gaussian_sz_5_sg_1.6_m_square_ref.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="GaussianSz5Sg1_6MSquareRef" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>gaussiansz5sg1_6msquareref.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="median_sz_15_m_diagonal_cross_ref" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>median_sz_15_m_diagonal_cross_ref.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="MedianSz15MDiagonalCrossRef" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>mediansz15mdiagonalcrossref.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="median_sz_15_m_square_ref" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>median_sz_15_m_square_ref.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="MedianSz15MSquareRef" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>mediansz15msquareref.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="median_sz_5_m_square_ref" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>median_sz_5_m_square_ref.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="MedianSz5MSquareRef" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>mediansz5msquareref.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="middle_sz_15_m_square_ref" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>middle_sz_15_m_square_ref.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="MiddleSz15MSquareRef" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>middlesz15msquareref.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="middle_sz_5_m_square_ref" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>middle_sz_5_m_square_ref.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="MiddleSz5MSquareRef" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>middlesz5msquareref.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="shade_ref" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>shade_ref.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="ShadeRef" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>shaderef.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="sobel_th_2_ref" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>sobel_th_2_ref.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="SobelTh2Ref" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sobelth2ref.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="sobel_x_th_2_ref" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>sobel_x_th_2_ref.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="SobelXTh2Ref" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sobelxth2ref.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="sobel_y_th_2_ref" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>sobel_y_th_2_ref.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="SobelYTh2Ref" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sobelyth2ref.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="test" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Test" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>test.bmp;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>
