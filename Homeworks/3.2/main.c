@@ -31,78 +31,8 @@ struct bmp_info
 };
 #pragma pack(pop)
 
-void medianFilter(unsigned char* inImage, int height, int width)
+void layout(unsigned char* inImage, double* bit, int height, int width, int size, int sobel)
 {
-	int size = 3;
-	unsigned char *outImage = (unsigned char*)malloc(3 * height * width * sizeof(char));
-	double *bit = (double*)malloc(size * size * sizeof(double));
-
-	for (int i = 0; i < size * size; i++)
-	{
-		bit[i] = 1;
-	}
-
-	for (int i = 0; i < height; i++)
-	{
-		for (int j = 0; j < width; j++)
-		{
-			double rgb[3] = { 0, 0, 0 };
-			double a = 0;
-
-			for (int y = 0; y < size; y++)
-			{
-				for (int x = 0; x < size; x++)
-				{
-					if (((i + y - 1) >= 0) && ((i + y - 1) < height) && ((j + x - 1) >= 0) && ((j + x - 1) < width))
-					{
-						a = a + bit[y * size + x];
-						for (int k = 0; k < 3; k++)
-						{
-							rgb[k] = rgb[k] + inImage[((i + y - 1) * width + j + x - 1) * 3 + k] * bit[y * size + x];
-						}
-					}
-				}
-			}
-
-			for (int k = 0; k < 3; k++)
-			{
-				outImage[(i * width + j) * 3 + k] = (unsigned char)(rgb[k] / a);
-			}
-		}
-	}
-
-	for (int i = 0; i < height * width * 3; i++)
-	{
-		inImage[i] = outImage[i];
-	}
-
-	free(outImage);
-	free(bit);
-}
-
-void gaussFilter(char type[], unsigned char *inImage, int height, int width)
-{
-	int size;
-	double sig = 0.6;
-	double pi = 3.141592653589793238462643383279;
-
-	if (strcmp(type, "gauss3") == 0)
-	{
-		size = 3;
-	}
-	if (strcmp(type, "gauss5") == 0) //else
-	{
-		size = 5;
-	}
-	double* bit = (double*)malloc(size * size * sizeof(double));
-
-	for (int x = 0; x < size; x++)
-	{
-		for (int y = 0; y < size; y++)
-		{
-			bit[x * size + y] = 1.0 / sqrt(2 * pi * sig) * exp( -(x * x + y * y) / (2 * sig * sig) );
-		}
-	}
 	unsigned char* outImage = (unsigned char*)malloc(3 * height * width * sizeof(char));
 
 	for (int i = 0; i < height; i++)
@@ -126,10 +56,26 @@ void gaussFilter(char type[], unsigned char *inImage, int height, int width)
 					}
 				}
 			}
-
-			for (int k = 0; k < 3; k++)
+			
+			if (sobel == 0)
 			{
-				outImage[(i * width + j) * 3 + k] = (unsigned char)(rgb[k] / a);
+				for (int k = 0; k < 3; k++)
+				{
+					outImage[(i * width + j) * 3 + k] = (unsigned char)(rgb[k] / a);
+				}
+			}
+			else
+			{
+				int x = 0;
+				if ((rgb[0] + rgb[1] + rgb[2]) > 384)
+				{
+					x = 255;
+				}
+
+				for (int k = 0; k < 3; k++)
+				{
+					outImage[(i * width + j) * 3 + k] = x;
+				}
 			}
 		}
 	}
@@ -140,67 +86,77 @@ void gaussFilter(char type[], unsigned char *inImage, int height, int width)
 	}
 
 	free(outImage);
+}
+
+void medianFilter(unsigned char* inImage, int height, int width)
+{
+	int size = 3;
+	double* bit = (double*)malloc(size * size * sizeof(double));
+
+	for (int i = 0; i < size * size; i++)
+	{
+		bit[i] = 1;
+	}
+
+	layout(inImage, bit, height, width, size, 0);
+
+	free(bit);
+}
+
+void gaussFilter(char type[], unsigned char *inImage, int height, int width)
+{
+	int size;
+	if (strcmp(type, "gauss3") == 0)
+	{
+		size = 3;
+	}
+	if (strcmp(type, "gauss5") == 0)
+	{
+		size = 5;
+	}
+	double* bit = (double*)malloc(size * size * sizeof(double));
+
+	double sig = 0.6, pi = 3.141592653589793238462643383279;
+	
+	for (int x = 0; x < size; x++)
+	{
+		for (int y = 0; y < size; y++)
+		{
+			bit[x * size + y] = 1.0 / sqrt(2 * pi * sig) * exp( -(x * x + y * y) / (2 * sig * sig) );
+		}
+	}
+
+	layout(inImage, bit, height, width, size, 0);
+
 	free(bit);
 }
 
 void sobelFilter(char type[], unsigned char *inImage, int height, int width)
 {
 	int size = 3;
-	unsigned char *outImage = (unsigned char*)malloc(3 * height * width * sizeof(char));
-	double *bit = (double*)malloc(size * size * sizeof(double));
+	double* bit = (double*)malloc(size * size * sizeof(double));
 
 	if (strcmp(type, "sobelX") == 0)
 	{
 		int mat[9] = { -1, 0, 1, -2, 0, 2, -1, 0, 1 };
+
 		for (int i = 0; i < size * size; i++)
+		{
 			bit[i] = mat[i];
+		}
 	}
 	else
 	{
 		int mat[9] = { -1, -2, -1, 0, 0, 0, 1, 2, 1 };
+
 		for (int i = 0; i < size * size; i++)
-			bit[i] = mat[i];
-	}
-
-	for (int i = 0; i < height; i++)
-	{
-		for (int j = 0; j < width; j++)
 		{
-			double rgb[3] = { 0, 0, 0 };
-			double a = 0;
-
-			for (int y = 0; y < size; y++)
-			{
-				for (int x = 0; x < size; x++)
-				{
-					if (((i + y - 1) >= 0) && ((i + y - 1) < height) && ((j + x - 1) >= 0) && ((j + x - 1) < width))
-					{
-						a = a + bit[y * size + x];
-						for (int k = 0; k < 3; k++)
-							rgb[k] = rgb[k] + inImage[((i + y - 1) * width + j + x - 1) * 3 + k] * bit[y * size + x];
-					}
-				}
-			}
-
-			int x = 0;
-			if ((rgb[0] + rgb[1] + rgb[2]) > 384)
-			{
-				x = 255;
-			}
-
-			for (int k = 0; k < 3; k++)
-			{
-				outImage[(i * width + j) * 3 + k] = x;
-			}
+			bit[i] = mat[i];
 		}
 	}
 
-	for (int i = 0; i < height * width * 3; i++)
-	{
-		inImage[i] = outImage[i];
-	}
+	layout(inImage, bit, height, width, size, 1);
 
-	free(outImage);
 	free(bit);
 }
 
