@@ -9,16 +9,10 @@ namespace Generics.Tests
         [TestMethod]
         public void TestDynamicArrayCreateForObject()
         {
-            try
-            {
-                DynamicArray<object> dynamicArray = new DynamicArray<object>();
-                Assert.IsTrue(true);
-            }
-            catch
-            {
-                Assert.Fail();
-            }
+            DynamicArray<object> dynamicArray = new DynamicArray<object>();
+            Assert.IsNotNull(dynamicArray);
         }
+
         [TestMethod]
         public void TestDynamicArrayAddAndGetAtIdex()
         {
@@ -51,6 +45,7 @@ namespace Generics.Tests
             //assert
             Assert.AreEqual(expected, actual);
         }
+
         [TestMethod]
         public void TestDynamicArrayFind()
         {

@@ -8,13 +8,13 @@ namespace SimpleHierarchy
         static void Main(string[] args)
         {
             Cream iceCream = new Cream();
-            iceCream.ShowRecipeAndInfo();
+            Console.WriteLine(iceCream.ShowRecipeAndInfo());
 
             Popsicle popsicle = new Popsicle();
-            popsicle.ShowRecipeAndInfo();
+            Console.WriteLine(popsicle.ShowRecipeAndInfo());
 
             IceCreamCake iceCreamCake = new IceCreamCake();
-            iceCream.ShowRecipeAndInfo();
+            Console.WriteLine(iceCreamCake.ShowRecipeAndInfo());
 
             Console.ReadKey();
         }

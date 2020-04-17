@@ -28,11 +28,11 @@ namespace SimpleHierarchy.BaseClass
         public uint Sugar => sugar;
         public uint WhippedCream => whippedCream;
 
-        public virtual void ShowRecipeAndInfo()
+        public virtual string ShowRecipeAndInfo()
         {
             string ballsInfo = $"{((numberOfBalls == 0) ? "without balls\n" : "with " + numberOfBalls.ToString() + " balls\n")}";
-            Console.WriteLine($"Name - {iceCreamName}\n" + $"Type - {type}\n" + $"Form - {form}\n" +
-                $"Weight gained - {weight}\n" + $"The presence of balls - {ballsInfo}");
+            return $"Name - {iceCreamName}\n" + $"Type - {type}\n" + $"Form - {form}\n" +
+                $"Weight gained - {weight}\n" + $"The presence of balls - {ballsInfo}";
 
         }
     }
