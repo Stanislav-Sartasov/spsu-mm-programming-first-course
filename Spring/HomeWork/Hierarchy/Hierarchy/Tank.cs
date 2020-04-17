@@ -32,7 +32,7 @@ namespace Hierarchy
             }
             else if (choice == "Color")
                 Console.WriteLine("Color is " + Color);
-            else if (choice == "Country Of Manufacture is")
+            else if (choice == "Country Of Manufacture")
                 Console.WriteLine("Country Of Manufacture is " + CountryOfManufacture);
             else if (choice == "Maximum Speed")
                 Console.WriteLine("Maximum Speed is " + MaxSpeed);

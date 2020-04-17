@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hierarchy", "Hierarchy\Hierarchy.csproj", "{18DC1DC7-2851-4879-B425-C3A426CD815C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hierarchy", "Hierarchy\Hierarchy.csproj", "{18DC1DC7-2851-4879-B425-C3A426CD815C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{1106D812-4A79-443A-BFB6-95080713CEB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HierarchyTest", "UnitTestProject1\HierarchyTest.csproj", "{1106D812-4A79-443A-BFB6-95080713CEB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -7,7 +7,7 @@ namespace Hierarchy
         static void Main(string[] args)
         {
             Panter panter = new Panter();
-            panter.Print();
+            panter.Print("Color");
             panter.Print();
         }
     }
