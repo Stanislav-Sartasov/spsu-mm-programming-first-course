@@ -19,22 +19,27 @@ namespace AbstractIceCream
             Ingredients = ingredients;
         }
 
-        public virtual void GetMainInfo()
+        public virtual string GetMainInfo()
         {
-            Console.WriteLine($"\nKind of ice cream: {Kind}\nFlavour: {Flavour}\nWeight: {ServingWeight}");
+            return $"\nKind of ice cream: {Kind}\nFlavour: {Flavour}\nWeight: {ServingWeight}";
         }
 
-        public virtual void GetIngredients()
+        public virtual string GetIngredients()
         {
-            Console.WriteLine($"\nMain ingredients of {Kind}: ");
+            string info = $"\nMain ingredients of {Kind}:\n";
             foreach (var ingredient in Ingredients)
-                Console.WriteLine($"{ingredient.Key}: {ingredient.Value} grams");
+                info += $"{ingredient.Key}: {ingredient.Value} grams\n";
+            return info;
         }
 
-        public virtual void GetFullInfo()
+        public virtual string GetFullInfo()
         {
-            GetMainInfo();
-            GetIngredients();
+            return GetMainInfo() + GetIngredients();
+        }
+
+        public void PrintInfo()
+        {
+            Console.WriteLine(GetFullInfo());
         }
     }
 }

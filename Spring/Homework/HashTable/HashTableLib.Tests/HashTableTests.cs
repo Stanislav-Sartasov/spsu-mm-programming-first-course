@@ -6,12 +6,14 @@ namespace HashTableLib.Tests
     [TestClass]
     public class HashTableTest
     {
-        Hashtable<double, string> table = new Hashtable<double, string>();
+        Hashtable<double, string> table;
+        string[] values;
 
         [TestMethod]
         public void CorrectAdd()
         {
-            string[] values = new string[100];
+            table = new Hashtable<double, string>();
+            values = new string[100];
             for (int i = 0; i < 100; i++)
             {
                 table.AddPair(i, $"{i}");
@@ -29,7 +31,8 @@ namespace HashTableLib.Tests
         [TestMethod]
         public void CorrectDelete()
         {
-            string[] values = new string[100];
+            table = new Hashtable<double, string>();
+            values = new string[100];
             for (int i = 0; i < 100; i++)
             {
                 table.AddPair(i, $"{i}");
@@ -52,6 +55,7 @@ namespace HashTableLib.Tests
         [TestMethod]
         public void CorrectResize()
         {
+            table = new Hashtable<double, string>();
             table.AddPair(Math.PI, "PI");
             table.AddPair(0.71321, "0.71321");
             table.AddPair(0.71322, "0.71322");

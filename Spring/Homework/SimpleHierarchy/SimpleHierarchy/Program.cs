@@ -10,10 +10,10 @@ namespace SimpleHierarchy
             Sundae sundaeWithTopping = new Sundae("Chocolate");
             Sundae sundaeWithoutTopping = new Sundae();
             ClassicIceCream classicIC = new ClassicIceCream();
-            fruitIce.GetFullInfo();
-            sundaeWithoutTopping.GetFullInfo();
-            sundaeWithTopping.GetFullInfo();
-            classicIC.GetFullInfo();
+            fruitIce.PrintInfo();
+            sundaeWithoutTopping.PrintInfo();
+            sundaeWithTopping.PrintInfo();
+            classicIC.PrintInfo();
         }
     }
 }

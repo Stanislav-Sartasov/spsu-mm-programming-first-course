@@ -187,7 +187,7 @@ namespace Blackjack
                 for (int i = 0; i < player.Hands.Count; i++)
                 {
                     int returnedChips = 0;
-                    Outcome outcome = Outcome.lose;
+                    Outcome outcome = Outcome.Lose;
 
                     if (player.Hands[i].Boosted)
                     {
@@ -196,34 +196,34 @@ namespace Blackjack
                     else if (player.Hands[i].Surrender)
                     {
                         returnedChips = player.Hands[0].CurrentBet / 2;
-                        outcome = Outcome.surrender;
+                        outcome = Outcome.Surrender;
                     }
                     else
                     {
                         if (player.BlackJack && !GameCroupier.BlackJack)
                         {
                             returnedChips = (int)(2.5 * player.Hands[i].CurrentBet);
-                            outcome = Outcome.win;
+                            outcome = Outcome.Win;
                         }
                         else if (player.BlackJack && GameCroupier.BlackJack)
                         {
                             returnedChips = player.Hands[i].CurrentBet;
-                            outcome = Outcome.push;
+                            outcome = Outcome.Push;
                         }
                         else if (GameCroupier.CroupierHand.Boosted)
                         {
                             returnedChips = 2 * player.Hands[i].CurrentBet;
-                            outcome = Outcome.win;
+                            outcome = Outcome.Win;
                         }
                         else if (player.Hands[i].Points > GameCroupier.CroupierHand.Points)
                         {
                             returnedChips = 2 * player.Hands[i].CurrentBet;
-                            outcome = Outcome.win;
+                            outcome = Outcome.Win;
                         }
                         else if (player.Hands[i].Points == GameCroupier.CroupierHand.Points)
                         {
                             returnedChips = player.Hands[i].CurrentBet;
-                            outcome = Outcome.push;
+                            outcome = Outcome.Push;
                         }
                     }
                     player.Chips += returnedChips;

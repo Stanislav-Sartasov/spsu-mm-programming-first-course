@@ -18,10 +18,9 @@ namespace IceCreamRecipes
             Topping = topping;
         }
 
-        public override void GetMainInfo()
+        public override string GetMainInfo()
         {
-            base.GetMainInfo();
-            Console.WriteLine($"Topping: {Topping}");
+            return base.GetMainInfo() + $"\nTopping: {Topping}";
         }
     }
 }

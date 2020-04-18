@@ -106,9 +106,7 @@ namespace HashTableLib
         public bool ContainsValue(TValue value)
         {
             return this
-                .Where(node => node.Value.TryGetTarget(out TValue _value) == true && value.Equals(_value) == true)
-                .Count()
-                .Equals(1) ? true : false;
+                .Count(node => node.Value.TryGetTarget(out TValue _value) && value.Equals(_value)) != 0;
         }
 
         public bool TryGetValue(TKey key, out TValue value)

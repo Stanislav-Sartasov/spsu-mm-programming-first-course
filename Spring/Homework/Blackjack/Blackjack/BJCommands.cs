@@ -15,7 +15,7 @@ namespace Blackjack
         {
             while (true)
             {
-                string Input = Console.ReadLine();
+                string input = Console.ReadLine();
                 if (int.TryParse(Input, out int number))
                 {
                     return number;

@@ -8,12 +8,13 @@ namespace HashTableLib.Tests
     [TestClass]
     public class HashTableTest
     {
-        Hashtable<double, string> table = new Hashtable<double, string>(5000);
+        Hashtable<double, string> table;
         string[] values = new string[100];
 
         [TestMethod]
         public void CorrectAdd()
         {
+            table = new Hashtable<double, string>(5000);
             for (int i = 0; i < 100; i++)
             {
                 table.AddPair(i, $"{i}");
@@ -31,6 +32,7 @@ namespace HashTableLib.Tests
         [TestMethod]
         public void CorrectDelete()
         {
+            table = new Hashtable<double, string>(5000);
             for (int i = 0; i < 100; i++)
             {
                 table.AddPair(i, $"{i}");
@@ -54,6 +56,7 @@ namespace HashTableLib.Tests
         [TestMethod]
         public void CorrectWeakReferenceCollect()
         {
+            table = new Hashtable<double, string>(5000);
             for (int i = 0; i < 100; i++)
             {
                 table.AddPair(i, $"{i}");

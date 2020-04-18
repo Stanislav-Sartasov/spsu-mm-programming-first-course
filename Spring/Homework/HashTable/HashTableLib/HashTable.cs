@@ -19,30 +19,6 @@ namespace HashTableLib
             arrayOfNodes = new LinkedList<Node<TKey, TValue>>[NumOfLists];
         }
 
-        //public void Resize()
-        //{
-        //    LinkedList<Node<TKey, TValue>>[] oldNodes = arrayOfNodes;
-        //    arrayOfNodes = new LinkedList<Node<TKey, TValue>>[NumOfLists * 2];
-        //    NumOfLists *= 2;
-        //    MaxLenOfList = NumOfLists / 4;
-        //    Count = 0;
-
-        //    for (int i = 0; i < oldNodes.Length; i++)
-        //    {
-        //        if (oldNodes[i] != null)
-        //        {
-        //            while (oldNodes[i].Count != 0)
-        //            {
-        //                TKey key = oldNodes[i].Last.Value.Key;
-        //                TValue value = oldNodes[i].Last.Value.Value;
-        //                AddPair(key, value);
-        //                oldNodes[i].RemoveLast();
-        //            }
-        //        }
-        //    }
-        //}
-
-
         public void Resize()
         {
 
@@ -122,11 +98,7 @@ namespace HashTableLib
 
         public bool ContainsValue(TValue value)
         {
-
-            return this
-                .Where(node => node.Value.Equals(value) == true)
-                .Count()
-                .Equals(1) ? true : false;
+            return this.Count(node => node.Value.Equals(value)) != 0;
         }
 
 
