@@ -2,10 +2,11 @@
 #include <math.h>
 
 
-int inputCheck(int check)
+int inputCheck()
 {
 	printf("Input a positive number:\n");
 	char t;
+	int  check;
 	for (;;)
 
 	{
@@ -43,6 +44,6 @@ void chainFraction(int x)
 int main()
 {
 	int x = 0;
-	x = inputCheck(x);
+	x = inputCheck();
 	chainFraction(x);
 }
