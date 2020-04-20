@@ -3,10 +3,11 @@
 #define PI 3.141592
 
 
-double inputCheck(double check)
+double inputCheck()
 {
 	printf("Input a positive number:\n");
 	char t;
+	double check;
 	for (;;)
 	{
 		if (!scanf_s("%lf", &check) || check <= 0 || getchar() != '\n')
@@ -34,9 +35,9 @@ int main()
 	double p = 180 / PI;
 	double a = 0, b = 0, c = 0;
 	double alpha, beta, gamma;
-	a = inputCheck(a);
-	b = inputCheck(b);
-	c = inputCheck(c);
+	a = inputCheck();
+	b = inputCheck();
+	c = inputCheck();
 	if ((a + b > c) && (a + c > b) && (b + c > a))
 	{
 		alpha = acos((a * a + b * b - c * c) / (2 * a * b)) * p;
