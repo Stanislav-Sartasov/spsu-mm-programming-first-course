@@ -1,13 +1,14 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include "Function.h"
 
 
 int main()
 {
 	int a = 0, b = 0, c = 0;
-	a = inputCheck(a);
-	b = inputCheck(b);
-	c = inputCheck(c);
+	a = inputCheck();
+	b = inputCheck();
+	c = inputCheck();
 	sort(&a, &b, &c);
 	if (a * a + b * b == c * c)
 	{

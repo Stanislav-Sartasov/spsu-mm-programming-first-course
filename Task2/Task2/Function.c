@@ -34,10 +34,11 @@ int gcd(int a, int b)			// Алгоритм Евклида
 }
 
 
-int inputCheck(int check)		// Проверка на корректность ввода
+int inputCheck()		// Проверка на корректность ввода
 {
 	printf("Input a positive number:\n");
 	char t;
+	int check;
 	for(;;)
 	{
 		if (!scanf_s("%d", &check) || check <= 0 || getchar() != '\n')
