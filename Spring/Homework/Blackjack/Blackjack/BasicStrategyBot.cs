@@ -7,12 +7,12 @@ namespace Blackjack
     public class BasicStrategyBot : Player, IBotPlayer
     {
 
-        public int BotBet(int minBet, int chips)
+        public int GetBotBet(int minBet, int chips)
         {
             return (minBet > chips / 50) ? minBet : chips / 50;
         }
 
-        public Command BotCommand(List<Command> availableCommands, Card croupierOpenCard, int numOfHand)
+        public Command GetBotCommand(List<Command> availableCommands, Card croupierOpenCard, int numOfHand)
         {
             int points = Hands[numOfHand].Points;
             int croupierPoints = (int)croupierOpenCard.Value;

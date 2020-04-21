@@ -6,14 +6,14 @@ namespace Blackjack
     public class RandomBot : Player, IBotPlayer
     {
 
-        public int BotBet(int minBet, int chips)
+        public int GetBotBet(int minBet, int chips)
         {
             var rand = new Random();
             int randValue = rand.Next(minBet, minBet > chips / 50 ? minBet : chips / 50);
             return randValue;
         }
 
-        public Command BotCommand(List<Command> availableCommands, Card croupierOpenCard, int numOfHand)
+        public Command GetBotCommand(List<Command> availableCommands, Card croupierOpenCard, int numOfHand)
         {
             var rand = new Random();
             int randomIndex = rand.Next(0, availableCommands.Count - 1);

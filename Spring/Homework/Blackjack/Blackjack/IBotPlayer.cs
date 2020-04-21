@@ -6,7 +6,7 @@ namespace Blackjack
 {
     interface IBotPlayer
     {
-        Command BotCommand(List<Command> availableCommands, Card openCroupierCard, int numOfHand);
-        int BotBet(int minBet, int chips);
+        Command GetBotCommand(List<Command> availableCommands, Card openCroupierCard, int numOfHand);
+        int GetBotBet(int minBet, int chips);
     }
 }

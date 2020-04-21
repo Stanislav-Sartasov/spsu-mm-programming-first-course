@@ -16,8 +16,8 @@ namespace Plugins.Tests
         LibraryFinder strFinder;
         Type strType = typeof(ISomeInterface<string>);
         Type intType = typeof(ISomeInterface<int>);
-        IEnumerable<ISomeInterface<string>> implementingStr—lasses;
-        IEnumerable<ISomeInterface<int>> implementingInt—lasses;
+        IEnumerable<ISomeInterface<string>> implementingStrClasses;
+        IEnumerable<ISomeInterface<int>> implementingIntClasses;
 
         [TestInitialize]
         public void PluginsTestsInit()
@@ -28,8 +28,8 @@ namespace Plugins.Tests
                 intType = typeof(ISomeInterface<int>);
                 strFinder = new LibraryFinder(strType, path);
                 intFinder = new LibraryFinder(intType, path);
-                implementingStr—lasses = strFinder.GetImplementing—lasses().Select(obj => (ISomeInterface<string>)obj);
-                implementingInt—lasses = intFinder.GetImplementing—lasses().Select(obj => (ISomeInterface<int>)obj);
+                implementingStrClasses = strFinder.GetImplementing—lasses().Select(obj => (ISomeInterface<string>)obj);
+                implementingIntClasses = intFinder.GetImplementing—lasses().Select(obj => (ISomeInterface<int>)obj);
             }
             catch
             {
@@ -40,19 +40,19 @@ namespace Plugins.Tests
         [TestMethod]
         public void CorrectNumberOfStrClasses()
         {
-            Assert.AreEqual(1, implementingStr—lasses.Count());
+            Assert.AreEqual(1, implementingStrClasses.Count());
         }
 
         [TestMethod]
         public void CorrectNumberOfIntClasses()
         {
-            Assert.AreEqual(1, implementingInt—lasses.Count());
+            Assert.AreEqual(1, implementingIntClasses.Count());
         }
 
         [TestMethod]
         public void CorrectStrClassFunctionality()
         {
-            foreach (var cl in implementingStr—lasses)
+            foreach (var cl in implementingStrClasses)
             {
                 cl.Set("correct");
                 Assert.AreEqual("correct", cl.Get());
@@ -63,7 +63,7 @@ namespace Plugins.Tests
         [TestMethod]
         public void CorrectIntClassFunctionality()
         {
-            foreach (var cl in implementingInt—lasses)
+            foreach (var cl in implementingIntClasses)
             {
                 cl.Set(1);
                 Assert.AreEqual(1, cl.Get());

@@ -16,7 +16,7 @@ namespace Blackjack
             while (true)
             {
                 string input = Console.ReadLine();
-                if (int.TryParse(Input, out int number))
+                if (int.TryParse(input, out int number))
                 {
                     return number;
                 }
@@ -42,7 +42,7 @@ namespace Blackjack
                     }
                 case PlayerStatus.Bot:
                     IBotPlayer bot = (IBotPlayer)player;
-                    Command botCommand = bot.BotCommand(availableCommands, openCroupierCard, numOfHand);
+                    Command botCommand = bot.GetBotCommand(availableCommands, openCroupierCard, numOfHand);
                     return botCommand;
                 default:
                     throw new Exception();
@@ -68,7 +68,7 @@ namespace Blackjack
                     break;
                 case PlayerStatus.Bot:
                     IBotPlayer bot = (IBotPlayer)player;
-                    bet = bot.BotBet(minBet, player.Chips);
+                    bet = bot.GetBotBet(minBet, player.Chips);
                     player.Hands[numOfHand].CurrentBet += bet;
                     player.Chips -= bet;
                     break;

@@ -10,7 +10,7 @@ namespace Plugins
 {
     public class LibraryFinder
     {
-        IEnumerable<object> implementingСlasses = null;
+        private IEnumerable<object> implementingСlasses = null;
         private string path;
         private Type desiredType;
 
