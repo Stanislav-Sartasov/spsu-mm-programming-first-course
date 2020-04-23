@@ -28,7 +28,12 @@ namespace IoC
             game.StartGame();
 
             Console.WriteLine($"Scores:");
-            Console.WriteLine($"Random_Bot: {game.Players[0].Chips}\nBSBot: {game.Players[1].Chips}");
+            foreach (var player in game.Players)
+            {
+                player.GetInfo();
+                Console.WriteLine(player.Chips);
+            }
+
         }
     }
 }
