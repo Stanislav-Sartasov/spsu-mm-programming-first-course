@@ -4,9 +4,9 @@ using IceCream;
 
 namespace Task2
 {
-    class TestIceCreamCreamyBriquetteCount70 : AbstractIceCream
+    class TestIceCreamSpeciallinTheHornCount0xf0 : AbstractIceCream
     {
-        public TestIceCreamCreamyBriquetteCount70()
+        public TestIceCreamSpeciallinTheHornCount0xf0()
         {
             type = Type.special;
             innings = Innings.inTheHorn;
@@ -17,7 +17,7 @@ namespace Task2
     {
         static void Main(string[] args)
         {
-            TestIceCreamCreamyBriquetteCount70 iceCream = new TestIceCreamCreamyBriquetteCount70();
+            TestIceCreamSpeciallinTheHornCount0xf0 iceCream = new TestIceCreamSpeciallinTheHornCount0xf0();
             Console.WriteLine(iceCream.GetRecipe());
             while (Console.ReadKey().Key != ConsoleKey.Enter) ;
         }
