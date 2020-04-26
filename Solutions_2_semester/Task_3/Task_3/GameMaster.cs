@@ -184,10 +184,7 @@ namespace Task3
         double[] coefficients = new double[] { 2, 1.95, 9 };
         int startBudget = 1000;
         PlayerPlace[] playerListIn = null;
-        Card[] deck;
         int numberOfDecks = 4;
-        int deckActSize = 0;
-        bool deckCreated = false;
         Log log;
 
         public Log GetLog()
@@ -267,31 +264,6 @@ namespace Task3
             playerListIn = NewPlayerList;
             return 0;
         }
-        int CreateDeck()
-        {
-            if (deckCreated)
-                return -1;
-
-            deckActSize = numberOfDecks * 52;
-            deck = new Card[deckActSize];
-
-            for (int g = 0; g < numberOfDecks; g++)
-                for (int i = 0; i < 4; i++)
-                    for (int j = 1; j <= 13; j++)
-                        deck[g * 52 + i * 13 + j - 1] = new Card() { Dignity = j, Suit = Card.suitList[i]};
-
-            deckCreated = true;
-            return 0;
-        }
-        Card DeckTakeRand()
-        {
-            if (deckActSize == 0)
-                return null;
-            int val = new Random().Next(0, deckActSize);
-            Card res = deck[val];
-            deck[val] = deck[--deckActSize];
-            return res;
-        }
         public int StartGame()
         {
             if (playerListIn == null)
@@ -327,14 +299,14 @@ namespace Task3
             Card[] play = new Card[3] { null, null, null };
             int playScore = 0;
 
-            CreateDeck();
+            Deck deck = new Deck(numberOfDecks);
 
             for (int i = 0; i < 2; i++)
             {
-                bank[i] = DeckTakeRand();
+                bank[i] = deck.TakeRand();
                 bankScore = (bankScore + bank[i].Cost) % 10;
 
-                play[i] = DeckTakeRand();
+                play[i] = deck.TakeRand();
                 playScore = (playScore + play[i].Cost) % 10;
             }
 
@@ -346,7 +318,7 @@ namespace Task3
 
                 if (playScore <= 5 && bankScore < 8)
                 {
-                    play[2] = DeckTakeRand();
+                    play[2] = deck.TakeRand();
                     playScore = (playScore + play[2].Cost) % 10;
                 }
 
@@ -354,7 +326,7 @@ namespace Task3
                 {
                     if (bankScore <= 5)
                     {
-                        bank[2] = DeckTakeRand();
+                        bank[2] = deck.TakeRand();
                         bankScore = (bankScore + bank[2].Cost) % 10;
                     }
                 }
@@ -364,7 +336,7 @@ namespace Task3
                     {
                         if (bankScore <= 3)
                         {
-                            bank[2] = DeckTakeRand();
+                            bank[2] = deck.TakeRand();
                             bankScore = (bankScore + bank[2].Cost) % 10;
                         }
                     }
@@ -372,7 +344,7 @@ namespace Task3
                     {
                         if (bankScore <= 2)
                         {
-                            bank[2] = DeckTakeRand();
+                            bank[2] = deck.TakeRand();
                             bankScore = (bankScore + bank[2].Cost) % 10;
                         }
                     }
@@ -380,7 +352,7 @@ namespace Task3
                     {
                         if (bankScore <= 6)
                         {
-                            bank[2] = DeckTakeRand();
+                            bank[2] = deck.TakeRand();
                             bankScore = (bankScore + bank[2].Cost) % 10;
                         }
                     }
@@ -388,7 +360,7 @@ namespace Task3
                     {
                         if (bankScore <= 5)
                         {
-                            bank[2] = DeckTakeRand();
+                            bank[2] = deck.TakeRand();
                             bankScore = (bankScore + bank[2].Cost) % 10;
                         }
                     }
@@ -396,7 +368,7 @@ namespace Task3
                     {
                         if (bankScore <= 4)
                         {
-                            bank[2] = DeckTakeRand();
+                            bank[2] = deck.TakeRand();
                             bankScore = (bankScore + bank[2].Cost) % 10;
                         }
                     }
@@ -450,10 +422,6 @@ namespace Task3
                         break;
                 }
             }
-
-            deck = null;
-            deckActSize = 0;
-            deckCreated = false;
 
             return 0;
         }
