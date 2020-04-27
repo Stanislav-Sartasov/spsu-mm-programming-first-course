@@ -2,9 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5ad75b41-4e54-461b-8de4-238355c37786" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../first semester/task8/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/../../first semester/task8/main.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../first semester/task8/task8.depend" beforeDir="false" afterPath="$PROJECT_DIR$/../../first semester/task8/task8.depend" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../first semester/task8/task8.layout" beforeDir="false" afterPath="$PROJECT_DIR$/../../first semester/task8/task8.layout" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pics/input.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/pics/input.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pics/outputAveraging3.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/pics/outputAveraging3.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pics/outputAveraging5.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/pics/outputAveraging5.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pics/outputGauss3.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/pics/outputGauss3.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pics/outputSobelX.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/pics/outputSobelX.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pics/outputSobelY.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/pics/outputSobelY.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pics/outputToGrey.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/pics/outputToGrey.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Image.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Image.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/ImageTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/MainTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/MainTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,8 +24,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JUnit5 Test Class" />
-        <option value="JUnit4 Test Class" />
         <option value="Class" />
+        <option value="JUnit4 Test Class" />
       </list>
     </option>
   </component>
@@ -36,19 +45,22 @@
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
-    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="com.company.Image" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers" value="true" />
     <property name="create.test.in.the.same.root" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
       <recent name="com.company" />
     </key>
     <key name="CreateTestDialog.Recents.Supers">
+      <recent name="com.company.Image" />
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ImageTest">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.company.Main" />
       <module name="task 1" />
@@ -60,7 +72,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ImageTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="BmpImageTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="task 1" />
       <extension name="coverage">
         <pattern>
@@ -69,24 +81,8 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.company" />
-      <option name="MAIN_CLASS_NAME" value="com.company.ImageTest" />
+      <option name="MAIN_CLASS_NAME" value="com.company.BmpImageTest" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ImageTest.averaging" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="task 1" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.company.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.company" />
-      <option name="MAIN_CLASS_NAME" value="com.company.ImageTest" />
-      <option name="METHOD_NAME" value="averaging" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -95,7 +91,7 @@
       <module name="task 1" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.company.*" />
+          <option name="PATTERN" value="com.company.ImageTest" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -108,15 +104,13 @@
     </configuration>
     <list>
       <item itemvalue="Application.Main" />
-      <item itemvalue="JUnit.ImageTest" />
-      <item itemvalue="JUnit.ImageTest.averaging" />
       <item itemvalue="JUnit.MainTest" />
+      <item itemvalue="JUnit.BmpImageTest" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ImageTest" />
+        <item itemvalue="JUnit.BmpImageTest" />
         <item itemvalue="JUnit.MainTest" />
-        <item itemvalue="JUnit.ImageTest.averaging" />
       </list>
     </recent_temporary>
   </component>
@@ -134,42 +128,58 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="414" y="207" width="1139" height="698" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586682669233">
+    <state x="414" y="207" width="1270" height="698" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587996164591">
       <screen x="0" y="35" width="1920" height="1045" />
     </state>
-    <state x="414" y="207" width="1139" height="698" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.35.1920.1045@0.35.1920.1045" timestamp="1586682669233" />
-    <state width="1862" height="274" key="GridCell.Tab.0.bottom" timestamp="1586683044999">
+    <state x="414" y="207" width="1270" height="698" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.35.1920.1045@0.35.1920.1045" timestamp="1587996164591" />
+    <state x="721" y="194" width="468" height="726" key="#com.intellij.ide.util.MemberChooser" timestamp="1587154576502">
       <screen x="0" y="35" width="1920" height="1045" />
     </state>
-    <state width="1862" height="274" key="GridCell.Tab.0.bottom/0.35.1920.1045@0.35.1920.1045" timestamp="1586683044999" />
-    <state width="1862" height="274" key="GridCell.Tab.0.center" timestamp="1586683044997">
+    <state x="721" y="194" width="468" height="726" key="#com.intellij.ide.util.MemberChooser/0.35.1920.1045@0.35.1920.1045" timestamp="1587154576502" />
+    <state x="622" y="301" width="656" height="514" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1587994645413">
       <screen x="0" y="35" width="1920" height="1045" />
     </state>
-    <state width="1862" height="274" key="GridCell.Tab.0.center/0.35.1920.1045@0.35.1920.1045" timestamp="1586683044997" />
-    <state width="1862" height="274" key="GridCell.Tab.0.left" timestamp="1586683044997">
+    <state x="622" y="301" width="656" height="514" key="#com.intellij.ide.util.TreeClassChooserDialog/0.35.1920.1045@0.35.1920.1045" timestamp="1587994645413" />
+    <state x="498" y="35" width="913" height="1045" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1587993784416">
       <screen x="0" y="35" width="1920" height="1045" />
     </state>
-    <state width="1862" height="274" key="GridCell.Tab.0.left/0.35.1920.1045@0.35.1920.1045" timestamp="1586683044997" />
-    <state width="1862" height="274" key="GridCell.Tab.0.right" timestamp="1586683044998">
+    <state x="498" y="35" width="913" height="1045" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.35.1920.1045@0.35.1920.1045" timestamp="1587993784416" />
+    <state width="1862" height="268" key="GridCell.Tab.0.bottom" timestamp="1587995777151">
       <screen x="0" y="35" width="1920" height="1045" />
     </state>
-    <state width="1862" height="274" key="GridCell.Tab.0.right/0.35.1920.1045@0.35.1920.1045" timestamp="1586683044998" />
+    <state width="1862" height="268" key="GridCell.Tab.0.bottom/0.35.1920.1045@0.35.1920.1045" timestamp="1587995777151" />
+    <state width="1862" height="268" key="GridCell.Tab.0.center" timestamp="1587995777151">
+      <screen x="0" y="35" width="1920" height="1045" />
+    </state>
+    <state width="1862" height="268" key="GridCell.Tab.0.center/0.35.1920.1045@0.35.1920.1045" timestamp="1587995777151" />
+    <state width="1862" height="268" key="GridCell.Tab.0.left" timestamp="1587995777150">
+      <screen x="0" y="35" width="1920" height="1045" />
+    </state>
+    <state width="1862" height="268" key="GridCell.Tab.0.left/0.35.1920.1045@0.35.1920.1045" timestamp="1587995777150" />
+    <state width="1862" height="268" key="GridCell.Tab.0.right" timestamp="1587995777151">
+      <screen x="0" y="35" width="1920" height="1045" />
+    </state>
+    <state width="1862" height="268" key="GridCell.Tab.0.right/0.35.1920.1045@0.35.1920.1045" timestamp="1587995777151" />
     <state x="523" y="432" width="863" height="250" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1585817333814">
       <screen x="0" y="35" width="1920" height="1045" />
     </state>
     <state x="523" y="432" width="863" height="250" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.35.1920.1045@0.35.1920.1045" timestamp="1585817333814" />
-    <state x="517" y="88" width="876" height="939" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1585736663235">
+    <state x="517" y="88" width="876" height="939" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1587995571592">
       <screen x="0" y="35" width="1920" height="1045" />
     </state>
-    <state x="517" y="88" width="876" height="939" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.35.1920.1045@0.35.1920.1045" timestamp="1585736663235" />
-    <state x="682" y="197" width="545" height="720" key="com.intellij.testIntegration.createTest.CreateTestDialog" timestamp="1586277530089">
+    <state x="517" y="88" width="876" height="939" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.35.1920.1045@0.35.1920.1045" timestamp="1587995571592" />
+    <state x="673" y="452" width="564" height="211" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1587992998218">
       <screen x="0" y="35" width="1920" height="1045" />
     </state>
-    <state x="682" y="197" width="545" height="720" key="com.intellij.testIntegration.createTest.CreateTestDialog/0.35.1920.1045@0.35.1920.1045" timestamp="1586277530089" />
-    <state width="1008" height="506" key="javadoc.popup" timestamp="1586682617207">
+    <state x="673" y="452" width="564" height="211" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.35.1920.1045@0.35.1920.1045" timestamp="1587992998218" />
+    <state x="682" y="197" width="545" height="720" key="com.intellij.testIntegration.createTest.CreateTestDialog" timestamp="1587994667375">
       <screen x="0" y="35" width="1920" height="1045" />
     </state>
-    <state width="1008" height="506" key="javadoc.popup/0.35.1920.1045@0.35.1920.1045" timestamp="1586682617207" />
+    <state x="682" y="197" width="545" height="720" key="com.intellij.testIntegration.createTest.CreateTestDialog/0.35.1920.1045@0.35.1920.1045" timestamp="1587994667375" />
+    <state width="1008" height="506" key="javadoc.popup" timestamp="1587146843934">
+      <screen x="0" y="35" width="1920" height="1045" />
+    </state>
+    <state width="1008" height="506" key="javadoc.popup/0.35.1920.1045@0.35.1920.1045" timestamp="1587146843934" />
     <state x="36" y="59" width="1838" height="997" key="new project wizard" timestamp="1585817250464">
       <screen x="0" y="35" width="1920" height="1045" />
     </state>

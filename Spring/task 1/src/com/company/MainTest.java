@@ -17,7 +17,7 @@ public class MainTest {
         try {
             Main.main(testKit1);
         } catch (Exception e) {
-            if (!(e instanceof IIOException || e instanceof NullPointerException))
+            if (e.getMessage() != "Not a BMP file" && e.getMessage() != "Error: the image in not 32-bit and not 24-bit.\nTry a different image!" && e.getMessage() != "No such input file")
                 throw e;
         }
 

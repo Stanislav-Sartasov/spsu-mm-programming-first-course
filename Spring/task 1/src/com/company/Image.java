@@ -3,10 +3,16 @@ package com.company;
 import java.awt.image.BufferedImage;
 import java.awt.Color;
 
-public class Image {
-    private int[] input;
-    private int height;
-    private int width;
+public abstract class Image {
+    protected int[] input;
+    protected int height;
+    protected int width;
+
+    public Image() {
+        height = 0;
+        width = 0;
+        input = new int[0];
+    }
 
     public int getHeight() {
         return height;
@@ -20,23 +26,23 @@ public class Image {
         return input[(i * width + j) * 3 + k];
     }
 
-    public Image (BufferedImage image) {
+    public Image(BufferedImage image) {
         height = image.getHeight();
         width = image.getWidth();
         input = new int[3 * height * width];
         for (int x = 0; x < height; x++) {
             for (int y = 0; y < width; y++) {
                 Color rgb = new Color(image.getRGB(y, x));
-                input[(x * width + y) * 3] = rgb.getRed();
-                input[(x * width + y) * 3 + 1] = rgb.getGreen();
-                input[(x * width + y) * 3 + 2] = rgb.getBlue();
+                input[(x * width + y) * 3] = (byte) rgb.getRed();
+                input[(x * width + y) * 3 + 1] = (byte) rgb.getGreen();
+                input[(x * width + y) * 3 + 2] = (byte) rgb.getBlue();
             }
         }
     }
-
+    
     private final double sigma = 0.6;
 
-    private void add_filter(int size, boolean fl, double[] mask) {
+    private void addFilter(int size, boolean fl, double[] mask) {
         int[] output = new int[3 * height * width];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -71,7 +77,7 @@ public class Image {
         double[] mask = new double[size * size];
         for (int i = 0; i < size * size ; i++)
             mask[i] = 1;
-        add_filter( size, true, mask);
+        addFilter( size, true, mask);
     }
 
     public void gauss(int size) {
@@ -79,7 +85,7 @@ public class Image {
         for (int x = 0; x < size; x++)
             for (int y = 0; y < size; y++)
                 mask[x * size + y] = 1.0 / Math.sqrt(2 * Math.PI * sigma) * Math.exp(-(x * x + y * y) / (2 * sigma * sigma));
-        add_filter(size, true, mask);
+        addFilter(size, true, mask);
     }
 
     public void sobelX(int size) {
@@ -87,7 +93,7 @@ public class Image {
         double[] mask = new double[size * size];
         for (int i = 0; i < size * size; i++)
             mask[i] = a[i];
-        add_filter(size, false, mask);
+        addFilter(size, false, mask);
     }
 
     public void sobelY(int size) {
@@ -95,7 +101,7 @@ public class Image {
         double[] mask = new double[size * size];
         for (int i = 0; i < size * size; i++)
             mask[i] = a[i];
-        add_filter(size, false, mask);
+        addFilter(size, false, mask);
     }
 
     public void toGrey() {

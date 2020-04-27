@@ -1,15 +1,5 @@
 package com.company;
 
-import javax.imageio.IIOException;
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import static java.lang.System.exit;
-import static java.lang.System.out;
-
 public class Main {
 
     private static boolean checkFilterName(String name) {
@@ -32,9 +22,7 @@ public class Main {
             throw new Exception("Filter name is incorrect!\n");
         }
 
-        File file = new File(pathInput);
-        BufferedImage image = ImageIO.read(file);
-        Image result = new Image(image);
+        BmpImage result = new BmpImage(pathInput);
 
         switch (filterName) {
             case "Averaging3" ->  result.averaging(3);
@@ -46,20 +34,8 @@ public class Main {
             case "ToGrey" ->  result.toGrey();
         }
 
-        BufferedImage outputImage = new BufferedImage(result.getWidth(), result.getHeight(), image.getType());
-        for (int i = 0; i < result.getHeight(); i++) {
-            for (int j = 0; j < result.getWidth(); j++) {
-                Color newColor = new Color(result.getInput(i, j, 0), result.getInput(i, j, 1), result.getInput(i, j, 2));
-                outputImage.setRGB(j, i, newColor.getRGB());
-            }
-        }
-        File output = new File(pathOutput);
-        try {
-            ImageIO.write(outputImage, "bmp", output);
-            System.out.println("Successfully!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        result.write(pathOutput);
+        System.out.println("Successfully!");
     }
 }
 
