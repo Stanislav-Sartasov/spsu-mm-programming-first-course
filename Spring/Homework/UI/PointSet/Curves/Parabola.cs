@@ -6,7 +6,6 @@ namespace DrawingCurves
 {
     public class Parabola : PointSet
     {
-        // y^2 = 2 * p * x
         public float P { get; }
 
         public double ClientWidth { get; }
