@@ -28,7 +28,7 @@ namespace Plugins
             var type = typeof(ISomeInterface<string>); //information about the desired interface
             var finder = new LibraryFinder(type, CorrectInput());
 
-            IEnumerable<ISomeInterface<string>> implementingСlasses = finder.GetImplementingСlasses().Select(obj => (ISomeInterface<string>)obj);
+            IEnumerable<ISomeInterface<string>> implementingСlasses = finder.GetImplementingClasses().Select(obj => (ISomeInterface<string>)obj);
 
             if (implementingСlasses != null)
             {

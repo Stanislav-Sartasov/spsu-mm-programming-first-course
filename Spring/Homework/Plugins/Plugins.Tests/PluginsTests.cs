@@ -28,8 +28,8 @@ namespace Plugins.Tests
                 intType = typeof(ISomeInterface<int>);
                 strFinder = new LibraryFinder(strType, path);
                 intFinder = new LibraryFinder(intType, path);
-                implementingStrClasses = strFinder.GetImplementingÑlasses().Select(obj => (ISomeInterface<string>)obj);
-                implementingIntClasses = intFinder.GetImplementingÑlasses().Select(obj => (ISomeInterface<int>)obj);
+                implementingStrClasses = strFinder.GetImplementingClasses().Select(obj => (ISomeInterface<string>)obj);
+                implementingIntClasses = intFinder.GetImplementingClasses().Select(obj => (ISomeInterface<int>)obj);
             }
             catch
             {

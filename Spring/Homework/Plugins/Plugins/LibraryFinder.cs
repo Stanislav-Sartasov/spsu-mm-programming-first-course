@@ -10,7 +10,7 @@ namespace Plugins
 {
     public class LibraryFinder
     {
-        private IEnumerable<object> implementingСlasses = null;
+        private IEnumerable<object> implementingClasses = null;
         private string path;
         private Type desiredType;
 
@@ -20,11 +20,11 @@ namespace Plugins
             this.desiredType = desiredType;
         }
 
-        private void LoadImplementingСlasses()
+        private void LoadImplementingClasses()
         {
             try
             {
-                implementingСlasses = from lib in Directory.GetFiles(path, "*.dll", SearchOption.AllDirectories)
+                implementingClasses = from lib in Directory.GetFiles(path, "*.dll", SearchOption.AllDirectories)
                                       from type in Assembly.LoadFrom(lib).GetExportedTypes()
                                       where type.GetInterfaces().Contains(desiredType)
                                       select type.GetConstructor(new Type[] { }).Invoke(new object[] { });
@@ -49,10 +49,10 @@ namespace Plugins
             this.path = path;
         }
 
-        public IEnumerable<object> GetImplementingСlasses()
+        public IEnumerable<object> GetImplementingClasses()
         {
-            LoadImplementingСlasses();
-            return implementingСlasses;
+            LoadImplementingClasses();
+            return implementingClasses;
         }
     }
 }
