@@ -1,13 +1,14 @@
-package com.company;
+package com.company.abstractTank;
 
-abstract public class tank{
-    private int yearOfIssue;
-    private int numberOfTowers;
-    private int numberOfCrewMembers;
-    private double weight;
-    private String country;
-    private String model;
-    private String weightCategory;
+
+abstract public class Tank {
+    private final int yearOfIssue;
+    private final int numberOfTowers;
+    private final int numberOfCrewMembers;
+    private final double weight;
+    private final String country;
+    private final String model;
+    private final String weightCategory;
 
     public int getYearOfIssue() {
         return yearOfIssue;
@@ -20,8 +21,9 @@ abstract public class tank{
     public int getNumberOfCrewMembers() {
         return numberOfCrewMembers;
     }
+
     public double getWeight() {
-        return getWeight();
+        return weight;
     }
 
     public  String getCountry() {
@@ -36,7 +38,7 @@ abstract public class tank{
         return weightCategory;
     }
 
-    public tank (int year, int towers, int crew, double w,  String nameOfCountry, String name, String category) {
+    public Tank(int year, int towers, int crew, double w, String nameOfCountry, String name, String category) {
         yearOfIssue = year;
         numberOfTowers = towers;
         numberOfCrewMembers = crew;
@@ -57,4 +59,3 @@ abstract public class tank{
         return result;
     }
 }
-

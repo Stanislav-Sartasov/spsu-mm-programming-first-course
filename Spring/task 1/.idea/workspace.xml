@@ -3,17 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5ad75b41-4e54-461b-8de4-238355c37786" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pics/input.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/pics/input.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pics/outputAveraging3.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/pics/outputAveraging3.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pics/outputAveraging5.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/pics/outputAveraging5.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pics/outputGauss3.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/pics/outputGauss3.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pics/outputSobelX.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/pics/outputSobelX.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pics/outputSobelY.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/pics/outputSobelY.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pics/outputToGrey.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/pics/outputToGrey.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Image.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Image.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/ImageTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/MainTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/MainTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,22 +133,22 @@
       <screen x="0" y="35" width="1920" height="1045" />
     </state>
     <state x="498" y="35" width="913" height="1045" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.35.1920.1045@0.35.1920.1045" timestamp="1587993784416" />
-    <state width="1862" height="268" key="GridCell.Tab.0.bottom" timestamp="1587995777151">
+    <state width="1862" height="268" key="GridCell.Tab.0.bottom" timestamp="1587996617937">
       <screen x="0" y="35" width="1920" height="1045" />
     </state>
-    <state width="1862" height="268" key="GridCell.Tab.0.bottom/0.35.1920.1045@0.35.1920.1045" timestamp="1587995777151" />
-    <state width="1862" height="268" key="GridCell.Tab.0.center" timestamp="1587995777151">
+    <state width="1862" height="268" key="GridCell.Tab.0.bottom/0.35.1920.1045@0.35.1920.1045" timestamp="1587996617937" />
+    <state width="1862" height="268" key="GridCell.Tab.0.center" timestamp="1587996617935">
       <screen x="0" y="35" width="1920" height="1045" />
     </state>
-    <state width="1862" height="268" key="GridCell.Tab.0.center/0.35.1920.1045@0.35.1920.1045" timestamp="1587995777151" />
-    <state width="1862" height="268" key="GridCell.Tab.0.left" timestamp="1587995777150">
+    <state width="1862" height="268" key="GridCell.Tab.0.center/0.35.1920.1045@0.35.1920.1045" timestamp="1587996617935" />
+    <state width="1862" height="268" key="GridCell.Tab.0.left" timestamp="1587996617933">
       <screen x="0" y="35" width="1920" height="1045" />
     </state>
-    <state width="1862" height="268" key="GridCell.Tab.0.left/0.35.1920.1045@0.35.1920.1045" timestamp="1587995777150" />
-    <state width="1862" height="268" key="GridCell.Tab.0.right" timestamp="1587995777151">
+    <state width="1862" height="268" key="GridCell.Tab.0.left/0.35.1920.1045@0.35.1920.1045" timestamp="1587996617933" />
+    <state width="1862" height="268" key="GridCell.Tab.0.right" timestamp="1587996617935">
       <screen x="0" y="35" width="1920" height="1045" />
     </state>
-    <state width="1862" height="268" key="GridCell.Tab.0.right/0.35.1920.1045@0.35.1920.1045" timestamp="1587995777151" />
+    <state width="1862" height="268" key="GridCell.Tab.0.right/0.35.1920.1045@0.35.1920.1045" timestamp="1587996617935" />
     <state x="523" y="432" width="863" height="250" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1585817333814">
       <screen x="0" y="35" width="1920" height="1045" />
     </state>

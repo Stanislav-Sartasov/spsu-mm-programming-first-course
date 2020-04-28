@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/task 2.iml" filepath="$PROJECT_DIR$/task 2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Mark V/Mark V.iml" filepath="$PROJECT_DIR$/Mark V/Mark V.iml" />
+      <module fileurl="file://$PROJECT_DIR$/abstract tank/abstract tank.iml" filepath="$PROJECT_DIR$/abstract tank/abstract tank.iml" />
+      <module fileurl="file://$PROJECT_DIR$/program/program.iml" filepath="$PROJECT_DIR$/program/program.iml" />
+      <module fileurl="file://$PROJECT_DIR$/t-34/t-34.iml" filepath="$PROJECT_DIR$/t-34/t-34.iml" />
+      <module fileurl="file://$PROJECT_DIR$/task2.iml" filepath="$PROJECT_DIR$/task2.iml" />
     </modules>
   </component>
 </project>

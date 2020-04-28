@@ -1,12 +1,13 @@
-package com.company;
+package com.company.t34;
 
-public class T_34 extends tank {
-    public T_34(int year) {
+import com.company.abstractTank.Tank;
+
+public class T34 extends Tank {
+    public T34(int year) {
         super(year, 1, 4,27.5, "USSR", "T-34", "medium tank");
     }
 
-    public T_34() {
+    public T34() {
         super(1940, 1, 4, 27.5, "USSR", "T-34", "medium tank");
     }
 }
-

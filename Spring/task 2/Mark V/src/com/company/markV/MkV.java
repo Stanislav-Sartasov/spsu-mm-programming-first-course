@@ -1,7 +1,9 @@
-package com.company;
+package com.company.markV;
 
-public class MkV extends tank {
-    private String modification;
+import com.company.abstractTank.Tank;
+
+public class MkV extends Tank {
+    private final String modification;
 
     public String getModification() {
         return modification;
