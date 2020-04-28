@@ -42,7 +42,7 @@ namespace DrawingCurves
                 thirdPointSetSet.Add(point);
                 point.Y *= -1;
                 fourthPointSet.Add(point);
-                x += 1f / pointsPerSegment;
+                x += 1f / PixelsPerSegment;
             }
             Points.Add(firstPointSet.ToArray());
             Points.Add(secondPointSetSet.ToArray());

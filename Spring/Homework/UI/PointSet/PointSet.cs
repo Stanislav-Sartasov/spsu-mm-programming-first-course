@@ -9,17 +9,17 @@ namespace DrawingCurves
     {
         public string Name { get; }
         public List<PointF[]> Points { get; protected set; }
-        protected int pointsPerSegment;
+        private int pixelsPerSegment;
         public int PixelsPerSegment
         {
             get
             {
-                return pointsPerSegment;
+                return pixelsPerSegment;
             }
             protected set
             {
                 if (value > 0)
-                    pointsPerSegment = value;
+                    pixelsPerSegment = value;
                 else
                     throw new ArgumentException();
             }

@@ -34,7 +34,7 @@ namespace DrawingCurves
                 pointSet.Add(point);
                 point.Y *= -1;
                 negPointSetSet.Add(point);
-                x += 1f / pointsPerSegment;
+                x += 1f / PixelsPerSegment;
             }
             var endPoint = GetPoint(A);
             pointSet.Add(endPoint);
