@@ -34,7 +34,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(894, 605);
+            this.ClientSize = new System.Drawing.Size(800, 600);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "CurveLinesForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
