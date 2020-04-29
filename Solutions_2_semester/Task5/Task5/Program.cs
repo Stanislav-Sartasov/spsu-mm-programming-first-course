@@ -13,14 +13,6 @@ namespace Task5
     }
     class Program
     {
-        public static void Main()
-        {
-            long timeFromStart = 0;
-            Timer timer = new Timer(1000);
-            timer.Elapsed += (source, e) => timeFromStart++;
-            timer.Start();
-            for (; ; )
-                Console.WriteLine(DateTime.Now.Millisecond);
-        }
+        public static void Main() { }
     }
 }
