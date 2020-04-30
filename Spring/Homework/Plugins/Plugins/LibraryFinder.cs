@@ -17,7 +17,7 @@ namespace Plugins
         public LibraryFinder(Type desiredType, string path)
         {
             SetPath(path);
-            this.desiredType = desiredType;
+            SetDesiredType(desiredType);
         }
 
         private void LoadImplementingClasses()
@@ -37,15 +37,15 @@ namespace Plugins
 
         public void SetDesiredType(Type desiredType)
         {
-            if (!Directory.Exists(path))
-            {
-                throw new Exception("This directory doesn't exist!");
-            }
             this.desiredType = desiredType;
         }
 
         public void SetPath(string path)
         {
+            if (!Directory.Exists(path))
+            {
+                throw new Exception("This directory doesn't exist!");
+            }
             this.path = path;
         }
 
