@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Interfaces;
 using GetLib;
 using System.IO;
@@ -12,7 +11,7 @@ namespace Task6
         public static void Main() 
         {
             string way = Directory.GetCurrentDirectory();
-            List<IFibonacci> objects = GetLib<IFibonacci>.FromDirectory(way);
+            List<IFibonacci> objects = GetLibMethod<IFibonacci>.FromDirectory(way);
             int num = 42;
 
             Console.WriteLine("Libs directory: " + way + "\n");

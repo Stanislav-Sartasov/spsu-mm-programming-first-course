@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace GetLib
 {
-    public static class GetLib<currentInterface>
+    public static class GetLibMethod<currentInterface>
     {
         public static List<currentInterface> FromDirectory(string fullFileName)
         {

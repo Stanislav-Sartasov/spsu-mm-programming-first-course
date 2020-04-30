@@ -3,7 +3,6 @@ using GetLib;
 using Interfaces;
 using System.IO;
 using System.Collections.Generic;
-using System;
 
 namespace Task6Tests
 {
@@ -25,7 +24,7 @@ namespace Task6Tests
         public void MainTest()
         {
             string way = Directory.GetCurrentDirectory();
-            List<IFibonacci> objectList = GetLib<IFibonacci>.FromDirectory(way);
+            List<IFibonacci> objectList = GetLibMethod<IFibonacci>.FromDirectory(way);
 
             Assert.IsTrue(objectList != null);
             Assert.IsTrue(objectList.Count == 2);
