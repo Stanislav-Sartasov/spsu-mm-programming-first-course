@@ -2,6 +2,8 @@ package com.company;
 
 import com.company.binaryTree.Node;
 
+import java.lang.ref.WeakReference;
+
 public class Main {
 
     public static void main(String[] args) throws Exception {

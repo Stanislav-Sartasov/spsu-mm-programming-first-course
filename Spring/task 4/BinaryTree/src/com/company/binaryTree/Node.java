@@ -26,26 +26,31 @@ public class Node<T> {
         value = null;
     }
 
-
-    public Node(int x, T obj, Node<T> l, Node<T> r) {
+    public Node(int x, T obj) {
         key = x;
         value = obj;
-        left = l;
-        right = r;
+        left = null;
+        right = null;
     }
 
     public void addNode(int x, T obj) throws Exception {
         if (value == null) {
             key = x;
             value = obj;
-            left = new Node<>();
-            right = new Node<>();
+            left = null;
+            right = null;
             return;
         }
         if (key > x) {
-            left.addNode(x, obj);
+            if (left != null)
+                left.addNode(x, obj);
+            else
+                left = new Node<>(x, obj);
         } else if (key < x) {
-            right.addNode(x, obj);
+            if (right != null)
+                right.addNode(x, obj);
+            else
+                right = new Node<>(x, obj);
         } else {
             throw new Exception("Object with key " + key + " already exists!");
         }
@@ -57,40 +62,48 @@ public class Node<T> {
         }
         if (key == x)
             return value;
-        if (key > x)
-            return left.findNode(x);
-        return right.findNode(x);
+        if (key > x) {
+            if (left != null)
+                return left.findNode(x);
+            else
+                return null;
+        }
+        if (right != null)
+            return right.findNode(x);
+        return null;
     }
 
     public void deleteNode(int x) {
-        this.deleteNode(x, new Node<>());
+        this.deleteNode(x, null);
     }
 
     private void deleteNode(int x, Node<T> parent) {
         if (value == null)
             return;
         if (key > x) {
-            this.left.deleteNode(x, this);
+            if (left != null)
+                this.left.deleteNode(x, this);
             return;
         }
         if (key < x) {
-            this.right.deleteNode(x, this);
-             return;
+            if (right != null)
+                this.right.deleteNode(x, this);
+            return;
         }
 
-        if (left.getValue() == null && right.getValue() == null) { // нет детей
-            if (parent.getValue() == null) {
+        if (left == null && right == null) { // нет детей
+            if (parent == null) {
                 return;
             }
             if (parent.getKey() > key)
-                parent.left = new Node<>();
+                parent.left = null;
             else {
-                parent.right = new Node<>();
+                parent.right = null;
             }
             return;
         }
 
-        if (left.getValue() == null) { // только правый ребенок
+        if (left == null) { // только правый ребенок
             if (parent.getKey() > key)
                 parent.left = right;
             else {
@@ -99,7 +112,7 @@ public class Node<T> {
             return;
         }
 
-        if (right.getValue() == null) { // только левый ребенок
+        if (right == null) { // только левый ребенок
             if (parent.getKey() > key)
                 parent.left = left;
             else {
@@ -107,10 +120,11 @@ public class Node<T> {
             }
             return;
         }
+
         // два ребенка
-        parent = new Node<>(key, value, left, right);
+        parent = this;
         Node<T> node = parent.right;
-        while (node.left.getValue() != null) { // найти самую левую правую вершину
+        while (node.left != null) { // найти самую левую правую вершину
             parent = node;
             node = node.left;
         }

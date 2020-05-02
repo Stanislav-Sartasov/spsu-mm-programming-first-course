@@ -8,7 +8,7 @@ import java.util.Objects;
 class NodeTest {
 
     static String dfs(Node<String> v) {
-        if (v.getValue() != null) {
+        if (v != null && v.getValue() != null) {
             String ans = v.getValue();
             String left = dfs(v.getLeft());
             String right = dfs(v.getRight());
