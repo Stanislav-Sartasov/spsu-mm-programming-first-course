@@ -8,7 +8,6 @@ using System.Windows.Forms;
 namespace WinForms
 {
 
-
 	static class Program
     {
         public static void Main()
