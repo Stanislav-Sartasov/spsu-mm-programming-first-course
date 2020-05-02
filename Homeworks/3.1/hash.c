@@ -1,22 +1,10 @@
 #include "hash.h"
 
-int* len;
+hashTable* hashRebalance(hashTable* oldTable);
 
 int hashGet(int key, int size)
 {
 	return (key % size);
-}
-
-listNode* createList(int headKey, int headData)
-{
-	listNode* head = (listNode*)malloc(sizeof(listNode));
-
-	head->key = headKey;
-	head->data = headData;
-	head->nextNode = NULL;
-	head->prevNode = NULL;
-
-	return head;
 }
 
 listNode* findNode(listNode* head, int key)
@@ -59,54 +47,69 @@ void deleteNode(listNode** head, int key)
 	}
 }
 
-hashTable* hashCreate()
+hashTable* hashCreate(int startSize)
 {
 	hashTable* table = (hashTable*)malloc(sizeof(hashTable));
 
-	table->size = 20;
-	table->lst = (listNode**)malloc(sizeof(listNode*) * table->size);
-
-	len = (int*)calloc(table->size, sizeof(int));
+	table->size = startSize;
+	table->list = (listNode**)malloc(sizeof(listNode*) * table->size);
+	table->maxLength = 0;
+	table->maxLengthIndex = -1;
 
 	for (int i = 0; i < table->size; i++)
 	{
-		table->lst[i] = NULL;
+		table->list[i] = NULL;
 	}
 	return table;
-}
-
-void hashHeadInsert(listNode** head, int key, int data)
-{
-	listNode* newNode = (listNode*)malloc(sizeof(listNode));
-
-	newNode->key = key;
-	newNode->data = data;
-	newNode->nextNode = (*head);
-	newNode->prevNode = NULL;
-
-	if ((*head) != NULL)
-	{
-		(*head)->prevNode = newNode;
-	}
-	(*head) = newNode;
 }
 
 hashTable* hashInsert(hashTable* table, int key, int data)
 {
 	int hash = hashGet(key, table->size);
 
-	if (table->lst[hash] == NULL)
+	int currLength = 1;
+
+	if (table->list[hash] == NULL)
 	{
-		table->lst[hash] = createList(key, data);
+		listNode* head = (listNode*)malloc(sizeof(listNode));
+
+		head->key = key;
+		head->data = data;
+		head->nextNode = NULL;
+		head->prevNode = NULL;
+
+		table->list[hash] = head;
 	}
 	else
 	{
-		hashHeadInsert(&table->lst[hash], key, data);
+		listNode* newNode = (listNode*)malloc(sizeof(listNode));
+
+		newNode->key = key;
+		newNode->data = data;
+		newNode->nextNode = table->list[hash];
+		newNode->prevNode = NULL;
+
+		table->list[hash]->prevNode = newNode;
+		table->list[hash] = newNode;
+
+		listNode* p = table->list[hash];
+
+		while (p->nextNode != NULL)
+		{
+			p = p->nextNode;
+			currLength++;
+		}
+
+		p = NULL;
 	}
 
-	len[hash]++;
+	if (currLength > table->maxLength)
+	{
+		table->maxLength = currLength;
+		table->maxLengthIndex = hash;
+	}
 
-	while (len[hash] > table->size)
+	while (table->maxLength >= table->size)
 	{
 		table = hashRebalance(table);
 	}
@@ -117,7 +120,7 @@ int searchKey(hashTable* table, int key)
 {
 	int hash = hashGet(key, table->size);
 
-	listNode* node = findNode(table->lst[hash], key);
+	listNode* node = findNode(table->list[hash], key);
 
 	if (node != NULL)
 	{
@@ -126,65 +129,50 @@ int searchKey(hashTable* table, int key)
 	return 0;
 }
 
-void hashDelete(hashTable* table, int key, int data)
+void hashDelete(hashTable* table, int key)
 {
 	int hash = hashGet(key, table->size);
 
-	if (findNode(table->lst[hash], key) != NULL)
+	if (findNode(table->list[hash], key) != NULL)
 	{
-		deleteNode(&table->lst[hash], key);
+		deleteNode(&table->list[hash], key);
+	}
+
+	if (hash == table->maxLengthIndex)
+	{
+		table->maxLength--;
 	}
 }
 
 hashTable* hashRebalance(hashTable* oldTable)
 {
-	hashTable* table = (hashTable*)malloc(sizeof(hashTable));
-
-	table->size = 2 * oldTable->size;
-	table->lst = (listNode**)malloc(sizeof(listNode*) * table->size);
-
-	for (int i = 0; i < table->size; i++)
-	{
-		table->lst[i] = NULL;
-	}
-
-	free(len);
-	len = (int*)calloc(table->size, sizeof(int));
+	hashTable* newTable = hashCreate(2 * oldTable->size);
 
 	for (int i = 0; i < oldTable->size; i++)
 	{
-		listNode* head = oldTable->lst[i];
+		listNode* head = oldTable->list[i];
 		while (head != NULL)
 		{
-			int newHash = hashGet(head->key, table->size);
-
-			if (table->lst[newHash] == NULL)
-			{
-				table->lst[newHash] = createList(head->key, head->data);
-			}
-			else
-			{
-				hashHeadInsert(&table->lst[newHash], head->key, head->data);
-			}
-
-			len[newHash]++;
+			newTable = hashInsert(newTable, head->key, head->data);
 
 			deleteNode(&head, head->key);
 		}
 	}
 
 	free(oldTable);
-	return table;
+	oldTable = NULL;
+
+	return newTable;
 }
 
 void hashPrint(hashTable* table)
 {
 	for (int i = 0; i < table->size; i++)
 	{
-		while ((table->lst[i]) != NULL)
+		while ((table->list[i]) != NULL)
 		{
-			printf("%d ", table->lst[i]->key);
-			table->lst[i] = table->lst[i]->nextNode;
+			printf("%d ", table->list[i]->key);
+			table->list[i] = table->list[i]->nextNode;
 		}
 		printf("\n");
 	}
@@ -194,7 +182,7 @@ void hashFree(hashTable* table)
 {
 	for (int i = 0; i < table->size; i++)
 	{
-		listNode* head = table->lst[i];
+		listNode* head = table->list[i];
 
 		while (head != NULL)
 		{

@@ -5,22 +5,23 @@
 
 int main()
 {
-	hashTable* table = hashCreate();
+	int startSize = 20;
+	hashTable* table = hashCreate(startSize);
 
-	for (int i = 0; i < 1500; i++)
+	for (int i = 0; i < 1500; i++) 
 	{
 		table = hashInsert(table, i, i);
 	}
 
 	for (int i = 50; i < 135; i++)
 	{
-		hashDelete(table, i, i);
+		hashDelete(table, i);
 	}
 
 	hashPrint(table);
 
 	int num = 60;
-	if (searchKey(table, num) == 1)
+	if (searchKey(table, num))
 	{
 		printf("The element with a key %d is in a hash table\n", num);
 	}

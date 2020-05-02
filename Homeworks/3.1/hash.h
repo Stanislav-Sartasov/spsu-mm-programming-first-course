@@ -15,20 +15,20 @@ typedef struct node listNode;
 struct table
 {
 	int size;
-	listNode** lst;
+	int maxLength;
+	int maxLengthIndex;
+	listNode** list;
 };
 
 typedef struct table hashTable;
 
-hashTable* hashCreate();
+hashTable* hashCreate(int startSize);
 
 hashTable* hashInsert(hashTable* table, int key, int data);
 
-hashTable* hashRebalance(hashTable* oldTable);
-
 int searchKey(hashTable* table, int key);
 
-void hashDelete(hashTable* table, int key, int data);
+void hashDelete(hashTable* table, int key);
 
 void hashPrint(hashTable* table);
 
