@@ -7,8 +7,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace P2PChat.Tests
+namespace P2PChatLibrary.Tests
 {
+    [TestClass]
     class ChatSendingTests
     {
         [TestMethod]
