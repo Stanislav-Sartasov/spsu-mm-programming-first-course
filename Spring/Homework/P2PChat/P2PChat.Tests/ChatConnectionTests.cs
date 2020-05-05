@@ -5,82 +5,75 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Threading;
-
+using System.Text;
 
 namespace P2PChatLibrary.Tests
 {
     [TestClass]
     public class ChatConnectionTests
     {
-        [TestMethod]
-        public void CorrectUserInit()
+        List<List<UserInfo>> actual;
+        StringBuilder[] logs;
+       
+        [TestInitialize]
+        public void TestInit()
         {
-            var controller = new Mock<IChatController>();
-            controller.Setup(n => n.GetUsername()).Returns("name");
-            controller.Setup(p => p.GetLocalPort()).Returns(2000);
-            ChatUI chat = new ChatUI(controller.Object);
-            chat.UserInit();
-            var actualInfo = chat.GetLocalUserInfo();
-            Assert.AreEqual("name", actualInfo.Name);
-            Assert.AreEqual(ClientUdp.GetLocalIPAddress(), IPAddress.Parse(actualInfo.Address));
-            Assert.AreEqual(2000, actualInfo.Port);
-        }
+            logs = new StringBuilder[3];
+            actual = new List<List<UserInfo>>();
 
-
-        [TestMethod]
-        public void CorrectConnecting()
-        {
-            Task[] chatTasks = new Task[3];
+            Thread[] chatTasks = new Thread[3];
             ChatUI[] chats = new ChatUI[3];
-            var controller = new Mock<IChatController>();
-            var actual = new List<List<UserInfo>>();
-            var ts = new CancellationTokenSource[3];
+            Mock<IChatController>[] controllers = new Mock<IChatController>[3];
+            Mock<IChatController> mainController = new Mock<IChatController>();
 
             for (int i = 0; i < 3; i++)
             {
-                controller = new Mock<IChatController>();
-                controller.Setup(n => n.GetUsername()).Returns($"{i}");
-                controller.Setup(p => p.GetLocalPort()).Returns(2001 + i);
-                chats[i] = new ChatUI(controller.Object);
-                ts[i] = new CancellationTokenSource();
-                var ct = ts[i].Token;
-                chatTasks[i] = new Task(chats[i].Start, ct);
-                chatTasks[i].Start();
+                int y = i;
+                controllers[y] = new Mock<IChatController>();
+                controllers[y].Setup(n => n.GetUsername()).Returns($"{y}");
+                controllers[y].Setup(p => p.GetLocalPort()).Returns(2001 + y);
+                logs[i] = new StringBuilder();
+                chats[i] = new ChatUI(controllers[y].Object, s => logs[y].Append(s));
+                chatTasks[y] = new Thread(() => chats[y].Start());
+                chatTasks[y].Start();
             }
 
-            controller = new Mock<IChatController>();
-            controller.Setup(n => n.GetUsername()).Returns("name");
-            controller.Setup(p => p.GetLocalPort()).Returns(2000);
+            mainController = new Mock<IChatController>();
+            mainController.Setup(n => n.GetUsername()).Returns("name");
+            mainController.Setup(p => p.GetLocalPort()).Returns(2000);
             int iteration = 0;
-            controller.Setup(e => e.GetEndPoint())
+            mainController.Setup(e => e.GetEndPoint())
                 .Returns(() =>
                 {
                     return new IPEndPoint(ClientUdp.GetLocalIPAddress(), 2001 + (iteration++));
                 });
-            controller.Setup(m => m.GetMessage())
+            mainController.Setup(m => m.GetMessage())
                 .Returns(() =>
-            {
-                if (iteration < 3)
                 {
-                    Thread.Sleep(50);
-                    return "/connect";
-                }
-                else
-                {
-                    return "/exit";
-                }
-            });
-            ChatUI chat = new ChatUI(controller.Object);
+                    if (iteration < 3)
+                    {
+                        Thread.Sleep(50);
+                        return "/connect";
+                    }
+
+                    else if (iteration == 3)
+                    {
+                        iteration++;
+                        return "hi";
+                    }
+                    else
+                    {
+                        return "/exit";
+                    }
+                });
+            ChatUI chat = new ChatUI(mainController.Object);
             chat.Start();
             Thread.Sleep(50);
             actual.AddRange(chats.Select(c => c.GetConnectedUsers()));
-            for (int i = 0; i < 3; i++)
-                ts[i].Cancel();
-            foreach (var users in actual)
-            {
-                users.OrderByDescending(u => u.Port);
-            }
-
+        }
+        [TestMethod]
+        public void CorrectConnection()
+        {
             foreach (var (users1, users2) in from users1 in actual
                                              from users2 in actual
                                              select (users1, users2))
@@ -90,6 +83,13 @@ namespace P2PChatLibrary.Tests
                 {
                     Assert.IsTrue(users2.Contains(user));
                 }
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                string str = logs[i].ToString();
+                Assert.IsTrue(str.Contains("name: hi"));
+                Assert.IsTrue(str.Contains("name leaves us!"));
             }
         }
     }
