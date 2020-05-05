@@ -13,14 +13,9 @@ namespace Casino_Case
         }
         static void Main(string[] args)
         {
-             Table tr = new Table();
-            Game hz = new Game();
-
-
+            
             Menu menu = new Menu();
             menu.mainMenu();
-
-
 
         }
     }  
