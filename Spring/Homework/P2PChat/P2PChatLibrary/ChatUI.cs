@@ -31,11 +31,8 @@ namespace P2PChatLibrary
             IsWorking = true;
         }
 
-        public UserInfo GetLocalUserInfo()
-        {
-            return peer.LocalUser;
-        }
-
+        public UserInfo GetLocalUserInfo() => peer.LocalUser;
+     
         public List<UserInfo> GetConnectedUsers() => peer.GetConnectedUsers();
 
         public void Start()

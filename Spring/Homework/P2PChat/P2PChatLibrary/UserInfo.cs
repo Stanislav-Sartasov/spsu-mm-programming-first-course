@@ -23,7 +23,6 @@
         {
             if (Address != other.Address)
                 return false;
-
             return Port == other.Port;
         }
     }
