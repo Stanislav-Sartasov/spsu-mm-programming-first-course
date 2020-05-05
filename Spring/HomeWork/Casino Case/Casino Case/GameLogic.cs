@@ -6,143 +6,142 @@ namespace Casino_Case
     public class Game
     {
 
-        public Player player = new Player();
+        protected internal int balance;
+        protected internal int profit = 0;
+        protected internal int amountOfBets = 0;
+
         private Table table = new Table();
-        public void setBalance(int m)
+        public void SetBalance(int m)
         {
-            player.balance = m;
+            this.balance = m;
         }
 
 
 
-        public void numberBet(int number, int bid)
+        public void NumberBet(int number, int bid)
         {
             if (number > 36 || number < 0)
                 throw new NotImplementedException("Entered wrong number");
-            if (bid > player.balance)
-                throw new NotImplementedException("You dont have enough money");
+            InputCheking(bid, this.balance);
 
-            player.amountOfBets++;
+            this.amountOfBets++;
             Random rnd = new Random();
             int value = rnd.Next(0, 36);
             Console.WriteLine("Winning number " + value);
             if (value == number)
             {
-                //bid *= 35;
-                Console.WriteLine("You've just won " + bid * 35);
-                player.balance += (bid) * 35;
-                player.profit += (bid) * 35;
+                OutputWin(bid, 35);
             }
             else
             {
-                Console.WriteLine("Didn't win :(");
-                player.balance -= bid;
-                player.profit -= bid;
+                OutputLose(bid);
             }
         }
 
-        public void colorBet(int color, int bid)
+        public void ColorBet(int color, int bid)
         {
             if (color < 0 || color > 1)
                 throw new NotImplementedException("Entered wrong color");
-            if (bid > player.balance)
-                throw new NotImplementedException("You dont have enough money");
-            if (bid <= 0)
-                throw new NotImplementedException("Bid can't be less than 1");
-            player.amountOfBets++;
+            InputCheking(bid, this.balance);
+
+            this.amountOfBets++;
             Random rnd = new Random();
             int value = rnd.Next(0, 36);
             Console.WriteLine("Winning number " + value);
-            if (table.wheel[value].color == color)
+            if (table.Wheel[value].Color == (Table.Colors) Convert.ToInt16(color))
             {
-                Console.WriteLine("You've just won " + bid);
-                player.balance += bid;
-                player.profit += bid;
+                OutputWin(bid, 1);
             }
             else
             {
-                Console.WriteLine("Didn't win :(");
-                player.balance -= bid;
-                player.profit -= bid;
+                OutputLose(bid);
             }
             Console.WriteLine();
         }
 
-        public void parityBet(int Parity, int bid)
+        public void ParityBet(int parity, int bid)
         {
-            if (Parity < 0 || Parity > 1)
+            if (parity < 0 || parity > 1)    // чет нечет
                 throw new NotImplementedException("Entered wrong parity");
-            if (bid > player.balance)
-                throw new NotImplementedException("You dont have enough money");
+            InputCheking(bid, this.balance);
 
-            player.amountOfBets++;
+            this.amountOfBets++;
             Random rnd = new Random();
             int value = rnd.Next(0, 36);
             Console.WriteLine("Winning number " + value);
-            if (value % 2 == Parity)
+            if (value % 2 == parity)
             {
-                //bid *= 35;
-                Console.WriteLine("You've just won " + bid);
-                player.balance += bid;
-                player.profit += bid;
+                OutputWin(bid, 1);
             }
             else
             {
-                Console.WriteLine("Didn't win :(");
-                player.balance -= bid;
-                player.profit -= bid;
+                OutputLose(bid);
             }
         }
 
-        public void dozonBet(int dozen, int bid)
+        public void DozonBet(int dozen, int bid)
         {
             if (dozen < 1 || dozen > 3)
                 throw new NotImplementedException("Entered wrong dozen");
-            if (bid > player.balance)
-                throw new NotImplementedException("You dont have enough money");
-            player.amountOfBets++;
+            InputCheking(bid, this.balance);
+
+            this.amountOfBets++;
             Random rnd = new Random();
             int value = rnd.Next(0, 36);
             Console.WriteLine("Winning number " + value);
-            if (table.wheel[value].dozen == dozen)
+            if (table.Wheel[value].Dozen == (Table.Dozens) Convert.ToInt16(dozen))
             {
-                Console.WriteLine("You've just won " + bid * 2);
-                player.balance += (bid) * 2;
-                player.profit += (bid) * 2;
+                OutputWin(bid, 2);
             }
             else
             {
-                Console.WriteLine("Didn't win :(");
-                player.balance -= bid;
-                player.profit -= bid;
+                OutputLose(bid);
             }
         }
 
-        public void columnBet(int column, int bid)
+        public void ColumnBet(int column, int bid)
         {
             if (column < 1 || column > 3)
                 throw new NotImplementedException("Entered wrong column");
-            if (bid > player.balance)
-                throw new NotImplementedException("You dont have enough money");
-            player.amountOfBets++;
+            InputCheking(bid, this.balance);
+
+            this.amountOfBets++;
             Random rnd = new Random();
             int value = rnd.Next(0, 36);
             Console.WriteLine("Winning number " + value);
-            if (table.wheel[value].column == column)
+            if (table.Wheel[value].Column == column)
             {
-                Console.WriteLine("You've just won " + bid * 2);
-                player.balance += (bid) * 2;
-                player.profit += (bid) * 2;
+                OutputWin(bid, 2);
             }
             else
             {
-                Console.WriteLine("Didn't win :(");
-                player.balance -= bid;
-                player.profit -= bid;
+                OutputLose(bid);
             }
         }
 
 
+       private void InputCheking(int t_Bid, int t_Balance)
+        {
+            if (t_Bid > t_Balance)
+                throw new NotImplementedException("You dont have enough money");
+            if (t_Bid <= 0)
+                throw new NotImplementedException("Bid can't be less than 1");
+        }
+        private void OutputWin (int t_Bid,int t_Coef)
+        {
+            Console.WriteLine("You've just won " + t_Bid * t_Coef);
+            this.balance += (t_Bid) * t_Coef;
+            this.profit += (t_Bid) * t_Coef;
+        }
+        private void OutputLose(int t_Bid)
+        {
+            Console.WriteLine("Didn't win :(");
+            this.balance -= t_Bid;
+            this.profit -= t_Bid;
+        }
+
     }
+
+
 }
 

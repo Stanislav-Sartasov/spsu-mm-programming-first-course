@@ -7,37 +7,36 @@ namespace Casino_Case
     public class Table
     {
 
-
-        public Sector[] wheel = new Sector[37];
+        internal Sector[] Wheel = new Sector[37];
         int k = 1, i;
-        private void initFirstDozen()
+        private void InitFirstDozen()
         {
             for (i = 1; i <= 10; i++)
             {
-                wheel[i].number = i;
-                wheel[i].dozen = 1;
-                wheel[i].column = k;
-                wheel[i].bid = 0;
+                Wheel[i].Number = i;
+                Wheel[i].Dozen = Dozens.First12;
+                Wheel[i].Column = k;
+                Wheel[i].Bid = 0;
                 k++;
 
                 if (i % 2 == 0)
-                    wheel[i].color = 1;  // черный -
+                    Wheel[i].Color = Colors.Black;
                 else
-                    wheel[i].color = 0; // красный 
+                    Wheel[i].Color = Colors.Red; 
 
                 if (k == 4)
                     k = 1;
             }
 
-            wheel[11].color = 1;
-            wheel[11].bid = 0;
-            wheel[12].color = 0;
-            wheel[12].bid = 0;
+            Wheel[11].Color = Colors.Black;
+            Wheel[11].Bid = 0;
+            Wheel[12].Color = Colors.Red;
+            Wheel[12].Bid = 0;
             for (i = 11; i <= 12; i++)
             {
-                wheel[i].number = i;
-                wheel[i].dozen = 1;
-                wheel[i].column = k;
+                Wheel[i].Number = i;
+                Wheel[i].Dozen = Dozens.First12;
+                Wheel[i].Column = k;
                 k++;
                 if (k == 4)
                     k = 1;
@@ -45,20 +44,20 @@ namespace Casino_Case
 
         }
 
-        private void initSecondDozen()
+        private void InitSecondDozen()
         {
             for (i = 13; i <= 18; i++) 
             {
-                wheel[i].number = i;
-                wheel[i].dozen = 2;
-                wheel[i].column = k;
-                wheel[i].bid = 0;
+                Wheel[i].Number = i;
+                Wheel[i].Dozen = Dozens.Second12;
+                Wheel[i].Column = k;
+                Wheel[i].Bid = 0;
                 k++;
 
                 if (i % 2 == 0)
-                    wheel[i].color = 0;  // красный
+                    Wheel[i].Color = Colors.Red; 
                 else
-                    wheel[i].color = 1; // черный
+                    Wheel[i].Color = Colors.Black; 
 
                 if (k == 4)
                     k = 1;
@@ -66,36 +65,36 @@ namespace Casino_Case
 
             for (i = 19; i <= 24; i++)
             {
-                wheel[i].number = i;
-                wheel[i].dozen = 2;
-                wheel[i].column = k;
-                wheel[i].bid = 0;
+                Wheel[i].Number = i;
+                Wheel[i].Dozen = Dozens.Second12;
+                Wheel[i].Column = k;
+                Wheel[i].Bid = 0;
                 k++;
 
                 if (i % 2 == 0)
-                    wheel[i].color = 1;  // черный
+                    Wheel[i].Color = Colors.Black;  
                 else
-                    wheel[i].color = 0; // красный
+                    Wheel[i].Color = Colors.Red; 
 
                 if (k == 4)
                     k = 1;
             }
         }
 
-        private void initThirdDozen()
+        private void InitThirdDozen()
         {
             for (i = 25; i <= 28; i++)
             {
-                wheel[i].number = i;
-                wheel[i].dozen = 3;
-                wheel[i].column = k;
-                wheel[i].bid = 0;
+                Wheel[i].Number = i;
+                Wheel[i].Dozen = Dozens.Third12;
+                Wheel[i].Column = k;
+                Wheel[i].Bid = 0;
                 k++;
 
                 if (i % 2 == 0)
-                    wheel[i].color = 1;  // черный
+                    Wheel[i].Color = Colors.Black;  
                 else
-                    wheel[i].color = 0; // красный
+                    Wheel[i].Color = Colors.Red; 
 
                 if (k == 4)
                     k = 1;
@@ -103,16 +102,16 @@ namespace Casino_Case
 
             for (i = 29; i <= 36; i++)
             {
-                wheel[i].number = i;
-                wheel[i].dozen = 3;
-                wheel[i].column = k;
-                wheel[i].bid = 0;
+                Wheel[i].Number = i;
+                Wheel[i].Dozen = Dozens.Third12;
+                Wheel[i].Column = k;
+                Wheel[i].Bid = 0;
                 k++;
 
                 if (i % 2 == 0)
-                    wheel[i].color = 0;  // красный
+                    Wheel[i].Color = Colors.Red;  
                 else
-                    wheel[i].color = 1; // черный
+                    Wheel[i].Color = Colors.Black; 
 
                 if (k == 4)
                     k = 1;
@@ -122,25 +121,39 @@ namespace Casino_Case
         public  Table()
         {
             // init zero
-            wheel[0].color = -1;
-            wheel[0].column = -1;
-            wheel[0].dozen = -1;
-            wheel[0].number = 0;
-            wheel[0].bid = 0;
+            Wheel[0].Color = Colors.Green;
+            Wheel[0].Column = -1;
+            Wheel[0].Dozen = Dozens.Zero;
+            Wheel[0].Number = 0;
+            Wheel[0].Bid = 0;
 
-            initFirstDozen();
-            initSecondDozen();
-            initThirdDozen();
+            InitFirstDozen();
+            InitSecondDozen();
+            InitThirdDozen();
+        }
+          internal struct Sector
+          {
+            public int Number;
+            public Colors Color;
+            public Dozens Dozen; 
+            public int Column;
+            public int Bid;
+
+          }
+        public enum Colors : Int16
+        {
+            Red = 0,
+            Black = 1,
+            Green = -1,
+        }
+        public enum Dozens : Int16
+        {
+            First12 = 1,
+            Second12 = 2,
+            Third12 = 3,
+            Zero = -1,
         }
     }
 
-    public struct Sector
-    {
-        public int number;
-        public int color; // зеленый -1, черный 1, красный 0
-        public int dozen; // 1st12 2nd12 3rd12
-        public int column;
-        public int bid;
-       
-    }
+
 }

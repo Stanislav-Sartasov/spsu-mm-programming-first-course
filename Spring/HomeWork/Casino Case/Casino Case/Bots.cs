@@ -4,34 +4,34 @@ using System.Text;
 
 namespace Casino_Case
 {
-   public class Bots
+    public class Bots
     {
-        protected Game botGame = new Game();
-        public void setBalance(int m)
+        private Game botGame = new Game();
+        public void SetBalance(int m)
         {
-            botGame.player.balance = m;
+            botGame.balance = m;
         }
 
-        protected int bid;
-        protected int bidOn;
-        protected int balanceInf;
-       public void DalamberBot(int amountOfBets,int minBid)
+        private int bid;
+        private int bidOn;
+        private int balanceInf;
+        public void DalamberBot(int amountOfBets, int minBid)
         {
             bidOn = 0;
             bid = minBid;
-            balanceInf = botGame.player.balance;
+            balanceInf = botGame.balance;
             int wins = 0;
-            for (int i = 0; i < amountOfBets; i++) 
+            for (int i = 0; i < amountOfBets; i++)
             {
-                botGame.colorBet(bidOn, bid);
-                if (balanceInf + bid == botGame.player.balance) 
+                botGame.ColorBet(bidOn, bid);
+                if (balanceInf + bid == botGame.balance)
                 {
 
-                    if (bidOn == 0) 
+                    if (bidOn == 0)
                         bidOn = 1;
-                    else 
+                    else
                         bidOn = 0;
-                    if ((bid - minBid) >= minBid) 
+                    if ((bid - minBid) >= minBid)
                         bid -= minBid;
                     wins++;
                 }
@@ -39,25 +39,25 @@ namespace Casino_Case
                 {
                     bid += minBid;
                 }
-                balanceInf = botGame.player.balance;
+                balanceInf = botGame.balance;
             }
 
             Console.WriteLine("\n\n\n\n");
-            Console.WriteLine("Total profit " + botGame.player.profit);
-            Console.WriteLine("Amount of bets " + botGame.player.amountOfBets);
+            Console.WriteLine("Total profit " + botGame.profit);
+            Console.WriteLine("Amount of bets " + botGame.amountOfBets);
             Console.WriteLine("Amount of wins " + wins);
         }
 
-        public void MartingaleBot (int amountOfBets, int minBid)
+        public void MartingaleBot(int amountOfBets, int minBid)
         {
             bidOn = 0;
             bid = minBid;
-            balanceInf = botGame.player.balance;
+            balanceInf = botGame.balance;
             int wins = 0;
             for (int i = 0; i < amountOfBets; i++)
             {
-                botGame.parityBet(bidOn, bid);
-                if (balanceInf + bid == botGame.player.balance)
+                botGame.ParityBet(bidOn, bid);
+                if (balanceInf + bid == botGame.balance)
                 {
 
                     if (bidOn == 0)
@@ -71,12 +71,12 @@ namespace Casino_Case
                 {
                     bid *= 2;
                 }
-                balanceInf = botGame.player.balance;
+                balanceInf = botGame.balance;
             }
 
             Console.WriteLine("\n\n\n\n");
-            Console.WriteLine("Total profit " + botGame.player.profit);
-            Console.WriteLine("Amount of bets " + botGame.player.amountOfBets);
+            Console.WriteLine("Total profit " + botGame.profit);
+            Console.WriteLine("Amount of bets " + botGame.amountOfBets);
             Console.WriteLine("Amount of wins " + wins);
         }
     }

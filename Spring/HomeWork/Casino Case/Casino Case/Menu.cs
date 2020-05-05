@@ -4,10 +4,10 @@ using System.Text;
 
 namespace Casino_Case
 {
-   public class Menu
+    public class Menu
     {
-        Game gaming = new Game();
-        Bots newBots = new Bots();
+        Game Gaming = new Game();
+        Bots NewBots = new Bots();
         int choice = 0;
         int choice2;
         bool exit = false;
@@ -44,8 +44,8 @@ namespace Casino_Case
                             balance = Convert.ToInt32(Console.ReadLine());
                         }
 
-                        
-                        gaming.setBalance(balance);
+
+                        Gaming.SetBalance(balance);
                         Console.Clear();
                         bettingMenu();
 
@@ -67,12 +67,12 @@ namespace Casino_Case
                             if ((botChoice == 1 || botChoice == 2) && balance > 0 && minBid > 0 && betAmount > 0)
                                 right = true;
                         }
-                        newBots.setBalance(balance);
+                        NewBots.SetBalance(balance);
                         if (botChoice == 1)
-                            newBots.DalamberBot(betAmount, minBid);
+                            NewBots.DalamberBot(betAmount, minBid);
                         else
-                            newBots.MartingaleBot(betAmount, minBid);
-                            
+                            NewBots.MartingaleBot(betAmount, minBid);
+
                     }
 
                     else if (choice == 3)
@@ -99,11 +99,11 @@ namespace Casino_Case
         {
             for (; ; )
             {
-               
+
                 Console.WriteLine("1 - " + "Stright Bet" + "                Info:");
-                Console.WriteLine("2 - " + "Red or Black Bet" + "           Balance: " + gaming.player.balance);
-                Console.WriteLine("3 - " + "Even or Odd Bet" + "            Amount of bets: " + gaming.player.amountOfBets);
-                Console.WriteLine("4 - " + "Dozen Bet" + "                  Total Profit: " + gaming.player.profit);
+                Console.WriteLine("2 - " + "Red or Black Bet" + "           Balance: " + Gaming.balance);
+                Console.WriteLine("3 - " + "Even or Odd Bet" + "            Amount of bets: " + Gaming.amountOfBets);
+                Console.WriteLine("4 - " + "Dozen Bet" + "                  Total Profit: " + Gaming.profit);
                 Console.WriteLine("5 - " + "Column Bet");
                 Console.WriteLine("6 - " + "Exit");
                 choice2 = Convert.ToInt32(Console.ReadLine());
@@ -114,7 +114,7 @@ namespace Casino_Case
                     betOn = Convert.ToInt32(Console.ReadLine());
                     betAmount = Convert.ToInt32(Console.ReadLine());
                     Console.Clear();
-                    gaming.numberBet(betOn, betAmount);
+                    Gaming.NumberBet(betOn, betAmount);
                 }
 
                 else if (choice2 == 2)
@@ -124,7 +124,7 @@ namespace Casino_Case
                     betOn = Convert.ToInt32(Console.ReadLine());
                     betAmount = Convert.ToInt32(Console.ReadLine());
                     Console.Clear();
-                    gaming.colorBet(betOn, betAmount);
+                    Gaming.ColorBet(betOn, betAmount);
                 }
                 else if (choice2 == 3)
                 {
@@ -133,7 +133,7 @@ namespace Casino_Case
                     betOn = Convert.ToInt32(Console.ReadLine());
                     betAmount = Convert.ToInt32(Console.ReadLine());
                     Console.Clear();
-                    gaming.parityBet(betOn, betAmount);
+                    Gaming.ParityBet(betOn, betAmount);
                 }
                 else if (choice2 == 4)
                 {
@@ -142,7 +142,7 @@ namespace Casino_Case
                     betOn = Convert.ToInt32(Console.ReadLine());
                     betAmount = Convert.ToInt32(Console.ReadLine());
                     Console.Clear();
-                    gaming.dozonBet(betOn, betAmount);
+                    Gaming.DozonBet(betOn, betAmount);
                 }
 
                 else if (choice2 == 5)
@@ -152,7 +152,7 @@ namespace Casino_Case
                     betOn = Convert.ToInt32(Console.ReadLine());
                     betAmount = Convert.ToInt32(Console.ReadLine());
                     Console.Clear();
-                    gaming.columnBet(betOn, betAmount);
+                    Gaming.ColumnBet(betOn, betAmount);
                 }
 
 
