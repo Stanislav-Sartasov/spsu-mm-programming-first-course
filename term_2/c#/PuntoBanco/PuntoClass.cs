@@ -449,7 +449,7 @@ namespace PuntoBanco
     {
         public int getInt()
         {
-            return Int32.Parse(Console.ReadLine());
+            return Int32.Parse(Console.ReadLine()); 
         }
 
         public bool ready()
