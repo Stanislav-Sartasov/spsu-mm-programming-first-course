@@ -151,17 +151,21 @@ namespace PuntoBanco
 
             PuntoBanco punto = new PuntoBanco();
             PuntoBanco banco = new PuntoBanco();
-
-            if (index + 3 == deck.Length)
-            {
-                initDeck(416);
-            }
-
-            punto.getCard(deck[index], deck[index + 2]);
-            banco.getCard(deck[index + 1], deck[index + 3]);
-            table.showFirst(bets, deck[index], deck[index + 2], deck[index + 1], deck[index + 3]);
-            index += 3;
+            int card1, card2, card3, card4;
+            card1 = deck[index];
             indexIncr();
+            card2 = deck[index];
+            indexIncr();
+            card3 = deck[index];
+            indexIncr();
+            card4 = deck[index];
+            indexIncr();
+
+
+            punto.getCard(card1, card3);
+            banco.getCard(card2, card4);
+            table.showFirst(bets, card1, card3, card2, card4);
+            
             if ((!punto.isNatural()) && (!banco.isNatural()))
             {
                 if (punto.CanTake())
@@ -318,7 +322,7 @@ namespace PuntoBanco
             betNow.man = 0;
             betNow.target = 0;
             betNow.money = 0;
-            inter.doBet(ref betNow, moneyMoment);
+            betNow = inter.doBet(betNow, moneyMoment);
             betNow.man = 0;
             moneyMoment -= betNow.money;
             return betNow;
@@ -471,7 +475,8 @@ namespace PuntoBanco
 
         bool ready();
 
-        void doBet(ref SomeBet betNow, int moneyMoment);
+        //void doBet(ref SomeBet betNow, int moneyMoment);
+        SomeBet doBet(SomeBet betNow, int moneyMoment);
     }
     class Interaction: Iinteraction
 {
@@ -487,8 +492,7 @@ namespace PuntoBanco
             else
                 return false;
         }
-
-        public void doBet(ref SomeBet betNow, int moneyMoment)
+        public SomeBet doBet(SomeBet betNow, int moneyMoment)
         {
             int target = Int32.Parse(Console.ReadLine());
             if (target != 0)
@@ -500,6 +504,21 @@ namespace PuntoBanco
             if (money > moneyMoment)
                 money = moneyMoment;
             betNow.money = money;
+            return betNow;
         }
+
+        /*public void doBet(ref SomeBet betNow, int moneyMoment)
+        {
+            int target = Int32.Parse(Console.ReadLine());
+            if (target != 0)
+                if (target != 1)
+                    if (target != 2)
+                        target = 0;
+            betNow.target = target;
+            int money = Int32.Parse(Console.ReadLine());
+            if (money > moneyMoment)
+                money = moneyMoment;
+            betNow.money = money;
+        }*/
     }
 }

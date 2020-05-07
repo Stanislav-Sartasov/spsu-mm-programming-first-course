@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PuntoBanco;
 using Moq;
+using System.Runtime.CompilerServices;
 
 namespace UnitTestPuntoBanco
 {
@@ -11,35 +12,99 @@ namespace UnitTestPuntoBanco
         [TestMethod]
         public void TestBots()
         {
-            gamer[] gamers = new gamer[2];
-            gamers[0] = new gamer1(40);
-            gamers[1] = new gamer2(40);
-            Random rnd = new Random();
-            SomeBet[] bets = new SomeBet[2];
-            for (int i = 0; i < 400; i++)
+            SomeBet bet;
+            bet.man = 0;
+            bet.money = 0;
+            bet.target = 1;
+            int Rounds = 401;
+
+            int callsBet = 0;
+            int callsInput = 0;
+            int callsReady = 0;
+            var mock = new Mock<Iinteraction>();
+            mock.Setup(x => x.ready()).Returns(() =>
             {
-                bets[0] = gamers[0].makeBet();
-                bets[1] = gamers[1].makeBet();
-                if (rnd.Next(100) < 45)
-                    gamers[0].recive(bets[0].money * 2);
-                if (rnd.Next(100) < 45)
-                    gamers[1].recive(bets[1].money * 2);
-            }
-            Console.WriteLine($"{gamers[0].moneyMoment} - first, second - {gamers[1].moneyMoment}");
+                callsReady++;
+                if (callsReady != Rounds + 1)
+                {
+                    Console.WriteLine("test 1");
+                    return true;
+                }
+                Console.WriteLine("test 0");
+                return false;
+            });
+            mock.Setup(x => x.getInt()).Returns(() =>
+            {
+                callsInput++;
+                if (callsInput == 1)
+                {
+                    Console.WriteLine("test 25");
+                    return 25;
+                }
+                Console.WriteLine("test 1");
+                return 1;
+            });
+            //mock.Setup(x => x.doBet(ref It.Ref<SomeBet>.IsAny, It.IsAny<int>())).Callback((ref SomeBet bet, int money) => Console.WriteLine("s"));
+            //Problem: ref bet - must change value in do.Bet(ref SomeBet, int)
+            mock.Setup(x => x.doBet(It.IsAny<SomeBet>(), It.IsAny<int>())).Returns(() =>
+            {
+                callsBet++;
+                Console.WriteLine($"test: money{bet.money}");
+                return bet;
+            });
+            //
+            UserInterface user = new UserInterface(mock.Object);
+            user.goGame();
         }
 
         [TestMethod]
         public void TestGame()
         {
-            SomeBet betNow;
-            betNow.man = 0;
-            betNow.money = 0;
-            betNow.target = 0;
-            var mock = new Mock<Iinteraction>();
-            mock.Setup(x => x.getInt()).Returns(1);
+            SomeBet bet;
+            bet.man = 0;
+            bet.money = 1;
+            bet.target = 1;
+            int Rounds = 104;
 
+            int callsBet = 0;
+            int callsInput = 0;
+            int callsReady = 0;
+            var mock = new Mock<Iinteraction>();
+            mock.Setup(x => x.ready()).Returns(() =>
+            {
+                callsReady++;
+                if (callsReady != Rounds + 1)
+                {
+                    Console.WriteLine("test 1");
+                    return true;
+                }
+                Console.WriteLine("test 0");
+                return false;
+            });
+            mock.Setup(x => x.getInt()).Returns(() => 
+            {
+                callsInput++;
+                if (callsInput == 1)
+                {
+                    Console.WriteLine("test 25");
+                    return 25;
+                }
+                Console.WriteLine("test 1");
+                return 1; 
+            });
             //mock.Setup(x => x.doBet(ref It.Ref<SomeBet>.IsAny, It.IsAny<int>())).Callback((ref SomeBet bet, int money) => Console.WriteLine("s"));
             //Problem: ref bet - must change value in do.Bet(ref SomeBet, int)
+            mock.Setup(x => x.doBet(It.IsAny<SomeBet>(), It.IsAny<int>())).Returns(() => 
+            {
+                callsBet++;
+                Console.WriteLine($"test: money: {bet.money}$, target: {bet.target}");
+                return bet;
+            });
+            //
+            UserInterface user = new UserInterface(mock.Object);
+            user.goGame();
+
+            Console.WriteLine($"\n end-----\ncalls of Input: {callsInput}\nMade bets: {callsBet}\nRounds: {callsReady - 1}");
         }
 
     }
