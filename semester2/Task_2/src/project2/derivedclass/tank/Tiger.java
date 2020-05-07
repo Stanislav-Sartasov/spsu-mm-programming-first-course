@@ -4,7 +4,7 @@ import project2.baseclass.tank.Tank;
 public class Tiger extends Tank
 {
     String name = "Tiger";
-    int number_of_tanks_released;
+    public int number_of_tanks_released;
 
     public Tiger(String country, int weight_in_tons, int crew, float speed_in_km_in_h, int engine_power, int number_of_tanks_released)
     {

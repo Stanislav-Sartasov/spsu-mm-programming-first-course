@@ -92,20 +92,20 @@
       <module name="project2" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="project2.derivedclass.tank.*" />
+          <option name="PATTERN" value="project2.tests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="project2.derivedclass.tank" />
-      <option name="MAIN_CLASS_NAME" value="project2.derivedclass.tank.T34Test" />
+      <option name="PACKAGE_NAME" value="project2.tests" />
+      <option name="MAIN_CLASS_NAME" value="project2.tests.T34Test" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.Main" />
       <item itemvalue="Application.Unnamed" />
+      <item itemvalue="Application.Main" />
       <item itemvalue="JUnit.T34Test" />
     </list>
     <recent_temporary>
@@ -148,34 +148,38 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="140" y="41" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.768@0.0.1366.768" timestamp="1588758034252" />
-    <state x="100" y="100" width="1166" height="568" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog" timestamp="1588763329709">
+    <state x="100" y="100" width="1166" height="568" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog" timestamp="1588844779474">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="100" y="100" width="1166" height="568" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog/0.0.1366.768@0.0.1366.768" timestamp="1588763329709" />
+    <state x="100" y="100" width="1166" height="568" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog/0.0.1366.768@0.0.1366.768" timestamp="1588844779474" />
     <state x="414" y="175" width="527" height="425" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1588758032680">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="414" y="175" width="527" height="425" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1366.768@0.0.1366.768" timestamp="1588758032680" />
+    <state x="415" y="132" width="526" height="511" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1588844650639">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="415" y="132" width="526" height="511" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.768@0.0.1366.768" timestamp="1588844650639" />
     <state x="465" y="141" width="426" height="493" key="FileChooserDialogImpl" timestamp="1588757719469">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="465" y="141" width="426" height="493" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1588757719469" />
-    <state width="1318" height="225" key="GridCell.Tab.0.bottom" timestamp="1588763368137">
+    <state width="1318" height="181" key="GridCell.Tab.0.bottom" timestamp="1588844782963">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1318" height="225" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1588763368137" />
-    <state width="1318" height="225" key="GridCell.Tab.0.center" timestamp="1588763368136">
+    <state width="1318" height="181" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1588844782963" />
+    <state width="1318" height="181" key="GridCell.Tab.0.center" timestamp="1588844782962">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1318" height="225" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1588763368136" />
-    <state width="1318" height="225" key="GridCell.Tab.0.left" timestamp="1588763368135">
+    <state width="1318" height="181" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1588844782962" />
+    <state width="1318" height="181" key="GridCell.Tab.0.left" timestamp="1588844782962">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1318" height="225" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1588763368135" />
-    <state width="1318" height="225" key="GridCell.Tab.0.right" timestamp="1588763368137">
+    <state width="1318" height="181" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1588844782962" />
+    <state width="1318" height="181" key="GridCell.Tab.0.right" timestamp="1588844782963">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1318" height="225" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1588763368137" />
+    <state width="1318" height="181" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1588844782963" />
     <state width="1318" height="225" key="GridCell.Tab.1.bottom" timestamp="1588763368138">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
