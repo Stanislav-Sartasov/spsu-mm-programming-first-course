@@ -95,27 +95,27 @@ public class Node<T> {
             if (parent == null) {
                 return;
             }
-            if (parent.getKey() > key)
+            if (parent.getKey() > key) {
                 parent.left = null;
-            else {
+            } else {
                 parent.right = null;
             }
             return;
         }
 
         if (left == null) { // только правый ребенок
-            if (parent.getKey() > key)
+            if (parent.getKey() > key) {
                 parent.left = right;
-            else {
+            } else {
                 parent.right = right;
             }
             return;
         }
 
         if (right == null) { // только левый ребенок
-            if (parent.getKey() > key)
+            if (parent.getKey() > key) {
                 parent.left = left;
-            else {
+            } else {
                 parent.right = left;
             }
             return;
