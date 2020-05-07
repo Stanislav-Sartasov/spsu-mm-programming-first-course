@@ -1,7 +1,7 @@
-package generic.base.my.arraylist;
+package generic.base.tests;
 
 
-
+import generic.base.my.arraylist.MyArrayList;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 

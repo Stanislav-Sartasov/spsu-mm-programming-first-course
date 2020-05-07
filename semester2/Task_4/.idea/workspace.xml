@@ -38,7 +38,7 @@
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="create.test.in.the.same.root" value="true" />
     <property name="findjar.last.used.dir" value="$PROJECT_DIR$" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../project2/project2.iml" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -66,12 +66,12 @@
       <module name="Task_4" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="generic.base.my.arraylist.*" />
+          <option name="PATTERN" value="generic.base.tests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="generic.base.my.arraylist" />
-      <option name="MAIN_CLASS_NAME" value="generic.base.my.arraylist.MyArrayListTest" />
+      <option name="PACKAGE_NAME" value="generic.base.tests" />
+      <option name="MAIN_CLASS_NAME" value="generic.base.tests.MyArrayListTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -102,10 +102,10 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="490" y="90" width="376" height="594" key="#com.intellij.ide.util.MemberChooser/0.0.1366.768@0.0.1366.768" timestamp="1588837052748" />
-    <state x="465" y="126" width="426" height="522" key="FileChooserDialogImpl" timestamp="1588841036622">
+    <state x="465" y="126" width="426" height="522" key="FileChooserDialogImpl" timestamp="1588844187263">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="465" y="126" width="426" height="522" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1588841036622" />
+    <state x="465" y="126" width="426" height="522" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1588844187263" />
     <state width="1318" height="181" key="GridCell.Tab.0.bottom" timestamp="1588842372193">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
