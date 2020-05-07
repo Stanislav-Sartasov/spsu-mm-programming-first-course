@@ -69,6 +69,19 @@ namespace PuntoBanco
         private int [] deck;
         private int index = 0;
         private gamer [] gamers;
+        Iinteraction inter;
+        public UserInterface(Iinteraction YourInter)
+        {
+            index = 0;
+            Bots = 2;
+            inter = YourInter;
+        }
+        public UserInterface()
+        {
+            index = 0;
+            Bots = 2;
+            inter = new Interaction();
+        }
         private void indexIncr()
         {
             if (index + 1 == deck.Length)
@@ -117,7 +130,7 @@ namespace PuntoBanco
         {
             initDeck(416);
             gamers = new gamer[3];
-            gamers[0] = new person();
+            gamers[0] = new person(inter);
             gamers[1] = new gamer1(20);
             gamers[2] = new gamer2(40);
         }
@@ -208,7 +221,6 @@ namespace PuntoBanco
         public void goGame()
         {
             getPlayers();
-            Interaction inter = new Interaction();
             Draw user = new Draw();
             int end = 0;
             do
@@ -281,6 +293,15 @@ namespace PuntoBanco
     }
     public class person : gamer
     {
+        private Iinteraction inter;
+        public person(Iinteraction f)
+        {
+            inter = f;
+            Draw user = new Draw();
+            user.askMoneyToGo();
+            startMoney = inter.getInt();
+            moneyMoment = startMoney;
+        }
         public person()
         {
             Interaction inter = new Interaction();
@@ -291,7 +312,6 @@ namespace PuntoBanco
         }
         public override SomeBet makeBet()
         {
-            Interaction inter = new Interaction();
             Draw user = new Draw();
             user.doBet(moneyMoment);
             SomeBet betNow;
@@ -445,8 +465,16 @@ namespace PuntoBanco
             Console.WriteLine($"Now yo have {moneyMoment}$, type first target of your bet(0 = punto, 1 = banco; 2 = tie) press enter after target\nThen type sum of money\n stock target is 0, stock sum is {moneyMoment}\n");
         }
     }
-    class Interaction
+    public interface Iinteraction
     {
+        int getInt();
+
+        bool ready();
+
+        void doBet(ref SomeBet betNow, int moneyMoment);
+    }
+    class Interaction: Iinteraction
+{
         public int getInt()
         {
             return Int32.Parse(Console.ReadLine()); 

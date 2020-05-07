@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PuntoBanco;
+using Moq;
 
 namespace UnitTestPuntoBanco
 {
@@ -26,5 +27,20 @@ namespace UnitTestPuntoBanco
             }
             Console.WriteLine($"{gamers[0].moneyMoment} - first, second - {gamers[1].moneyMoment}");
         }
+
+        [TestMethod]
+        public void TestGame()
+        {
+            SomeBet betNow;
+            betNow.man = 0;
+            betNow.money = 0;
+            betNow.target = 0;
+            var mock = new Mock<Iinteraction>();
+            mock.Setup(x => x.getInt()).Returns(1);
+
+            //mock.Setup(x => x.doBet(ref It.Ref<SomeBet>.IsAny, It.IsAny<int>())).Callback((ref SomeBet bet, int money) => Console.WriteLine("s"));
+            //Problem: ref bet - must change value in do.Bet(ref SomeBet, int)
+        }
+
     }
 }
