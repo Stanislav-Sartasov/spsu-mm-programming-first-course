@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="f6ce235e-3da2-4b4f-b44f-42c7d36b0284" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../../binsearch/binsearch.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../my-wc/my-wc.py" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="JUnit5 Test Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectId" id="1bXqydLYoscUwEtKqDvDV8jPk4V" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
+    <property name="create.test.in.the.same.root" value="true" />
+    <property name="findjar.last.used.dir" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="generic.base.my.arraylist" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.MyArrayListTest">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="generic.base.Main" />
+      <module name="Task_4" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MyArrayListTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Task_4" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="generic.base.my.arraylist.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="generic.base.my.arraylist" />
+      <option name="MAIN_CLASS_NAME" value="generic.base.my.arraylist.MyArrayListTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.MyArrayListTest" />
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f6ce235e-3da2-4b4f-b44f-42c7d36b0284" name="Default Changelist" comment="" />
+      <created>1588789041408</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1588789041408</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="490" y="90" width="376" height="594" key="#com.intellij.ide.util.MemberChooser" timestamp="1588837052748">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="490" y="90" width="376" height="594" key="#com.intellij.ide.util.MemberChooser/0.0.1366.768@0.0.1366.768" timestamp="1588837052748" />
+    <state x="465" y="126" width="426" height="522" key="FileChooserDialogImpl" timestamp="1588841036622">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="465" y="126" width="426" height="522" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1588841036622" />
+    <state width="1318" height="181" key="GridCell.Tab.0.bottom" timestamp="1588842372193">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state width="1318" height="181" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1588842372193" />
+    <state width="1318" height="181" key="GridCell.Tab.0.center" timestamp="1588842372192">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state width="1318" height="181" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1588842372192" />
+    <state width="1318" height="181" key="GridCell.Tab.0.left" timestamp="1588842372191">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state width="1318" height="181" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1588842372191" />
+    <state width="1318" height="181" key="GridCell.Tab.0.right" timestamp="1588842372192">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state width="1318" height="181" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1588842372192" />
+    <state x="165" y="0" width="1026" height="768" key="SettingsEditor" timestamp="1588841083106">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="165" y="0" width="1026" height="768" key="SettingsEditor/0.0.1366.768@0.0.1366.768" timestamp="1588841083106" />
+    <state x="349" y="276" width="648" height="238" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1588841076453">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="349" y="276" width="648" height="238" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1366.768@0.0.1366.768" timestamp="1588841076453" />
+    <state x="431" y="95" width="493" height="585" key="com.intellij.testIntegration.createTest.CreateTestDialog" timestamp="1588840310010">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="431" y="95" width="493" height="585" key="com.intellij.testIntegration.createTest.CreateTestDialog/0.0.1366.768@0.0.1366.768" timestamp="1588840310010" />
+    <state x="347" y="167" key="run.anything.popup" timestamp="1588838989552">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="347" y="167" key="run.anything.popup/0.0.1366.768@0.0.1366.768" timestamp="1588838989552" />
+  </component>
+</project>
