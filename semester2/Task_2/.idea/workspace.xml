@@ -19,7 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f6053f96-f120-4085-a969-5b01c0498859" name="Default Changelist" comment="">
+    <list default="true" id="6027ce5f-1c99-4e8f-a828-2292353b7f5d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../../binsearch/binsearch.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../my-wc/my-wc.py" beforeDir="false" />
     </list>
@@ -32,13 +32,15 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="JUnit4 Test Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
-  <component name="ProjectId" id="1aFcOvsjTkVMInIRaPPx7nUGutX" />
+  <component name="ProjectId" id="1bWmmTvIkDIz77auDBU0Jrlkcfj" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
@@ -51,41 +53,77 @@
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JAVA" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
+    <property name="create.test.in.the.same.root" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../.." />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
-  <component name="RunManager">
-    <configuration name="ConfigurationsOne" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="Task_2" />
-      <option name="REDIRECT_INPUT" value="true" />
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="project2.derivedclass.tank" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.T34Test">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="project2.base.Main" />
+      <module name="project2" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="Main" />
-      <option name="REDIRECT_INPUT" value="true" />
+    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="project2.base.Main" />
+      <module name="project2" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="T34Test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="project2" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="project2.derivedclass.tank.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="project2.derivedclass.tank" />
+      <option name="MAIN_CLASS_NAME" value="project2.derivedclass.tank.T34Test" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Main" />
+      <item itemvalue="Application.Unnamed" />
+      <item itemvalue="JUnit.T34Test" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.T34Test" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="f6053f96-f120-4085-a969-5b01c0498859" name="Default Changelist" comment="" />
-      <created>1586334753400</created>
+      <changelist id="6027ce5f-1c99-4e8f-a828-2292353b7f5d" name="Default Changelist" comment="" />
+      <created>1588756382674</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1586334753400</updated>
+      <updated>1588756382674</updated>
     </task>
     <servers />
   </component>
@@ -102,61 +140,73 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="165" y="0" width="1026" height="768" key="#Project_Structure" timestamp="1588755236275">
+    <state x="277" y="30" width="802" height="738" key="#Intentions" timestamp="1588759356915">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="165" y="0" width="1026" height="768" key="#Project_Structure/0.0.1366.768@0.0.1366.768" timestamp="1588755236275" />
-    <state x="173" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586335376031">
+    <state x="277" y="30" width="802" height="738" key="#Intentions/0.0.1366.768@0.0.1366.768" timestamp="1588759356915" />
+    <state x="140" y="41" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588758034252">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="173" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.768@0.0.1366.768" timestamp="1586335376031" />
-    <state x="490" y="90" width="376" height="594" key="#com.intellij.ide.util.MemberChooser" timestamp="1588750224519">
+    <state x="140" y="41" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.768@0.0.1366.768" timestamp="1588758034252" />
+    <state x="100" y="100" width="1166" height="568" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog" timestamp="1588763329709">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="490" y="90" width="376" height="594" key="#com.intellij.ide.util.MemberChooser/0.0.1366.768@0.0.1366.768" timestamp="1588750224519" />
-    <state x="414" y="175" width="527" height="425" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1588755393292">
+    <state x="100" y="100" width="1166" height="568" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog/0.0.1366.768@0.0.1366.768" timestamp="1588763329709" />
+    <state x="414" y="175" width="527" height="425" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1588758032680">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="414" y="175" width="527" height="425" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1366.768@0.0.1366.768" timestamp="1588755393292" />
-    <state x="410" y="141" width="526" height="493" key="#com.intellij.util.ui.classpath.ChooseLibrariesDialog" timestamp="1588754966399">
+    <state x="414" y="175" width="527" height="425" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1366.768@0.0.1366.768" timestamp="1588758032680" />
+    <state x="465" y="141" width="426" height="493" key="FileChooserDialogImpl" timestamp="1588757719469">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="410" y="141" width="526" height="493" key="#com.intellij.util.ui.classpath.ChooseLibrariesDialog/0.0.1366.768@0.0.1366.768" timestamp="1588754966399" />
-    <state x="427" y="260" width="491" height="255" key="DetectedRootsChooserDialog" timestamp="1588754127293">
+    <state x="465" y="141" width="426" height="493" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1588757719469" />
+    <state width="1318" height="225" key="GridCell.Tab.0.bottom" timestamp="1588763368137">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="427" y="260" width="491" height="255" key="DetectedRootsChooserDialog/0.0.1366.768@0.0.1366.768" timestamp="1588754127293" />
-    <state x="304" y="126" width="737" height="522" key="FileChooserDialogImpl" timestamp="1588755058409">
+    <state width="1318" height="225" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1588763368137" />
+    <state width="1318" height="225" key="GridCell.Tab.0.center" timestamp="1588763368136">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="304" y="126" width="737" height="522" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1588755058409" />
-    <state width="1318" height="181" key="GridCell.Tab.0.bottom" timestamp="1588754865238">
+    <state width="1318" height="225" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1588763368136" />
+    <state width="1318" height="225" key="GridCell.Tab.0.left" timestamp="1588763368135">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1318" height="181" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1588754865238" />
-    <state width="1318" height="181" key="GridCell.Tab.0.center" timestamp="1588754865236">
+    <state width="1318" height="225" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1588763368135" />
+    <state width="1318" height="225" key="GridCell.Tab.0.right" timestamp="1588763368137">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1318" height="181" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1588754865236" />
-    <state width="1318" height="181" key="GridCell.Tab.0.left" timestamp="1588754865236">
+    <state width="1318" height="225" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1588763368137" />
+    <state width="1318" height="225" key="GridCell.Tab.1.bottom" timestamp="1588763368138">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1318" height="181" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1588754865236" />
-    <state width="1318" height="181" key="GridCell.Tab.0.right" timestamp="1588754865237">
+    <state width="1318" height="225" key="GridCell.Tab.1.bottom/0.0.1366.768@0.0.1366.768" timestamp="1588763368138" />
+    <state width="1318" height="225" key="GridCell.Tab.1.center" timestamp="1588763368138">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1318" height="181" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1588754865237" />
-    <state x="165" y="0" width="1026" height="768" key="SettingsEditor" timestamp="1588755539363">
+    <state width="1318" height="225" key="GridCell.Tab.1.center/0.0.1366.768@0.0.1366.768" timestamp="1588763368138" />
+    <state width="1318" height="225" key="GridCell.Tab.1.left" timestamp="1588763368137">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="165" y="0" width="1026" height="768" key="SettingsEditor/0.0.1366.768@0.0.1366.768" timestamp="1588755539363" />
-    <state x="349" y="276" width="648" height="238" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1588755370280">
+    <state width="1318" height="225" key="GridCell.Tab.1.left/0.0.1366.768@0.0.1366.768" timestamp="1588763368137" />
+    <state width="1318" height="225" key="GridCell.Tab.1.right" timestamp="1588763368138">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="349" y="276" width="648" height="238" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1366.768@0.0.1366.768" timestamp="1588755370280" />
-    <state x="0" y="0" width="1357" height="768" key="new project wizard" timestamp="1588756382478">
+    <state width="1318" height="225" key="GridCell.Tab.1.right/0.0.1366.768@0.0.1366.768" timestamp="1588763368138" />
+    <state x="165" y="0" width="1026" height="768" key="SettingsEditor" timestamp="1588762654707">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="0" y="0" width="1357" height="768" key="new project wizard/0.0.1366.768@0.0.1366.768" timestamp="1588756382478" />
+    <state x="165" y="0" width="1026" height="768" key="SettingsEditor/0.0.1366.768@0.0.1366.768" timestamp="1588762654707" />
+    <state x="349" y="276" width="648" height="238" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1588762626931">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="349" y="276" width="648" height="238" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1366.768@0.0.1366.768" timestamp="1588762626931" />
+    <state x="426" y="186" width="503" height="403" key="com.intellij.testIntegration.createTest.CreateTestDialog" timestamp="1588763174924">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="426" y="186" width="503" height="403" key="com.intellij.testIntegration.createTest.CreateTestDialog/0.0.1366.768@0.0.1366.768" timestamp="1588763174924" />
+    <state x="0" y="0" width="1356" height="768" key="new project wizard" timestamp="1588767189692">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="0" y="0" width="1356" height="768" key="new project wizard/0.0.1366.768@0.0.1366.768" timestamp="1588767189692" />
   </component>
 </project>

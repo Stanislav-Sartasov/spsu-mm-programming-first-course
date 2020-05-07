@@ -1,3 +1,5 @@
+package project2.baseclass.tank;
+
 public abstract class Tank
 {
     public String country;
@@ -15,5 +17,5 @@ public abstract class Tank
         this.engine_power = engine_power;
     }
 
-    public abstract  void printTank();
+    public abstract String printTank();
 }
