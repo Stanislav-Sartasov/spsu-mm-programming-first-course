@@ -73,7 +73,7 @@ namespace P2PChatLibrary
             while (true)
             {
                 name = Console.ReadLine();
-                if (name.Equals("<unknown>"))
+                if (name.Equals("<unknown>") || String.IsNullOrWhiteSpace(name))
                 {
                     Console.WriteLine("Incorrect name!");
                 }

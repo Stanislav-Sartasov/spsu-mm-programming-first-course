@@ -47,7 +47,7 @@ namespace P2PChatLibrary
             while (IsWorking)
             {
                 string input = chatController.GetMessage();
-                if (input != null && input != "")
+                if (!String.IsNullOrWhiteSpace(input))
                 {
                     bool isCommand = CheckCommand(input);
                     if (isCommand)
