@@ -56,19 +56,19 @@ namespace WinForms
 			Controls.Add(scaleTB);
 
 
-			var label = new Label()
+			var scalingLabel = new Label()
 			{
 				Location = new Point(5, ClientSize.Height - 120),
 				Size = new Size(scaleTB.Width, 20),
 				Font = new Font("Arial", 12, FontStyle.Bold),
 				Text = "Scaling: 1,0"
 			};
-			Controls.Add(label);
+			Controls.Add(scalingLabel);
 
 
 			scaleTB.Scroll += (sender, args) =>
 			{
-				label.Text = "Scaling: " + (scaleTB.Value / 100f).ToString();
+				scalingLabel.Text = "Scaling: " + (scaleTB.Value / 100f).ToString();
 				scale = scaleTB.Value / 100f;
 				ScalePicture(scale);
 			};
@@ -107,17 +107,17 @@ namespace WinForms
 				}
 			};
 
-			var curvesBox = new ComboBox()
+			var curvesComboBox = new ComboBox()
 			{
 				Location = new Point(5, ClientSize.Height - 210),
 				Size = new Size(drawButton.Width, 20)
 			};
-			curvesBox.DataSource = pointSets;
-			curvesBox.SelectedIndexChanged += (sender, args) =>
+			curvesComboBox.DataSource = pointSets;
+			curvesComboBox.SelectedIndexChanged += (sender, args) =>
 			{
-				ChangePointsToDraw((PointSet)curvesBox.SelectedValue);
+				ChangePointsToDraw((PointSet)curvesComboBox.SelectedValue);
 			};
-			Controls.Add(curvesBox);
+			Controls.Add(curvesComboBox);
 
 
 
