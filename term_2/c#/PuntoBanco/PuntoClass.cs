@@ -69,7 +69,7 @@ namespace PuntoBanco
         private int [] deck;
         private int index = 0;
         private gamer [] gamers;
-        Iinteraction inter;
+        private Iinteraction inter;
         public UserInterface(Iinteraction YourInter)
         {
             index = 0;
