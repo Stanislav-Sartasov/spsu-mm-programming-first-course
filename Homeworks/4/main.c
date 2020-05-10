@@ -5,7 +5,7 @@
 
 int main()
 {
-	int* a = myMalloc(sizeof(int) * 20);
+	int* a = (int*)myMalloc(sizeof(int) * 20);
 
 	for (int i = 0; i < 20; i++)
 	{
@@ -18,11 +18,11 @@ int main()
 	}
 	printf("\n");
 
-	a = myRealloc(a, 200);
+	a = (int*)myRealloc(a, sizeof(int) * 200);
 
-	for (int i = 0; i < 250; i++)
+	for (int i = 20; i < 250; i++)
 	{
-		a[i] = i * 2;
+		a[i] = i;
 	}
 	for (int i = 0; i < 250; i++)
 	{
