@@ -7,22 +7,21 @@ namespace Generics
         static void Main(string[] args)
         {
             Tree<int> test = new Tree<int>();
-            test.add(5, 10);
-            test.add(5, 4);
-            test.add(5, 15);
-            test.add(5, 3);
-            test.add(5, 18);
-            test.add(5, 12);
-            test.add(5, 7);
+            test.Add(5, 10);
+            test.Add(5, 4);
+            test.Add(5, 15);
+            test.Add(5, 3);
+            test.Add(5, 18);
+            test.Add(5, 12);
+            test.Add(5, 7);
             
 
-            test.delete(15);
-            test.delete(4);
+            test.Delete(15);
+            test.Delete(4);
 
-            Console.WriteLine(test.root.left.key);
-           
 
-            test.find(7);
+            int tmp = test.Find(7);
+            Console.WriteLine(tmp);
 
            
 

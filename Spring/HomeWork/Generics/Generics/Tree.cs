@@ -10,7 +10,7 @@ namespace Generics
 {
     public class Tree<T>
     {
-        public class Node<T>
+        private class Node<T>
         {
             public T value;
             public int key;
@@ -21,11 +21,11 @@ namespace Generics
                 Console.WriteLine(key + " ");
             }
         }
-        public Node<T> root = null;
+       private Node<T> root = null;
 
            
 
-        public void add (T value, int key)
+        public void Add (T value, int key)
         {
             Node<T> newNode = new Node<T>();
             newNode.value = value;
@@ -45,7 +45,7 @@ namespace Generics
                         if (current == null)
                         {
                             parent.left = newNode;
-                            Console.WriteLine("L");
+                            //Console.WriteLine("L");
                             break;
                         }
                        
@@ -56,7 +56,7 @@ namespace Generics
                         if (current == null)
                         {
                             parent.right = newNode;
-                            Console.WriteLine("R");
+                           // Console.WriteLine("R");
                             break;
                         }
                     }
@@ -65,7 +65,7 @@ namespace Generics
           
         }
 
-        public void pritnRoot()
+        public void PritnRoot()
         {
             Console.WriteLine(root.key + " " + root.value);
             Console.WriteLine(root.left.key);
@@ -73,15 +73,14 @@ namespace Generics
         }
         
         
-        public void find (int key)
+        public T Find (int key)
         {
             Node<T> current = root;
             while(true)
             {
                 if (current.key == key)
                 {
-                    Console.WriteLine("key is " + key + " value is " + current.value);
-                    break;
+                    return current.value;
                 }
                 if (key < current.key)
                 {
@@ -95,7 +94,7 @@ namespace Generics
 
         }
 
-        public void delete(int key)
+        public void Delete(int key)
         {
             Node<T> current = root;
             Node<T> parent = null;
@@ -125,7 +124,7 @@ namespace Generics
                         }
                         int tmpKey = minRight.key;
                         T tmpValue = minRight.value;
-                        delete(minRight.key);
+                        Delete(minRight.key);
                         current.key = tmpKey;
                         current.value = tmpValue;
                     }
