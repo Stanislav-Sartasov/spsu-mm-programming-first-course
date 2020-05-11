@@ -65,7 +65,7 @@ namespace HashTableLib.Tests
             Thread.Sleep(6000);
             GC.Collect();
             Assert.AreEqual(0, table.CountPairs(), 5);
-            table.Clear();
+            table = new Hashtable<double, string>(5000);
             for (int i = 0; i < 100; i++)
             {
                 table.AddPair(i, $"{i}");
