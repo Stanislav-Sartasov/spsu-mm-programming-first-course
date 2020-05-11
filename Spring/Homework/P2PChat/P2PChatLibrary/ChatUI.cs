@@ -133,6 +133,8 @@ namespace P2PChatLibrary
                     peer.Exit();
                     IsWorking = false;
                     break;
+                case "back":
+                    break;    
                 default:
                     Output("Something went wrong :(");
                     break;
