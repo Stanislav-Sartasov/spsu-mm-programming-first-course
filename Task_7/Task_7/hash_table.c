@@ -1,7 +1,9 @@
 #pragma once
 #include <stdio.h>
 #include "hash_table.h"
+#include <malloc.h>
 #define LIMIT 4
+
 void balancing(Hash* hash);
 void copy(Node** hash_table, Node** hash_new, int size, int flag);
 
@@ -72,10 +74,10 @@ void add(Hash* hash, int value, int key)
 }
 
 
-void print_table(Hash hash)
+void print_table(Hash* hash)
 {
-    Node** hash_table = (Node**)hash.hash_list;
-    for (int i = 0; i < hash.size; i++)
+    Node** hash_table = (Node**)hash->hash_list;
+    for (int i = 0; i < hash->size; i++)
     {
         printf("key %d :  ", i);
         Node* node = hash_table[i];
@@ -89,10 +91,10 @@ void print_table(Hash hash)
     }
 }
 
-int find(Hash hash, int key)
+int find(Hash* hash, int key)
 {
-    Node** hash_table = (Node**)hash.hash_list;
-    Node* node = hash_table[hash_function(key, hash.size)];
+    Node** hash_table = (Node**)hash->hash_list;
+    Node* node = hash_table[hash_function(key, hash->size)];
     while (node)
     {
         if (node->key == key)
@@ -104,20 +106,21 @@ int find(Hash hash, int key)
     return -1;
 }
 
-void rm(Hash hash, int key)
+void rm(Hash* hash, int key)
 {
-    Node** hash_table = (Node**)hash.hash_list;
-    Node* node, * last_node;
-    node = hash_table[hash_function(key, hash.size)];
+    Node** hash_table = (Node**)hash->hash_list;
+    Node* node;
+    Node* last_node;
+    node = hash_table[hash_function(key, hash->size)];
     if (node->key == key)
     {
-        hash_table[hash_function(key, hash.size)] = node->next;
+        hash_table[hash_function(key, hash->size)] = node->next;
         printf("removal successful\n");
     }
     else
     {
-        last_node = hash_table[hash_function(key, hash.size)];
-        node = hash_table[hash_function(key, hash.size)]->next;
+        last_node = hash_table[hash_function(key, hash->size)];
+        node = hash_table[hash_function(key, hash->size)]->next;
         while (node)
         {
             if (node->key == key)

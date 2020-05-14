@@ -1,7 +1,4 @@
-#include <malloc.h>
 #include "hash_table.h"
-
-
 
 int main()
 {
@@ -16,15 +13,15 @@ int main()
     add(&hash, 26, 66);
     add(&hash, 28, 27);
     add(&hash, 30, 53);
-    print_table(hash);
+    print_table(&hash);
     printf("\n");
     add(&hash, 32, 79);
-    print_table(hash);
+    print_table(&hash);
     printf("\n");
-    printf("%d\n", find(hash, 53));
-    rm(hash, 53);
-    rm(hash, 27);
-    rm(hash, 66);
-    print_table(hash);
-    printf("%d\n", find(hash, 53));
+    printf("%d\n", find(&hash, 53));
+    rm(&hash, 53);
+    rm(&hash, 27);
+    rm(&hash, 66);
+    print_table(&hash);
+    printf("%d\n", find(&hash, 53));
 }
