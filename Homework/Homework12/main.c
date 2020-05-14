@@ -1,166 +1,391 @@
 ﻿#include <stdio.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <string.h>
 #include <stdlib.h>
-#include "mman.h"
+#include <string.h>
 
-#pragma comment(lib, "../libraries/mman.lib")
-
-#define N 50
+#define CS_BASE 16				// система счисления, в которой выполняется расчёт и вывод на экран
+#define SHIFT 5
 
 typedef struct
 {
-	char* Line;				// указатель на строку
-	unsigned int Length;	// длина строки
-} String;
-// вывод на печать строки
-void StringPrint(String* string)
+	unsigned int length;		// размер массива
+	unsigned int count;			// количество чисел в массиве
+	char sign;					// знак числа
+	unsigned __int8* value;		// массив чисел, представленный в виде символов
+} 
+bigInt;
+
+// инициализация экземпляра структуры bigInt
+bigInt bigIntInit()
 {
-	for (size_t index = 0; index < string->Length; ++index)
-		printf("%c", string->Line[index]);
+	bigInt bigNumber;
+	bigNumber.length = SHIFT;
+	bigNumber.count = 1;
+	bigNumber.value = (unsigned __int8*)malloc(bigNumber.length);
+	memset(bigNumber.value, 0, (size_t)bigNumber.length);
+	bigNumber.sign = '+';
+	return bigNumber;
 }
-// сравнение двух по содержимому
-int StringCompare(String* first, String* second)
+// очищает данные (нужно использовать, чтобы предотвратить утечки памяти, т.к. массив выделяется динамически)
+void bigIntClear(bigInt* bigNumber)
 {
-	return strncmp(first->Line, second->Line, 
-		first->Length < second->Length ? first->Length : second->Length);
+	free(bigNumber->value);
+	bigNumber->count = 0;
+	bigNumber->length = 0;
+	bigNumber->sign = NULL;
+}
+// изменение размера числа
+int bigIntResize(bigInt* bigNumber, unsigned int newSize)
+{
+	if (newSize < bigNumber->count + SHIFT)
+		return 0;
+	unsigned __int8* array = (unsigned __int8*)malloc(newSize);
+	memset(array, 0, (size_t)newSize);
+	memcpy(array, bigNumber->value, (size_t)bigNumber->count);
+	free(bigNumber->value);
+	bigNumber->value = array;
+	bigNumber->length = newSize;
+	return 1;
+}
+// обнуление числа
+void bigIntZero(bigInt* bigNumber)
+{
+	bigIntClear(bigNumber);
+	bigNumber->length = SHIFT;
+	bigNumber->count = 1;
+	bigNumber->sign = '+';
+	bigNumber->value = (unsigned __int8*)malloc(bigNumber->length);
+	memset(bigNumber->value, 0, bigNumber->count);
+}
+// инициализация посредством значения
+bigInt bigIntInitvalue(int value)
+{
+	bigInt bigNumber = bigIntInit();
+	if (value < 0)
+	{
+		bigNumber.sign = '-';
+		value *= -1;
+	}
+	unsigned int index = 0;
+	unsigned int k = 0;
+	unsigned int compare = 1;
+
+	while (compare < value)
+	{
+		compare *= 10;
+		index++;
+	}
+	bigIntResize(&bigNumber, index + SHIFT);
+	index = 0;
+
+	while (value > 0)
+	{
+		k = value / CS_BASE;
+		bigNumber.value[index] = value - k * CS_BASE;
+		value = k;
+		index++;
+	}
+	bigNumber.count = index;
+	return bigNumber;
+}
+// присвоение значения
+int bigIntSetvalue(bigInt* bigNumber, int value)
+{
+	if (value < 0)
+	{
+		bigNumber->sign = '-';
+		value *= -1;
+	}
+	else 
+	{
+		bigNumber->sign = '+';
+	}
+	bigIntZero(bigNumber);
+
+	unsigned int index = 0;
+	unsigned int k = 0;
+	unsigned int compare = 1;
+
+	while (compare < value)
+	{
+		compare *= 10;
+		index++;
+	}
+	bigIntResize(bigNumber, index + SHIFT);
+	index = 0;
+
+	while (value > 0)
+	{
+		k = value / CS_BASE;
+		bigNumber->value[index] = value - k * CS_BASE;
+		value = k;
+		index++;
+	}
+	bigNumber->count = index;
 }
 
-int main(int argc, const char** argv)
+// вывод в консоль в десятичном формате
+void bigIntPrint(bigInt* bigNumber)
 {
-	char inFileName[N] = { 0 }, outFileName[N] = { 0 };
-	
-	// считывание названий файлов из параметров для exe файла или
-	// при их несоответствии из консоли
-	if (argc == 3)
+	if (bigNumber->sign == '-')
+		printf("%c", bigNumber->sign);
+	for (int index = bigNumber->count - 1; index >= 0; --index)
 	{
-		for (uint32_t index = 0; argv[1][index] != 0; ++index)
-			inFileName[index] = argv[1][index];
-		for (uint32_t index = 0; argv[2][index] != 0; ++index)
-			outFileName[index] = argv[2][index];
-	}
-	else {
-		printf("Enter file name to read: ");
-		scanf_s("%s", inFileName, N - 1);
-		printf("Enter file name to write: ");
-		scanf_s("%s", outFileName, N - 1);
-	}
-	printf("You have entered: %s, %s.\n", inFileName, outFileName);
-
-	// открытие файлов для чтения (дескриптор inFile) и для записи (дескриптор outFile)
-	FILE* inFile = NULL, * outFile = NULL;
-	if (fopen_s(&inFile, inFileName, "r+") != 0)
-	{
-		printf("%s could not be opened for reading.\n", inFileName);
-		return -1;
-	}
-	if (fopen_s(&outFile, outFileName, "w+") != 0)
-	{
-		printf("%s could not be opened for writing.\n", outFileName);
-		return -1;
-	}
-
-	// если в конце файла нет символа конца строки, то добавляем его
-	// иначе не будет перевода на новую строку после сортировки
-	if (fseek(inFile, -1, SEEK_END) != 0)
-	{
-		printf("Could not size the input file.\n");
-		fclose(inFile);
-		fclose(outFile);
-		return -1;
-	}
-	char symbol;
-	fread(&symbol, 1, 1, inFile);
-	if (symbol != '\n')
-	{
-		fwrite("\n", 1, 1, inFile);
-		fclose(inFile);
-		fopen_s(&inFile, inFileName, "r");
-	}
-
-	// считываем информацию о размере файла для чтения
-	struct stat fileStat;
-	if (fstat(_fileno(inFile), &fileStat) != 0)
-	{
-		printf("Could not get the file size.\n");
-		fclose(inFile);
-		fclose(outFile);
-		return -1;
-	}
-	else
-		printf("The size of the file %s is %ld.\n", inFileName,	 fileStat.st_size);
-	// устанавливаем соответствующий размер файла для записи
-	if (fseek(outFile, fileStat.st_size - 1, SEEK_SET) != 0)
-	{
-		printf("Could not size the output file.\n");
-		fclose(inFile);
-		fclose(outFile);
-		return -1;
-	}
-	//fwrite("", 1, 1, outFile);
-
-	// отображение файлов в память
-	char* source, * destin;
-	source = (char*)mmap(0, fileStat.st_size, PROT_READ, MAP_SHARED, _fileno(inFile), 0);
-	if (source == MAP_FAILED)
-	{
-		printf("Could not map file %s.\n", inFileName);
-		fclose(inFile);
-		fclose(outFile);
-		return -1;
-	}
-	destin = (char*)mmap(0, fileStat.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, _fileno(outFile), 0);
-	if (destin == MAP_FAILED)
-	{
-		printf("Could not map file %s.\n", outFile);
-		fclose(inFile);
-		fclose(outFile);
-		return -1;
-	}
-
-	// проводим манипуляции по сортировке строк
-
-	size_t count = 1;
-	// рассчитываем количество строк
-	for (size_t index = 0; index < fileStat.st_size; ++index)
-	{
-		if (source[index] == '\n')
-			count++;
-	}
-	// массив строк представления
-	String* lines = (String*)malloc(count * sizeof(String));
-	lines[0].Line = &(source[0]);
-	count = 0;
-	size_t length = 0;
-
-	// запоминаем указатели на начала строк файла и их длины
-	for (size_t index = 0; source[index] != 0; ++index)
-	{
-		length++;
-		if (source[index] == '\n')
+		unsigned __int8 value = bigNumber->value[index];
+		switch (value)
 		{
-			lines[count].Length = length;
-			length = 0;
-			lines[++count].Line = &(source[index + 1]);
+		case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9:
+			printf("%d", value);
+			break;
+		case 10:
+			printf("A");
+			break;
+		case 11:
+			printf("B");
+			break;
+		case 12:
+			printf("C");
+			break;
+		case 13:
+			printf("D");
+			break;
+		case 14:
+			printf("E");
+			break;
+		case 15:
+			printf("F");
+			break;
+		default:
+			printf("error"); 
+			break;
+		}
+
+	}
+}
+
+// сравнение значений чисел по модулю
+int bigIntCompare(bigInt* firstBigN, bigInt* secondBigN)
+{
+	if (firstBigN->count > secondBigN->count)
+		return 1;
+	else if (secondBigN->count > firstBigN->count)
+		return 2;
+	for (int index = firstBigN->count - 1; index >= 0; --index)
+	{
+		if (firstBigN->value[index] > secondBigN->value[index])
+			return 1;
+		else if (secondBigN->value[index] > firstBigN->value[index])
+			return 2;
+	}
+	return 0;
+}
+// меняет числа местами
+int bigIntSwap(bigInt* firstBigN, bigInt* secondBigN)
+{
+	if (firstBigN == NULL || secondBigN == NULL)
+		return 0;
+	bigInt* bigInt = secondBigN;
+	secondBigN = firstBigN;
+	firstBigN = bigInt;
+	return 1;
+}
+// копирование числа
+bigInt bigIntInitCopy(bigInt* bigNumber)
+{
+	bigInt newNumber;
+	newNumber.sign = bigNumber->sign;
+	newNumber.length = bigNumber->length;
+	newNumber.count = bigNumber->count;
+	newNumber.value = (unsigned __int8*)malloc(newNumber.length);
+	memcpy(newNumber.value, bigNumber->value, (size_t)bigNumber->length);
+	return newNumber;
+}
+// копирование значения из одного числа в другое
+void bigIntCopy(bigInt* copyTo, bigInt* copyFrom)
+{
+	if (copyTo->length < copyFrom->count)
+		bigIntResize(copyTo, copyFrom->length);
+	memcpy(copyTo, copyFrom, copyFrom->count);
+	copyTo->count = copyFrom->count;
+	memset(copyTo->value[copyTo->count], 0, copyTo->length - copyTo->count);
+	copyTo->sign = copyFrom->sign;
+}
+
+// умножение числа на порядок
+void bigIntShift(bigInt* bigNumber, unsigned int times)
+{
+	if (times == 0) return;
+	bigIntResize(bigNumber, bigNumber->length + times);
+	for (unsigned int index = bigNumber->count + times - 1; index >= times; --index)
+		bigNumber->value[index] = bigNumber->value[index - 1];
+	for (unsigned int index = 0; index < times; ++index)
+		bigNumber->value[index] = 0;
+	bigNumber->count += times;
+}
+
+// вспомогательная функция сложения больших чисел
+void bigIntPlusBigUInt(bigInt* firstBigN, bigInt* secondBigN)
+{
+	unsigned int count = firstBigN->count > secondBigN->count ? firstBigN->count : secondBigN->count;
+	if (count >= firstBigN->length)
+		bigIntResize(firstBigN, secondBigN->length);
+	unsigned __int8 buffer = 0;
+	unsigned int index = 0;
+	while (index < count || buffer > 0)
+	{
+		if (index >= firstBigN->length - SHIFT)
+		{
+			firstBigN->count = index + 1;
+			bigIntResize(firstBigN, firstBigN->length + SHIFT);
+		}
+		buffer += firstBigN->value[index] + secondBigN->value[index];
+		firstBigN->value[index] = buffer % CS_BASE;
+		buffer /= CS_BASE;
+		index++;
+	}
+	firstBigN->count = index;
+}
+// вспомогательная функция вычитания больших чисел
+void bigIntMinusBigUInt(bigInt* firstBigN, bigInt* secondBigN)
+{
+	__int8 buffer = 0;
+	unsigned int index = 0;
+	while (index < firstBigN->count)
+	{
+		buffer = firstBigN->value[index] - secondBigN->value[index];
+		if (buffer < 0)
+		{
+			buffer += CS_BASE;
+			firstBigN->value[index + 1]--;
+		}
+		firstBigN->value[index] = buffer;
+		index++;
+	}
+	for (index = firstBigN->count - 1; index >= 0; --index)
+		if (firstBigN->value[index] != 0)
+		{
+			firstBigN->count = index + 1;
+			break;
+		}
+}
+// сложение больших чисел
+void bigIntPlusBigInt(bigInt* firstBigN, bigInt* secondBigN)
+{
+	if (firstBigN->sign == secondBigN->sign)
+	{
+		bigIntPlusBigUInt(firstBigN, secondBigN);
+	}
+	else 
+	{
+		int comp = bigIntCompare(firstBigN, secondBigN);
+		if (comp == 0)
+			bigIntZero(firstBigN);
+		else if (comp == 1)
+			bigIntMinusBigUInt(firstBigN, secondBigN);
+		else 
+		{
+			bigInt temp = bigIntInitCopy(secondBigN);
+			bigIntMinusBigUInt(&temp, firstBigN);
+			(*firstBigN) = bigIntInitCopy(&temp);
+			bigIntClear(&temp);
 		}
 	}
-	lines[count].Length = length + 1;
+}
+// вычитание больших чисел
+void bigIntMinusBigInt(bigInt* firstBigN, bigInt* secondBigN)
+{
+	char sign = secondBigN->sign;
+	if (sign == '+')
+		secondBigN->sign = '-';
+	else
+		secondBigN->sign = '+';
+	bigIntPlusBigInt(firstBigN, secondBigN);
+	secondBigN->sign = sign;
+}
 
-	qsort(lines, count, sizeof(String), StringCompare);
-	
-	length = 0;
-	for (size_t index = 0; index < count + 1; ++index) 
+// вспомогательная функция умножения на число от 0 до 9
+void bigIntMultInt(bigInt* firstBigN, unsigned __int8 number)
+{
+	unsigned __int8 buffer = 0;
+	unsigned int index = 0;
+	unsigned int count = firstBigN->count;
+	while (index < count || buffer > 0)
 	{
-		for (size_t number = 0; number < lines[index].Length; ++number)
-			destin[length + number] = lines[index].Line[number];
-		length += lines[index].Length;
+		if (index >= firstBigN->length - SHIFT)
+		{
+			firstBigN->count = index + 1;
+			bigIntResize(firstBigN, firstBigN->length + SHIFT);
+		}
+			
+		buffer += firstBigN->value[index] * number;
+		firstBigN->value[index] = buffer % CS_BASE;
+		buffer /= CS_BASE;
+		index++;
 	}
+	firstBigN->count = index;
+}
+// умножение двух больших чисел
+void bigIntMultBigInt(bigInt* firstBigN, bigInt* secondBigN)
+{
+	if (firstBigN->sign != secondBigN->sign)
+		firstBigN->sign = '-';
+	else
+		firstBigN->sign = '+';
 
+	bigInt buffer = bigIntInitCopy(firstBigN);
+	bigIntZero(firstBigN);
 
-	free(lines);
-	fclose(inFile);
-	fclose(outFile);
+	for (unsigned int index = 0; index < secondBigN->count; ++index)
+	{
+		bigInt temp = bigIntInitCopy(&buffer);
+		bigIntMultInt(&temp, secondBigN->value[index]);
+		bigIntPlusBigInt(firstBigN, &temp);
+		bigIntClear(&temp);
+		bigIntShift(&buffer, 1);
+	}
+	bigIntClear(&buffer);
+}
+// возведение в степень (степень только положительная, так как отрицательная степень даёт дробное число)
+void bigIntPowBigInt(bigInt* firstBigN, bigInt* secondBigN)
+{
+	if (secondBigN->sign == '-') return;
+	if (firstBigN->sign == '-' && secondBigN->value[0] % 2 == 0)
+		firstBigN->sign = '+';
+	bigInt temp = bigIntInitCopy(firstBigN);
+	bigInt one = bigIntInitvalue(1);
+	bigInt zero = bigIntInitvalue(1);
+	while (bigIntCompare(secondBigN, &zero) == 1)
+	{
+		bigIntMultBigInt(firstBigN, &temp);
+		bigIntPlusBigInt(&zero, &one);
+	}
+	bigIntClear(&temp);
+	bigIntClear(&one);
+	bigIntClear(&zero);
+}
+
+int main()
+{
+	printf("Big numbers calculating. Scale of notation is %d.\n", CS_BASE);
+	
+	bigInt number1 = bigIntInitvalue(3);
+	bigInt number2 = bigIntInitvalue(10000);
+
+	printf("Initial values:");
+	printf("\nFirst number ");
+	bigIntPrint(&number1);
+	printf("\nSecond number: ");
+	bigIntPrint(&number2);
+
+	printf("\nCalculating...");
+	bigIntPowBigInt(&number1, &number2);
+	
+	printf("\n Result ");
+	bigIntPrint(&number1);
+	
+	printf("\n");
+
+	bigIntClear(&number1);
+	bigIntClear(&number2);
 
 	return 0;
 }
