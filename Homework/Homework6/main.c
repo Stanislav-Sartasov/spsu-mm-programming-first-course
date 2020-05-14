@@ -9,24 +9,26 @@
 
 typedef struct
 {
-	char* Line;				// указатель на строку
-	unsigned int Length;	// длина строки
-} String;
+	char* line;				// указатель на строку
+	unsigned int length;	// длина строки
+} 
+string;
 // вывод на печать строки
-void StringPrint(String* string)
+void stringPrint(string* string)
 {
-	for (size_t index = 0; index < string->Length; ++index)
-		printf("%c", string->Line[index]);
+	for (size_t index = 0; index < string->length; ++index)
+		printf("%c", string->line[index]);
 }
 // сравнение двух по содержимому
-int StringCompare(String* first, String* second)
+int stringCompare(string* first, string* second)
 {
-	return strncmp(first->Line, second->Line, 
-		first->Length < second->Length ? first->Length : second->Length);
+	return strncmp(first->line, second->line, 
+		first->length < second->length ? first->length : second->length);
 }
 
 int main(int argc, const char** argv)
 {
+	printf("This programm sorts text\n");
 	char inFileName[N] = { 0 }, outFileName[N] = { 0 };
 	
 	// считывание названий файлов из параметров для exe файла или
@@ -38,7 +40,8 @@ int main(int argc, const char** argv)
 		for (uint32_t index = 0; argv[2][index] != 0; ++index)
 			outFileName[index] = argv[2][index];
 	}
-	else {
+	else 
+	{
 		printf("Enter file name to read: ");
 		scanf_s("%s", inFileName, N - 1);
 		printf("Enter file name to write: ");
@@ -89,14 +92,14 @@ int main(int argc, const char** argv)
 	else
 		printf("The size of the file %s is %ld.\n", inFileName,	 fileStat.st_size);
 	// устанавливаем соответствующий размер файла для записи
-	if (fseek(outFile, fileStat.st_size, SEEK_SET) != 0)
+	if (fseek(outFile, fileStat.st_size - 1, SEEK_SET) != 0)
 	{
 		printf("Could not size the output file.\n");
 		fclose(inFile);
 		fclose(outFile);
 		return -1;
 	}
-	fwrite(" ", 1, 1, outFile);
+	//fwrite("", 1, 1, outFile);
 
 	// отображение файлов в память
 	char* source, * destin;
@@ -127,8 +130,8 @@ int main(int argc, const char** argv)
 			count++;
 	}
 	// массив строк представления
-	String* lines = (String*)malloc((count + 1) * sizeof(String));
-	lines[0].Line = &(source[0]);
+	string* lines = (string*)malloc(count * sizeof(string));
+	lines[0].line = &(source[0]);
 	count = 0;
 	size_t length = 0;
 
@@ -138,24 +141,23 @@ int main(int argc, const char** argv)
 		length++;
 		if (source[index] == '\n')
 		{
-			lines[count].Length = length;
+			lines[count].length = length;
 			length = 0;
-			lines[++count].Line = &(source[index + 1]);
+			lines[++count].line = &(source[index + 1]);
 		}
 	}
-	lines[count].Length = length + 1;
+	lines[count].length = length + 1;
 
-	qsort(lines, count + 1, sizeof(String), StringCompare);
+	qsort(lines, count, sizeof(string), stringCompare);
 	
 	length = 0;
 	for (size_t index = 0; index < count + 1; ++index) 
 	{
-		for (size_t number = 0; number < lines[index].Length; ++number)
-			destin[length + number] = lines[index].Line[number];
-		length += lines[index].Length;
+		for (size_t number = 0; number < lines[index].length; ++number)
+			destin[length + number] = lines[index].line[number];
+		length += lines[index].length;
 	}
 
-	//for (unsigned int index = 0; source)
 
 	free(lines);
 	fclose(inFile);
