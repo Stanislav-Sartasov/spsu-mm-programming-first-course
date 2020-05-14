@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,14 +5,14 @@
 
 #pragma pack(push, 1)
 
-typedef struct bitmapFileHeader
+typedef struct bitMapFileHeader
 {
     unsigned short bfType;
     unsigned int bfSize;
     unsigned short bfReversed1;
     unsigned short bfReversed2;
     unsigned  int bfOffBits;
-}bitmapFileHeader;
+}bitMapFileHeader;
 
 typedef struct bitMapInfoHeader
 {
@@ -37,14 +36,20 @@ void toGrey(unsigned char* image, unsigned int height, unsigned int width)
 {
     for (int i = 0; i < height * width; i++)
     {
-        unsigned char brightness = (unsigned char)(image[i * 3] * 0.299 + image[i * 3 + 1] * 0.587 + image[i * 3 + 2] * 0.144);
+        int brightness = (int)(image[i * 3] * 0.2126 + image[i * 3 + 1] * 0.7152 + image[i * 3 + 2] * 0.0722);
+        if (brightness > 255)
+        {
+            image[i * 3] = 255;
+            image[i * 3 + 1] = 255;
+            image[i * 3 + 2] = 255;
+        }
         image[i * 3] = brightness;
         image[i * 3 + 1] = brightness;
         image[i * 3 + 2] = brightness;
     }
 }
 
-void convolution(unsigned char* image, double* nucleus, unsigned int height, unsigned int width, int dev)
+void convolution(unsigned char* image, const double* nucleus, unsigned int height, unsigned int width, int dev)
 {
     unsigned char* output = (unsigned char*)calloc(3 * height * width, sizeof(unsigned char));
     double r = 0;
@@ -97,7 +102,7 @@ void convolution(unsigned char* image, double* nucleus, unsigned int height, uns
 
 void averaging(unsigned char* image, unsigned int height, unsigned int width)
 {
-    double nucleus[9] = { 1,1,1,1,1,1,1,1,1 };
+    double nucleus[9] = { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
     convolution(image, nucleus, height, width, 9);
 }
 
@@ -132,72 +137,59 @@ int main(int argc, char* argv[])
 
     if (fin == NULL)
     {
-        printf("Error opening input file");
+        printf("Error opening input file\n");
         exit(EXIT_FAILURE);
     }
     if (fout == NULL)
     {
-        printf("Error opening output file");
+        printf("Error opening output file\n");
         exit(EXIT_FAILURE);
     }
 
-    bitmapFileHeader bFileH;
+    bitMapFileHeader bFileH;
     bitMapInfoHeader bMIH;
     fread(&bFileH, sizeof(bFileH), 1, fin);
     fread(&bMIH, sizeof(bMIH), 1, fin);
     // fseek(fin, bFileH.bfOffBits, SEEK_SET);
 
-    unsigned char* image = (unsigned char*)calloc(bMIH.biSizeImage, 1);
-    fread(image, sizeof(unsigned char), bMIH.biSizeImage, fin);
+    unsigned char* image = (unsigned char*)calloc(bMIH.biWidth * bMIH.biHeight * 3, 1);
+    fread(image, sizeof(unsigned char), bMIH.biWidth * bMIH.biHeight * 3, fin);
 
     if (image == NULL)
     {
-        printf("Error in file");
+        printf("Error in file\n");
     }
 
     char* filter = argv[2];
-    while (1)
+    if (strcmp(filter, "averaging") == 0)
     {
-        if (strcmp(filter, "averaging") == 0) {
-            averaging(image, bMIH.biHeight, bMIH.biWidth);
-            break;
-        }
-        else if (strcmp(filter, "gauss") == 0) {
-            gauss(image, bMIH.biHeight, bMIH.biWidth);
-            break;
-        }
-        else if (strcmp(filter, "sobelx") == 0) {
-            sobelX(image, bMIH.biHeight, bMIH.biWidth);
-            break;
-        }
-        else if (strcmp(filter, "sobely") == 0) {
-            sobelY(image, bMIH.biHeight, bMIH.biWidth);
-            break;
-        }
-        else if (strcmp(filter, "togrey") == 0) {
-            toGrey(image, bMIH.biHeight, bMIH.biWidth);
-            break;
-        }
-        else
-        {
-            printf("Invalid filter name! \nIf you want to use an averaging filter, enter \"averaging\"\n");
-            printf("If you want to use an the Gauss filter, enter \"gauss\"\n");
-            printf("if you want to use the Sobel filter by x, enter \"sobelx\"\n");
-            printf("if you want to use the Sobel filter by y, enter \"sobely\"\n");
-            printf("if you want to translate the image in shades of gray, enter \"togrey\"\n");
-            printf("if you want to go out, enter \"exit\"\n");
-            scanf("%s", filter);
-            scanf("%*[^\n]");
-            if (strcmp(filter, "exit") == 0)
-            {
-                return 0;
-            }
-        }
+        averaging(image, bMIH.biHeight, bMIH.biWidth);
     }
+    else if (strcmp(filter, "gauss") == 0)
+    {
+        gauss(image, bMIH.biHeight, bMIH.biWidth);
+    }
+    else if (strcmp(filter, "sobelx") == 0)
+    {
+        sobelX(image, bMIH.biHeight, bMIH.biWidth);
+    }
+    else if (strcmp(filter, "sobely") == 0)
+    {
+        sobelY(image, bMIH.biHeight, bMIH.biWidth);
+    }
+    else if (strcmp(filter, "togrey") == 0)
+    {
+        toGrey(image, bMIH.biHeight, bMIH.biWidth);
+    }
+    else
+    {
+        printf("Invalid input");
+    }
+
 
     fwrite(&bFileH, sizeof(bFileH), 1, fout);
     fwrite(&bMIH, sizeof(bMIH), 1, fout);
-    for (int i = 0; i < bMIH.biSizeImage; i++)
+    for (int i = 0; i < bMIH.biHeight * bMIH.biWidth * 3; i++)
     {
         fwrite(&image[i], sizeof(unsigned char), 1, fout);
     }
