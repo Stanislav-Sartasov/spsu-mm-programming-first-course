@@ -1,49 +1,27 @@
 #include <stdio.h>
-#include <stdint.h>
+#include <math.h>
 
-uint32_t pows[32];
-
-void calculatePow2() 
+int mersenNumber()
 {
-	pows[0] = 1;
-	for(int i = 1; i < 32; ++i) 
-	{
-		pows[i] = pows[i - 1] * 2;
-	}
-}
-
-int is_prime(int n)
-{
-	int flag = 1;
-	for (int i = 2; i < (n - n%2)/2; i++)
-	{
-		if (n%i==0)
-		{
-			flag = 0;
-			break;
-		}
-	}
-	return flag;
-}
-int main() 
-{
-	const char* description = "This program print's all the Mersenne primes in"
-								" interval [1, 2^31 - 1]\n";
-
-	printf("%s", description);
-
-	calculatePow2();
-
-//    int mersenneExp[8] = {2, 3, 5, 7, 13, 17, 19, 31};
-
-	for (int i = 0; i < 32; ++i) 
-	{
-		int loc = pows[i] - 1;
-		if (is_prime(loc))
-		{
-			printf("%d\n", pows[i] - 1);
-		}
-		
-		
+    int n, b, flag;
+    for (n = 1; n < 32; n++)
+    {
+        flag = 1;
+        b = pow(2, n) - 1;
+        for (int j = 2; j < (int)sqrt(b); j++)
+        {
+            if (b % j == 0)
+                flag = 0;
+        }
+        if (flag)
+            printf("%d\n", b);
     }
+    return 0;
+}
+
+int main()
+{
+    printf("This programm print's all the Mersenne primes in interval [1, 2^31 - 1]\n");
+    mersenNumber();
+    return 0;
 }
