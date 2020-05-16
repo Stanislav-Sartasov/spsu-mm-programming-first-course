@@ -19,7 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6027ce5f-1c99-4e8f-a828-2292353b7f5d" name="Default Changelist" comment="">
+    <list default="true" id="14ba2f54-a5ee-4965-b79f-ec7674403511" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../../binsearch/binsearch.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../my-wc/my-wc.py" beforeDir="false" />
     </list>
@@ -31,16 +31,15 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="JUnit4 Test Class" />
-        <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
-  <component name="ProjectId" id="1bWmmTvIkDIz77auDBU0Jrlkcfj" />
+  <component name="ProjectId" id="1byrRyNjjxjkSOa3EbGgvElHp21" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
@@ -49,55 +48,40 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="Downloaded.Files.Path.Enabled" value="false" />
-    <property name="Repository.Attach.Annotations" value="false" />
-    <property name="Repository.Attach.JavaDocs" value="false" />
-    <property name="Repository.Attach.Sources" value="false" />
-    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
-    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
-    <property name="create.test.in.the.same.root" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../.." />
-    <property name="project.structure.last.edited" value="Libraries" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/src/test/java/derivedclass" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
-      <recent name="project2.derivedclass.tank" />
+      <recent name="derivedclass.tank" />
     </key>
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.T34Test">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="project2.base.Main" />
-      <module name="project2" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Application.Unnamed">
     <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="project2.base.Main" />
-      <module name="project2" />
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="Task_2" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="T34Test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="project2" />
+    <configuration name="Tests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Task_2" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="project2.tests.*" />
+          <option name="PATTERN" value="derivedclass.tank.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="project2.tests" />
-      <option name="MAIN_CLASS_NAME" value="project2.tests.T34Test" />
+      <option name="PACKAGE_NAME" value="derivedclass.tank" />
+      <option name="MAIN_CLASS_NAME" value="derivedclass.tank.Tests" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -105,12 +89,11 @@
     </configuration>
     <list>
       <item itemvalue="Application.Unnamed" />
-      <item itemvalue="Application.Main" />
-      <item itemvalue="JUnit.T34Test" />
+      <item itemvalue="JUnit.Tests" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.T34Test" />
+        <item itemvalue="JUnit.Tests" />
       </list>
     </recent_temporary>
   </component>
@@ -119,11 +102,11 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="6027ce5f-1c99-4e8f-a828-2292353b7f5d" name="Default Changelist" comment="" />
-      <created>1588756382674</created>
+      <changelist id="14ba2f54-a5ee-4965-b79f-ec7674403511" name="Default Changelist" comment="" />
+      <created>1589615170129</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1588756382674</updated>
+      <updated>1589615170129</updated>
     </task>
     <servers />
   </component>
@@ -137,80 +120,39 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="277" y="30" width="802" height="738" key="#Intentions" timestamp="1588759356915">
+    <state x="140" y="41" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1589615919503">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="277" y="30" width="802" height="738" key="#Intentions/0.0.1366.768@0.0.1366.768" timestamp="1588759356915" />
-    <state x="140" y="41" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588758034252">
+    <state x="140" y="41" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.768@0.0.1366.768" timestamp="1589615919503" />
+    <state x="414" y="175" width="527" height="425" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1589615915911">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="140" y="41" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.768@0.0.1366.768" timestamp="1588758034252" />
-    <state x="100" y="100" width="1166" height="568" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog" timestamp="1588844779474">
+    <state x="414" y="175" width="527" height="425" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1366.768@0.0.1366.768" timestamp="1589615915911" />
+    <state width="1318" height="181" key="GridCell.Tab.0.bottom" timestamp="1589615930501">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="100" y="100" width="1166" height="568" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog/0.0.1366.768@0.0.1366.768" timestamp="1588844779474" />
-    <state x="414" y="175" width="527" height="425" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1588758032680">
+    <state width="1318" height="181" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1589615930501" />
+    <state width="1318" height="181" key="GridCell.Tab.0.center" timestamp="1589615930500">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="414" y="175" width="527" height="425" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1366.768@0.0.1366.768" timestamp="1588758032680" />
-    <state x="415" y="132" width="526" height="511" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1588844650639">
+    <state width="1318" height="181" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1589615930500" />
+    <state width="1318" height="181" key="GridCell.Tab.0.left" timestamp="1589615930500">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="415" y="132" width="526" height="511" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.768@0.0.1366.768" timestamp="1588844650639" />
-    <state x="465" y="141" width="426" height="493" key="FileChooserDialogImpl" timestamp="1588757719469">
+    <state width="1318" height="181" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1589615930500" />
+    <state width="1318" height="181" key="GridCell.Tab.0.right" timestamp="1589615930501">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="465" y="141" width="426" height="493" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1588757719469" />
-    <state width="1318" height="181" key="GridCell.Tab.0.bottom" timestamp="1588844782963">
+    <state width="1318" height="181" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1589615930501" />
+    <state x="454" y="163" width="448" height="449" key="chooseDestDirectoryDialog" timestamp="1589615790010">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1318" height="181" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1588844782963" />
-    <state width="1318" height="181" key="GridCell.Tab.0.center" timestamp="1588844782962">
+    <state x="454" y="163" width="448" height="449" key="chooseDestDirectoryDialog/0.0.1366.768@0.0.1366.768" timestamp="1589615790010" />
+    <state x="428" y="201" width="499" height="372" key="com.intellij.testIntegration.createTest.CreateTestDialog" timestamp="1589615704579">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1318" height="181" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1588844782962" />
-    <state width="1318" height="181" key="GridCell.Tab.0.left" timestamp="1588844782962">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state width="1318" height="181" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1588844782962" />
-    <state width="1318" height="181" key="GridCell.Tab.0.right" timestamp="1588844782963">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state width="1318" height="181" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1588844782963" />
-    <state width="1318" height="225" key="GridCell.Tab.1.bottom" timestamp="1588763368138">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state width="1318" height="225" key="GridCell.Tab.1.bottom/0.0.1366.768@0.0.1366.768" timestamp="1588763368138" />
-    <state width="1318" height="225" key="GridCell.Tab.1.center" timestamp="1588763368138">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state width="1318" height="225" key="GridCell.Tab.1.center/0.0.1366.768@0.0.1366.768" timestamp="1588763368138" />
-    <state width="1318" height="225" key="GridCell.Tab.1.left" timestamp="1588763368137">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state width="1318" height="225" key="GridCell.Tab.1.left/0.0.1366.768@0.0.1366.768" timestamp="1588763368137" />
-    <state width="1318" height="225" key="GridCell.Tab.1.right" timestamp="1588763368138">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state width="1318" height="225" key="GridCell.Tab.1.right/0.0.1366.768@0.0.1366.768" timestamp="1588763368138" />
-    <state x="165" y="0" width="1026" height="768" key="SettingsEditor" timestamp="1588762654707">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="165" y="0" width="1026" height="768" key="SettingsEditor/0.0.1366.768@0.0.1366.768" timestamp="1588762654707" />
-    <state x="349" y="276" width="648" height="238" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1588762626931">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="349" y="276" width="648" height="238" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1366.768@0.0.1366.768" timestamp="1588762626931" />
-    <state x="426" y="186" width="503" height="403" key="com.intellij.testIntegration.createTest.CreateTestDialog" timestamp="1588763174924">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="426" y="186" width="503" height="403" key="com.intellij.testIntegration.createTest.CreateTestDialog/0.0.1366.768@0.0.1366.768" timestamp="1588763174924" />
-    <state x="0" y="0" width="1356" height="768" key="new project wizard" timestamp="1588767189692">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="0" y="0" width="1356" height="768" key="new project wizard/0.0.1366.768@0.0.1366.768" timestamp="1588767189692" />
+    <state x="428" y="201" width="499" height="372" key="com.intellij.testIntegration.createTest.CreateTestDialog/0.0.1366.768@0.0.1366.768" timestamp="1589615704579" />
   </component>
 </project>
