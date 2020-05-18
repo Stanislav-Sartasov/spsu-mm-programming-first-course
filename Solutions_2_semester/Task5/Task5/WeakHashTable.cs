@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace Task5
 {
-    public class WeakHashTable<keyType, valueType>
-        where valueType : class
+    public class WeakHashTable<TKey, TValue>
+        where TValue : class
     {
         public WeakHashTable(int startSize, int overflowSize, int lifetime)
             : this(lifetime)
@@ -18,7 +18,7 @@ namespace Task5
         }
         public WeakHashTable(int lifetime)
         {
-            table = new WeakMapList<keyType, valueType>[startSize];
+            table = new WeakMapList<TKey, TValue>[startSize];
             this.lifetime = lifetime;
         }
 
@@ -27,21 +27,21 @@ namespace Task5
         int overflowSize = 4;
         bool balanced = false;
         int lifetime;
-        WeakMapList<keyType, valueType>[] table;
+        WeakMapList<TKey, TValue>[] table;
 
-        int HashFunc(keyType obj, int len)
+        int HashFunc(TKey obj, int len)
         {
             return Math.Abs(obj.GetHashCode()) % len;
         }
-        public void Add(keyType key, valueType value)
+        public void Add(TKey key, TValue value)
         {
             Add(key, value, table);
         }
-        void Add(keyType key, valueType value, WeakMapList<keyType, valueType>[] table)       //override
+        void Add(TKey key, TValue value, WeakMapList<TKey, TValue>[] table)       //override
         {
             int code = HashFunc(key, table.Length);
             if (table[code] == null)
-                table[code] = new WeakMapList<keyType, valueType>(lifetime);
+                table[code] = new WeakMapList<TKey, TValue>(lifetime);
             if (balanced)
                 table[code].Add(key, value, false);
             else
@@ -54,13 +54,13 @@ namespace Task5
                 balanced = false;
                 code = HashFunc(key, table.Length);
                 if (table[code] == null)
-                    table[code] = new WeakMapList<keyType, valueType>(lifetime);
+                    table[code] = new WeakMapList<TKey, TValue>(lifetime);
             }
         }
         void Balance()
         {
             int newSize = table.Length * growthCoeff;
-            var newTable = new WeakMapList<keyType, valueType>[newSize];
+            var newTable = new WeakMapList<TKey, TValue>[newSize];
             for (int i = 0; i < table.Length; i++)
             {
                 if (table[i] != null)
@@ -71,13 +71,13 @@ namespace Task5
             }
             table = newTable;
         }
-        public bool Remove(keyType key)
+        public bool Remove(TKey key)
         {
             while (balanced) { };
             int code = HashFunc(key, table.Length);
             return table[code].Remove(key);
         }
-        public valueType Find(keyType key)
+        public TValue Find(TKey key)
         {
             return table[HashFunc(key, table.Length)].Find(key);
         }

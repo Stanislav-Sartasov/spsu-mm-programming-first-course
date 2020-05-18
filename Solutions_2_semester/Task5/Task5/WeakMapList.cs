@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 
 namespace Task5
 {
-    public class WeakMapList<keyType, valueType> 
-        where valueType : class
+    public class WeakMapList<TKey, TValue> 
+        where TValue : class
     {
         public WeakMapList(int lifetime)
         {
             this.lifetime = lifetime;
         }
         int lifetime;
-        List<keyType> keyList = new List<keyType> { };
-        List<WeakReference<valueType>> valueList = new List<WeakReference<valueType>> { };
+        List<TKey> keyList = new List<TKey> { };
+        List<WeakReference<TValue>> valueList = new List<WeakReference<TValue>> { };
         public int Count
         {
             get
@@ -23,15 +23,15 @@ namespace Task5
             }
         }
 
-        public async void Add(keyType key, valueType value, bool wait)
+        public async void Add(TKey key, TValue value, bool wait)
         {
             Remove(key);
             keyList.Add(key);
-            valueList.Add(new WeakReference<valueType>(value));
+            valueList.Add(new WeakReference<TValue>(value));
             if (wait)
                 await Task.Delay(lifetime);
         }
-        public bool Remove(keyType key)
+        public bool Remove(TKey key)
         {
             bool flag = false;
             for (int i = 0; i < keyList.Count;)
@@ -40,7 +40,7 @@ namespace Task5
                     RemoveAt(i);
                     flag = true;
                 }
-                else if(!valueList[i].TryGetTarget(out valueType targetValue))
+                else if(!valueList[i].TryGetTarget(out TValue targetValue))
                     RemoveAt(i);
                 else
                     i++;
@@ -54,25 +54,25 @@ namespace Task5
             valueList.RemoveAt(ind);
             return true;
         }
-        public valueType Find(keyType key)
+        public TValue Find(TKey key)
         {
             int ind = keyList.FindIndex(x => Equals(x, key));
-            valueType target = default;
+            TValue target = default;
             if (ind != -1)
                 valueList[ind].TryGetTarget(out target);
             return target;
         }
-        public keyType KeyAt(int ind)
+        public TKey KeyAt(int ind)
         {
             if (ind >= keyList.Count)
                 return default;
             return keyList[ind];
         }
-        public valueType ValueAt(int ind)
+        public TValue ValueAt(int ind)
         {
             if (ind >= keyList.Count)
                 return default;
-            valueType target = default;
+            TValue target = default;
             valueList[ind].TryGetTarget(out target);
             return target;
         }
@@ -80,14 +80,14 @@ namespace Task5
         {
             if (ind >= keyList.Count)
                 return false;
-            bool flag = valueList[ind].TryGetTarget(out valueType target);
+            bool flag = valueList[ind].TryGetTarget(out TValue target);
             return flag;
         }
         public int OneHealthing()
         {
             int theNumberOfDead = 0;
             for (int i = 0; i < keyList.Count;)
-                if (!valueList[i].TryGetTarget(out valueType targetValue))
+                if (!valueList[i].TryGetTarget(out TValue targetValue))
                 {
                     RemoveAt(i);
                     theNumberOfDead++;

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Task4
 {
-    public class HashTable<keyType, valueType>
+    public class HashTable<TKey, TValue>
     {
         public HashTable(int startSize, int overflowSize)
             : this()
@@ -16,24 +16,24 @@ namespace Task4
         }
         public HashTable()
         {
-            table = new MapList<keyType, valueType>[startSize];
+            table = new MapList<TKey, TValue>[startSize];
         }
 
         int startSize = 256;
         int growthCoeff = 2;
         int overflowSize = 4;
         bool balanced = false;
-        MapList<keyType, valueType>[] table;
+        MapList<TKey, TValue>[] table;
 
         int HashFunc<T>(T obj)
         {
             return Math.Abs(obj.GetHashCode()) % table.Length;
         }
-        public void Add(keyType key, valueType value)       //override
+        public void Add(TKey key, TValue value)       //override
         {
             int code = HashFunc(key);
             if (table[code] == null)
-                table[code] = new MapList<keyType, valueType>();
+                table[code] = new MapList<TKey, TValue>();
             else
                 table[code].Remove(key);
             int i = 0;
@@ -44,7 +44,7 @@ namespace Task4
                 balanced = false;
                 code = HashFunc(key);
                 if (table[code] == null)
-                    table[code] = new MapList<keyType, valueType>();
+                    table[code] = new MapList<TKey, TValue>();
             }
 
             table[code].Add(key, value);
@@ -52,8 +52,8 @@ namespace Task4
         void Balance()
         {
             int newSize = table.Length * growthCoeff;
-            MapList<keyType, valueType>[] oldTable = table;
-            table = new MapList<keyType, valueType>[newSize];
+            MapList<TKey, TValue>[] oldTable = table;
+            table = new MapList<TKey, TValue>[newSize];
             for (int i = 0; i < oldTable.Length; i++)
             {
                 if (oldTable[i] != null)
@@ -62,12 +62,12 @@ namespace Task4
                 oldTable[i] = null;
             }
         }
-        public bool Remove(keyType key)
+        public bool Remove(TKey key)
         {
             int code = HashFunc(key);
             return table[code].Remove(key);
         }
-        public valueType Find(keyType key)
+        public TValue Find(TKey key)
         {
             return table[HashFunc(key)].Find(key);
         }

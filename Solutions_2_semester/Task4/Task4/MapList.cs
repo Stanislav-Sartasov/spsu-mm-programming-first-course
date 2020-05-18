@@ -6,10 +6,10 @@ using System.Text;
 
 namespace Task4
 {
-    public class MapList<keyType,valueType>
+    public class MapList<TKey,TValue>
     {
-        List<keyType> keyList = new List<keyType> { };
-        List<valueType> valueList = new List<valueType> { };
+        List<TKey> keyList = new List<TKey> { };
+        List<TValue> valueList = new List<TValue> { };
         public int Count
         {
             get
@@ -17,7 +17,7 @@ namespace Task4
                 return keyList.Count;
             }
         }
-        public void Add(keyType key, valueType value)
+        public void Add(TKey key, TValue value)
         {
             int ind = keyList.FindIndex(x => Equals(x, key));
             if (ind != -1)
@@ -25,7 +25,7 @@ namespace Task4
             keyList.Add(key);
             valueList.Add(value);
         }
-        public bool Remove(keyType key)
+        public bool Remove(TKey key)
         {
             int ind = keyList.FindIndex(x => Equals(x, key));
             if (ind != -1)
@@ -43,20 +43,20 @@ namespace Task4
             valueList.RemoveAt(ind);
             return true;
         }
-        public valueType Find(keyType key)
+        public TValue Find(TKey key)
         {
             int ind = keyList.FindIndex(x => Equals(x, key));
             if (ind != -1)
                 return valueList[ind];
             return default;
         }
-        public keyType FindIndKey(int ind)
+        public TKey FindIndKey(int ind)
         {
             if (ind >= Count)
                 return default;
             return keyList[ind];
         }
-        public valueType FindIndValue(int ind)
+        public TValue FindIndValue(int ind)
         {
             if (ind >= Count)
                 return default;
