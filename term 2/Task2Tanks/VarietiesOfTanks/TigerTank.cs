@@ -11,9 +11,9 @@ namespace VarietiesOfTanks
         {
             MaxSpeed = maxSpeed;
         }
-        public override string Info()
+        public override string GetInfo()
         {
-            string s = base.Info() + $"\nMaximum speed: {MaxSpeed}";
+            string s = base.GetInfo() + $"\nMaximum speed: {MaxSpeed}";
             return s;
         }
     }

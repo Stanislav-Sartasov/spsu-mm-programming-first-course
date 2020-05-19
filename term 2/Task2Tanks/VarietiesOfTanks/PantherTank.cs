@@ -10,9 +10,9 @@ namespace VarietiesOfTanks
         {
             FuelCapacity = fuelCapacity;
         }
-        public override string Info()
+        public override string GetInfo()
         {
-            string s = base.Info() + $"\nFuel capacity: {FuelCapacity}";
+            string s = base.GetInfo() + $"\nFuel capacity: {FuelCapacity}";
             return s;
         }
     }

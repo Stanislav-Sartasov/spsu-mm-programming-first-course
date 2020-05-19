@@ -24,7 +24,7 @@ namespace AbstractLibrary
             Crew = crew;
         }
 
-        public virtual string Info()
+        public virtual string GetInfo()
         {
             string info = $"Name of the tank: {Name}\nType: {Type}\nPlaceOfOrigin: {PlaceOfOrigin}\nMass: {Mass}\n" +
                 $"Length: {Length}\nHeight: {Height}\nCrew: {Crew}";

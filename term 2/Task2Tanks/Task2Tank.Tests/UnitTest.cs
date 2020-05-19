@@ -19,7 +19,7 @@ namespace Task2Tank.Tests
             Assert.AreEqual(5, tankSdKfz.Crew);
             Assert.AreEqual(720, tankSdKfz.FuelCapacity);
             Assert.AreEqual("Name of the tank: Sd.Kfz. 267\nType: Medium Tank\nPlaceOfOrigin: Germany\nMass: 44,8\n" +
-                "Length: 6,87\nHeight: 2,99\nCrew: 5\nFuel capacity: 720", tankSdKfz.Info());
+                "Length: 6,87\nHeight: 2,99\nCrew: 5\nFuel capacity: 720", tankSdKfz.GetInfo());
         }
 
         [TestMethod]
@@ -35,7 +35,7 @@ namespace Task2Tank.Tests
             Assert.AreEqual(5, tankPzKpfw.Crew);
             Assert.AreEqual(45.4F, tankPzKpfw.MaxSpeed);
             Assert.AreEqual("Name of the tank: Pz.Kpfw VI\nType: Heavy tank\nPlaceOfOrigin: Germany\nMass: 54\n" +
-                "Length: 6,316\nHeight: 3\nCrew: 5\nMaximum speed: 45,4", tankPzKpfw.Info());
+                "Length: 6,316\nHeight: 3\nCrew: 5\nMaximum speed: 45,4", tankPzKpfw.GetInfo());
         }
     }
 }
