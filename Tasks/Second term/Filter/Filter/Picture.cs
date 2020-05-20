@@ -195,12 +195,12 @@ namespace Filter
                 for (int j = 0; j < width; j++)
                 {
                     int[] result = new int[3] { 0, 0, 0 };
-                    for (int iter_dir_x = 0; iter_dir_x < size; iter_dir_x++)
-                        for (int iter_dir_y = 0; iter_dir_y < size; iter_dir_y++)
-                            if ((i + iter_dir_x - 1) >= 0 && (i + iter_dir_x - 1) <= (height - 1) && (j + iter_dir_y - 1) >= 0 && (j + iter_dir_y - 1) <= (width - 1))
+                    for (int iterDirX = 0; iterDirX < size; iterDirX++)
+                        for (int iterDirY = 0; iterDirY < size; iterDirY++)
+                            if ((i + iterDirX - 1) >= 0 && (i + iterDirX - 1) <= (height - 1) && (j + iterDirY - 1) >= 0 && (j + iterDirY - 1) <= (width - 1))
                             {
                                 for (int k = 0; k < 3; k++)
-                                    result[k] += (processedPicture[i + iter_dir_x - 1, j + iter_dir_y - 1, k] * directions[iter_dir_x, iter_dir_y]);
+                                    result[k] += (processedPicture[i + iterDirX - 1, j + iterDirY - 1, k] * directions[iterDirX, iterDirY]);
                             }
                     for (int k = 0; k < 3; k++)
                     {
@@ -228,13 +228,13 @@ namespace Filter
                 {
                     int[] result = new int[3] { 0, 0, 0 };
                     int divider = 0;
-                    for (int iter_dir_x = 0; iter_dir_x < size; iter_dir_x++)
-                        for (int iter_dir_y = 0; iter_dir_y < size; iter_dir_y++)
-                            if ((i + iter_dir_x - 1) >= 0 && (i + iter_dir_x - 1) <= (height - 1) && (j + iter_dir_y - 1) >= 0 && (j + iter_dir_y - 1) <= (width - 1))
+                    for (int iterDirX = 0; iterDirX < size; iterDirX++)
+                        for (int iterDirY = 0; iterDirY < size; iterDirY++)
+                            if ((i + iterDirX - 1) >= 0 && (i + iterDirX - 1) <= (height - 1) && (j + iterDirY - 1) >= 0 && (j + iterDirY - 1) <= (width - 1))
                             {
                                 for (int k = 0; k < 3; k++)
-                                    result[k] += (processedPicture[i + iter_dir_x - 1, j + iter_dir_y - 1, k] * directions[iter_dir_x, iter_dir_y]);
-                                divider += directions[iter_dir_x, iter_dir_y];
+                                    result[k] += (processedPicture[i + iterDirX - 1, j + iterDirY - 1, k] * directions[iterDirX, iterDirY]);
+                                divider += directions[iterDirX, iterDirY];
                             }
                     for (int k = 0; k < 3; k++)
                         tempPicture[i, j, k] = (byte)(result[k] / divider);
@@ -258,13 +258,13 @@ namespace Filter
                 {
                     int[] result = new int[3] { 0, 0, 0 };
                     int divider = 0;
-                    for (int iter_dir_x = 0; iter_dir_x < size; iter_dir_x++)
-                        for (int iter_dir_y = 0; iter_dir_y < size; iter_dir_y++)
-                            if ((i + iter_dir_x - 1) >= 0 && (i + iter_dir_x - 1) <= (height - 1) && (j + iter_dir_y - 1) >= 0 && (j + iter_dir_y - 1) <= (width - 1))
+                    for (int iterDirX = 0; iterDirX < size; iterDirX++)
+                        for (int iterDirY = 0; iterDirY < size; iterDirY++)
+                            if ((i + iterDirX - 1) >= 0 && (i + iterDirX - 1) <= (height - 1) && (j + iterDirY - 1) >= 0 && (j + iterDirY - 1) <= (width - 1))
                             {
                                 for (int k = 0; k < 3; k++)
-                                    result[k] += (processedPicture[i + iter_dir_x - 1, j + iter_dir_y - 1, k] * directions[iter_dir_x, iter_dir_y]);
-                                divider += directions[iter_dir_x, iter_dir_y];
+                                    result[k] += (processedPicture[i + iterDirX - 1, j + iterDirY - 1, k] * directions[iterDirX, iterDirY]);
+                                divider += directions[iterDirX, iterDirY];
                             }
                     for (int k = 0; k < 3; k++)
                         tempPicture[i, j, k] = (byte)(result[k] / divider);
@@ -275,6 +275,12 @@ namespace Filter
                         processedPicture[i, j, k] = tempPicture[i, j, k];
             return;
         }
+
+
+        //public static void Filter(Picture picture, string type)
+        //{
+
+        //}
 
         public static int ImageComparison(Picture pictureOne, Picture pictureTwo)
         {
