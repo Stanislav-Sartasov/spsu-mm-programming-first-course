@@ -1,12 +1,11 @@
 using NUnit.Framework;
-using IceCream;
-using System.Globalization;
+using SomeIceCreams;
 
 namespace Task2Tests
 {
     public class MainTests
     {
-        class TestIceCreamCreamyBriquetteCount70 : AbstractIceCream
+        class TestIceCreamCreamyBriquetteCount70 : AbstractIceCream.AbstractIceCream
         {
             public TestIceCreamCreamyBriquetteCount70()
             {
@@ -15,7 +14,7 @@ namespace Task2Tests
                 count = 70;
             }
         }
-        class TestIceCreamCholateBallCount3 : AbstractIceCream
+        class TestIceCreamCholateBallCount3 : AbstractIceCream.AbstractIceCream
         {
             public TestIceCreamCholateBallCount3()
             {
@@ -24,7 +23,7 @@ namespace Task2Tests
                 count = 3;
             }
         }
-        class TestIceCreamStrawberryonStickCount6 : AbstractIceCream
+        class TestIceCreamStrawberryonStickCount6 : AbstractIceCream.AbstractIceCream
         {
             public TestIceCreamStrawberryonStickCount6()
             {
@@ -33,7 +32,7 @@ namespace Task2Tests
                 count = 6;
             }
         }
-        class TestIceCreamPistachioWithWaffleCount140 : AbstractIceCream
+        class TestIceCreamPistachioWithWaffleCount140 : AbstractIceCream.AbstractIceCream
         {
             public TestIceCreamPistachioWithWaffleCount140()
             {
@@ -42,7 +41,7 @@ namespace Task2Tests
                 count = 140;
             }
         }
-        class TestIceCreamCaramelinTheHornCount1 : AbstractIceCream
+        class TestIceCreamCaramelinTheHornCount1 : AbstractIceCream.AbstractIceCream
         {
             public TestIceCreamCaramelinTheHornCount1()
             {
@@ -51,7 +50,7 @@ namespace Task2Tests
                 count = 1;
             }
         }
-        class TestIceCreamSpeciallinTheHornCount0xf0 : AbstractIceCream
+        class TestIceCreamSpeciallinTheHornCount0xf0 : AbstractIceCream.AbstractIceCream
         {
             public TestIceCreamSpeciallinTheHornCount0xf0()
             {
@@ -313,6 +312,115 @@ namespace Task2Tests
                                       !\!\!\!\!\!\!\!\!";
             TestIceCreamSpeciallinTheHornCount0xf0 testIceCream = new TestIceCreamSpeciallinTheHornCount0xf0();
             Assert.Pass(testString, testIceCream.GetRecipe());
+        }
+        [Test]
+        public void PopularIceCreamTest()
+        {
+            StreetStravberry streetStravberryIceCream = new StreetStravberry();
+            WaffleChoco waffleChocoIceCream = new WaffleChoco();
+            Special specialIceCream = new Special();
+
+	    const string testStreetStravberryIceCreamString =
+@"Рецепт клубничного мороженного на палочке, 1шт.
+
+Понадобится
+
+Мороженное:
+	Сливки 33% жирности - 35мл;
+	Молоко - 25мл;
+	Сахар - 10г
+	Желтки яичные - 1шт;
+	Клубника - 20г;
+	Палочка для мороженного - 1шт.
+
+Изготовление
+
+Мороженное:
+Желтки растираем с сахаром и ванилином.
+Молоко доводим до кипения и снимаем с огня. Аккуратно вводим в молоко желтковую массу,
+перемешиваем. Ставим на самый малый огонь и, взбивая, доводим до загустения.
+Не кипятим! Массу остужаем до комнатной температуры.
+Протираем ягоду в молочную массу.
+Охлажденные сливки взбиваем до устойчивых пиков.
+Вводим в сливки остывшую молочно-желтковую массу. Хорошо перемешиваем.
+Выкладываем в формы и отправляем пломбир в морозильную камеру.
+Через час достаем, перемешиваем миксером и отправляем мороженое обратно в морозильник
+до полного застывания, вставить в центр формы палочку для мороженного.";
+
+	    const string testWaffleChocoIceCreamString =
+@"Рецепт шоколодного мороженного с вафлей 200г.
+
+Понадобится
+
+Мороженное:
+	Сливки 33% жирности - 70мл;
+	Молоко - 50мл;
+	Сахар - 20г
+	Желтки яичные - 1шт;
+	Какао - 40г
+
+Вафля:
+	Сливочное масло - 20г;
+	Сахар  - 33г;
+	Яйца  - 1шт;
+	Мука  - 26г;
+	Соль - по вкусу
+
+Изготовление
+
+Мороженное:
+Желтки растираем с сахаром и ванилином.
+Молоко доводим до кипения и снимаем с огня. Аккуратно вводим в молоко желтковую массу,
+перемешиваем. Ставим на самый малый огонь и, взбивая, доводим до загустения.
+Не кипятим! Массу остужаем до комнатной температуры.
+Добавляем в молочную массу какао.
+Охлажденные сливки взбиваем до устойчивых пиков.
+Вводим в сливки остывшую молочно-желтковую массу. Хорошо перемешиваем.
+Выкладываем в формы и отправляем пломбир в морозильную камеру.
+Через час достаем, перемешиваем миксером и отправляем мороженое обратно в морозильник
+до полного застывания.
+
+Вафля:
+Смешиваем растопленное сливочное масло, сахар, яйца и муку. Добавляем щепотку соли и
+замешиваем тесто без комков. По консистенции оно должно получиться как сметана.
+Для приготовления понадобится вафельница.
+Наливаем немного теста на раскаленную основу вафельницы и выпекаем.";
+
+	    const string testSpecialIceCreamString =
+@"Рецепт специального брикета мороженного 500г.
+
+Понадобится
+
+Мороженное:
+	Сливки 33% жирности - 0xF5 мл;
+	Молоко - 0xAF мл;
+	Сахар - 0x46 г
+	Желтки яичные - 0x2 шт;
+	Распечатанный на съедобной бумаге девственный код джунов - 0x8C г;
+	Шоколадные крошки из под клавиатуры - по вкусу
+
+Изготовление
+
+Мороженное:
+Желтки растираем с сахаром и ванилином.
+Молоко доводим до кипения и снимаем с огня. Аккуратно вводим в молоко желтковую массу,
+перемешиваем. Ставим на самый малый огонь и, взбивая, доводим до загустения.
+Не кипятим! Массу остужаем до комнатной температуры.
+Под звуки бубна и работающего жёсткого диска крошим в молочную массу
+распечатанный на съедобной бумаге девственный код джунов. Добавляем шоколадные крошки.
+Охлажденные сливки взбиваем до устойчивых пиков.
+Вводим в сливки остывшую молочно-желтковую массу. Перемешиваем смесь 42 раза по двоичному
+коду 42 (0 - вправо, 1 - влево), при этом  устанавливая Ubuntu 14.04 с докером mysql на нее.
+При прерывании установки из-за несовместимости железа,
+выливаем молочную массу и начинаем приготовление мороженного заново,
+предварительно отформатировав жёсткий диск для повторной установки Ubontu.
+Выкладываем в формы и отправляем пломбир в морозильную камеру.
+Через час достаем, перемешиваем миксером и отправляем мороженое обратно в морозильник
+до полного застывания.";
+
+	    Assert.AreEqual(testSpecialIceCreamString, specialIceCream.GetRecipe());
+	    Assert.AreEqual(testStreetStravberryIceCreamString, streetStravberryIceCream.GetRecipe());
+	    Assert.AreEqual(testWaffleChocoIceCreamString, waffleChocoIceCream.GetRecipe());
         }
     }
 }

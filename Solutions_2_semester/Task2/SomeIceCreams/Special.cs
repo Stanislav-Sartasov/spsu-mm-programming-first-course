@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using IceCream;
-
-namespace PopularIceCream
+﻿
+namespace SomeIceCreams
 {
-    class Special : AbstractIceCream
+    public class Special : AbstractIceCream.AbstractIceCream
     {
         public Special()
         {

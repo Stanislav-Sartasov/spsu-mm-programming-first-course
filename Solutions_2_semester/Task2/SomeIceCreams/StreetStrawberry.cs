@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using IceCream;
-
-namespace PopularIceCream
+﻿
+namespace SomeIceCreams
 {
-    class StreetStravberry : AbstractIceCream
+    public class StreetStravberry : AbstractIceCream.AbstractIceCream
     {
         public StreetStravberry()
         {

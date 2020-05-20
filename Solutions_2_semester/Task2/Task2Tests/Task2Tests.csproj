@@ -13,6 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AbstractIceCream\AbstractIceCream.csproj" />
+    <ProjectReference Include="..\SomeIceCreams\SomeIceCreams.csproj" />
     <ProjectReference Include="..\Task2\Task2.csproj" />
   </ItemGroup>
 

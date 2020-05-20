@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
-
-namespace IceCream
+﻿
+namespace AbstractIceCream
 {
     public abstract class AbstractIceCream
     {        
@@ -142,10 +138,10 @@ namespace IceCream
             {
                 coefficient /= 15;
                 recipe += "\n\nВафля:\n";
-                recipe += "\tСливочное масло — " + useCoeff(150) + "г;\n";
-                recipe += "\tСахар  — " + useCoeff(250) + "г;\n";
-                recipe += "\tЯйца  — " + useCoeff(4) + "шт;\n";
-                recipe += "\tМука  — " + useCoeff(200) + "г;\n";
+                recipe += "\tСливочное масло - " + useCoeff(150) + "г;\n";
+                recipe += "\tСахар  - " + useCoeff(250) + "г;\n";
+                recipe += "\tЯйца  - " + useCoeff(4) + "шт;\n";
+                recipe += "\tМука  - " + useCoeff(200) + "г;\n";
                 recipe += "\tСоль - по вкусу";
             }
 
