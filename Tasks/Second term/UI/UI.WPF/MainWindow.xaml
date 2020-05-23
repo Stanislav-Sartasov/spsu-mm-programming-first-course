@@ -1,0 +1,42 @@
+﻿<Window x:Class="UI.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UI.WPF"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid x:Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0*" />
+            <ColumnDefinition/>
+            <ColumnDefinition Width="150" />
+        </Grid.ColumnDefinitions>
+
+        <Canvas x:Name="DrawingArea" Grid.Column="0">
+            <!--<TextBlock>Test</TextBlock>-->
+        </Canvas>
+
+        <DockPanel x:Name="Panel" Background="Gray" Grid.Column="2" Opacity="1" LastChildFill="False">
+            <Button Content="Build" Click="BuildFunctionButton_Click" DockPanel.Dock="Top"/>
+            <Button Content="Clear" Click="ClearButton_Click" DockPanel.Dock="Top"/>
+            <StackPanel Orientation="Horizontal" Background="Gray" Opacity="1" DockPanel.Dock="Top">
+                <TextBlock Text=" a = "/>
+                <TextBox x:Name="a" MaxLength="9" MinWidth="20"/>
+                <TextBlock Text=" b = "/>
+                <TextBox x:Name="b" MaxLength="9" MinWidth="20"/>
+                <TextBlock Text=" p = "/>
+                <TextBox x:Name="p" MaxLength="9" MinWidth="20"/>
+            </StackPanel>
+            <ComboBox x:Name="ChooseCurve"  DockPanel.Dock="Top">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Path=Name}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <TextBox x:Name="WindowScale" DockPanel.Dock="Bottom"/>
+            <TextBlock Text="Scale (from 50 to 200)" HorizontalAlignment="Center" DockPanel.Dock="Bottom"/>
+        </DockPanel>
+    </Grid>
+</Window>
