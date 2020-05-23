@@ -10,22 +10,23 @@ namespace AbstractPlayer
         GameProcess gameProcess = new GameProcess();
         public override void Bet()
         {
-            int bet = 512;
+            currentBet = 512;
             wallet = 4000;
             int correntWallet = wallet;
             for (int i = 0; i < 400; i++)
             {
                 if (wallet > 0)
                 {
-                    if (bet > wallet)
+                    if (currentBet > wallet)
                     {
-                        while (bet > wallet)
-                            bet /= 2;
+                        while (currentBet > wallet)
+                            currentBet /= 2;
                         
                     }
-                    wallet = gameProcess.Payout(wallet, "Odd", bet);
-                    if (correntWallet > wallet) bet *= 2;
-                    else bet = 16;
+                    bool result = gameProcess.Result(1, 0);
+                    RoundResult(result, gameProcess.GetCoefficient(1));
+                    if (correntWallet > wallet) currentBet *= 2;
+                    else currentBet = 16;
                     correntWallet = wallet;
                 }
             }

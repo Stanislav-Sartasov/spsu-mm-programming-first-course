@@ -13,12 +13,12 @@ namespace AbstractPlayer
         public override void Bet()
         {
             wallet = 4000;
-            int fixedBet = wallet / 400;
+            currentBet = wallet / 400;
             for (int i = 0; i < 400; i++)
             {
                 if (wallet > 0)
                 {
-                    wallet = gameProcess.Payout(wallet, "0", fixedBet);
+                    RoundResult(gameProcess.Result(8, 0), gameProcess.GetCoefficient(8));
                 }
             }
         }

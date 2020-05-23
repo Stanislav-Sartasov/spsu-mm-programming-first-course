@@ -13,14 +13,17 @@ namespace Task2Roulette
             Player player = new Player();
             GameProcess gameProcess = new GameProcess();
 
-            while (player.wallet > 0)
+            while (player.GetBalance() > 0)
             {
                 Console.WriteLine("Press esc if you want stop. Press any key if you want play.");
                 cki = Console.ReadKey(true);
                 if (cki.Key != ConsoleKey.Escape)
                 {
+                    
                     player.Bet();
-                    player.wallet = gameProcess.Result(player.wallet, player.betName, player.currentBet);
+                    bool result = gameProcess.Result(player.GetChoice(), player.GetCell());
+                    player.RoundResult(result, gameProcess.GetCoefficient(player.GetChoice()));
+                    Console.WriteLine(player.GetBalance());
                 }
                 else break;
             }

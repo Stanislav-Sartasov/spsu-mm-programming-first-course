@@ -19,8 +19,8 @@ namespace Task2Roulette.Tests
                 BotStepan botStepan = new BotStepan();
                 botOliver.Bet();
                 botStepan.Bet();
-                averageOliverMoney += botOliver.wallet;
-                averageStepanMoney += botStepan.wallet;
+                averageOliverMoney += botOliver.GetBalance();
+                averageStepanMoney += botStepan.GetBalance();
             }
             Console.WriteLine(averageOliverMoney / 50);
             Console.WriteLine(averageStepanMoney / 50);
