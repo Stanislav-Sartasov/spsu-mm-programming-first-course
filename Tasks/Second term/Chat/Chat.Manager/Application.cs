@@ -11,7 +11,7 @@ namespace Chat.Manager
         public void StartChating(Client client)
         {
             Console.WriteLine("Start");
-            PrintInformation();
+            Console.WriteLine(Help());
 
             Console.WriteLine("*** Enter your name ***");
             string name = Console.ReadLine();
@@ -80,7 +80,7 @@ namespace Chat.Manager
                     {
                         if (message.Substring(1).Equals("help"))
                         {
-                            PrintInformation();
+                            Console.WriteLine(Help());
                             isCommand = true;
                         }
                     }
@@ -130,15 +130,14 @@ namespace Chat.Manager
             return ipEndPoint;
         }
 
-        private void PrintInformation()
+        private string Help()
         {
-            Console.WriteLine("\n" +
-                              "*** Available commands: \n" +
-                              "\n/Connect IP -  to connect to other people. IP looks like X.X.X.X:Y, where 0 <= x <= 255 and 1 <= y <= 65535.\n" +
-                              "/Disconnect  -  to disconnect from all interlocutors\n" +
-                              "/Interlocutors  -  to show your connections\n" +
-                              "/Help - to show this information\n" +
-                              "/Exit  -  to exit from chat ***\n");
+            return "***\n Available commands: \n" +
+                    "\n/Connect IP -  to connect to other people. IP looks like X.X.X.X:Y, where 0 <= x <= 255 and 1 <= y <= 65535.\n" +
+                    "/Disconnect  -  to disconnect from all interlocutors\n" +
+                    "/Interlocutors  -  to show your connections\n" +
+                    "/Help - to show this information\n" +
+                    "/Exit  -  to exit from chat\n***\n";
         }
     }
 }

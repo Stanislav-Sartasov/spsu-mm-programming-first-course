@@ -16,27 +16,19 @@ namespace Bash.Application
             variables = new Dictionary<string, string>();
         }
 
-        public void Run()
-        {
-            Console.WriteLine("Start");
-
-            while (true)
+        public string Run(string input)
+        { 
+            input = input.Trim();
+            if (input[0] == '$' || input[0] == '|')
+                return OpportunityHandler(input);
+            else
             {
-                Console.WriteLine();
-                Console.Write(">>> ");
-                string input = Console.ReadLine().Trim();
-                if (input[0] == '$' || input[0] == '|')
-                    OpportunityHandler(input);
-                else
-                {
-                    int firstSpace = input.IndexOf(" ");
-                    if (firstSpace == -1)
-                        firstSpace = input.Length;
-                    string command = input.Substring(0, firstSpace);
-                    StringBuilder argument = new StringBuilder(input.Substring(firstSpace).Trim());
-                    Console.WriteLine(CommandHandler(command, argument));
-
-                }
+                int firstSpace = input.IndexOf(" ");
+                if (firstSpace == -1)
+                    firstSpace = input.Length;
+                string command = input.Substring(0, firstSpace);
+                StringBuilder argument = new StringBuilder(input.Substring(firstSpace).Trim());
+                return CommandHandler(command, argument);
             }
         }
 
@@ -87,7 +79,7 @@ namespace Bash.Application
                         }
                         catch
                         {
-                            return "!Error. Invalid path";
+                            return "*** !Error. Invalid path ***";
                         }
                     }
                 case "wc":
@@ -98,17 +90,16 @@ namespace Bash.Application
                             string fileText = File.ReadAllText(argument.ToString());
                             int amountOfWords = CountWordsInString(fileText);
                             int amountOfLines = CountLinesInString(fileText);
-                            return amountOfLines.ToString() + " " + amountOfWords.ToString() + " " + bytesOfText.Length.ToString();
+                            return amountOfLines.ToString() + " lines,  " + amountOfWords.ToString() + " words, " + bytesOfText.Length.ToString() + " bytes.";
                         }
                         catch
                         {
-                            return "!Error. Invalid path";
+                            return "*** !Error. Invalid path ***";
                         }
                     }
                 case "exit":
                     {
-                        Environment.Exit(0);
-                        return "";
+                        return "*** Shutdown. ***";
                     }
                 default:
                     {
@@ -118,11 +109,11 @@ namespace Bash.Application
                                 Process.Start(command, argument.ToString());
                             else
                                 Process.Start(command);
-                            return "Success";
+                            return "*** Success ***";
                         }
                         catch
                         {
-                            return "!Error. File doesn't exists or could not be opened.";
+                            return "*** !Error. File doesn't exists or could not be opened. ***";
                         }
                     }
             }
@@ -169,7 +160,7 @@ namespace Bash.Application
             return result;
         }
 
-        private void OpportunityHandler(string input)
+        private string OpportunityHandler(string input)
         {
             char typeOfOperation = input[0];
             input = input.Remove(0, 1);
@@ -180,9 +171,9 @@ namespace Bash.Application
                         int equalSign = input.IndexOf('=');
                         if (equalSign == -1)
                             if (variables.ContainsKey(input.Trim()))
-                                Console.WriteLine(variables[input.Trim()]);
+                                return variables[input.Trim()];
                             else
-                                Console.WriteLine("This variable does not exist");
+                                return "*** !Error. This variable does not exist. ***";
                         else
                         {
                             try
@@ -193,13 +184,13 @@ namespace Bash.Application
                                     variables[name] = value;
                                 else
                                     variables.Add(name, value);
+                                return "*** Success ***";
                             }
                             catch
                             {
-                                Console.WriteLine("Input error");
+                                return "*** !Error. Input error. ***";
                             }
                         }
-                        break;
                     }
                 case '|':
                     {
@@ -208,17 +199,18 @@ namespace Bash.Application
                         while (commands[i] == "")
                             i++;
                         string prevResult = CommandHandler(commands[i], new StringBuilder());
-                        Console.WriteLine("Result = {0}", prevResult);
+                        //Console.WriteLine("Result = {0}", prevResult);
                         for (i = i + 1; i < commands.Length; i++)
                             if (commands[i - 1] != "")
                                 if (commands[i] != "")
                                 {
                                     prevResult = CommandHandler(commands[i], new StringBuilder(prevResult));
-                                    Console.WriteLine("Result = {0}", prevResult);
+                                    //return $"Result = {prevResult}";
                                 }
-                        break;
+                        return prevResult;
                     }
             }
+            return "*** End. ***";
         }
     }
 }

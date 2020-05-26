@@ -9,18 +9,17 @@ namespace Bash
     {
         static void Main(string[] args)
         {
-            DirectoryInfo directory = new DirectoryInfo(Directory.GetCurrentDirectory());
-
-            string input = "asd  asdf fasdf  gdafg asdf";
-            int firstSpace = input.IndexOf(" ");
-            string command = input.Substring(0, firstSpace);
-            StringBuilder argument = new StringBuilder(input.Substring(firstSpace + 1));
-            Console.WriteLine(command);
-            Console.WriteLine(argument);
             MyConsole console = new MyConsole();
-            //Console.WriteLine(console.CountLinesInString(input));
-            //Console.WriteLine(input.Split());
-            console.Run();
+            bool continueRun = true;
+            Console.WriteLine("Start");
+            while (continueRun)
+            {
+                Console.Write(">>> ");
+                string output = console.Run(Console.ReadLine().Trim());
+                Console.WriteLine(output);
+                if (output.Equals("*** Shutdown. ***"))
+                    continueRun = false;
+            }
         }
     }
 }
