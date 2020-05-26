@@ -6,29 +6,9 @@ using System.Threading.Tasks;
 
 namespace LibraryJeneric
 {
-    internal class Tree<T> //where T : IComparable
-    {
-        public T data;
-        public int index;
-        public Tree<T> treeRight;
-        public Tree<T> treeLeft;
-        public Tree()
-        {
-            treeLeft = null;
-            treeRight = null;
-            index = 0;
-        }
-        public Tree(T data)
-        {
-            treeLeft = null;
-            treeRight = null;
-            this.data = data;
-            index = data.GetHashCode();////////////////////////////////////////////////////////////////////////////////
-        }
-    }
     public class JenericTree<T>// where T : IComparable
     {
-        Tree<T> head;
+        private Tree<T> head;
         public JenericTree()
         {
             head = null;
@@ -42,35 +22,35 @@ namespace LibraryJeneric
             }
             int index = dat.GetHashCode();
             Tree<T> temp = head;
-            while (((index > temp.index) && (temp.treeRight != null)) || ((index <= temp.index) && (temp.treeLeft != null)))
+            while (((index > temp.Index) && (temp.TreeRight != null)) || ((index <= temp.Index) && (temp.TreeLeft != null)))
             {
-                if (index > temp.index)
-                    temp = temp.treeRight;
+                if (index > temp.Index)
+                    temp = temp.TreeRight;
                 else
-                    temp = temp.treeLeft;
+                    temp = temp.TreeLeft;
             };
-            if (index > temp.index)
+            if (index > temp.Index)
             {
-                temp.treeRight = new Tree<T>(dat);
+                temp.TreeRight = new Tree<T>(dat);
             }
             else
             {
-                temp.treeLeft = new Tree<T>(dat);
+                temp.TreeLeft = new Tree<T>(dat);
             }
         }
         private Tree<T> Search(T dat)
         {
             int index = dat.GetHashCode();
             Tree<T> temp = head;
-            while ((temp != null) && (temp.index != index))
+            while ((temp != null) && (temp.Index != index))
             {
-                if (index > temp.index)
+                if (index > temp.Index)
                 {
-                    temp = temp.treeRight;
+                    temp = temp.TreeRight;
                 }
                 else
                 {
-                    temp = temp.treeLeft;
+                    temp = temp.TreeLeft;
                 }
             }
 
@@ -80,28 +60,28 @@ namespace LibraryJeneric
         {
             int index = dat.GetHashCode();
             Tree<T> temp = head;
-            if (temp.index == index)
+            if (temp.Index == index)
                 return null;
             bool flag = true;
             while (flag)
             {
-                if (temp.treeRight != null)
+                if (temp.TreeRight != null)
                 {
-                    if (temp.treeRight.index == index)
+                    if (temp.TreeRight.Index == index)
                         return temp;
-                    if (index > temp.index)
+                    if (index > temp.Index)
                     {
-                        temp = temp.treeRight;
+                        temp = temp.TreeRight;
                         continue;
                     }
                 }
-                if (temp.treeLeft != null)
+                if (temp.TreeLeft != null)
                 {
-                    if (temp.treeLeft.index == index)
+                    if (temp.TreeLeft.Index == index)
                         return temp;
-                    if (index <= temp.index)
+                    if (index <= temp.Index)
                     {
-                        temp = temp.treeLeft;
+                        temp = temp.TreeLeft;
                         continue;
                     }
                 }
@@ -117,19 +97,19 @@ namespace LibraryJeneric
         public bool Find(int index, ref T data)
         {
             Tree<T> temp = head;
-            while ((temp != null) && (temp.index != index))
+            while ((temp != null) && (temp.Index != index))
             {
-                if (index > temp.index)
+                if (index > temp.Index)
                 {
-                    temp = temp.treeRight;
+                    temp = temp.TreeRight;
                 }
                 else
                 {
-                    temp = temp.treeLeft;
+                    temp = temp.TreeLeft;
                 }
             }
 
-            data = temp == null ? data : temp.data;
+            data = temp == null ? data : temp.Data;
             return temp == null ? false : true;
         }
         public void Delete(T dat)
@@ -138,66 +118,66 @@ namespace LibraryJeneric
             Tree<T> condidat;
             Tree<T> parent = SearchParent(dat);
             bool flagRight = true, flagLeft = true;
-            if (head.treeRight != null)
-                if (head.treeRight.index == index)
+            if (head.TreeRight != null)
+                if (head.TreeRight.Index == index)
                     flagRight = false;
-            if (head.treeLeft != null)
-                if (head.treeLeft.index == index)
+            if (head.TreeLeft != null)
+                if (head.TreeLeft.Index == index)
                     flagLeft = false;
-            if ((head.index != index) && (parent == null) && (flagLeft) && (flagRight))
+            if ((head.Index != index) && (parent == null) && (flagLeft) && (flagRight))
                 return;
             if (parent != null)
             {
-                condidat = index > parent.index ? parent.treeRight : parent.treeLeft;
+                condidat = index > parent.Index ? parent.TreeRight : parent.TreeLeft;
             }
             else
             {
                 condidat = head;
             }
 
-            if ((condidat.treeRight == null) || (condidat.treeLeft == null))
+            if ((condidat.TreeRight == null) || (condidat.TreeLeft == null))
             {
-                if (condidat.treeRight != null)
+                if (condidat.TreeRight != null)
                 {
                     if (parent != null)
                     {
-                        if (parent.treeRight.index == index)
+                        if (parent.TreeRight.Index == index)
                         {
-                            parent.treeRight = condidat.treeRight;
+                            parent.TreeRight = condidat.TreeRight;
                         }
                         else
-                            parent.treeLeft = condidat.treeRight;
+                            parent.TreeLeft = condidat.TreeRight;
                     }
                     else
-                        head = condidat.treeRight;
+                        head = condidat.TreeRight;
                 }
                 else
                 {
-                    if (condidat.treeLeft != null)
+                    if (condidat.TreeLeft != null)
                     {
                         if (parent != null)
                         {
-                            if (parent.treeRight.index == index)
+                            if (parent.TreeRight.Index == index)
                             {
-                                parent.treeRight = condidat.treeLeft;
+                                parent.TreeRight = condidat.TreeLeft;
                             }
                             else
-                                parent.treeLeft = condidat.treeLeft;
+                                parent.TreeLeft = condidat.TreeLeft;
                         }
                         else
-                            head = condidat.treeLeft;
+                            head = condidat.TreeLeft;
                     }
 
                     else
                     {
                         if (parent != null)
                         {
-                            if (parent.treeRight.index == index)
+                            if (parent.TreeRight.Index == index)
                             {
-                                parent.treeRight = null;
+                                parent.TreeRight = null;
                             }
                             else
-                                parent.treeLeft = null;
+                                parent.TreeLeft = null;
                         }
                         else
                             head = null;
@@ -207,24 +187,24 @@ namespace LibraryJeneric
             ////////////////////////////////////////////////////////////////////
             else
             {
-                Tree<T> temp = condidat.treeRight;
-                while (temp.treeLeft != null)
+                Tree<T> temp = condidat.TreeRight;
+                while (temp.TreeLeft != null)
                 {
-                    temp = temp.treeLeft;
+                    temp = temp.TreeLeft;
                 }
-                temp.treeLeft = condidat.treeLeft;
+                temp.TreeLeft = condidat.TreeLeft;
                 if (parent != null)
                 {
-                    if (parent.treeRight.index == index)
+                    if (parent.TreeRight.Index == index)
                     {
-                        parent.treeRight = condidat.treeRight;
+                        parent.TreeRight = condidat.TreeRight;
                     }
                     else
-                        parent.treeLeft = condidat.treeRight;
+                        parent.TreeLeft = condidat.TreeRight;
                 }
                 else
                 {
-                    head = condidat.treeRight;
+                    head = condidat.TreeRight;
                 }
             }
         }
