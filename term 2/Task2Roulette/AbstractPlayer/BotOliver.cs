@@ -18,7 +18,7 @@ namespace AbstractPlayer
             {
                 if (wallet > 0)
                 {
-                    RoundResult(gameProcess.Result(8, 0), gameProcess.GetCoefficient(8));
+                    RoundResult(gameProcess.IsWin(8, 0), gameProcess.GetCoefficient(8));
                 }
             }
         }

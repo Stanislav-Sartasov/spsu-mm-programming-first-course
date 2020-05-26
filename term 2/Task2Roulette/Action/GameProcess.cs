@@ -4,7 +4,17 @@ namespace Action
 {
     public class GameProcess
     {
-        
+        enum TypeOfBets
+        {
+            Red = 1,
+            Black,
+            Odd,
+            Even,
+            FirstDozen,
+            SecondDozen,
+            ThirdDozen,
+            SpecificNumber
+        }
         
         public int GetColor(int cell)
         {
@@ -23,10 +33,10 @@ namespace Action
                 return false;
         }
 
-        public bool Result(int choice, int cell)
+        public bool IsWin(int choice, int cell)
         {
             int winningCell = SpinWheel();
-            if (choice == 8)
+            if (choice == (int)TypeOfBets.SpecificNumber)
             {
                 if (cell == winningCell)
                     return true;
@@ -35,25 +45,25 @@ namespace Action
             }
             else
             {
-                if (choice < 3)
+                if (choice < (int)TypeOfBets.Odd)
                 {
                     if (GetColor(winningCell) == choice)
                         return true;
                     else
                         return false;
                 }
-                else if (choice < 5)
+                else if (choice < (int)TypeOfBets.FirstDozen)
                 {
                     if ((choice % 2 == winningCell % 2))
                         return true;
                     else
                         return false;
                 }
-                else if (choice == 5)
+                else if (choice == (int)TypeOfBets.FirstDozen)
                 {
                     return LaysIn(winningCell, 1, 12);
                 }
-                else if (choice == 6)
+                else if (choice == (int)TypeOfBets.SecondDozen)
                 {
                     return LaysIn(winningCell, 13, 24);
                 }
