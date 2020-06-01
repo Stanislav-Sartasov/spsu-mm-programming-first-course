@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace P2PChatLibrary
 {
@@ -12,7 +11,7 @@ namespace P2PChatLibrary
         private Peer peer;
         private IChatController chatController;
         private Action<string> Output;
-        private bool IsWorking;
+        private bool isWorking;
 
         public ChatUI()
             : this (new ConsoleChatController(), s => Console.WriteLine(s))
@@ -28,7 +27,7 @@ namespace P2PChatLibrary
         {
             this.chatController = chatController;
             Output = output;
-            IsWorking = true;
+            isWorking = true;
         }
 
         public UserInfo GetLocalUserInfo() => peer.LocalUser;
@@ -37,17 +36,17 @@ namespace P2PChatLibrary
 
         public void Start()
         {
-            IsWorking = true;
+            isWorking = true;
             Console.ForegroundColor = ConsoleColor.White;
             Output("=====Console chat=====");
             Console.ResetColor();
             UserInit();
             peer.StartListening();
             Output(GetHelp());
-            while (IsWorking)
+            while (isWorking)
             {
                 string input = chatController.GetMessage();
-                if (!String.IsNullOrWhiteSpace(input))
+                if (!string.IsNullOrWhiteSpace(input))
                 {
                     bool isCommand = CheckCommand(input);
                     if (isCommand)
@@ -131,7 +130,7 @@ namespace P2PChatLibrary
                     break;
                 case "exit":
                     peer.Exit();
-                    IsWorking = false;
+                    isWorking = false;
                     break;
                 case "back":
                     break;    

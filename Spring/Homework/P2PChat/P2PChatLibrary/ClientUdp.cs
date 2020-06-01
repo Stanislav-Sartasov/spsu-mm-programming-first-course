@@ -7,7 +7,7 @@ namespace P2PChatLibrary
 {
     public class ClientUdp
     {
-        internal const int maxUDPSize = 1024 * 4;
+        internal const int MaxUDPSize = 1024 * 4;
         internal int LocalPort { get; private set; }
         internal IPAddress LocalIP { get; private set; }
         internal Socket ListeningSocket { get; private set; }
@@ -51,10 +51,10 @@ namespace P2PChatLibrary
         {
             EndPoint tempRemoteEP = new IPEndPoint(IPAddress.Any, 0);
             byte[] data;
-            data = new byte[maxUDPSize];
-            int received = ListeningSocket.ReceiveFrom(data, maxUDPSize, 0, ref tempRemoteEP);
+            data = new byte[MaxUDPSize];
+            int received = ListeningSocket.ReceiveFrom(data, MaxUDPSize, 0, ref tempRemoteEP);
             remoteEP = (IPEndPoint)tempRemoteEP;
-            if (received < maxUDPSize)
+            if (received < MaxUDPSize)
             {
                 byte[] newBuffer = new byte[received];
                 Buffer.BlockCopy(data, 0, newBuffer, 0, received);
