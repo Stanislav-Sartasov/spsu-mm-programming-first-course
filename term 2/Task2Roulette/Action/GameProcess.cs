@@ -4,7 +4,7 @@ namespace Action
 {
     public class GameProcess
     {
-        enum TypeOfBets
+        public enum TypeOfBets
         {
             Red = 1,
             Black,
@@ -20,9 +20,9 @@ namespace Action
         {
             if ((((cell > 0 && cell < 10)) || ((cell > 18 && cell < 29) && (cell % 2 == 1)))
                 || (((cell > 10 && cell < 19) || (cell > 29)) && (cell % 2 == 0)))
-                return 1; // Red
+                return (int)TypeOfBets.Red;
             else
-                return 2; // Black
+                return (int)TypeOfBets.Black;
         }
         
         public bool LaysIn(int cell, int min, int max)
@@ -83,9 +83,9 @@ namespace Action
         public int GetCoefficient(int choice)
         {
             int coefficient = 1;
-            if (choice < 5)
+            if (choice < (int)GameProcess.TypeOfBets.FirstDozen)
                 coefficient = 1;
-            else if (choice < 8)
+            else if (choice < (int)GameProcess.TypeOfBets.SpecificNumber)
                 coefficient = 2;
             else
                 coefficient = 35;
