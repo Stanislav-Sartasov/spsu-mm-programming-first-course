@@ -6,6 +6,7 @@ namespace Bash.Commands
     class SystemProcess : ICommand
     {
         string command;
+
         public SystemProcess(string command)
         {
             this.command = command;

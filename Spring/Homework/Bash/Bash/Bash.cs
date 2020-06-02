@@ -24,6 +24,7 @@ namespace Bash
         {
 
         }
+
         public void Start()
         {
             isWorking = true;

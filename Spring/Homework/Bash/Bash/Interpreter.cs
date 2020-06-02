@@ -9,6 +9,7 @@ namespace Bash
     {
         private Action<string> Output;
         private Dictionary<string, string> variables;
+
         public Interpreter(Action<string> output)
         {
             Output = output;
@@ -80,6 +81,7 @@ namespace Bash
                     }
             }
         }
+
         private Tuple<string, string> GetCommandAndParameter(string fullCommand)
         {
             string parameter = string.Empty;
@@ -114,6 +116,7 @@ namespace Bash
                 parameter = parameter.Remove(parameter.Length - 1);
             return new Tuple<string, string>(command, parameter);
         }
+
         private bool AddVariable(string command)
         {
             if (command[0].Equals('$'))
