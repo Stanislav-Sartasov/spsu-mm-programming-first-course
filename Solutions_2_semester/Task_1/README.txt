@@ -1,1 +1,0 @@
-.sln file in Task_1 folder
