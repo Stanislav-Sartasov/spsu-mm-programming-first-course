@@ -90,7 +90,10 @@ namespace Task1
                             Console.WriteLine("\n\twithout modifiers standard values will be taken:");
                             Console.WriteLine("\n\t\tsz = " + nSize + "\n\t\tsg = " + nSigma + "\n\t\tm = square\n\t\tth = " + nThreshold);
                             Console.WriteLine();
-                            continue;
+                            if (auto == false)
+                                return 0;
+                            else
+                                continue;
                         }
                         else if (args[0] == "exit")
                             return 0;
