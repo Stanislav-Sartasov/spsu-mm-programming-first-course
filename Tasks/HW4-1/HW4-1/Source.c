@@ -1,4 +1,4 @@
-#include "newMalloc.h"
+#include "new_malloc.h"
 #define endl printf("\n")
 #define SIZE 10
 
@@ -6,10 +6,10 @@ int main()
 {
     int** A;
     int i, j;
-    A = (int**)newMalloc(SIZE * sizeof(int*));
+    A = (int**)new_malloc(SIZE * sizeof(int*));
 
     for (i = 0; i < SIZE; i++) {
-        A[i] = (int*)newMalloc((i + 1) * sizeof(int));
+        A[i] = (int*)new_malloc((i + 1) * sizeof(int));
     }
 
     for (i = 0; i < SIZE; i++) {
@@ -26,9 +26,9 @@ int main()
     }
 
     for (i = SIZE - 1; i > 0; i--) {
-        newFree(A[i]);
+        new_free(A[i]);
     }
-    newFree(A);
+    new_free(A);
 
     _getch();
 }
