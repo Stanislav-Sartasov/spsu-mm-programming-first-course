@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29905.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hierarchy", "Hierarchy\Hierarchy.csproj", "{8AF82DB0-FF34-4838-B82A-2F7141E79631}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HierarchyTest", "HierarchyTest\HierarchyTest.csproj", "{19EE2040-BB4A-4450-8F7C-435D7DDDDF72}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8AF82DB0-FF34-4838-B82A-2F7141E79631}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AF82DB0-FF34-4838-B82A-2F7141E79631}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AF82DB0-FF34-4838-B82A-2F7141E79631}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AF82DB0-FF34-4838-B82A-2F7141E79631}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19EE2040-BB4A-4450-8F7C-435D7DDDDF72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19EE2040-BB4A-4450-8F7C-435D7DDDDF72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19EE2040-BB4A-4450-8F7C-435D7DDDDF72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19EE2040-BB4A-4450-8F7C-435D7DDDDF72}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F2FAFEF3-1168-4F38-84BC-5CB5A6582DD6}
+	EndGlobalSection
+EndGlobal
