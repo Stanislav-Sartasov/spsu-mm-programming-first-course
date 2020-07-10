@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void tableResize(hashTable** table);
 
 void initHashTable(hashTable** table, int num)
 {
@@ -101,6 +102,14 @@ void deletePair(hashTable* table, int key)
 				}
 			}
 		}
+		else
+		{
+			printf("Value not found!\n\n");
+		}
+	}
+	else
+	{
+		printf("Table not found!\n\n");
 	}
 }
 
@@ -116,6 +125,10 @@ int findValue(hashTable* table, int key)
 			pointer = pointer->next;
 		}
 		return 0;
+	}
+	else
+	{
+		printf("Table not found!\n\n");
 	}
 	return 0;
 }
@@ -136,7 +149,7 @@ void printAllPairs(hashTable* table)
 		}
 	}
 	else
-		printf("table not found!\n\n");
+		printf("Table not found!\n\n");
 }
 
 void deleteHashTable(hashTable** table)

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 typedef struct node
 {
@@ -16,7 +16,6 @@ typedef struct hashTable
 } hashTable;
 
 void initHashTable(hashTable** table, int num);
-void tableResize(hashTable** table);
 int addPair(hashTable** table, int key, int value);
 void deletePair(hashTable* table, int key);
 int findValue(hashTable* table, int key);
