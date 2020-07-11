@@ -4,6 +4,7 @@
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
+#include <malloc.h>
 FILE* fileIn;
 FILE* fileOut;
 
@@ -49,7 +50,7 @@ void convolution(unsigned char* bitMapImage, int height, int width, char* mode)
 		return;
 	}
 
-	unsigned char* bitMapImageCopy = (unsigned char*)malloc(3 * height * width * sizeof(unsigned char));
+	double* bitMapImageCopy = (double*)malloc(3 * height * width * sizeof(double));
 
 	int size = strcmp(mode, "Gauss5") == 0 ? 2 : 1;
 	int* steps = (int*)malloc(2 * (2 * size + 1) * (2 * size + 1) * sizeof(int));
@@ -108,9 +109,9 @@ void convolution(unsigned char* bitMapImage, int height, int width, char* mode)
 			}
 			else
 			{
-				bitMapImageCopy[(i * width + j) * 3] = (unsigned char)(result[0] / divisor);
-				bitMapImageCopy[(i * width + j) * 3 + 1] = (unsigned char)(result[1] / divisor);
-				bitMapImageCopy[(i * width + j) * 3 + 2] = (unsigned char)(result[2] / divisor);
+				bitMapImageCopy[(i * width + j) * 3] = (double)(result[0] / divisor);
+				bitMapImageCopy[(i * width + j) * 3 + 1] = (double)(result[1] / divisor);
+				bitMapImageCopy[(i * width + j) * 3 + 2] = (double)(result[2] / divisor);
 			}
 		}
 	if (strcmp(mode, "SobelX") == 0 || strcmp(mode, "SobelY") == 0)
@@ -156,7 +157,7 @@ int main(int argc, char* argv[])
 	fwrite(&bitMapFileHeader, sizeof(bitMapFileHeader), 1, fileOut);
 	fwrite(&bitMapInfoHeader, sizeof(bitMapInfoHeader), 1, fileOut);
 
-	for (int i = 0; i < bitMapInfoHeader.biSizeImage; i++)
+	for (unsigned int i = 0; i < bitMapInfoHeader.biSizeImage; i++)
 		fwrite(&bitMapImage[i], 1, 1, fileOut);
 
 	free(bitMapImage);
