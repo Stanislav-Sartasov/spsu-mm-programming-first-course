@@ -1,10 +1,10 @@
 using Generics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace UnitTestProject
+namespace GenericsTest
 {
     [TestClass]
-    public class UnitTest
+    public class GenericsTest
     {
         [TestMethod]
         public void TestTreeMethods()

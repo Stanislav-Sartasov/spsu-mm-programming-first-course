@@ -21,11 +21,11 @@ namespace Generics
                 Console.WriteLine(key + " ");
             }
         }
-       private Node<T> root = null;
+        private Node<T> root = null;
 
-           
 
-        public void Add (T value, int key)
+
+        public void Add(T value, int key)
         {
             Node<T> newNode = new Node<T>();
             newNode.value = value;
@@ -48,7 +48,7 @@ namespace Generics
                             //Console.WriteLine("L");
                             break;
                         }
-                       
+
                     }
                     else
                     {
@@ -56,13 +56,13 @@ namespace Generics
                         if (current == null)
                         {
                             parent.right = newNode;
-                           // Console.WriteLine("R");
+                            // Console.WriteLine("R");
                             break;
                         }
                     }
                 }
             }
-          
+
         }
 
         public void PritnRoot()
@@ -71,12 +71,12 @@ namespace Generics
             Console.WriteLine(root.left.key);
             Console.WriteLine(root.left.right.key);
         }
-        
-        
-        public T Find (int key)
+
+
+        public T Find(int key)
         {
             Node<T> current = root;
-            while(true)
+            while (true)
             {
                 if (current.key == key)
                 {

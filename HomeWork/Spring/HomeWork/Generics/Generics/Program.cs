@@ -14,7 +14,7 @@ namespace Generics
             test.Add(5, 18);
             test.Add(5, 12);
             test.Add(5, 7);
-            
+
 
             test.Delete(15);
             test.Delete(4);
@@ -23,7 +23,7 @@ namespace Generics
             int tmp = test.Find(7);
             Console.WriteLine(tmp);
 
-           
+
 
         }
     }
