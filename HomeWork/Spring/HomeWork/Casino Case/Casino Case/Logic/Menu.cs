@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Casino_Case.Bot;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,7 +8,8 @@ namespace Casino_Case
     public class Menu
     {
         Game Gaming = new Game();
-        Bots NewBots = new Bots();
+        MartingaleBot Martingale = new MartingaleBot();
+        DalamberBot Dalamber = new DalamberBot();
         int choice = 0;
         int choice2;
         bool exit = false;
@@ -67,11 +69,12 @@ namespace Casino_Case
                             if ((botChoice == 1 || botChoice == 2) && balance > 0 && minBid > 0 && betAmount > 0)
                                 right = true;
                         }
-                        NewBots.SetBalance(balance);
+                        Dalamber.SetBalance(balance);
+                        Martingale.SetBalance(balance);
                         if (botChoice == 1)
-                            NewBots.DalamberBot(betAmount, minBid);
+                            Dalamber.Action(betAmount, minBid);
                         else
-                            NewBots.MartingaleBot(betAmount, minBid);
+                            Martingale.Action(betAmount, minBid);
 
                     }
 
@@ -171,9 +174,6 @@ namespace Casino_Case
             }
         }
     }
-
-
-
 
 
 }

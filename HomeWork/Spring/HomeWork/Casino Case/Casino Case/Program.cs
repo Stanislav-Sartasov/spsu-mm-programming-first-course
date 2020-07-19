@@ -13,10 +13,9 @@ namespace Casino_Case
         }
         static void Main(string[] args)
         {
-            
+
             Menu menu = new Menu();
             menu.mainMenu();
-
         }
     }  
 }
