@@ -14,7 +14,7 @@ namespace Roulette.Players
 
         public Martingejl()
         {
-            Name = "Martingejl";
+            name = "Martingejl";
             amountMoney = 50_000;
             previousGamesResult = 1;
             firstBet = amountMoney / 1000;

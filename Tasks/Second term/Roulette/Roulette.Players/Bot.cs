@@ -12,13 +12,13 @@ namespace Roulette.Players
         protected IBet myBet;
         protected int currentCashBet;
         protected int amountMoney;
-        protected string Name;
+        protected string name;
 
         public abstract void MakeBet(int maxBet);
 
         public string ShowName()
         {
-            return Name;
+            return name;
         }
         public int ShowBet()
         {
@@ -47,7 +47,7 @@ namespace Roulette.Players
         {
             string temp = myBet.Print();
 
-            string result = $"Information about {Name}\n" +
+            string result = $"Information about {name}\n" +
                             $"Amount of money a player has = {amountMoney}. " +
                             $"{temp} with the amount of money {currentCashBet}\n";
 

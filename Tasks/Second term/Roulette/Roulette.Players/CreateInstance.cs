@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Roulette.Players
 {
-    public class CreateInstance
+    public static class CreateInstance
     {
-        public static Bot SelectBot(int level)
+        public static IPlayer SelectBot(int level)
         {
             Bot bot;
             level %= 2;

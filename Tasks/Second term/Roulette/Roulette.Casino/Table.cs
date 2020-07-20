@@ -22,16 +22,16 @@ namespace Roulette.Casino
             cashTable = cash;
         }
 
-        public void Iteration(List<Bot> players)
+        public void Iteration(List<IPlayer> players)
         {
             fieldResult = rotation.Next(0, 37);
 
             Recount(players);
         }
 
-        private void Recount(List<Bot> players)
+        private void Recount(List<IPlayer> players)
         {
-            foreach (Bot player in players)
+            foreach (IPlayer player in players)
             {
                 
                 int multiplier;

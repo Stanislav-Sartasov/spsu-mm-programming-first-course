@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Roulette.Bet;
+
+using System;
 
 namespace Roulette.Players
 {
@@ -7,7 +9,7 @@ namespace Roulette.Players
         void MakeBet(int maxBet);
         int ShowMoney();
         int ShowBet();
-
+        IBet ShowField();
         void MoneyRecount(int multiplier, int cashTable);
     }
 }

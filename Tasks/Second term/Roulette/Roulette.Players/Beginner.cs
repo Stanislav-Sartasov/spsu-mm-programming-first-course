@@ -10,7 +10,7 @@ namespace Roulette.Players
     {
         public Beginner()
         {
-            Name = "Beginner";
+            name = "Beginner";
             amountMoney = 50_000;
         }
 
