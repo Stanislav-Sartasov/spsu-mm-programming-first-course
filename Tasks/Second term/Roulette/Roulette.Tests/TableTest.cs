@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Roulette.Casino;
-using Roulette.People;
+using Roulette.Players;
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,9 +34,8 @@ namespace Roulette.Tests
         {
             Table table = new Table(100_000);
 
-            string expected = $"The amount of money at the table = 100000\n" +
-                              $"The result of the round is -1\n";
-            string actual = table.ShowStatus();
+            int expected = -1;
+            int actual = table.ViewRoundResult();
 
             Assert.AreEqual(expected, actual);
         }
@@ -44,21 +44,21 @@ namespace Roulette.Tests
         public void TestGame()
         {
             Table table = new Table(100_000);
-            List<AbstractPlayer> bots = new List<AbstractPlayer>() { new Bot(0), new Bot(1), new Bot(2) };
+            List<Bot> bots = new List<Bot>() { CreateInstance.SelectBot(1), CreateInstance.SelectBot(2)};
 
             for (int i = 0; i < 400; i++)
             {
-                List<AbstractPlayer> delList = new List<AbstractPlayer>();
-                foreach (AbstractPlayer bot in bots)
-                    bot.SetBet(table.ShowAmountOfMoney());
+                List<Bot> delList = new List<Bot>();
+                foreach (Bot bot in bots)
+                    bot.MakeBet(table.ShowAmountOfMoney());
                 table.Iteration(bots);
-                foreach (AbstractPlayer bot in bots)
+                foreach (Bot bot in bots)
                 {
-                    int x = bot.ViewAmountOfMoney();
+                    int x = bot.ShowMoney();
                     if (x < 1)
                         delList.Add(bot);
                 }
-                foreach (AbstractPlayer delBot in delList)
+                foreach (Bot delBot in delList)
                     bots.Remove(delBot);
                 if (table.ShowAmountOfMoney() < 1)
                     break;
@@ -67,7 +67,7 @@ namespace Roulette.Tests
             }
 
             Assert.IsTrue(0 <= table.ShowAmountOfMoney() && table.ShowAmountOfMoney() <= (100_000 + 3 * 50_000));
-            Assert.IsTrue(0 <= bots.Count && bots.Count <= 3);
+            Assert.IsTrue(0 <= bots.Count && bots.Count <= 2);
         }
     }
 }

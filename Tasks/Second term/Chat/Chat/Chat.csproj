@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Chat.Manager\Chat.Manager.csproj" />
-    <ProjectReference Include="..\Client\Chat.Clients.csproj" />
+    <ProjectReference Include="..\Chat.Application\Chat.Application.csproj" />
+    <ProjectReference Include="..\Chat.Client\Chat.Client.csproj" />
   </ItemGroup>
 
 </Project>

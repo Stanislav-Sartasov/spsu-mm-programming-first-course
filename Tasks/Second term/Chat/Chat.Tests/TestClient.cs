@@ -1,22 +1,25 @@
-﻿using System;
+﻿using Chat.Client;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
-using Chat.Clients;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Chat.Tests
 {
     [TestClass]
-    public class Test
+    public class TestClient
     {
         [TestMethod]
         public void TestConnection()
         {
-            Client petya = new Client();
-            Client vasya = new Client();
-            Client tim = new Client();
+            User petya = new User();
+            User vasya = new User();
+            User tim = new User();
             IPEndPoint ipPetya = null;
             IPEndPoint ipVasya = null;
             IPEndPoint ipTim = null;
@@ -46,59 +49,45 @@ namespace Chat.Tests
             vasya.Waiting();
             tim.Waiting();
 
-            Assert.AreEqual(100, petya.ViewYourIp().Port);
-            Assert.AreEqual(101, vasya.ViewYourIp().Port);
-            Assert.AreEqual(102, tim.ViewYourIp().Port);
+            Assert.AreEqual(100, petya.ShowYourIp().Port);
+            Assert.AreEqual(101, vasya.ShowYourIp().Port);
+            Assert.AreEqual(102, tim.ShowYourIp().Port);
 
-            petya.Connect(vasya.ViewYourIp());
+            petya.Connect(vasya.ShowYourIp());
 
-            List<IPEndPoint> actualPetya = petya.ShowInterlocutors();
+            List<IPEndPoint> actualPetya = petya.ShowListOfConnections();
             Assert.AreEqual(1, actualPetya.Count);
             Assert.AreEqual(101, actualPetya[0].Port);
-            Assert.AreEqual(vasya.ViewYourIp().Address, actualPetya[0].Address);
+            Assert.AreEqual(vasya.ShowYourIp().Address, actualPetya[0].Address);
             Thread.Sleep(5000);
-            List<IPEndPoint> actualVasya = vasya.ShowInterlocutors();
+            List<IPEndPoint> actualVasya = vasya.ShowListOfConnections();
             Assert.AreEqual(1, actualVasya.Count);
             Assert.AreEqual(100, actualVasya[0].Port);
-            Assert.AreEqual(petya.ViewYourIp().Address, actualVasya[0].Address);
+            Assert.AreEqual(petya.ShowYourIp().Address, actualVasya[0].Address);
 
-            petya.Connect(tim.ViewYourIp());
+            petya.Connect(tim.ShowYourIp());
             Thread.Sleep(5000);
-            actualPetya = petya.ShowInterlocutors();
+            actualPetya = petya.ShowListOfConnections();
             Assert.AreEqual(2, actualPetya.Count);
             Assert.AreEqual(101, actualPetya[0].Port);
             Assert.AreEqual(102, actualPetya[1].Port);
-            Assert.AreEqual(vasya.ViewYourIp().Address, actualPetya[0].Address);
-            Assert.AreEqual(tim.ViewYourIp().Address, actualPetya[1].Address);
+            Assert.AreEqual(vasya.ShowYourIp().Address, actualPetya[0].Address);
+            Assert.AreEqual(tim.ShowYourIp().Address, actualPetya[1].Address);
 
-            List<IPEndPoint> actualTim = tim.ShowInterlocutors();
+            List<IPEndPoint> actualTim = tim.ShowListOfConnections();
             Assert.AreEqual(2, actualTim.Count);
             Assert.AreEqual(100, actualTim[0].Port);
             Assert.AreEqual(101, actualTim[1].Port);
-            Assert.AreEqual(petya.ViewYourIp().Address, actualTim[0].Address);
-            Assert.AreEqual(vasya.ViewYourIp().Address, actualTim[1].Address);
-        }
-
-        [TestMethod]
-        public void TestAddress()
-        {
-            string addressOne = "123.123.123.123:12312";
-            string addressTwo = "123.123.123.123:123123";
-            string addressThree = "678.687.687.687:12312";
-            string addressFour = "A678.687.687.687:12312";
-
-            Assert.AreEqual(true, Client.IsCorrectInputAddress(addressOne));
-            Assert.AreEqual(false, Client.IsCorrectInputAddress(addressTwo));
-            Assert.AreEqual(false, Client.IsCorrectInputAddress(addressThree));
-            Assert.AreEqual(false, Client.IsCorrectInputAddress(addressFour));
+            Assert.AreEqual(petya.ShowYourIp().Address, actualTim[0].Address);
+            Assert.AreEqual(vasya.ShowYourIp().Address, actualTim[1].Address);
         }
 
         [TestMethod]
         public void TestDisconnection()
         {
-            Client petya = new Client();
-            Client vasya = new Client();
-            Client tim = new Client();
+            User petya = new User();
+            User vasya = new User();
+            User tim = new User();
             IPEndPoint ipPetya = null;
             IPEndPoint ipVasya = null;
             IPEndPoint ipTim = null;
@@ -128,27 +117,27 @@ namespace Chat.Tests
             vasya.Waiting();
             tim.Waiting();
 
-            Assert.AreEqual(100, petya.ViewYourIp().Port);
-            Assert.AreEqual(101, vasya.ViewYourIp().Port);
-            Assert.AreEqual(102, tim.ViewYourIp().Port);
+            Assert.AreEqual(100, petya.ShowYourIp().Port);
+            Assert.AreEqual(101, vasya.ShowYourIp().Port);
+            Assert.AreEqual(102, tim.ShowYourIp().Port);
 
-            petya.Connect(vasya.ViewYourIp());
-            petya.Connect(tim.ViewYourIp());
+            petya.Connect(vasya.ShowYourIp());
+            petya.Connect(tim.ShowYourIp());
             Thread.Sleep(5000);
 
-            List<IPEndPoint> actualTim = tim.ShowInterlocutors();
+            List<IPEndPoint> actualTim = tim.ShowListOfConnections();
             Assert.AreEqual(2, actualTim.Count);
             Assert.AreEqual(100, actualTim[0].Port);
             Assert.AreEqual(101, actualTim[1].Port);
-            Assert.AreEqual(petya.ViewYourIp().Address, actualTim[0].Address);
-            Assert.AreEqual(vasya.ViewYourIp().Address, actualTim[1].Address);
+            Assert.AreEqual(petya.ShowYourIp().Address, actualTim[0].Address);
+            Assert.AreEqual(vasya.ShowYourIp().Address, actualTim[1].Address);
 
             petya.Disconnect();
             Thread.Sleep(5000);
-            actualTim = tim.ShowInterlocutors();
+            actualTim = tim.ShowListOfConnections();
             Assert.AreEqual(1, actualTim.Count);
             Assert.AreEqual(101, actualTim[0].Port);
-            Assert.AreEqual(vasya.ViewYourIp().Address, actualTim[0].Address);
+            Assert.AreEqual(vasya.ShowYourIp().Address, actualTim[0].Address);
         }
     }
 }

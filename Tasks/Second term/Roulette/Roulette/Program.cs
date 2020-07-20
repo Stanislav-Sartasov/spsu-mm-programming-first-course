@@ -1,28 +1,29 @@
 ﻿using Roulette.Casino;
-using Roulette.People;
+using Roulette.Players;
+
 using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace Roullete
+namespace Roulette
 {
     class Program
     {
         static void Main(string[] args)
         {
             Table table = new Table();
-            List<AbstractPlayer> bots = new List<AbstractPlayer>() { new Bot(0), new Bot(1), new Bot(2) };
-            
-            for (int i = 0; i < 500; i++)
+            List<Bot> bots = new List<Bot>() { CreateInstance.SelectBot(0), CreateInstance.SelectBot(1) };
+
+            for (int i = 0; i < 2000; i++)
             {
-                List<AbstractPlayer> delList = new List<AbstractPlayer>();
-                foreach (AbstractPlayer bot in bots)
-                    bot.SetBet(table.ShowAmountOfMoney());
+                List<Bot> delList = new List<Bot>();
+                foreach (Bot bot in bots)
+                    bot.MakeBet(table.ShowAmountOfMoney());
                 table.Iteration(bots);
                 Console.WriteLine(table.ShowStatus());
-                foreach (AbstractPlayer bot in bots)
+                foreach (Bot bot in bots)
                 {
-                    int x = bot.ViewAmountOfMoney();
+                    int x = bot.ShowMoney();
                     Console.WriteLine(bot.ShowStatus());
                     if (x < 1)
                     {
@@ -30,7 +31,7 @@ namespace Roullete
                         delList.Add(bot);
                     }
                 }
-                foreach (AbstractPlayer delBot in delList)
+                foreach (Bot delBot in delList)
                     bots.Remove(delBot);
                 if (table.ShowAmountOfMoney() < 1)
                 {

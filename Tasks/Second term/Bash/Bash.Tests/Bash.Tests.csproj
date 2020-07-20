@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bash.Application\Bash.Application.csproj" />
+    <ProjectReference Include="..\Bash.Handler\Bash.Handler.csproj" />
   </ItemGroup>
 
 </Project>

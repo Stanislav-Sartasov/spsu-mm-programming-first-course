@@ -154,6 +154,7 @@
             // 
             this.chooseCurve.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.chooseCurve.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.chooseCurve.FormattingEnabled = true;
             this.chooseCurve.Location = new System.Drawing.Point(3, 85);
             this.chooseCurve.Name = "chooseCurve";

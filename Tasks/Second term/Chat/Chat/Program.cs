@@ -1,7 +1,7 @@
-﻿using Chat.Clients;
-using Chat.Manager;
+﻿using Chat.Application;
+using Chat.Client;
+
 using System;
-using System.Text;
 
 namespace Chat
 {
@@ -9,8 +9,8 @@ namespace Chat
     {
         static void Main(string[] args)
         {
-            Application chat = new Application();
-            Client client = new Client();
+            Manager chat = new Manager();
+            User client = new User();
             chat.StartChating(client);
         }
     }

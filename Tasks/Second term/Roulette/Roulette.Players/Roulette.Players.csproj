@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Roulette.Bet\Roulette.Bet.csproj" />
-    <ProjectReference Include="..\Roulette.Players\Roulette.Players.csproj" />
   </ItemGroup>
 
 </Project>

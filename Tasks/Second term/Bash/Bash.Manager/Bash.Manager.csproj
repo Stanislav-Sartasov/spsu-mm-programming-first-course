@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Roulette.Bet\Roulette.Bet.csproj" />
-    <ProjectReference Include="..\Roulette.Players\Roulette.Players.csproj" />
+    <ProjectReference Include="..\Bash.Handler\Bash.Handler.csproj" />
   </ItemGroup>
 
 </Project>

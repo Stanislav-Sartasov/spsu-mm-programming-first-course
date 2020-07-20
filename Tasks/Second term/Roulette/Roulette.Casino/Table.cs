@@ -1,4 +1,6 @@
-﻿using Roulette.People;
+﻿using Roulette.Bet;
+using Roulette.Players;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,7 @@ namespace Roulette.Casino
     public class Table
     {
         private int cashTable;
-        private int roundResult = -1;
+        private int fieldResult = -1;
         private Random rotation = new Random();
 
         public Table()
@@ -19,53 +21,32 @@ namespace Roulette.Casino
         {
             cashTable = cash;
         }
-        
-        public void Iteration(List<AbstractPlayer> players)
+
+        public void Iteration(List<Bot> players)
         {
-            roundResult = rotation.Next(0, 37);
+            fieldResult = rotation.Next(0, 37);
+
             Recount(players);
         }
 
-        private void Recount(List<AbstractPlayer> players)
+        private void Recount(List<Bot> players)
         {
-            foreach (AbstractPlayer player in players)
+            foreach (Bot player in players)
             {
-                char[] bet = player.ViewBet();
-                char[] tierResult = new char[] {'T', ((roundResult) / 12 + 1).ToString()[0] };
-                char[] fieldResult = (roundResult / 10 == 0 ? new char[] { '0', roundResult.ToString()[0] } : roundResult.ToString().ToCharArray());
-                char[] parityResult = (roundResult % 2 == 0 ? new char[] { 'E', 'V' } : new char[] { 'O', 'D' });
-                char[] colorResult = (roundResult % 2 == 0 ? new char[] { 'B', 'L' } : new char[] { 'R', 'E' });
-
-                if (Enumerable.SequenceEqual(bet, new char[] { 'Z', 'e' }) || Enumerable.SequenceEqual(bet, new char[] { '0', '0' }))
+                
+                int multiplier;
+                IBet playerBet = player.ShowField();
+                if (playerBet.Matches(fieldResult, out multiplier))
                 {
-                    player.MoneyRecount(true, 35, cashTable);
-                    cashTable -= Math.Min(cashTable, 35 * player.ViewSumBet());
-                }
-                else if (Enumerable.SequenceEqual(bet, tierResult))
-                {
-                    player.MoneyRecount(true, 2, cashTable);
-                    cashTable -= Math.Min(cashTable, 2 * player.ViewSumBet());
-                }
-                else if (Enumerable.SequenceEqual(bet, fieldResult))
-                {
-                    player.MoneyRecount(true, 35, cashTable);
-                    cashTable -= Math.Min(cashTable, 35 * player.ViewSumBet());
-                }
-                else if (Enumerable.SequenceEqual(bet, parityResult))
-                {
-                    player.MoneyRecount(true, 1, cashTable);
-                    cashTable -= Math.Min(cashTable, 1 * player.ViewSumBet());
-                }
-                else if (Enumerable.SequenceEqual(bet, colorResult))
-                {
-                    player.MoneyRecount(true, 1, cashTable);
-                    cashTable -= Math.Min(cashTable, 1 * player.ViewSumBet());
+                    player.MoneyRecount(multiplier, cashTable);
+                    cashTable = cashTable - Math.Min(multiplier * player.ShowBet(), cashTable);
                 }
                 else
                 {
-                    player.MoneyRecount(false, 0, cashTable);
-                    cashTable += player.ViewSumBet();
+                    cashTable += player.ShowBet();
+                    player.MoneyRecount(0, cashTable);
                 }
+                    
             }
         }
 
@@ -73,10 +54,16 @@ namespace Roulette.Casino
         {
             return cashTable;
         }
+
+        public int ViewRoundResult()
+        {
+            return fieldResult;
+        }
+
         public string ShowStatus()
         {
             string result = $"The amount of money at the table = {cashTable}\n" +
-                            $"The result of the round is {roundResult}\n";
+                            $"The result of the round is {fieldResult}\n";
 
             return result;
         }
