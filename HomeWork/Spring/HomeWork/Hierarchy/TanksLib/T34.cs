@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hierarchy
+namespace Tanks
 {
-    public class T49 : Tank
+    public class T34 : Tank
     {
-        public T49() : base("Brown", "the USA", 65, 1300, 4)
+        public T34() : base("Black", "Ussr", 56, 400, 4)
         {
         }
-        public void Print(string choice = "0")
+        public void Print(Choose choice)
         {
             base.Print(choice);
         }

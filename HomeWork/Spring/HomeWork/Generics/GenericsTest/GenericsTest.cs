@@ -7,7 +7,7 @@ namespace GenericsTest
     public class GenericsTest
     {
         [TestMethod]
-        public void TestTreeMethods()
+        public void TreeMethodsTest()
         {
             Tree<int> Test = new Tree<int>();
             Test.Add(5, 10);

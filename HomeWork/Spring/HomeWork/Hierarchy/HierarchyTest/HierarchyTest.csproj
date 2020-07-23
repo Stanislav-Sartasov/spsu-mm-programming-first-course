@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hierarchy\Hierarchy.csproj" />
+    <ProjectReference Include="..\TanksLib\TanksLib.csproj" />
   </ItemGroup>
 
 </Project>

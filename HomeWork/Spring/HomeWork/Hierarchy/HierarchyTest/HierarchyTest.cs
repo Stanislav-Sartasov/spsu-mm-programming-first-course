@@ -1,4 +1,4 @@
-using Hierarchy;
+using Tanks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HierarchyTest
@@ -46,12 +46,12 @@ namespace HierarchyTest
         public void PrintTest()
         {
             Panter panter = new Panter();
-            panter.Print();
-            panter.Print("Color");
-            panter.Print("Country Of Manufacture");
-            panter.Print("Maximum Speed");
-            panter.Print("Armor");
-            panter.Print("Cabin Crew");
+            panter.Print(Choose.All);
+            panter.Print(Choose.Color);
+            panter.Print(Choose.CountryOfManufacture);
+            panter.Print(Choose.MaximumSpeed);
+            panter.Print(Choose.Armor);
+            panter.Print(Choose.CabinCrew);
         }
     }
 }

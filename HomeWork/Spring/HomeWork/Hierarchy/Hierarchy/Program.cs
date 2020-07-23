@@ -1,6 +1,5 @@
-﻿
-using System;
-
+﻿using System;
+using Tanks;
 namespace Hierarchy
 {
     class Program
@@ -8,8 +7,8 @@ namespace Hierarchy
         static void Main(string[] args)
         {
             Panter panter = new Panter();
-            panter.Print("Color");
-            panter.Print();
+            panter.Print(Choose.Color);
+            panter.Print(Choose.All);
         }
     }
 }

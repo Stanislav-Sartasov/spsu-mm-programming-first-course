@@ -10,7 +10,7 @@ namespace Generics
 {
     public class Tree<T>
     {
-        private class Node<T>
+        public class Node<T>
         {
             public T value;
             public int key;
@@ -27,11 +27,11 @@ namespace Generics
 
         public void Add(T value, int key)
         {
-            Node<T> newNode = new Node<T>();
-            newNode.value = value;
-            newNode.key = key;
+            Node<T> NewNode = new Node<T>();
+            NewNode.value = value;
+            NewNode.key = key;
             if (root == null)
-                root = newNode;
+                root = NewNode;
             else
             {
                 Node<T> current = root;
@@ -44,7 +44,7 @@ namespace Generics
                         current = current.left;
                         if (current == null)
                         {
-                            parent.left = newNode;
+                            parent.left = NewNode;
                             //Console.WriteLine("L");
                             break;
                         }
@@ -55,7 +55,7 @@ namespace Generics
                         current = current.right;
                         if (current == null)
                         {
-                            parent.right = newNode;
+                            parent.right = NewNode;
                             // Console.WriteLine("R");
                             break;
                         }

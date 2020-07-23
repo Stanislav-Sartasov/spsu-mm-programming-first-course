@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hierarchy
+namespace Tanks
 {
     public abstract class Tank
     {
@@ -20,9 +20,11 @@ namespace Hierarchy
             Armor = armor;
             CabinCrew = cabinCrew;
         }
-        public void Print(string choice = "0")
+        public void Print(Choose choice)
         {
-            if (choice == "0")
+
+
+            if (choice == Choose.All)
             {
                 Console.WriteLine("Color is " + Color);
                 Console.WriteLine("Country Of Manufacture is " + CountryOfManufacture);
@@ -30,15 +32,15 @@ namespace Hierarchy
                 Console.WriteLine("Armor is " + Armor);
                 Console.WriteLine("Amount of Crew is " + CabinCrew);
             }
-            else if (choice == "Color")
+            else if (choice == Choose.Color)
                 Console.WriteLine("Color is " + Color);
-            else if (choice == "Country Of Manufacture")
+            else if (choice == Choose.CountryOfManufacture)
                 Console.WriteLine("Country Of Manufacture is " + CountryOfManufacture);
-            else if (choice == "Maximum Speed")
+            else if (choice == Choose.MaximumSpeed)
                 Console.WriteLine("Maximum Speed is " + MaxSpeed);
-            else if (choice == "Armor")
+            else if (choice == Choose.Armor)
                 Console.WriteLine("Armor is " + Armor);
-            else if (choice == "Cabin Crew")
+            else if (choice == Choose.CabinCrew)
                 Console.WriteLine("Amount of Crew is " + CabinCrew);
             else
                 Console.WriteLine("Enterd wrong parametrs! Try again");
@@ -46,5 +48,18 @@ namespace Hierarchy
         }
 
 
+        
+
     }
+
+    public enum Choose : int
+    {
+        All = 0,
+        Color = 1,
+        CountryOfManufacture = 2,
+        MaximumSpeed = 3,
+        Armor = 4,
+        CabinCrew = 5
+    }
+
 }
