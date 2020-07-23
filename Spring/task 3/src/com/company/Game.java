@@ -1,10 +1,7 @@
 package com.company;
 
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-
 public class Game {
-    private final String[] deckOfCards = new String[4 * 8 * 13];
+    private final DeskOfCards deckOfCards;
     private final Player[] players;
     private final Dealer dealer;
 
@@ -16,60 +13,35 @@ public class Game {
         return players;
     }
 
-    public String[] getDeckOfCards() {
+    public DeskOfCards getDeckOfCards() {
         return deckOfCards;
-    }
-
-    private static void shuffleArray(String[] ar) { //Fisher–Yates shuffle
-        Random rnd = ThreadLocalRandom.current();
-        for (int i = ar.length - 1; i > 0; i--) {
-            int index = rnd.nextInt(i + 1);
-            String a = ar[index];
-            ar[index] = ar[i];
-            ar[i] = a;
-        }
     }
 
     public Game (Player[] people) {
         players = people;
         dealer = new Dealer();
-        for (int i = 0; i < 4 * 8; i++) {
-            deckOfCards[i * 13] = "2";
-            deckOfCards[i * 13 + 1] = "3";
-            deckOfCards[i * 13 + 2] = "4";
-            deckOfCards[i * 13 + 3] = "5";
-            deckOfCards[i * 13 + 4] = "6";
-            deckOfCards[i * 13 + 5] = "7";
-            deckOfCards[i * 13 + 6] = "8";
-            deckOfCards[i * 13 + 7] = "9";
-            deckOfCards[i * 13 + 8] = "10";
-            deckOfCards[i * 13 + 9] = "J";
-            deckOfCards[i * 13 + 10] = "Q";
-            deckOfCards[i * 13 + 11] = "K";
-            deckOfCards[i * 13 + 12] = "A";
-        }
-        shuffleArray(deckOfCards);
+        deckOfCards = new DeskOfCards();
     }
 
     private int dealCards(int i) {
         for (Player player: players) {
             if (player.inGame.equals("playing")) {
                 if (player.makeMove(dealer.getCard()).equals("take")) {
-                    player.addCard(deckOfCards[i]);
+                    player.addCard(deckOfCards.getCard(i));
                     i++;
                 } else {
                     player.inGame = "stoped";
                 }
             }
         }
-        dealer.addCard(deckOfCards[i]);
+        dealer.addCard(deckOfCards.getCard(i));
         return ++i;
     }
 
     public void play() {
         int i = 0;
         for (Player player: players) {
-            player.addCard(deckOfCards[i]);
+            player.addCard(deckOfCards.getCard(i));
             i++;
         }
         i = dealCards(i);
@@ -118,3 +90,4 @@ public class Game {
         }
     }
 }
+

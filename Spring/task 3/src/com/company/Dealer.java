@@ -10,9 +10,9 @@ public class Dealer extends Player {
 
     public int getCard() {
         int ans = 2;
-        for (String card: cards) {
+        for (Card card: cards) {
             int cur;
-            switch (card) {
+            switch (card.getValue()) {
                 case "2" -> cur = 2;
                 case "3" -> cur = 3;
                 case "4" -> cur = 4;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public abstract class Player {
     protected int money;
-    protected ArrayList<String> cards = new ArrayList<>();
+    protected ArrayList<Card> cards = new ArrayList<>();
     protected String inGame = "playing";
 
     public String getInGame() {
@@ -15,7 +15,7 @@ public abstract class Player {
         money = x;
     }
 
-    public ArrayList<String> getCards() {
+    public ArrayList<Card> getCards() {
         return cards;
     }
 
@@ -25,8 +25,8 @@ public abstract class Player {
 
     protected boolean haveA() {
         boolean ans = false;
-        for (String card: cards) {
-            if (card.equals("A")) {
+        for (Card card: cards) {
+            if (card.getValue().equals("A")) {
                 ans = true;
                 break;
             }
@@ -34,7 +34,7 @@ public abstract class Player {
         return ans;
     }
 
-    public void addCard(String c) {
+    public void addCard(Card c) {
         cards.add(c);
     }
 
@@ -53,8 +53,8 @@ public abstract class Player {
     protected int sum() {
         int s = 0;
         int cnt = 0;
-        for (String card: cards) {
-            switch (card) {
+        for (Card card: cards) {
+            switch (card.getValue()) {
                 case "2" -> s += 2;
                 case "3" -> s += 3;
                 case "4" -> s += 4;
