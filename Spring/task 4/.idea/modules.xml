@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BinaryTree/BinaryTree.iml" filepath="$PROJECT_DIR$/BinaryTree/BinaryTree.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BinaryTreeTest/BinaryTreeTest.iml" filepath="$PROJECT_DIR$/BinaryTreeTest/BinaryTreeTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/task 4.iml" filepath="$PROJECT_DIR$/task 4.iml" />
     </modules>
   </component>

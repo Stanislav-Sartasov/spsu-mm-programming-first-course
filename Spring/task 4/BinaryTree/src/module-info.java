@@ -1,4 +1,3 @@
 module BinaryTree {
-    requires org.junit.jupiter.api;
-    requires junit;
+    exports com.company.binaryTree;
 }
