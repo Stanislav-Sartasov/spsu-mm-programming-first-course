@@ -2,7 +2,6 @@ package com.company.binaryTree;
 
 import java.lang.ref.WeakReference;
 
-
 public class Node<T> {
     private int key;
     private int lifetime = 1000;

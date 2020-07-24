@@ -21,8 +21,7 @@ public class Main {
 	}
 
     public static void main(String[] args) throws Exception {
-	    WeakReference<Node<String>> weakBinaryTree;
-		weakBinaryTree = new WeakReference<>(new Node<>());
+	    WeakReference<Node<String>> weakBinaryTree = new WeakReference<>(new Node<>());
 		weakBinaryTree.get().addNode(10, "Hello");
 	    weakBinaryTree.get().addNode(5, "from");
 	    weakBinaryTree.get().addNode(4, "the outside");

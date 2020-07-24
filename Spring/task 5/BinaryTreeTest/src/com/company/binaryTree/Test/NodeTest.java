@@ -1,5 +1,6 @@
-package com.company.binaryTree;
+package com.company.binaryTree.Test;
 
+import com.company.binaryTree.Node;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
