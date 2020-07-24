@@ -8,7 +8,7 @@ namespace Casino_Case
 
         protected internal int balance;
         protected internal int profit = 0;
-        protected internal int amountOfBets = 0;
+        protected internal int AmountOfBets = 0;
 
         private Table table = new Table();
         public void SetBalance(int m)
@@ -21,10 +21,10 @@ namespace Casino_Case
         public void NumberBet(int number, int bid)
         {
             if (number > 36 || number < 0)
-                throw new NotImplementedException("Entered wrong number");
-            InputCheking(bid, this.balance);
+                throw new ArgumentException("Entered wrong number");
+            InputChecking(bid, this.balance);
 
-            this.amountOfBets++;
+            this.AmountOfBets++;
             Random rnd = new Random();
             int value = rnd.Next(0, 36);
             Console.WriteLine("Winning number " + value);
@@ -41,10 +41,10 @@ namespace Casino_Case
         public void ColorBet(int color, int bid)
         {
             if (color < 0 || color > 1)
-                throw new NotImplementedException("Entered wrong color");
-            InputCheking(bid, this.balance);
+                throw new ArgumentException("Entered wrong color");
+            InputChecking(bid, this.balance);
 
-            this.amountOfBets++;
+            this.AmountOfBets++;
             Random rnd = new Random();
             int value = rnd.Next(0, 36);
             Console.WriteLine("Winning number " + value);
@@ -62,10 +62,10 @@ namespace Casino_Case
         public void ParityBet(int parity, int bid)
         {
             if (parity < 0 || parity > 1)    // чет нечет
-                throw new NotImplementedException("Entered wrong parity");
-            InputCheking(bid, this.balance);
+                throw new ArgumentException("Entered wrong parity");
+            InputChecking(bid, this.balance);
 
-            this.amountOfBets++;
+            this.AmountOfBets++;
             Random rnd = new Random();
             int value = rnd.Next(0, 36);
             Console.WriteLine("Winning number " + value);
@@ -82,10 +82,10 @@ namespace Casino_Case
         public void DozonBet(int dozen, int bid)
         {
             if (dozen < 1 || dozen > 3)
-                throw new NotImplementedException("Entered wrong dozen");
-            InputCheking(bid, this.balance);
+                throw new ArgumentException("Entered wrong dozen");
+            InputChecking(bid, this.balance);
 
-            this.amountOfBets++;
+            this.AmountOfBets++;
             Random rnd = new Random();
             int value = rnd.Next(0, 36);
             Console.WriteLine("Winning number " + value);
@@ -102,10 +102,10 @@ namespace Casino_Case
         public void ColumnBet(int column, int bid)
         {
             if (column < 1 || column > 3)
-                throw new NotImplementedException("Entered wrong column");
-            InputCheking(bid, this.balance);
+                throw new ArgumentException("Entered wrong column");
+            InputChecking(bid, this.balance);
 
-            this.amountOfBets++;
+            this.AmountOfBets++;
             Random rnd = new Random();
             int value = rnd.Next(0, 36);
             Console.WriteLine("Winning number " + value);
@@ -120,24 +120,24 @@ namespace Casino_Case
         }
 
 
-       private void InputCheking(int t_Bid, int t_Balance)
+       private void InputChecking(int TBid, int TBalance)
         {
-            if (t_Bid > t_Balance)
-                throw new NotImplementedException("You dont have enough money");
-            if (t_Bid <= 0)
-                throw new NotImplementedException("Bid can't be less than 1");
+            if (TBid > TBalance)
+                throw new Exception("You dont have enough money");
+            if (TBid <= 0)
+                throw new Exception("Bid can't be less than 1");
         }
-        private void OutputWin (int t_Bid,int t_Coef)
+        private void OutputWin (int TBid,int TCoef)
         {
-            Console.WriteLine("You've just won " + t_Bid * t_Coef);
-            this.balance += (t_Bid) * t_Coef;
-            this.profit += (t_Bid) * t_Coef;
+            Console.WriteLine("You've just won " + TBid * TCoef);
+            this.balance += (TBid) * TCoef;
+            this.profit += (TBid) * TCoef;
         }
-        private void OutputLose(int t_Bid)
+        private void OutputLose(int TBid)
         {
             Console.WriteLine("Didn't win :(");
-            this.balance -= t_Bid;
-            this.profit -= t_Bid;
+            this.balance -= TBid;
+            this.profit -= TBid;
         }
 
     }

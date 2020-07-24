@@ -6,36 +6,36 @@ namespace Casino_Case.Bot
 {
   public  class DalamberBot : Bots
     {
-        public void Action(int amountOfBets, int minBid)
+        public void Action(int AmountOfBets, int MinBid)
         {
-            bidOn = 0;
-            bid = minBid;
-            balanceInf = botGame.balance;
+            int BidOn = 0;
+            int bid = MinBid;
+            int BalanceInf = BotGame.balance;
             int wins = 0;
-            for (int i = 0; i < amountOfBets; i++)
+            for (int i = 0; i < AmountOfBets; i++)
             {
-                botGame.ColorBet(bidOn, bid);
-                if (balanceInf + bid == botGame.balance)
+                BotGame.ColorBet(BidOn, bid);
+                if (BalanceInf + bid == BotGame.balance)
                 {
 
-                    if (bidOn == 0)
-                        bidOn = 1;
+                    if (BidOn == 0)
+                        BidOn = 1;
                     else
-                        bidOn = 0;
-                    if ((bid - minBid) >= minBid)
-                        bid -= minBid;
+                        BidOn = 0;
+                    if ((bid - MinBid) >= MinBid)
+                        bid -= MinBid;
                     wins++;
                 }
                 else
                 {
-                    bid += minBid;
+                    bid += MinBid;
                 }
-                balanceInf = botGame.balance;
+                BalanceInf = BotGame.balance;
             }
 
             Console.WriteLine("\n\n\n\n");
-            Console.WriteLine("Total profit " + botGame.profit);
-            Console.WriteLine("Amount of bets " + botGame.amountOfBets);
+            Console.WriteLine("Total profit " + BotGame.profit);
+            Console.WriteLine("Amount of bets " + AmountOfBets);
             Console.WriteLine("Amount of wins " + wins);
         }
     }

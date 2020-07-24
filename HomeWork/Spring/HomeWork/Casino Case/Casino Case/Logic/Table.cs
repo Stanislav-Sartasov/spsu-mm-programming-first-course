@@ -8,7 +8,7 @@ namespace Casino_Case
     {
 
         internal Sector[] Wheel = new Sector[37];
-        int k = 1, i;
+        int k = 1;
         private void Init(int start, int end, int dozen, int parity, int k = 1)
         {
        

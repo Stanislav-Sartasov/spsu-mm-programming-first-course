@@ -6,15 +6,11 @@ namespace Casino_Case
 {
     public class Bots
     {
-        protected Game botGame = new Game();
+        protected Game BotGame = new Game();
         public void SetBalance(int m)
         {
-            botGame.balance = m;
+            BotGame.balance = m;
         }
-
-        protected int bid;
-        protected int bidOn;
-        protected int balanceInf;
     }
 
 

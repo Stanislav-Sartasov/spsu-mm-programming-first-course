@@ -13,16 +13,16 @@ namespace Casino_Case
         int choice = 0;
         int choice2;
         bool exit = false;
-        int betAmount;
-        int betOn;
-        int botChoice;
-        int minBid;
+        int BetAmount;
+        int BetOn;
+        int BotChoice;
+        int MinBid;
         int balance = 0;
-        public void mainMenu()
+        public void MainMenu()
         {
             for (; ; )
             {
-                if (exit == true)
+                if (exit)
                     break;
                 Console.WriteLine("1 - " + "Start");
                 Console.WriteLine("2 - " + "Exit");
@@ -49,7 +49,7 @@ namespace Casino_Case
 
                         Gaming.SetBalance(balance);
                         Console.Clear();
-                        bettingMenu();
+                        BettingMenu();
 
                     }
 
@@ -61,20 +61,20 @@ namespace Casino_Case
                         {
                             Console.Clear();
                             Console.WriteLine("What bot do you wanna play?\n 1 - Dalamber \n 2 - Martingale ");
-                            botChoice = Convert.ToInt32(Console.ReadLine());
+                            BotChoice = Convert.ToInt32(Console.ReadLine());
                             Console.WriteLine("Enter bot balance, minimum bid and amount of bets");
                             balance = Convert.ToInt32(Console.ReadLine());
-                            minBid = Convert.ToInt32(Console.ReadLine());
-                            betAmount = Convert.ToInt32(Console.ReadLine());
-                            if ((botChoice == 1 || botChoice == 2) && balance > 0 && minBid > 0 && betAmount > 0)
+                            MinBid = Convert.ToInt32(Console.ReadLine());
+                            BetAmount = Convert.ToInt32(Console.ReadLine());
+                            if ((BotChoice == 1 || BotChoice == 2) && balance > 0 && MinBid > 0 && BetAmount > 0)
                                 right = true;
                         }
                         Dalamber.SetBalance(balance);
                         Martingale.SetBalance(balance);
-                        if (botChoice == 1)
-                            Dalamber.Action(betAmount, minBid);
+                        if (BotChoice == 1)
+                            Dalamber.Action(BetAmount, MinBid);
                         else
-                            Martingale.Action(betAmount, minBid);
+                            Martingale.Action(BetAmount, MinBid);
 
                     }
 
@@ -98,14 +98,14 @@ namespace Casino_Case
             }
         }
 
-        public void bettingMenu()
+        public void BettingMenu()
         {
             for (; ; )
             {
 
                 Console.WriteLine("1 - " + "Stright Bet" + "                Info:");
                 Console.WriteLine("2 - " + "Red or Black Bet" + "           Balance: " + Gaming.balance);
-                Console.WriteLine("3 - " + "Even or Odd Bet" + "            Amount of bets: " + Gaming.amountOfBets);
+                Console.WriteLine("3 - " + "Even or Odd Bet" + "            Amount of bets: " + Gaming.AmountOfBets);
                 Console.WriteLine("4 - " + "Dozen Bet" + "                  Total Profit: " + Gaming.profit);
                 Console.WriteLine("5 - " + "Column Bet");
                 Console.WriteLine("6 - " + "Exit");
@@ -114,48 +114,48 @@ namespace Casino_Case
                 {
                     Console.Clear();
                     Console.WriteLine("Enter the numbers you want to bet on and bet amount");
-                    betOn = Convert.ToInt32(Console.ReadLine());
-                    betAmount = Convert.ToInt32(Console.ReadLine());
+                    BetOn = Convert.ToInt32(Console.ReadLine());
+                    BetAmount = Convert.ToInt32(Console.ReadLine());
                     Console.Clear();
-                    Gaming.NumberBet(betOn, betAmount);
+                    Gaming.NumberBet(BetOn, BetAmount);
                 }
 
                 else if (choice2 == 2)
                 {
                     Console.Clear();
                     Console.WriteLine("Enter the color you want to bet(0 is red, 1 is red) on and bet amount");
-                    betOn = Convert.ToInt32(Console.ReadLine());
-                    betAmount = Convert.ToInt32(Console.ReadLine());
+                    BetOn = Convert.ToInt32(Console.ReadLine());
+                    BetAmount = Convert.ToInt32(Console.ReadLine());
                     Console.Clear();
-                    Gaming.ColorBet(betOn, betAmount);
+                    Gaming.ColorBet(BetOn, BetAmount);
                 }
                 else if (choice2 == 3)
                 {
                     Console.Clear();
                     Console.WriteLine("Enter the parity you want to bet(0 - even, 1 - odd) on and bet amount");
-                    betOn = Convert.ToInt32(Console.ReadLine());
-                    betAmount = Convert.ToInt32(Console.ReadLine());
+                    BetOn = Convert.ToInt32(Console.ReadLine());
+                    BetAmount = Convert.ToInt32(Console.ReadLine());
                     Console.Clear();
-                    Gaming.ParityBet(betOn, betAmount);
+                    Gaming.ParityBet(BetOn, BetAmount);
                 }
                 else if (choice2 == 4)
                 {
                     Console.Clear();
                     Console.WriteLine("Enter the dozen you want to bet on and bet amount");
-                    betOn = Convert.ToInt32(Console.ReadLine());
-                    betAmount = Convert.ToInt32(Console.ReadLine());
+                    BetOn = Convert.ToInt32(Console.ReadLine());
+                    BetAmount = Convert.ToInt32(Console.ReadLine());
                     Console.Clear();
-                    Gaming.DozonBet(betOn, betAmount);
+                    Gaming.DozonBet(BetOn, BetAmount);
                 }
 
                 else if (choice2 == 5)
                 {
                     Console.Clear();
                     Console.WriteLine("Enter the column you want to bet on and bet amount");
-                    betOn = Convert.ToInt32(Console.ReadLine());
-                    betAmount = Convert.ToInt32(Console.ReadLine());
+                    BetOn = Convert.ToInt32(Console.ReadLine());
+                    BetAmount = Convert.ToInt32(Console.ReadLine());
                     Console.Clear();
-                    Gaming.ColumnBet(betOn, betAmount);
+                    Gaming.ColumnBet(BetOn, BetAmount);
                 }
 
 
