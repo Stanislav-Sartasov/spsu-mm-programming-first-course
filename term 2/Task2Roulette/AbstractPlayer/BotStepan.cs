@@ -23,8 +23,8 @@ namespace AbstractPlayer
                             currentBet /= 2;
                         
                     }
-                    RoundResult(gameProcess.IsWin((int)Action.GameProcess.TypeOfBets.Red, 0),
-                        gameProcess.GetCoefficient((int)Action.GameProcess.TypeOfBets.Red));
+                    bool result = gameProcess.IsWin(GameProcess.TypeOfBets.Red, 0);
+                    RoundResult(result, gameProcess.GetCoefficient(GameProcess.TypeOfBets.Red));
                     if (correntWallet > wallet) currentBet *= 2;
                     else currentBet = 16;
                     correntWallet = wallet;

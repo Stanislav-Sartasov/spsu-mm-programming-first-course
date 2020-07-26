@@ -18,19 +18,17 @@ namespace AbstractPlayer
         public override void Bet()
         {
             choice = 0;
-            while (!(choice >= (int)Action.GameProcess.TypeOfBets.Red &&
-                choice <= (int)Action.GameProcess.TypeOfBets.SpecificNumber))
+            while (!(choice > 0 && choice < 9))
             {
                 Console.WriteLine("\nMenu:\n1.Red\n2.Black\n3.Odd\n4.Even\n5.1-12\n6.13-24\n7.25-36\n8.Straight up\n" +
                     "\nChoose bet number");
 
                 choice = CorrectInput.CorrectInput.IntInput(choice);
-                if (!(choice >= (int)Action.GameProcess.TypeOfBets.Red &&
-                choice <= (int)Action.GameProcess.TypeOfBets.SpecificNumber))
+                if (!(choice > 0 && choice < 9))
                     Console.WriteLine("Incorrect input!");
             }
             
-            if (choice == (int)Action.GameProcess.TypeOfBets.SpecificNumber)
+            if (choice == 8)
             {
                 Console.WriteLine("Enter cell number");
                 cell = CorrectInput.CorrectInput.IntInput(cell);

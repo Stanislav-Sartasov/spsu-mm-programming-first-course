@@ -21,8 +21,9 @@ namespace Task2Roulette
                 {
                     
                     player.Bet();
-                    bool result = gameProcess.IsWin(player.GetChoice(), player.GetCell());
-                    player.RoundResult(result, gameProcess.GetCoefficient(player.GetChoice()));
+                    GameProcess.TypeOfBets choice = (GameProcess.TypeOfBets)player.GetChoice();
+                    bool result = gameProcess.IsWin(choice, player.GetCell());
+                    player.RoundResult(result, gameProcess.GetCoefficient(choice));
                     Console.WriteLine(player.GetBalance());
                 }
                 else break;

@@ -18,8 +18,8 @@ namespace AbstractPlayer
             {
                 if (wallet > 0)
                 {
-                    RoundResult(gameProcess.IsWin((int)Action.GameProcess.TypeOfBets.SpecificNumber, 0),
-                        gameProcess.GetCoefficient((int)Action.GameProcess.TypeOfBets.SpecificNumber));
+                    RoundResult(gameProcess.IsWin(GameProcess.TypeOfBets.SpecificNumber, 0),
+                        gameProcess.GetCoefficient(GameProcess.TypeOfBets.SpecificNumber));
                 }
             }
         }
