@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 
     for (i = 0; i < statbuf.st_size; i++)
     {
-        if (map[i] == '\n')
+        if (map[i] == '\n' || map[i] == '\r\n')
             stringNumber++;
     }
 
@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
 
     for (i = 0; i < statbuf.st_size; i++)
     {
-        if (map[i] == '\n')
+        if (map[i] == '\n' || map[i] == '\r\n')
         {
             j++;
             strings[j] = &map[i + 1];
