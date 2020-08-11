@@ -1,8 +1,6 @@
-package com.company;
+package com.company.main;
 
 import com.company.binaryTree.Node;
-
-import java.lang.ref.WeakReference;
 
 public class Main {
 

@@ -1,4 +1,4 @@
-package com.company.binaryTree.test;
+package com.company.binaryTree;
 
 import com.company.binaryTree.Node;
 import org.junit.Assert;
