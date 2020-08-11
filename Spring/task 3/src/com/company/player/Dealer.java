@@ -1,4 +1,6 @@
-package com.company;
+package com.company.player;
+
+import com.company.cards.Card;
 
 import static java.lang.Integer.max;
 

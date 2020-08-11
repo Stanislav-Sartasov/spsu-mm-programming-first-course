@@ -1,4 +1,7 @@
-package com.company;
+package com.company.main;
+
+import com.company.game.Game;
+import com.company.player.*;
 
 public class Main {
 

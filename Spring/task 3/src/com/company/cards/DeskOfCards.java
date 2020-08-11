@@ -1,4 +1,4 @@
-package com.company;
+package com.company.cards;
 
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;

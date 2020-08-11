@@ -1,4 +1,6 @@
-package com.company;
+package com.company.player;
+
+import com.company.cards.Card;
 
 import java.util.ArrayList;
 
@@ -50,7 +52,7 @@ public abstract class Player {
 
     public abstract String ifBlackJack();
 
-    protected int sum() {
+    public int sum() {
         int s = 0;
         int cnt = 0;
         for (Card card: cards) {
@@ -77,6 +79,10 @@ public abstract class Player {
             cnt -= 1;
         }
         return s;
+    }
+
+    public void setInGame(String s) {
+        inGame = s;
     }
 }
 

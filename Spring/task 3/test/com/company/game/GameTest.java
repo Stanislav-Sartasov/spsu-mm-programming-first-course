@@ -1,8 +1,7 @@
-package com.company;
+package com.company.game;
 
+import com.company.player.*;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class GameTest {
 
@@ -17,9 +16,9 @@ public class GameTest {
             for (int i = 0; i < 400; i++)
                 game.play();
             for (int i = 0; i < 3; i++) {
-                if (players[i].money >= players[(i + 1) % 3].money && players[i].money >= players[(i + 2) % 3].money)
+                if (players[i].getMoney() >= players[(i + 1) % 3].getMoney() && players[i].getMoney() >= players[(i + 2) % 3].getMoney())
                     win[i] += 1;
-                middle[i] += players[i].money;
+                middle[i] += players[i].getMoney();
             }
         }
 

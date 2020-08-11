@@ -1,4 +1,7 @@
-package com.company;
+package com.company.game;
+
+import com.company.cards.*;
+import com.company.player.*;
 
 public class Game {
     private final DeskOfCards deckOfCards;
@@ -25,12 +28,12 @@ public class Game {
 
     private int dealCards(int i) {
         for (Player player: players) {
-            if (player.inGame.equals("playing")) {
+            if (player.getInGame().equals("playing")) {
                 if (player.makeMove(dealer.getCard()).equals("take")) {
                     player.addCard(deckOfCards.getCard(i));
                     i++;
                 } else {
-                    player.inGame = "stoped";
+                    player.setInGame("stoped");
                 }
             }
         }
@@ -50,9 +53,9 @@ public class Game {
                 String bj = player.ifBlackJack();
                 if (bj.equals("take")) {
                     player.win(2);
-                    player.inGame = "finished";
+                    player.setInGame("finished");
                 } else {
-                    player.inGame = "waiting";
+                    player.setInGame("waiting");
                 }
             }
         }
@@ -62,7 +65,7 @@ public class Game {
             i = dealCards(i);
             if (first && dealer.sum() == 21) {
                 for (Player player: players) {
-                    if (player.inGame.equals("waiting")) {
+                    if (player.getInGame().equals("waiting")) {
                         player.win(3);
                     } else {
                         player.lose(2);
@@ -74,13 +77,13 @@ public class Game {
             for (Player player: players) {
                 if (player.sum() > 21) {
                     player.lose(2);
-                    player.inGame = "finished";
+                    player.setInGame("finished");
                 }
             }
         }
 
         for (Player player: players) {
-            if (player.inGame.equals("playing") || player.inGame.equals("stoped")) {
+            if (player.getInGame().equals("playing") || player.getInGame().equals("stoped")) {
                 if (player.sum() > dealer.sum() || dealer.sum() > 21) {
                     player.win(2);
                 } else {
