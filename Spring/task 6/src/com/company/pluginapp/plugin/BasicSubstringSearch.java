@@ -1,6 +1,14 @@
 package com.company.pluginapp.plugin;
 
+import com.company.pluginapp.core.ISubstringSearch;
+
 public class BasicSubstringSearch implements ISubstringSearch {
+
+    @Override
+    public void load() {
+        System.out.println("Module " + this.getClass() + " loading ...");
+    }
+
     @Override
     public String getName() {
         return "Basic Substring Search";

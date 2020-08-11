@@ -1,8 +1,16 @@
 package com.company.pluginapp.plugin;
 
+import com.company.pluginapp.core.ISubstringSearch;
+
 import static java.lang.Integer.min;
 
 public class KnuthMorrisPrattAlgo implements ISubstringSearch {
+
+    @Override
+    public void load() {
+        System.out.println("Module " + this.getClass() + " loading ...");
+    }
+
     @Override
     public String getName() {
         return "Knuth-Morris-Pratt Algorithm";
