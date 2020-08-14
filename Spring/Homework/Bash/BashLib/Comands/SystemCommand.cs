@@ -18,12 +18,12 @@ namespace Bash.Commands
             {
                 var process = new Process();
                 process.StartInfo = new ProcessStartInfo(command);
-                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.UseShellExecute = true;
                 process.Start();
             }
             catch
             {
-                throw new Exception("Unable to start the process!");
+                Bash.Printer.Print("Unable to start the process!");
             }
         }
     }

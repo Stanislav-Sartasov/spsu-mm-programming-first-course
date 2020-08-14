@@ -10,25 +10,42 @@ namespace Bash.Tests
     public class PipelineTest
     {
         static readonly string filePath = string.Format("{0}\\test.txt", Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\")));
-        Bash bash;
         List<string> result;
 
         [TestInitialize]
         public void TestInit()
         {
             result = new List<string>();
-            Mock<IBashController> echoMock = new Mock<IBashController>();
-            echoMock.SetupSequence(c => c.GetCommand())
-                .Returns("$h=7" + ' ' + '|' + "echo" + ' ' + "$h")
+            Mock<IController> pipeController = new Mock<IController>();
+            pipeController.SetupSequence(c => c.GetCommand())
+                .Returns("echo" + ' ' + filePath + '|' + " wc")
                 .Returns("exit");
-            bash = new Bash(echoMock.Object, s => result.Add(s));
-            bash.Start();
+            Mock<IPrinter> pipePrinter = new Mock<IPrinter>();
+            pipePrinter.Setup(s => s.Print(It.IsAny<string>()))
+                .Callback((string str) =>
+                {
+                    result.Add(str);
+                }).Verifiable();
+            Bash.BashController = pipeController.Object;
+            Bash.Printer = pipePrinter.Object;
+            Bash.Start();
         }
 
         [TestMethod]
         public void CorrectPipeline()
         {
-            Assert.AreEqual("7", result[2]);
+            var lines = File.ReadAllLines(filePath);
+            int wordsCount = 0;
+            foreach (string line in lines)
+            {
+                wordsCount += (line.Trim().Split(' ')).Length;
+            }
+            var bytesCount = new FileInfo(filePath).Length;
+
+            Assert.AreEqual(filePath + ':', result[2]);
+            Assert.AreEqual("Number of lines: " + lines.Length, result[3]);
+            Assert.AreEqual("Number of words: " + wordsCount, result[4]);
+            Assert.AreEqual("Number of bytes: " + bytesCount, result[5]);
         }
     }
 }

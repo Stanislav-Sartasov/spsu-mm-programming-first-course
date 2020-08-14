@@ -1,6 +1,6 @@
 ﻿namespace Bash
 {
-    public interface IBashController
+    public interface IController
     {
         string GetCommand();
     }

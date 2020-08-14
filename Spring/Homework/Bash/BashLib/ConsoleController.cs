@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Bash
 {
-    class ConsoleController : IBashController
+    class ConsoleController : IController
     {
         public string GetCommand()
         {

@@ -10,28 +10,40 @@ namespace Bash.Tests
     public class WcTest
     {
         static readonly string filePath = string.Format("{0}\\test.txt", Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\")));
-        Bash bash;
         List<string> result;
 
         [TestInitialize]
         public void TestInit()
         {
             result = new List<string>();
-            Mock<IBashController> wcMock = new Mock<IBashController>();
-            wcMock.SetupSequence(c => c.GetCommand()).Returns("wc" + ' ' + filePath).Returns("exit");
-            bash = new Bash(wcMock.Object, s => result.Add(s));
-            bash.Start();
+            Mock<IController> wcController = new Mock<IController>();
+            wcController.SetupSequence(c => c.GetCommand()).Returns("wc " + filePath).Returns("exit");
+            Mock<IPrinter> wcPrinter = new Mock<IPrinter>();
+            wcPrinter.Setup(s => s.Print(It.IsAny<string>()))
+                .Callback((string str) =>
+                {
+                    result.Add(str);
+                }).Verifiable();
+            Bash.BashController = wcController.Object;
+            Bash.Printer = wcPrinter.Object;
+            Bash.Start();
         }
 
         [TestMethod]
         public void CorrectWc()
         {
-            if (result.Count >= 5)
+            var lines = File.ReadAllLines(filePath);
+            int wordsCount = 0;
+            foreach (string line in lines)
             {
-                Assert.AreEqual("Number of lines: 16", result[2]);
-                Assert.AreEqual("Number of words: 16", result[3]);
-                Assert.AreEqual("Number of bytes: 113", result[4]);
+                wordsCount += (line.Trim().Split(' ')).Length;
             }
+            var bytesCount = new FileInfo(filePath).Length;
+
+            Assert.AreEqual(filePath + ':', result[2]);
+            Assert.AreEqual("Number of lines: " + lines.Length, result[3]);
+            Assert.AreEqual("Number of words: " + wordsCount, result[4]);
+            Assert.AreEqual("Number of bytes: " + bytesCount, result[5]);
         }
     }
 }

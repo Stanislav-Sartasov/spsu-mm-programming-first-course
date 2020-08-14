@@ -4,8 +4,7 @@
     {
         static void Main(string[] args)
         {
-            Bash bash = new Bash();
-            bash.Start();
+            Bash.Start();
         }
     }
 }

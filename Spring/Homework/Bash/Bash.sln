@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bash", "Bash\Bash.csproj", "{23730EA9-03BA-4E78-BFA8-B46E58095793}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bash.Tests", "Bash.Tests\Bash.Tests.csproj", "{B1853CF2-7E1E-4A71-A961-32052B345086}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bash.Tests", "Bash.Tests\Bash.Tests.csproj", "{B1853CF2-7E1E-4A71-A961-32052B345086}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BashLib", "BashLib\BashLib.csproj", "{1B410865-88D6-49B0-B5ED-86D8AC7E2732}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{B1853CF2-7E1E-4A71-A961-32052B345086}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1853CF2-7E1E-4A71-A961-32052B345086}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1853CF2-7E1E-4A71-A961-32052B345086}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B410865-88D6-49B0-B5ED-86D8AC7E2732}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B410865-88D6-49B0-B5ED-86D8AC7E2732}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B410865-88D6-49B0-B5ED-86D8AC7E2732}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B410865-88D6-49B0-B5ED-86D8AC7E2732}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

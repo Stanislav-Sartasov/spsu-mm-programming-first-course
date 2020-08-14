@@ -4,6 +4,7 @@
     {
         public void Execute()
         {
+            Bash.IsWorking = false;
         }
     }
 }
