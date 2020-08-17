@@ -23,7 +23,7 @@ namespace Task1
             
             for (; ; )
             {
-                if (args.Length == 0 && manual == false)
+                if (args.Length == 0 && !manual)
                 {
                     Console.WriteLine("\n\tthis program allows you to use certain filters for bmp-24 and bmp-32 images");
                     Console.WriteLine("\tinput format: <input file name> <filter with modificators> <output file name>");
@@ -90,7 +90,7 @@ namespace Task1
                             Console.WriteLine("\n\twithout modifiers standard values will be taken:");
                             Console.WriteLine("\n\t\tsz = " + nSize + "\n\t\tsg = " + nSigma + "\n\t\tm = square\n\t\tth = " + nThreshold);
                             Console.WriteLine();
-                            if (manual == false)
+                            if (!manual)
                                 return 0;
                             else
                                 continue;
