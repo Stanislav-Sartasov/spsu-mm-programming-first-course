@@ -10,30 +10,30 @@ namespace Task1
             const int nSize = 5;
             const double nSigma = 0.6;
             const double nThreshold = 2;
-            int errCode = 0;
-            bool auto = false;
+            int errCode;
+            bool manual = false;            //console version if false, manual version if true
 
             int InvalidInput()
             {
                 Console.WriteLine(" > invalid input");
-                if (auto)
+                if (manual)
                     return -1;
                 return Image.InvalidInput;
             }
             
             for (; ; )
             {
-                if (args.Length == 0 && auto == false)
+                if (args.Length == 0 && manual == false)
                 {
                     Console.WriteLine("\n\tthis program allows you to use certain filters for bmp-24 and bmp-32 images");
                     Console.WriteLine("\tinput format: <input file name> <filter with modificators> <output file name>");
                     Console.WriteLine("\tenter <help> for details");
                     Console.WriteLine("\tenter <exit> for finish\n");
-                    auto = true;
+                    manual = true;
                 }
 
                 errCode = 0;
-                if (auto)
+                if (manual)
                 {
                     while (Console.KeyAvailable)
                         Console.ReadKey(true);
@@ -90,7 +90,7 @@ namespace Task1
                             Console.WriteLine("\n\twithout modifiers standard values will be taken:");
                             Console.WriteLine("\n\t\tsz = " + nSize + "\n\t\tsg = " + nSigma + "\n\t\tm = square\n\t\tth = " + nThreshold);
                             Console.WriteLine();
-                            if (auto == false)
+                            if (manual == false)
                                 return 0;
                             else
                                 continue;
@@ -265,7 +265,7 @@ namespace Task1
                 Image paint = new Image();
 
                 if ((errCode = Image.WriteErrorName(paint.GetFromFile(args[0]))) != 0)
-                    if (auto)
+                    if (manual)
                         continue;
                     else
                         return errCode;
@@ -280,18 +280,18 @@ namespace Task1
                     threshold = nThreshold;
 
                 if ((errCode = Image.WriteErrorName(paint.FilterByCode(filter, size, mask, sigma, threshold))) != 0)
-                    if (auto)
+                    if (manual)
                         continue;
                     else
                         return errCode;
 
                 if ((errCode = Image.WriteErrorName(paint.PutInFile(args[args.Length - 1]))) != 0)
-                    if (auto)
+                    if (manual)
                         continue;
                     else
                         return errCode;
 
-                if (!auto)
+                if (!manual)
                     return 0;
             }
         }
