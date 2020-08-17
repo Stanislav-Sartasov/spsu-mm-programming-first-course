@@ -9,9 +9,7 @@ namespace Plugins
     {
         static void Main(string[] args)
         {
-
-            Console.WriteLine("Enter the path witd dll");
-            string path = Console.ReadLine();
+            string path = Directory.GetCurrentDirectory();
             List<IDisplayText> textes = new List<IDisplayText>();
             ReadLibrary<IDisplayText> tmp = new ReadLibrary<IDisplayText>();
             textes = tmp.FindPlugin(path);

@@ -13,7 +13,7 @@ namespace PluginsTest
     public class UnitTest
     {
         [TestMethod]
-        public void TestMethod()
+        public void TestReadLibrary()
         {
             string path = Directory.GetCurrentDirectory();
             Console.WriteLine(path);
@@ -23,7 +23,7 @@ namespace PluginsTest
             Assert.IsTrue(textes.Count == 2);
             Assert.AreEqual("Hello world", textes[0].Text());
             Assert.AreEqual("Don't know. Dont' care. Not my problem", textes[1].Text());
-                
+
 
         }
     }

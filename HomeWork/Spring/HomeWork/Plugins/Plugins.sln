@@ -5,13 +5,13 @@ VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugins", "Plugins\Plugins.csproj", "{658A5F9B-AD14-4417-A6B7-C26A1391A302}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyInterface", "MyInterface\MyInterface.csproj", "{19894AF0-7BCF-4EC0-837B-2D44B1142C8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyInterface", "MyInterface\MyInterface.csproj", "{19894AF0-7BCF-4EC0-837B-2D44B1142C8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld", "HelloWorld\HelloWorld.csproj", "{8604ACD7-AFCE-4FEB-9DDA-8C64DE0BD040}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelloWorld", "HelloWorld\HelloWorld.csproj", "{8604ACD7-AFCE-4FEB-9DDA-8C64DE0BD040}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quote", "Quote\Quote.csproj", "{EA388B8F-B0E4-49D5-8094-61ADE22CC78A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Quote", "Quote\Quote.csproj", "{EA388B8F-B0E4-49D5-8094-61ADE22CC78A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginsTest", "PluginsTest\PluginsTest.csproj", "{1AA58EA2-3C82-4038-9E67-734590171618}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugins.Test", "Plugins.Test\Plugins.Test.csproj", "{D5E69E62-09B2-47BB-A9F3-C29FDEE97E68}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{EA388B8F-B0E4-49D5-8094-61ADE22CC78A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA388B8F-B0E4-49D5-8094-61ADE22CC78A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA388B8F-B0E4-49D5-8094-61ADE22CC78A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1AA58EA2-3C82-4038-9E67-734590171618}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1AA58EA2-3C82-4038-9E67-734590171618}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1AA58EA2-3C82-4038-9E67-734590171618}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1AA58EA2-3C82-4038-9E67-734590171618}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5E69E62-09B2-47BB-A9F3-C29FDEE97E68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5E69E62-09B2-47BB-A9F3-C29FDEE97E68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5E69E62-09B2-47BB-A9F3-C29FDEE97E68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5E69E62-09B2-47BB-A9F3-C29FDEE97E68}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

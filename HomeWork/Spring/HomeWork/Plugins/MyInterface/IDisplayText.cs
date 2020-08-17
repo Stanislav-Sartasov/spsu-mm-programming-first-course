@@ -6,6 +6,4 @@ namespace MyInterface
     {
         public string Text();
     }
-
-
 }
