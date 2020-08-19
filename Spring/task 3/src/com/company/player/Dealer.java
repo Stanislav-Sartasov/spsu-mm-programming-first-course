@@ -13,35 +13,20 @@ public class Dealer extends Player {
     public int getCard() {
         int ans = 2;
         for (Card card: cards) {
-            int cur;
-            switch (card.getValue()) {
-                case "2" -> cur = 2;
-                case "3" -> cur = 3;
-                case "4" -> cur = 4;
-                case "5" -> cur = 5;
-                case "6" -> cur = 6;
-                case "7" -> cur = 7;
-                case "8" -> cur = 8;
-                case "9" -> cur = 9;
-                case "10" -> cur = 10;
-                case "J", "Q", "K" -> cur = 10;
-                case "A" -> cur = 11;
-                default -> throw new IllegalStateException("Unexpected value: " + card);
-            }
-            ans = max(ans, cur);
+            ans = max(ans, card.getIntValue());
         }
         return ans;
     }
 
     @Override
-    public String makeMove(int dealersCard) {
+    public Action makeMove(int dealersCard) {
         if (this.sum() < 17)
-            return "take";
-        return "pass";
+            return Action.TAKE;
+        return Action.PASS;
     }
 
     @Override
-    public String ifBlackJack() {
+    public Action ifBlackJack() {
         return null;
     }
 }

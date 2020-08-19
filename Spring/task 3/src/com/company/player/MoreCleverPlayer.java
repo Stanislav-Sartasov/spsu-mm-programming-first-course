@@ -7,23 +7,23 @@ public class MoreCleverPlayer extends Player {
     }
 
     @Override
-    public String makeMove(int dealersCard) {
+    public Action makeMove(int dealersCard) {
         if (this.sum() <= 11) {
-            return "take";
+            return Action.TAKE;
         }
         if (this.haveA() && this.sum() <= 17) {
-            return "take";
+            return Action.TAKE;
         }
-        return "pass";
+        return Action.PASS;
     }
 
     @Override
-    public String ifBlackJack() {
+    public Action ifBlackJack() {
         double rand = Math.random();
         if (rand < 0.5)
-            return "take";
+            return Action.TAKE;
         else
-            return "wait";
+            return Action.WAIT;
     }
 }
 

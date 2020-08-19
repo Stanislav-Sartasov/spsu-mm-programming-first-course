@@ -7,19 +7,19 @@ public class RandomPlayer extends Player {
     }
 
     @Override
-    public String makeMove(int dealersCard) {
+    public Action makeMove(int dealersCard) {
         if (this.sum() == 21)
-            return "pass";
+            return Action.PASS;
         double rand = Math.random();
         if (rand < 0.5)
-            return "take";
+            return Action.TAKE;
         else
-            return "pass";
+            return Action.PASS;
     }
 
     @Override
-    public String ifBlackJack() {
-        return "take";
+    public Action ifBlackJack() {
+        return Action.TAKE;
     }
 }
 

@@ -10,31 +10,31 @@ public class DeskOfCards {
         Random rnd = ThreadLocalRandom.current();
         for (int i = ar.length - 1; i > 0; i--) {
             int index = rnd.nextInt(i + 1);
-            String s = ar[index].getSuit();
-            String v = ar[index].getValue();
+            Suits s = ar[index].getSuit();
+            Values v = ar[index].getValue();
             ar[index] = ar[i];
             ar[i] = new Card(s, v);
         }
     }
 
     public DeskOfCards() {
-        String[] suits = {"Heart", "Club", "Spade", "Diamond"};
+        Suits[] suits = {Suits.CLUB, Suits.DIAMOND, Suits.HEART, Suits.SPADE};
         int k = 0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 4; j++) {
-                deckOfCards[k++] = new Card(suits[j], "2");
-                deckOfCards[k++] = new Card(suits[j], "3");
-                deckOfCards[k++] = new Card(suits[j], "4");
-                deckOfCards[k++] = new Card(suits[j], "5");
-                deckOfCards[k++] = new Card(suits[j], "6");
-                deckOfCards[k++] = new Card(suits[j], "7");
-                deckOfCards[k++] = new Card(suits[j], "8");
-                deckOfCards[k++] = new Card(suits[j], "9");
-                deckOfCards[k++] = new Card(suits[j], "10");
-                deckOfCards[k++] = new Card(suits[j], "J");
-                deckOfCards[k++] = new Card(suits[j], "Q");
-                deckOfCards[k++] = new Card(suits[j], "K");
-                deckOfCards[k++] = new Card(suits[j], "A");
+                deckOfCards[k++] = new Card(suits[j], Values.TWO);
+                deckOfCards[k++] = new Card(suits[j], Values.THREE);
+                deckOfCards[k++] = new Card(suits[j], Values.FOUR);
+                deckOfCards[k++] = new Card(suits[j], Values.FIVE);
+                deckOfCards[k++] = new Card(suits[j], Values.SIX);
+                deckOfCards[k++] = new Card(suits[j], Values.SEVEN);
+                deckOfCards[k++] = new Card(suits[j], Values.EIGHT);
+                deckOfCards[k++] = new Card(suits[j], Values.NINE);
+                deckOfCards[k++] = new Card(suits[j], Values.TEN);
+                deckOfCards[k++] = new Card(suits[j], Values.JACK);
+                deckOfCards[k++] = new Card(suits[j], Values.QUEEN);
+                deckOfCards[k++] = new Card(suits[j], Values.KING);
+                deckOfCards[k++] = new Card(suits[j], Values.ACE);
             }
         }
         shuffleArray(deckOfCards);

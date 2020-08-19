@@ -7,31 +7,31 @@ public class TheMostCleverPlayer extends Player {
     }
 
     @Override
-    public String makeMove(int dealersCard) {
+    public Action makeMove(int dealersCard) {
         int s = this.sum();
         if (s <= 8)
-            return "take";
+            return Action.TAKE;
         if (s <= 12 && !(s == 12 && dealersCard <= 6))
-            return "take";
+            return Action.TAKE;
         if (!this.haveA()) {
             if (s <= 16 && dealersCard <= 6)
-                return "pass";
+                return Action.PASS;
             if ((s == 15 || s == 16) && dealersCard >= 10)
-                return "pass";
+                return Action.PASS;
             if (s >= 17)
-                return "pass";
-            return "take";
+                return Action.PASS;
+            return Action.TAKE;
         } else {
             if (s <= 17)
-                return "take";
+                return Action.TAKE;
             if (s == 18 && dealersCard >= 9)
-                return "take";
-            return "pass";
+                return Action.TAKE;
+            return Action.PASS;
         }
     }
 
     @Override
-    public String ifBlackJack() {
-        return "wait";
+    public Action ifBlackJack() {
+        return Action.WAIT;
     }
 }
