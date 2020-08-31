@@ -1,285 +1,207 @@
+#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "alloc.h"
 
-char* heap = NULL;
-unsigned char* inf;
+#define memory_size 2048
 
-size_t memSize = 128, fl = 0;
-size_t numOfNodes, memBegin, isNewArray;
+typedef struct mem_block mem_block;
 
-struct node
+struct mem_block
 {
-	struct node* nextNode;
-	struct node* previousNode;
-	size_t nodes;
-	size_t address;
-	size_t indexFirst;
+	int size;
+	unsigned char is_used;
+	mem_block* prev_block;
+	mem_block* next_block;
 };
 
-typedef struct node listNode;
+mem_block* current_block = NULL;
+mem_block end_block;
+void* mem_start = NULL;
 
-listNode* head = NULL;
-listNode* insert = NULL;
-
-size_t nextFree(size_t size)
+void insert_new_block(mem_block* left_block, mem_block* right_block, size_t size)
 {
-	for (size_t firstFreeNode = 0; firstFreeNode < numOfNodes; firstFreeNode++)
+	mem_block* new_block = (mem_block*)((int*)left_block + left_block->size - size);
+
+	new_block->is_used = 0;
+	new_block->size = size;
+	new_block->prev_block = left_block;
+	new_block->next_block = right_block;
+
+	left_block->next_block = new_block;
+	right_block->prev_block = new_block;
+}
+
+mem_block* get_free_space(size_t size)
+{
+	mem_block* block_ptr = (mem_block*)mem_start;
+	mem_block* new_block;
+
+	size_t size_diff, block_size = sizeof(mem_block) + size;
+
+	while (block_ptr->next_block)
 	{
-		if (inf[firstFreeNode] == 0)
+		if ((!block_ptr->is_used) && (block_ptr->size >= block_size))
 		{
-			size_t freeSize = 1;
-			size_t nextNode = firstFreeNode + 1;
+			size_diff = block_ptr->size - block_size;
 
-			while (nextNode < numOfNodes && inf[nextNode] == 0 && freeSize < size)
-			{
-				nextNode++;
-				freeSize++;
-			}
+			if (size_diff > sizeof(mem_block))
+				insert_new_block(block_ptr, block_ptr->next_block, size_diff);
 
-			if (freeSize < size)
-			{
-				if (nextNode == numOfNodes)
-				{
-					return -1;
-				}
+			block_ptr->is_used = 1;
+			block_ptr->size = block_size;
 
-				firstFreeNode = nextNode;
-				continue;
-			}
-			return firstFreeNode;
+			return block_ptr;
 		}
+		block_ptr = block_ptr->next_block;
 	}
-	return -1;
+	return NULL;
+}
+
+void merge_blocks(mem_block* left_block, mem_block* right_block)
+{
+	left_block->size += right_block->size;
+	left_block->next_block = right_block->next_block;
+	right_block->next_block->prev_block = left_block;
+}
+
+void merge_free_blocks()
+{
+	mem_block* block_ptr = (mem_block*)mem_start;
+
+	while (block_ptr->next_block)
+	{
+		if ((!block_ptr->is_used) && (!block_ptr->next_block->is_used))
+			merge_blocks(block_ptr, block_ptr->next_block);
+		else
+			block_ptr = block_ptr->next_block;
+	}
 }
 
 void init()
 {
-	if (isNewArray == NULL)
+	mem_start = malloc(memory_size * sizeof(int)); 
+
+	if (!mem_start)
 	{
-		listNode* temp = (listNode*)malloc(sizeof(listNode));
-		insert = temp;
-		isNewArray = 1;
+		printf("Malloc error!\n");
+		exit(-1);
 	}
 
-	switch (fl)
-	{
-	case 0:
-		fl = 1;
+	current_block = (mem_block*)mem_start;
+	current_block->size = memory_size * sizeof(int); 
+	current_block->is_used = 0;
+	current_block->prev_block = NULL;
+	current_block->next_block = &end_block;
 
-		heap = (char*)malloc(sizeof(char) * memSize);
-		memBegin = heap;
-		numOfNodes = memSize / 4;
-
-		inf = (unsigned char*)malloc(sizeof(unsigned char) * numOfNodes);
-		for (size_t i = 0; i < numOfNodes; i++)
-		{
-			inf[i] = 0;
-		}
-		break;
-	case 1:
-		memSize = memSize - 128;
-		break;
-	case 2:
-		fl = 1;
-
-		memSize = memSize + 128;
-		char* newHeap = (char*)realloc(heap, sizeof(char) * memSize);
-
-		if (newHeap)
-		{
-			heap = newHeap;
-			memBegin = heap;
-
-			size_t oldNodeNum = numOfNodes;
-			numOfNodes = memSize / 4;
-
-			unsigned char* newInf = (unsigned char*)realloc(inf, sizeof(unsigned char) * numOfNodes);
-			if (newInf != NULL)
-			{
-				inf = newInf;
-				for (size_t i = oldNodeNum; i < numOfNodes; i++)
-				{
-					inf[i] = 0;
-				}
-			}
-		}
-		break;
-	default:
-		break;
-	}
+	end_block.size = sizeof(mem_block);
+	end_block.is_used = 1;
+	end_block.prev_block = NULL;
+	end_block.next_block = NULL;
 }
 
 void* myMalloc(size_t size)
 {
-	isNewArray = 0;
+	current_block = get_free_space(size);
 
-	init();
-
-	size_t nodes;
-
-	if (size % 4 == 0)
+	if (!current_block)
 	{
-		nodes = size / 4;
-	}
-	else
-	{
-		nodes = size / 4 + 1;
+		printf("Could not allocate memory!\n");
+		return NULL;
 	}
 
-	size_t firstFreeNode = nextFree(nodes);
-
-	while (firstFreeNode == -1)
-	{
-		fl = 2;
-
-		init();
-
-		firstFreeNode = nextFree(nodes);
-	}
-
-	listNode* node;
-	node = insert;
-	node->nodes = nodes;
-	node->indexFirst = firstFreeNode;
-	node->address = memBegin + firstFreeNode * 4;
-
-	listNode* next = head;
-	listNode* current = NULL;
-
-	while (next != NULL && next->indexFirst < node->indexFirst)
-	{
-		current = next;
-		next = next->nextNode;
-	}
-
-	node->nextNode = next;
-	node->previousNode = current;
-
-	if (node->previousNode)
-	{
-		node->previousNode->nextNode = node;
-	}
-	else
-	{
-		head = node;
-	}
-	if (node->nextNode)
-	{
-		node->nextNode->previousNode = node;
-	}
-	insert = NULL;
-
-	for (long long i = 0; i < nodes; i++)
-	{
-		inf[firstFreeNode + i] = 1;
-	}
-
-	return (void*)&heap[node->indexFirst * 4];
+	return ((int*)current_block) + sizeof(mem_block);
 }
 
 void myFree(void* ptr)
 {
-	if (ptr == NULL)
-	{
-		return NULL;
-	}
+	mem_block* block_ptr = (mem_block*)((int*)ptr - sizeof(mem_block));
 
-	size_t address = (size_t)ptr;
-	listNode* temp = head;
+	if (!block_ptr->is_used)
+		return;
 
-	while (temp != NULL && temp->address != address)
-	{
-		temp = temp->nextNode;
-	}
+	block_ptr->is_used = 0;
 
-	if (temp != NULL)
-	{
-		for (size_t i = 0; i < temp->nodes; i++)
-		{
-			inf[temp->indexFirst + i] = 0;
-		}
+	merge_free_blocks();
 
-		if (temp->nextNode)
-		{
-			temp->nextNode->previousNode = temp->previousNode;
-		}
-		if (!temp->previousNode)
-		{
-			head = temp->nextNode;
-		}
-		else
-		{
-			temp->previousNode->nextNode = temp->nextNode;
-		}
-		ptr = NULL;
-	}
-	else
-	{
-		printf("Incorrect pointer value.\n");
-		exit(-1);
-	}
 }
 
 void* myRealloc(void* ptr, size_t size)
 {
-	if (ptr == NULL)
+	void* ret_ptr;
+	mem_block* block_ptr = (mem_block*)((int*)ptr - sizeof(mem_block));
+	mem_block* temp_block_ptr;
+
+	int* source, *dest;
+	int csize, new_block_size;
+	int size_diff = size - block_ptr->size;
+
+	if ((block_ptr->next_block) && (!block_ptr->next_block->is_used) && (block_ptr->next_block->size >= size_diff))
 	{
-		return myMalloc(size);
+		new_block_size = block_ptr->size + block_ptr->next_block->size - (size + sizeof(mem_block));
+		merge_blocks(block_ptr, block_ptr->next_block);
+
+		if (new_block_size > (int)sizeof(mem_block))
+		{
+			insert_new_block(block_ptr, block_ptr->next_block, new_block_size);
+			block_ptr->size = size + sizeof(mem_block);
+		}
+
+		ret_ptr = ptr;
 	}
-	if (size == 0)
+	else 
+		if ((block_ptr->prev_block) && (!block_ptr->prev_block->is_used) && (block_ptr->prev_block->size >= size_diff))
+		{
+			temp_block_ptr = block_ptr->prev_block;
+			
+			source = ((int*)block_ptr) + sizeof(mem_block);
+			dest = ((int*)block_ptr->prev_block) + sizeof(mem_block);
+			csize = block_ptr->size - sizeof(mem_block);
+
+			block_ptr->prev_block->is_used = 1;
+
+			merge_blocks(block_ptr->prev_block, block_ptr);
+			
+			memcpy(dest, source, csize);
+			size_diff = temp_block_ptr->size - (size + sizeof(mem_block));
+			
+			if (size_diff > (int)sizeof(mem_block))
+			{
+				insert_new_block(temp_block_ptr, temp_block_ptr->next_block, size_diff);
+				temp_block_ptr->size = size + sizeof(mem_block);
+			}
+
+			ret_ptr = dest;
+		}
+		else
+		{
+			dest = (int*)myMalloc(size);
+
+			if (!dest)
+				printf("Could not reallocate memory!\n");
+
+			block_ptr->is_used = 0;
+			source = ((int*)block_ptr) + sizeof(mem_block);
+			csize = block_ptr->size - sizeof(mem_block);
+
+			memcpy(dest, source, csize);
+
+			ret_ptr = dest;
+		}
+	merge_free_blocks();
+	return ret_ptr;
+}
+
+void print_blocks()
+{
+	mem_block* block_ptr = (mem_block*)mem_start;
+	int ptr_diff;
+
+	while (block_ptr->next_block)
 	{
-		myFree(ptr);
-		return NULL;
-	}
-
-	size_t address = (size_t)ptr;
-	listNode* temp = head;
-	while (temp != NULL && temp->address != address)
-	{
-		temp = temp->nextNode;
-	}
-
-	if (temp != NULL)
-	{
-		if (size % 4 != 0)
-		{
-			size = size / 4 + 1;
-		}
-
-		size_t firstFreeNode = nextFree(size / 4);
-		while (firstFreeNode == -1)
-		{
-			fl = 2;
-
-			init();
-
-			firstFreeNode = nextFree(size / 4);
-		}
-
-		for (size_t i = 0; i < temp->nodes * 4; i++)
-		{
-			heap[firstFreeNode * 4 + i] = heap[temp->indexFirst * 4 + i];
-		}
-
-		for (size_t i = 0; i < temp->nodes; i++)
-		{
-			inf[temp->indexFirst + i] = 0;
-		}
-		for (size_t i = 0; i < size / 4; i++)
-		{
-			inf[firstFreeNode + i] = 1;
-		}
-
-		temp->nodes = size / 4;
-		temp->indexFirst = firstFreeNode;
-		temp->address = memBegin + firstFreeNode * 4;
-
-		return (void*)&heap[temp->indexFirst * 4];
-	}
-	else
-	{
-		printf("Error: the pointer value is incorrect!\n");
-		exit(-1);
+		ptr_diff = (unsigned char*)block_ptr->next_block - (unsigned char*)block_ptr;
+		printf("Start: %p, size: %d, prev: %p, next: %p, used: %d\n", (void*)block_ptr, block_ptr->size, (void*)block_ptr->prev_block, (void*)block_ptr->next_block, block_ptr->is_used);
+		if ((block_ptr->size != ptr_diff) && (block_ptr->next_block->next_block))
+			printf("Size != ptr_diff (%d)!\n", ptr_diff);
+		block_ptr = block_ptr->next_block;
 	}
 }
