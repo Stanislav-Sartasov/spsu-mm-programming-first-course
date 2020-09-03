@@ -44,21 +44,21 @@ namespace Roulette.Tests
         public void TestGame()
         {
             Table table = new Table(100_000);
-            List<Bot> bots = new List<Bot>() { CreateInstance.SelectBot(1), CreateInstance.SelectBot(2)};
+            List<IPlayer> bots = new List<IPlayer>() { CreateInstance.SelectBot(1), CreateInstance.SelectBot(2)};
 
             for (int i = 0; i < 400; i++)
             {
-                List<Bot> delList = new List<Bot>();
-                foreach (Bot bot in bots)
+                List<IPlayer> delList = new List<IPlayer>();
+                foreach (IPlayer bot in bots)
                     bot.MakeBet(table.ShowAmountOfMoney());
                 table.Iteration(bots);
-                foreach (Bot bot in bots)
+                foreach (IPlayer bot in bots)
                 {
                     int x = bot.ShowMoney();
                     if (x < 1)
                         delList.Add(bot);
                 }
-                foreach (Bot delBot in delList)
+                foreach (IPlayer delBot in delList)
                     bots.Remove(delBot);
                 if (table.ShowAmountOfMoney() < 1)
                     break;

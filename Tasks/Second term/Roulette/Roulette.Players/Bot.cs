@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Roulette.Players
 {
-    public abstract class Bot : IPlayer
+    abstract class Bot : IPlayer
     {
         protected static Random brain = new Random();
         protected IBet myBet;

@@ -16,12 +16,12 @@ namespace Roulette
 
             for (int i = 0; i < 2000; i++)
             {
-                List<Bot> delList = new List<Bot>();
-                foreach (Bot bot in bots)
+                List<IPlayer> delList = new List<IPlayer>();
+                foreach (IPlayer bot in bots)
                     bot.MakeBet(table.ShowAmountOfMoney());
                 table.Iteration(bots);
                 Console.WriteLine(table.ShowStatus());
-                foreach (Bot bot in bots)
+                foreach (IPlayer bot in bots)
                 {
                     int x = bot.ShowMoney();
                     Console.WriteLine(bot.ShowStatus());
@@ -31,7 +31,7 @@ namespace Roulette
                         delList.Add(bot);
                     }
                 }
-                foreach (Bot delBot in delList)
+                foreach (IPlayer delBot in delList)
                     bots.Remove(delBot);
                 if (table.ShowAmountOfMoney() < 1)
                 {

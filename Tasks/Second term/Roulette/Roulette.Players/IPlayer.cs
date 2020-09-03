@@ -11,5 +11,6 @@ namespace Roulette.Players
         int ShowBet();
         IBet ShowField();
         void MoneyRecount(int multiplier, int cashTable);
+        string ShowStatus();
     }
 }
