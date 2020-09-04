@@ -50,7 +50,19 @@ namespace Picture
 			matrix[2, 1] = 2;
 			matrix[2, 2] = 1;
 		}
-		private static void SobelX(int[,]matrix)
+		private static void SobelX(int[,] matrix)
+		{
+			matrix[0, 0] = 1;
+			matrix[0, 1] = 2;
+			matrix[0, 2] = 1;
+			matrix[1, 0] = 0;
+			matrix[1, 1] = 0;
+			matrix[1, 2] = 0;
+			matrix[2, 0] = -1;
+			matrix[2, 1] = -2;
+			matrix[2, 2] = -1;
+		}
+		private static void SobelY(int[,] matrix)
 		{
 			matrix[0, 0] = -1;
 			matrix[0, 1] = 0;
@@ -60,18 +72,6 @@ namespace Picture
 			matrix[1, 2] = 2;
 			matrix[2, 0] = -1;
 			matrix[2, 1] = 0;
-			matrix[2, 2] = 1;
-		}
-		private static void SobelY(int[,] matrix)
-		{
-			matrix[0, 0] = -1;
-			matrix[0, 1] = -2;
-			matrix[0, 2] = -1;
-			matrix[1, 0] = 0;
-			matrix[1, 1] = 0;
-			matrix[1, 2] = 0;
-			matrix[2, 0] = 1;
-			matrix[2, 1] = 2;
 			matrix[2, 2] = 1;
 		}
 		public void Filter (byte [,,] pixels, uint height, uint width, uint choice)
