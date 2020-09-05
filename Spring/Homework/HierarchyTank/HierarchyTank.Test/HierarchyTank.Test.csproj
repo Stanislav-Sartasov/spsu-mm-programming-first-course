@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Config\TankConfig.csproj" />
+    <ProjectReference Include="..\TankConfig\TankConfig.csproj" />
   </ItemGroup>
 
 </Project>
