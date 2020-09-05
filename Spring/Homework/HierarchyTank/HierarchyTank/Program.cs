@@ -1,6 +1,6 @@
 ﻿using TankConfig;
 
-namespace Hierarchy
+namespace HierarchyTank
 {
     class Program
     {
