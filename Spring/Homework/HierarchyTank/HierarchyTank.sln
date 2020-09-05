@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HierarchyTank", "HierarchyTank\HierarchyTank.csproj", "{A1F77837-B32C-494A-8ACA-3543CD3782E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HierarchyTank", "HierarchyTank\HierarchyTank.csproj", "{A1F77837-B32C-494A-8ACA-3543CD3782E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HierarchyTank.Test", "HierarchyTank.Test\HierarchyTank.Test.csproj", "{AB0EC12F-12CD-43A1-A840-4386F647C002}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HierarchyTank.Test", "HierarchyTank.Test\HierarchyTank.Test.csproj", "{AB0EC12F-12CD-43A1-A840-4386F647C002}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbstractTank", "Test\AbstractTank.csproj", "{37F5072F-C825-47F4-9D3A-A17C5614BCCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TankConfig", "Config\TankConfig.csproj", "{BD35FACD-D4EE-4C5A-AE7B-B7DE54E00DEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{AB0EC12F-12CD-43A1-A840-4386F647C002}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB0EC12F-12CD-43A1-A840-4386F647C002}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB0EC12F-12CD-43A1-A840-4386F647C002}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37F5072F-C825-47F4-9D3A-A17C5614BCCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37F5072F-C825-47F4-9D3A-A17C5614BCCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37F5072F-C825-47F4-9D3A-A17C5614BCCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37F5072F-C825-47F4-9D3A-A17C5614BCCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD35FACD-D4EE-4C5A-AE7B-B7DE54E00DEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD35FACD-D4EE-4C5A-AE7B-B7DE54E00DEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD35FACD-D4EE-4C5A-AE7B-B7DE54E00DEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD35FACD-D4EE-4C5A-AE7B-B7DE54E00DEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
