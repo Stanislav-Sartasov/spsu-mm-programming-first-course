@@ -11,7 +11,7 @@ typedef struct mem_block
 	struct mem_block* previous;
 } mem_block;
 
-static mem_block* stack = NULL;
+mem_block* stack = NULL;
 
 void init()
 {
@@ -27,6 +27,8 @@ void init()
 
 void delete_block(mem_block* block)
 {
+	if (!block)
+		abort();
 	if (block == stack)
 	{
 		stack = block->next;
