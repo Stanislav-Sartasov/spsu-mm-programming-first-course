@@ -7,19 +7,16 @@ namespace Task3
     public class GameMaster
     {
         public GameMaster(int startBudget, int numberOfDecks)
-            : this()
         {
             if (startBudget > 0)
                 this.startBudget = startBudget;
             this.numberOfDecks = numberOfDecks;
         }
         public GameMaster(int startBudget)
-            : this()
         {
             if (startBudget > 0)
                 this.startBudget = startBudget;
         }
-        public GameMaster() {}
         public class PlayerPlace
         {
             public PlayerPlace(GameMaster gameSession)
