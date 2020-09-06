@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="FourthTask.Tests\**" />
+    <EmbeddedResource Remove="FourthTask.Tests\**" />
+    <None Remove="FourthTask.Tests\**" />
+  </ItemGroup>
+
+</Project>
