@@ -9,7 +9,7 @@ namespace LibraryWeakRef
     public class JenericTree<T>// where T : IComparable
     {
         private Tree<T> head;
-        private List<TimeTree<T>> list;
+        private readonly List<TimeTree<T>> list;
         private TimeSpan maxLive;
 
         public JenericTree()
