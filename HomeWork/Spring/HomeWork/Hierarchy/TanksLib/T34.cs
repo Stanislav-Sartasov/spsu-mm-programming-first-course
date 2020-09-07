@@ -9,9 +9,6 @@ namespace Tanks
         public T34() : base("Black", "Ussr", 56, 400, 4)
         {
         }
-        public void Print(Choose choice)
-        {
-            base.Print(choice);
-        }
+
     }
 }

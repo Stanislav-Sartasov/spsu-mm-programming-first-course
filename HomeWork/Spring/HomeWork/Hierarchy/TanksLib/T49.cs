@@ -9,9 +9,5 @@ namespace Tanks
         public T49() : base("Brown", "the USA", 65, 1300, 4)
         {
         }
-        public void Print(Choose choice)
-        {
-            base.Print(choice);
-        }
     }
 }

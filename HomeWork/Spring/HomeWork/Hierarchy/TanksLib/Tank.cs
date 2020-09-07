@@ -20,11 +20,11 @@ namespace Tanks
             Armor = armor;
             CabinCrew = cabinCrew;
         }
-        public void Print(Choose choice)
+        public void Print(Choice choice)
         {
 
 
-            if (choice == Choose.All)
+            if (choice == Choice.All)
             {
                 Console.WriteLine("Color is " + Color);
                 Console.WriteLine("Country Of Manufacture is " + CountryOfManufacture);
@@ -32,15 +32,15 @@ namespace Tanks
                 Console.WriteLine("Armor is " + Armor);
                 Console.WriteLine("Amount of Crew is " + CabinCrew);
             }
-            else if (choice == Choose.Color)
+            else if (choice == Choice.Color)
                 Console.WriteLine("Color is " + Color);
-            else if (choice == Choose.CountryOfManufacture)
+            else if (choice == Choice.CountryOfManufacture)
                 Console.WriteLine("Country Of Manufacture is " + CountryOfManufacture);
-            else if (choice == Choose.MaximumSpeed)
+            else if (choice == Choice.MaximumSpeed)
                 Console.WriteLine("Maximum Speed is " + MaxSpeed);
-            else if (choice == Choose.Armor)
+            else if (choice == Choice.Armor)
                 Console.WriteLine("Armor is " + Armor);
-            else if (choice == Choose.CabinCrew)
+            else if (choice == Choice.CabinCrew)
                 Console.WriteLine("Amount of Crew is " + CabinCrew);
             else
                 Console.WriteLine("Enterd wrong parametrs! Try again");
@@ -52,14 +52,15 @@ namespace Tanks
 
     }
 
-    public enum Choose : int
+    [Flags]
+    public enum Choice
     {
         All = 0,
         Color = 1,
         CountryOfManufacture = 2,
-        MaximumSpeed = 3,
-        Armor = 4,
-        CabinCrew = 5
+        MaximumSpeed = 4,
+        Armor = 8,
+        CabinCrew = 16
     }
 
 }

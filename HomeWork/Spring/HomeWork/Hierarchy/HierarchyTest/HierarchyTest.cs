@@ -46,12 +46,12 @@ namespace HierarchyTest
         public void PrintTest()
         {
             Panter panter = new Panter();
-            panter.Print(Choose.All);
-            panter.Print(Choose.Color);
-            panter.Print(Choose.CountryOfManufacture);
-            panter.Print(Choose.MaximumSpeed);
-            panter.Print(Choose.Armor);
-            panter.Print(Choose.CabinCrew);
+            panter.Print(Choice.All);
+            panter.Print(Choice.Color);
+            panter.Print(Choice.CountryOfManufacture);
+            panter.Print(Choice.MaximumSpeed);
+            panter.Print(Choice.Armor);
+            panter.Print(Choice.CabinCrew);
         }
     }
 }
