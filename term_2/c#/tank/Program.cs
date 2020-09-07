@@ -11,12 +11,12 @@ namespace tank
         static void Main(string[] args)
         {
             Console.WriteLine("First tank:");
-            abstractTank tank = new t34();
+            AbstractTank tank = new T34();
             Console.WriteLine(tank.getInfo());
 
             Console.WriteLine("Second tank:");
 
-            abstractTank secTank = new m4();
+            AbstractTank secTank = new M4();
             Console.WriteLine(secTank.getInfo());
             Console.ReadKey();
         }

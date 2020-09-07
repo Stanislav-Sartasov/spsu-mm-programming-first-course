@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace tank
 {
-    public abstract class abstractTank
+    public abstract class AbstractTank
     {
         protected string title;
         protected string contry;
