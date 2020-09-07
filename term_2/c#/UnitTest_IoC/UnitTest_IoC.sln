@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest_IoC", "UnitTest_IoC.csproj", "{87C9C21A-C153-4125-A4D8-200AC27F9A0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PuntoBanco", "..\PuntoBanco\PuntoBanco.csproj", "{70BE3FE8-56CA-4DB8-B598-5947B96C732F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{87C9C21A-C153-4125-A4D8-200AC27F9A0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87C9C21A-C153-4125-A4D8-200AC27F9A0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87C9C21A-C153-4125-A4D8-200AC27F9A0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87C9C21A-C153-4125-A4D8-200AC27F9A0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70BE3FE8-56CA-4DB8-B598-5947B96C732F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70BE3FE8-56CA-4DB8-B598-5947B96C732F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70BE3FE8-56CA-4DB8-B598-5947B96C732F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70BE3FE8-56CA-4DB8-B598-5947B96C732F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0DBF6059-6A31-40FF-A482-30692C110D65}
+	EndGlobalSection
+EndGlobal
