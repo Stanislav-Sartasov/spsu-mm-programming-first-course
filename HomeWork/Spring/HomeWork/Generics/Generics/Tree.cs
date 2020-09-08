@@ -10,13 +10,13 @@ namespace Generics
 {
     public class Tree<T>
     {
-        public class Node<T>
+        protected internal class Node<T>
         {
-            public T value;
-            public int key;
-            public Node<T> left;
-            public Node<T> right;
-            public void DisplayNode()
+            protected internal T value;
+            protected internal int key;
+            protected internal Node<T> left;
+            protected internal Node<T> right;
+            protected internal void DisplayNode()
             {
                 Console.WriteLine(key + " ");
             }
