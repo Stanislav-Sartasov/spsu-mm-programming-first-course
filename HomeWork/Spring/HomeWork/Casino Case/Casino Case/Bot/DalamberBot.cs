@@ -5,8 +5,9 @@ using System.Text;
 
 namespace Casino_Case.Bot
 {
-  public  class DalamberBot : Bots
+  public  class DalamberBot
     {
+        private ColorBet BotColorBet = new ColorBet();
         public void Action(int AmountOfBets, int MinBid)
         {
             int BidOn = 0;

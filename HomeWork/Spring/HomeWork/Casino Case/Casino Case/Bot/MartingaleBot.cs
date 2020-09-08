@@ -5,9 +5,10 @@ using System.Text;
 
 namespace Casino_Case.Bot
 {
-
-    public class MartingaleBot : Bots
+    
+    public class MartingaleBot
     {
+        private ParityBet BotParityBet = new ParityBet();
         public void Action(int AmountOfBets, int MinBid)
         {
             int BidOn = 0;
