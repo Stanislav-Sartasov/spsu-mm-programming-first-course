@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TankTypes;
+using TankDescription;
 
 namespace SecondTask.Tests
 {

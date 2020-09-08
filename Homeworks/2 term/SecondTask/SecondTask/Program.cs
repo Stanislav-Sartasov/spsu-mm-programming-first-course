@@ -1,5 +1,5 @@
 ﻿using System;
-using TankTypes;
+using TankDescription;
 
 namespace SecondTask
 {

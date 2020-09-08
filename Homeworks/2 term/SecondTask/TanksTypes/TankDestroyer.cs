@@ -1,7 +1,6 @@
 ﻿using System;
-using TankCommon;
 
-namespace TankTypes
+namespace TankDescription
 {
     public class TankDestroyer : Tank
     {
