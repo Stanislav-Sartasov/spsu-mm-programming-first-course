@@ -1,21 +1,23 @@
-﻿using System;
+﻿using Casino_Case.Logic;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Casino_Case.Bot
 {
+
     public class MartingaleBot : Bots
     {
         public void Action(int AmountOfBets, int MinBid)
         {
             int BidOn = 0;
             int bid = MinBid;
-            int BalanceInf = BotGame.balance;
+            int BalanceInf = Bet.balance;
             int wins = 0;
             for (int i = 0; i < AmountOfBets; i++)
             {
-                BotGame.ParityBet(BidOn, bid);
-                if (BalanceInf + bid == BotGame.balance)
+                BotParityBet.Betting(BidOn, bid);
+                if (BalanceInf + bid == Bet.balance)
                 {
 
                     if (BidOn == 0)
@@ -29,12 +31,12 @@ namespace Casino_Case.Bot
                 {
                     bid *= 2;
                 }
-                BalanceInf = BotGame.balance;
+                BalanceInf = Bet.balance;
             }
 
             Console.WriteLine("\n\n\n\n");
-            Console.WriteLine("Total profit " + BotGame.profit);
-            Console.WriteLine("Amount of bets " + AmountOfBets);
+            Console.WriteLine("Total profit " + Bet.profit);
+            Console.WriteLine("Amount of bets " + Bet.AmountOfBets);
             Console.WriteLine("Amount of wins " + wins);
         }
     }

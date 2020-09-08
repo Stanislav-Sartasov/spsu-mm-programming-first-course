@@ -11,11 +11,11 @@ namespace CasinoCaseTest
         public void BotsTest()
         {
             DalamberBot DalamberTest = new DalamberBot();
-            DalamberTest.SetBalance(5000);
+            Bet.balance = 5000;
             DalamberTest.Action(400, 2);
 
             MartingaleBot MartingaleTest = new MartingaleBot();
-            MartingaleTest.SetBalance(5000);
+            Bet.balance = 5000;
             MartingaleTest.Action(400, 2);
         }
     }
