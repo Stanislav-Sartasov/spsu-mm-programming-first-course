@@ -1,7 +1,6 @@
 using NUnit.Framework;
 using Task3;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System;
 using NUnit.Framework.Internal;
 
@@ -39,7 +38,7 @@ namespace Task3Tests
         [Test]
         public void DeckTest()
         {
-            Deck deck; ;
+            Deck deck;
             List<Card> cardList;
 
             for (int g = -1; g <= 10; g++)

@@ -10,7 +10,7 @@ namespace Task3
             if (card == null || card.value == 0)
                 return CreateCard();
 
-            char[,] chrevTMask = new char[7, 6]
+            char[,] heartsTMask = new char[7, 6]
             {
                 { ' ', '|', '|', '|', '|', '|' },
                 { '_', 'A', '(', ' ', ' ', '_' },
@@ -20,7 +20,7 @@ namespace Task3
                 { '_', ' ', ')', ' ', ' ', 'A' },
                 { ' ', '|', '|', '|', '|', '|' }
             };
-            char[,] bubTMask = new char[7, 6]
+            char[,] diamondsTMask = new char[7, 6]
             {
                 { ' ', '|', '|', '|', '|', '|' },
                 { '_', 'A', ' ', ' ', ' ', '_' },
@@ -30,7 +30,7 @@ namespace Task3
                 { '_', ' ', ' ', ' ', ' ', 'A' },
                 { ' ', '|', '|', '|', '|', '|' }
             };
-            char[,] krestTMask = new char[7, 6]
+            char[,] clubsTMask = new char[7, 6]
             {
                 { ' ', '|', '|', '|', '|', '|' },
                 { '_', 'A', ' ', '(', ' ', '_' },
@@ -40,7 +40,7 @@ namespace Task3
                 { '_', ' ', ' ', ')', ' ', 'A' },
                 { ' ', '|', '|', '|', '|', '|' }
             };
-            char[,] picTMask = new char[7, 6]
+            char[,] spadesTMask = new char[7, 6]
             {
                 { ' ', '|', '|', '|', '|', '|' },
                 { '_', 'A', ' ', '(', ' ', '_' },
@@ -82,7 +82,7 @@ namespace Task3
                 { '0', '0', '0', '0', '0', '0' }
             };
 
-            char[,] chrevMod = new char[7, 6]
+            char[,] heartsMod = new char[7, 6]
             {
                 { '0', '0', '0', '0', '0', '0' },
                 { '0', '0', '0', '(', '0', '0' },
@@ -92,7 +92,7 @@ namespace Task3
                 { '0', '0', '0', '0', '0', '0' },
                 { '0', '0', '0', '0', '0', '0' }
             };
-            char[,] bubMod = new char[7, 6]
+            char[,] diamondsMod = new char[7, 6]
             {
                 { '0', '0', '0', '0', '0', '0' },
                 { '0', '0', '0', '0', '0', '0' },
@@ -102,7 +102,7 @@ namespace Task3
                 { '0', '0', '0', '0', '0', '0' },
                 { '0', '0', '0', '0', '0', '0' }
             };
-            char[,] krestMod = new char[7, 6]
+            char[,] clubsMod = new char[7, 6]
             {
                 { '0', '0', '0', '0', '0', '0' },
                 { '0', '0', '0', 'o', '0', '0' },
@@ -112,7 +112,7 @@ namespace Task3
                 { '0', '0', '0', '0', '0', '0' },
                 { '0', '0', '0', '0', '0', '0' }
             };
-            char[,] picMod = new char[7, 6]
+            char[,] spadesMod = new char[7, 6]
             {
                 { '0', '0', '0', '0', '0', '0' },
                 { '0', '0', '0', '(', '0', '0' },
@@ -171,13 +171,13 @@ namespace Task3
                     switch (card.suit)
                     {
                         case Card.Suits.hearts:
-                            return (char[,])chrevTMask.Clone();
+                            return (char[,])heartsTMask.Clone();
                         case Card.Suits.diamonds:
-                            return (char[,])bubTMask.Clone();
+                            return (char[,])diamondsTMask.Clone();
                         case Card.Suits.clubs:
-                            return (char[,])krestTMask.Clone();
+                            return (char[,])clubsTMask.Clone();
                         case Card.Suits.spades:
-                            return (char[,])picTMask.Clone();
+                            return (char[,])spadesTMask.Clone();
                     }
                     break;
                 case 11:
@@ -262,16 +262,16 @@ namespace Task3
                 switch (card.suit)
                 {
                     case Card.Suits.hearts:
-                        outCard = overlay(outCard, chrevMod);
+                        outCard = overlay(outCard, heartsMod);
                         break;
                     case Card.Suits.diamonds:
-                        outCard = overlay(outCard, bubMod);
+                        outCard = overlay(outCard, diamondsMod);
                         break;
                     case Card.Suits.clubs:
-                        outCard = overlay(outCard, krestMod);
+                        outCard = overlay(outCard, clubsMod);
                         break;
                     case Card.Suits.spades:
-                        outCard = overlay(outCard, picMod);
+                        outCard = overlay(outCard, spadesMod);
                         break;
                 }
             return outCard;

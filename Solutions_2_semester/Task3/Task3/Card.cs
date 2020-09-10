@@ -17,7 +17,13 @@ namespace Task3
             else
                 cost = value;
         }
-        public enum Suits { hearts, diamonds, clubs, spades };
+        public enum Suits
+        {
+            hearts,
+            diamonds,
+            clubs,
+            spades
+        };
         public const int SuitsCount = 4;
         public const int MinValue = 1;
         public const int MaxValue = 13;

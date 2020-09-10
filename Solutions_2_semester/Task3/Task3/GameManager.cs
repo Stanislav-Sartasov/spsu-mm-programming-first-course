@@ -17,11 +17,11 @@ namespace Task3
             else
                 this.deckCount = StandardDeckCount;
             if (gameСoefficients == null)
-                this.gameСoefficients = StandardGameСoefficients;
+                this.gameСoefficients = standardGameСoefficients;
             else if (gameСoefficients.Length == 3)
                 this.gameСoefficients = gameСoefficients;
             else
-                this.gameСoefficients = StandardGameСoefficients;
+                this.gameСoefficients = standardGameСoefficients;
             if (maxPlayerCount > 0)
                 this.maxPlayerCount = maxPlayerCount;
             else
@@ -31,7 +31,7 @@ namespace Task3
         const int StandardStartBank = 10000;
         const int StandardDeckCount = 4;
         const int StandardMaxPlayerCount = 5;
-        static double[] StandardGameСoefficients = new double[] { 2, 1.95, 10 };
+        static double[] standardGameСoefficients = new double[] { 2, 1.95, 10 };            /// <summary>
         public readonly double[] gameСoefficients;
         int startBank;
         int maxPlayerCount;
@@ -148,8 +148,7 @@ namespace Task3
                 playersForKick.RemoveAt(0);
             }
 
-            return new GameLog
-            (
+            return new GameLog(
                 playerSeats.Count,
                 playerName,
                 playerBankWas,
@@ -163,7 +162,7 @@ namespace Task3
                 dealer.bankScoreBeforeExtraCard,
                 dealer.bankScore,
                 dealer.winField
-            );
+                );
         }
     }
 }
