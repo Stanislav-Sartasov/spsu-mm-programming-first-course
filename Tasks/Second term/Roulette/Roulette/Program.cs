@@ -12,7 +12,7 @@ namespace Roulette
         static void Main(string[] args)
         {
             Table table = new Table();
-            List<IPlayer> bots = new List<IPlayer>() { CreateInstance.SelectBot(0), CreateInstance.SelectBot(1) };
+            List<IPlayer> bots = new List<IPlayer>() { InstanceCreator.SelectBot(0), InstanceCreator.SelectBot(1) };
 
             for (int i = 0; i < 2000; i++)
             {

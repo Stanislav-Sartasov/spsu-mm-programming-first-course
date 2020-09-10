@@ -44,7 +44,7 @@ namespace Roulette.Tests
         public void TestGame()
         {
             Table table = new Table(100_000);
-            List<IPlayer> bots = new List<IPlayer>() { CreateInstance.SelectBot(1), CreateInstance.SelectBot(2)};
+            List<IPlayer> bots = new List<IPlayer>() { InstanceCreator.SelectBot(1), InstanceCreator.SelectBot(2)};
 
             for (int i = 0; i < 400; i++)
             {

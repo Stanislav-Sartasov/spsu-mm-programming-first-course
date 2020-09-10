@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Roulette.Players
 {
-    public static class CreateInstance
+    public static class InstanceCreator
     {
         public static IPlayer SelectBot(int level)
         {

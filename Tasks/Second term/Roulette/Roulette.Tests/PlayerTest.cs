@@ -10,9 +10,9 @@ namespace Roulette.Tests
     [TestClass]
     public class PlayerTest
     {
-        private IPlayer botM = CreateInstance.SelectBot(1);
-        private IPlayer botR = CreateInstance.SelectBot(2);
-        private List<char[]> results = new List<char[]>();
+        private IPlayer botM = InstanceCreator.SelectBot(1);
+        private IPlayer botR = InstanceCreator.SelectBot(2);
+        
         [TestMethod]
         public void TestAmountOfMoney()
         {

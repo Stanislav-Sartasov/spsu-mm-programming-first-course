@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Bash.Handler\Bash.Handler.csproj" />
+    <ProjectReference Include="..\Bash.Manager\Bash.Manager.csproj" />
   </ItemGroup>
 
 </Project>
