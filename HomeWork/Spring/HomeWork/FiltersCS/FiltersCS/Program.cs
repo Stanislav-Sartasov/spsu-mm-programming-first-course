@@ -16,6 +16,8 @@ namespace FiltersCS
         {
             if (args.Length != 3)
                 throw new Exception("Invalid input");
+            if (args[0].Substring(args[0].LastIndexOf('.')) != ".bmp" || args[1].Substring(args[1].LastIndexOf('.')) != ".bmp")
+                throw new Exception("Invalid file type! Files have to be bmp");
 
             BMP bmp = new BMP();
             bmp.ReadBMP(args[0]);
