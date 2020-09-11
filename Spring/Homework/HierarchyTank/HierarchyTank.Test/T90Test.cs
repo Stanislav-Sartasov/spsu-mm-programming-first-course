@@ -3,7 +3,7 @@ using TankConfig;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SimpleHierarchy.Tests
+namespace HierarchyTank.Tests
 {
     [TestClass]
     public class T90Test

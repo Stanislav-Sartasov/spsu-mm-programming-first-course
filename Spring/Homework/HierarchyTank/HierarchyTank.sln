@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HierarchyTank", "HierarchyTank\HierarchyTank.csproj", "{A1F77837-B32C-494A-8ACA-3543CD3782E3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HierarchyTank.Test", "HierarchyTank.Test\HierarchyTank.Test.csproj", "{AB0EC12F-12CD-43A1-A840-4386F647C002}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HierarchyTank.Tests", "HierarchyTank.Test\HierarchyTank.Tests.csproj", "{AB0EC12F-12CD-43A1-A840-4386F647C002}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbstractTank", "AbstractTank\AbstractTank.csproj", "{3DE6AED8-87CE-4739-917E-78FDF31A9354}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AbstractTank", "AbstractTank\AbstractTank.csproj", "{3DE6AED8-87CE-4739-917E-78FDF31A9354}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TankConfig", "TankConfig\TankConfig.csproj", "{FA20EB70-F055-4EE1-AF72-F772078DD263}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TankConfig", "TankConfig\TankConfig.csproj", "{FA20EB70-F055-4EE1-AF72-F772078DD263}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
