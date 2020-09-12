@@ -37,7 +37,7 @@ void Command::verify()
     if (argc < 4 ||
             !(strcmp(argv[2], "median") == 0 || strcmp(argv[2], "gauss") == 0 || strcmp(argv[2], "sobelX") == 0
             || strcmp(argv[2], "sobelY") == 0 || strcmp(argv[2], "bwInvert") == 0 || strcmp(argv[2], "sobelAll") == 0
-            || strcmp(argv[2], "greenGray") == 0 || strcmp(argv[2], "blueGray") == 0 || strcmp(argv[2], "redGray") == 0 || strcmp(argv[2], "gray") == 0))
+            /*|| strcmp(argv[2], "greenGray") == 0 || strcmp(argv[2], "blueGray") == 0 || strcmp(argv[2], "redGray") == 0 || strcmp(argv[2], "gray") == 0*/))
         {
             good = 0;
             if ((argc == 2) && (strcmp(argv[1], "/help") == 0))
@@ -48,7 +48,7 @@ void Command::verify()
                 {
                     cout << "Comands: median, gray, gauss, sobelX, sobelY, sobelAll\npatern of input: <filein.bmp> <comand> <fileout.bmp>\nExample of input: in.bmp gauss out.bmp\n";
                     enterCommand();
-                    verify();//my be infinite cycle
+                    verify();
                 }
                 else
                 {
@@ -121,7 +121,7 @@ void Command::enterCommand()
     strncpy(argv[3], temp, strlen(temp));
     argv[3][strlen(temp)] = '\0';
 
-    cout << "indexX: ";
+  /*  cout << "indexX: ";
     cin >> temp;
     argv[4] = new char [strlen(temp) + 1];
     strncpy(argv[4], temp, strlen(temp));
@@ -132,6 +132,7 @@ void Command::enterCommand()
     argv[5] = new char [strlen(temp) + 1];
     strncpy(argv[5], temp, strlen(temp));
     argv[5][strlen(temp)] = '\0';
+    */
 }
 
 cmd Command::putGommand()
