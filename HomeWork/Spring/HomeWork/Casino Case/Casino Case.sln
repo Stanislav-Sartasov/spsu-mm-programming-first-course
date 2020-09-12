@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Casino Case", "Casino Case\Casino Case.csproj", "{06E224CF-BA37-4643-AC57-9CCFCF3FB56E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CasinoCaseTest", "CasinoCaseTest\CasinoCaseTest.csproj", "{F4F1B61D-5B03-4DD7-A52E-13B9D412E2AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CasinoCase.Tests", "CasinoCaseTest\CasinoCase.Tests.csproj", "{F4F1B61D-5B03-4DD7-A52E-13B9D412E2AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

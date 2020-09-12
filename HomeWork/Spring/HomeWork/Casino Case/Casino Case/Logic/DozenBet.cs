@@ -13,7 +13,6 @@ namespace Casino_Case.Logic
                 throw new ArgumentException("Entered wrong dozen");
             InputChecking(bid);
 
-            Bet.AmountOfBets++;
             Random rnd = new Random();
             int value = rnd.Next(0, 36);
             Console.WriteLine("Winning number " + value);

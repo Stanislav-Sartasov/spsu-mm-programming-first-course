@@ -54,7 +54,7 @@ namespace Casino_Case
                             balance = Convert.ToInt32(Console.ReadLine());
                         }
 
-                        Bet.balance = balance;
+                        BetInfo.balance = balance;
 
 
                         Console.Clear();
@@ -78,7 +78,7 @@ namespace Casino_Case
                             if ((BotChoice == 1 || BotChoice == 2) && balance > 0 && MinBid > 0 && BetAmount > 0)
                                 right = true;
                         }
-                        Bet.balance = balance;
+                        BetInfo.balance = balance;
                         if (BotChoice == 1)
                             Dalamber.Action(BetAmount, MinBid);
                         else
@@ -113,9 +113,9 @@ namespace Casino_Case
             {
 
                 Console.WriteLine("1 - " + "Stright Bet" + "                Info:");
-                Console.WriteLine("2 - " + "Red or Black Bet" + "           Balance: " + Bet.balance);
-                Console.WriteLine("3 - " + "Even or Odd Bet" + "            Amount of bets: " + Bet.AmountOfBets);
-                Console.WriteLine("4 - " + "Dozen Bet" + "                  Total Profit: " + Bet.profit);
+                Console.WriteLine("2 - " + "Red or Black Bet" + "           Balance: " + BetInfo.balance);
+                Console.WriteLine("3 - " + "Even or Odd Bet" + "            Amount of bets: " + BetInfo.AmountOfBets);
+                Console.WriteLine("4 - " + "Dozen Bet" + "                  Total Profit: " + BetInfo.profit);
                 Console.WriteLine("5 - " + "Column Bet");
                 Console.WriteLine("6 - " + "Exit");
                 choice_nd = Convert.ToInt32(Console.ReadLine());
@@ -132,7 +132,7 @@ namespace Casino_Case
                 else if (choice_nd == 2)
                 {
                     Console.Clear();
-                    Console.WriteLine("Enter the color you want to bet(0 is red, 1 is red) on and bet amount");
+                    Console.WriteLine("Enter the color you want to bet(0 is red, 1 is black) on and bet amount");
                     BetOn = Convert.ToInt32(Console.ReadLine());
                     BetAmount = Convert.ToInt32(Console.ReadLine());
                     Console.Clear();
