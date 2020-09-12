@@ -15,6 +15,8 @@ namespace Generics
             test.Add(5, 12);
             test.Add(5, 7);
 
+            Node<int> wtf = new Node<int>();
+
 
 
             test.Delete(15);

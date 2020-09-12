@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29905.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generics", "Generics\Generics.csproj", "{6D11475F-860C-45A7-835B-90249F057CA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Generics", "Generics\Generics.csproj", "{6D11475F-860C-45A7-835B-90249F057CA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenericsTest", "GenericsTest\GenericsTest.csproj", "{2CE28C95-A1AC-424A-A5A6-B95073A31749}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Generics.Tests", "GenericsTest\Generics.Tests.csproj", "{2CE28C95-A1AC-424A-A5A6-B95073A31749}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

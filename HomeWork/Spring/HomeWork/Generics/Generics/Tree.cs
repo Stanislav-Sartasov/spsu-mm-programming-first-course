@@ -8,22 +8,10 @@ using System.Collections;
 
 namespace Generics
 {
+    
     public class Tree<T>
     {
-        protected internal class Node<T>
-        {
-            protected internal T value;
-            protected internal int key;
-            protected internal Node<T> left;
-            protected internal Node<T> right;
-            protected internal void DisplayNode()
-            {
-                Console.WriteLine(key + " ");
-            }
-        }
         private Node<T> root = null;
-
-
 
         public void Add(T value, int key)
         {
