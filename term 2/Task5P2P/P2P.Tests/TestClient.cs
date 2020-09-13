@@ -17,7 +17,7 @@ namespace P2P.Tests
             Client stepan = new Client();
             Client sasha = new Client();
             List<Client> clients = new List<Client>();
-
+            List<EndPoint> ips = new List<EndPoint>();
             clients.Add(oliver);
             clients.Add(stepan);
             clients.Add(sasha);
@@ -34,6 +34,7 @@ namespace P2P.Tests
                         endPoint = new IPEndPoint(ip, port);
                     }
                 }
+                ips.Add(endPoint);
                 client.SetLocalPoint(endPoint);
                 client.SetClient();
                 port += 10;
@@ -46,7 +47,7 @@ namespace P2P.Tests
             sasha.Connect(oliver.GetLocalPoint());
             foreach (Client client in clients)
             {
-                foreach (EndPoint endPoint in client.GetClients())
+                foreach (EndPoint endPoint in ips)
                 {
                     Assert.IsTrue(client.GetClients().Contains(endPoint));
                 }
