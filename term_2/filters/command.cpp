@@ -36,8 +36,8 @@ void Command::verify()
     this->ready = 0;
     if (argc < 4 ||
             !(strcmp(argv[2], "median") == 0 || strcmp(argv[2], "gauss") == 0 || strcmp(argv[2], "sobelX") == 0
-            || strcmp(argv[2], "sobelY") == 0 || strcmp(argv[2], "bwInvert") == 0 || strcmp(argv[2], "sobelAll") == 0
-            /*|| strcmp(argv[2], "greenGray") == 0 || strcmp(argv[2], "blueGray") == 0 || strcmp(argv[2], "redGray") == 0 || strcmp(argv[2], "gray") == 0*/))
+            || strcmp(argv[2], "sobelY") == 0/* || strcmp(argv[2], "bwInvert") == 0 */|| strcmp(argv[2], "sobelAll") == 0
+            /*|| strcmp(argv[2], "greenGray") == 0 || strcmp(argv[2], "blueGray") == 0 || strcmp(argv[2], "redGray") == 0 */|| strcmp(argv[2], "gray") == 0))
         {
             good = 0;
             if ((argc == 2) && (strcmp(argv[1], "/help") == 0))
@@ -57,7 +57,7 @@ void Command::verify()
             }
             return;
         }
-    if (argc > 4)
+   /* if (argc > 4)
     {
         indexX = atof(argv[4]);
     }
@@ -65,6 +65,7 @@ void Command::verify()
     {
         indexY = atof(argv[5]);
     }
+    */
     if (good)
     {
         ofstream out(argv[3]);
@@ -121,7 +122,9 @@ void Command::enterCommand()
     strncpy(argv[3], temp, strlen(temp));
     argv[3][strlen(temp)] = '\0';
 
-  /*  cout << "indexX: ";
+    /*cout << "if you want mod greenGray or blueGray or redGray enter float numbers IndexX and IndexY\n";
+
+    cout << "indexX: ";
     cin >> temp;
     argv[4] = new char [strlen(temp) + 1];
     strncpy(argv[4], temp, strlen(temp));
