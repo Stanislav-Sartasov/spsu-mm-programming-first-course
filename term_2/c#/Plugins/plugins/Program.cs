@@ -26,25 +26,32 @@ namespace plugins
                 return;
             }
 
-            List <IPlugin> MyPlugins = new List<IPlugin>();
+            List<IPlugin> MyPlugins = new List<IPlugin>();
             MyPlugins.Clear();
-
-            foreach (var Name in FileNames)
+            try
             {
-                Assembly asm = Assembly.LoadFrom(Name);
-
-                var types = asm.GetTypes().Where(ttype => ttype.GetInterfaces().Where(iinterface => iinterface.FullName == typeof(IPlugin).FullName).Any());
-
-                foreach (var type in types)
+                foreach (var Name in FileNames)
                 {
-                    IPlugin plugin = asm.CreateInstance(type.FullName) as IPlugin;
-                    MyPlugins.Add(plugin);
-                }
-            }
 
-            foreach (var plugin in MyPlugins)
-                plugin.StartAction();
-            
+
+                    Assembly asm = Assembly.LoadFrom(Name);
+
+                    var types = asm.GetTypes().Where(ttype => ttype.GetInterfaces().Where(iinterface => iinterface.FullName == typeof(IPlugin).FullName).Any());
+
+                    foreach (var type in types)
+                    {
+                        IPlugin plugin = asm.CreateInstance(type.FullName) as IPlugin;
+                        MyPlugins.Add(plugin);
+                    }
+                }
+
+                foreach (var plugin in MyPlugins)
+                    plugin.StartAction();
+            }
+            catch(System.BadImageFormatException)
+            {
+                Console.WriteLine("BAD FILE, probably it is not C# dll");
+            }
             Console.ReadKey();
 
 
