@@ -11,7 +11,7 @@ namespace UnitTest_IoC
     public class UnitTest1
     {
         [TestMethod]
-        public void TestMethodIo_C()
+        public void TestMethodIoC()
         {
             SomeBet bet;
             bet.man = 0;
@@ -22,8 +22,8 @@ namespace UnitTest_IoC
             int callsInput = 0;
             int callsReady = 0;
             
-            var mock = new Mock<Iinteraction>();
-            mock.Setup(x => x.ready()).Returns(() =>
+            var mock = new Mock<IInteraction>();
+            mock.Setup(x => x.Ready()).Returns(() =>
             {
                 callsReady++;
                 if (callsReady != Rounds + 1)
@@ -34,7 +34,7 @@ namespace UnitTest_IoC
                 Console.WriteLine("test 0");
                 return false;
             });
-            mock.Setup(x => x.getInt()).Returns(() =>
+            mock.Setup(x => x.GetInt()).Returns(() =>
             {
                 callsInput++;
                 if (callsInput == 1)
@@ -46,7 +46,7 @@ namespace UnitTest_IoC
                 return 1;
             });
             
-            mock.Setup(x => x.doBet(It.IsAny<SomeBet>(), It.IsAny<int>())).Returns(() =>
+            mock.Setup(x => x.DoBet(It.IsAny<SomeBet>(), It.IsAny<int>())).Returns(() =>
             {
                 callsBet++;
                 Console.WriteLine($"test: money{bet.money}");
@@ -55,7 +55,7 @@ namespace UnitTest_IoC
             //
             IUnityContainer container = new UnityContainer();
             container.RegisterInstance(mock.Object);
-            container.RegisterType<UserInterface>("User", new InjectionConstructor(typeof(Iinteraction)));
+            container.RegisterType<UserInterface>("User", new InjectionConstructor(typeof(IInteraction)));
             UserInterface user = container.Resolve<UserInterface>("User");
             user.goGame();
         }
