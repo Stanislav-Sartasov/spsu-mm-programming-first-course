@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Text;
 
 
-// нужна отдельная структура с балансом профитом кол-вом ставок
-
 namespace Casino_Case
 {
     public class Menu
