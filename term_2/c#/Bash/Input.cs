@@ -24,7 +24,7 @@ namespace Bash
     {
         List<Message> GetLine();
     }
-    public class Input : IInput
+    internal class Input : IInput
     {
         private readonly IInteraction inter;
         public Input()

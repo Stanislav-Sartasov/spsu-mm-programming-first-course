@@ -143,6 +143,11 @@ namespace Bash
             if ((i - 2 >= 0) && (list[i - 2].st == Status.cmd))
                 if (((Command)list[i - 2]).cmd == "|")
                     return lastResult;
+            if (preArg.st == Status.cmd)
+            {
+                preArg.interup = Interup.failed;
+                return "";
+            }
             if (preArg.st == Status.arg)
             {
                 Arg arg = (Arg)preArg;

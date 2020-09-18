@@ -6,14 +6,19 @@ using System.Threading.Tasks;
 
 namespace Bash
 {
-    class MyBash
+    public class MyBash
     {
         private readonly IInput myInput;
         private readonly IEngine myEngine;
-        public MyBash(IInput startInput, IEngine startEngine)
+        public MyBash(IInteraction startInput, IEngine startEngine)
         {
             myEngine = startEngine;
-            myInput = startInput;
+            myInput = new Input(startInput);
+        }
+        public MyBash(IInteraction startInput)
+        {
+            myEngine = new Engine();
+            myInput = new Input(startInput);
         }
         public MyBash()
         {
