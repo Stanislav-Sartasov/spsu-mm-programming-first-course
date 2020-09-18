@@ -21,8 +21,8 @@ namespace UnitTestPuntoBanco
             int callsBet = 0;
             int callsInput = 0;
             int callsReady = 0;
-            var mock = new Mock<Iinteraction>();
-            mock.Setup(x => x.ready()).Returns(() =>
+            var mock = new Mock<IInteraction>();
+            mock.Setup(x => x.Ready()).Returns(() =>
             {
                 callsReady++;
                 if (callsReady != Rounds + 1)
@@ -33,7 +33,7 @@ namespace UnitTestPuntoBanco
                 Console.WriteLine("test 0");
                 return false;
             });
-            mock.Setup(x => x.getInt()).Returns(() =>
+            mock.Setup(x => x.GetInt()).Returns(() =>
             {
                 callsInput++;
                 if (callsInput == 1)
@@ -46,7 +46,7 @@ namespace UnitTestPuntoBanco
             });
             //mock.Setup(x => x.doBet(ref It.Ref<SomeBet>.IsAny, It.IsAny<int>())).Callback((ref SomeBet bet, int money) => Console.WriteLine("s"));
             //Problem: ref bet - must change value in do.Bet(ref SomeBet, int)
-            mock.Setup(x => x.doBet(It.IsAny<SomeBet>(), It.IsAny<int>())).Returns(() =>
+            mock.Setup(x => x.DoBet(It.IsAny<SomeBet>(), It.IsAny<int>())).Returns(() =>
             {
                 callsBet++;
                 Console.WriteLine($"test: money{bet.money}");
@@ -69,8 +69,8 @@ namespace UnitTestPuntoBanco
             int callsBet = 0;
             int callsInput = 0;
             int callsReady = 0;
-            var mock = new Mock<Iinteraction>();
-            mock.Setup(x => x.ready()).Returns(() =>
+            var mock = new Mock<IInteraction>();
+            mock.Setup(x => x.Ready()).Returns(() =>
             {
                 callsReady++;
                 if (callsReady != Rounds + 1)
@@ -81,7 +81,7 @@ namespace UnitTestPuntoBanco
                 Console.WriteLine("test 0");
                 return false;
             });
-            mock.Setup(x => x.getInt()).Returns(() => 
+            mock.Setup(x => x.GetInt()).Returns(() => 
             {
                 callsInput++;
                 if (callsInput == 1)
@@ -94,7 +94,7 @@ namespace UnitTestPuntoBanco
             });
             //mock.Setup(x => x.doBet(ref It.Ref<SomeBet>.IsAny, It.IsAny<int>())).Callback((ref SomeBet bet, int money) => Console.WriteLine("s"));
             //Problem: ref bet - must change value in do.Bet(ref SomeBet, int)
-            mock.Setup(x => x.doBet(It.IsAny<SomeBet>(), It.IsAny<int>())).Returns(() => 
+            mock.Setup(x => x.DoBet(It.IsAny<SomeBet>(), It.IsAny<int>())).Returns(() => 
             {
                 callsBet++;
                 Console.WriteLine($"test: money: {bet.money}$, target: {bet.target}");
