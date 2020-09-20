@@ -1,0 +1,24 @@
+﻿<Window x:Class="WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" MinWidth="300" MinHeight="300">
+    <Grid x:Name="mainWindow" SizeChanged="mainWindow_SizeChanged">
+        <TextBox x:Name="boxScale" Text="1" TextWrapping="Wrap" HorizontalContentAlignment="Right" Margin="97,135,0,0" Width="48" HorizontalAlignment="Left" Height="18" VerticalAlignment="Top" IsReadOnly="True"/>
+        <Label x:Name="currentScale" Content="Current scale:" Margin="10,130,0,0" HorizontalAlignment="Left" Width="87" Height="27" VerticalAlignment="Top"/>
+        <Button x:Name="buildButton" Content="Build" HorizontalAlignment="Left" Margin="10,0,0,3" Width="120" Height="20" VerticalAlignment="Bottom" Click="buildButton_Click"/>
+        <ComboBox x:Name="collectionOfCurves" HorizontalAlignment="Left" Margin="10,10,0,0" Width="120" Height="22" VerticalAlignment="Top">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=Name}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Canvas x:Name="graphArea" Margin="191,10,10,3"/>
+        <Button x:Name="plusScaleButton" Content="+" HorizontalAlignment="Left" Margin="97,158,0,0" VerticalAlignment="Top" Width="19" Height="19" Click="plusScaleButton_Click"/>
+        <Button x:Name="minusScaleButton" Content="-" HorizontalAlignment="Left" Margin="126,158,0,0" VerticalAlignment="Top" Width="19" Height="19" Click="minusScaleButton_Click"/>
+    </Grid>
+</Window>
