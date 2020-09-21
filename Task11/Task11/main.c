@@ -14,13 +14,14 @@ int main()
 {
 	int i, j;
 	int sum = 0;
+	int n = 1000000;
 	int* block;
-	block = malloc(sizeof(int) * 1000000);
-	for (i = 2; i < 1000000; i++)
+	block = malloc(sizeof(int) * n);
+	for (i = 2; i < n; i++)
 		block[i] = dig_root(i);
-	for (i = 2; i < 1000000; i++)
+	for (i = 2; i < n; i++)
 	{
-		for (j = 2; i * j < 1000000; j++)
+		for (j = 2; i * j < n; j++)
 		{
 			if (block[i * j] < block[i] + block[j])
 				block[i * j] = block[i] + block[j];
