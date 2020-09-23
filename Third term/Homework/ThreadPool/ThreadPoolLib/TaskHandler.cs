@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Threading;
 
-namespace ThreadPool
+namespace ThreadPoolLib
 {
-    public enum TaskStatus
-    {
-        Completed,
-        Interrupted,
-        NotStarted
-    }
     class TaskHandler : IDisposable
     {
         private object locker;

@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ThreadPool.Tests
+namespace ThreadPoolLib.Tests
 {
     [TestClass]
     public class ThreadPoolTests
@@ -13,9 +13,9 @@ namespace ThreadPool.Tests
         {
             using (var tp = new ThreadPool())
             {
-                for (int i = 0; i < numOfTasks; i++)
+                for (int i = 0; i < 1000; i++)
                 {
-                    var num = i;
+                    int num = i;
                     tp.Enqueue(() => results[num] = num * num);
                 }
             }

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Threading;
 
-namespace ThreadPool
+
+namespace ThreadPoolLib
 {
     public class ThreadPool : IDisposable
     {
