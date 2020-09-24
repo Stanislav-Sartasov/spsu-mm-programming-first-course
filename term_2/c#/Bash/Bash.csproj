@@ -43,8 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arg.cs" />
+    <Compile Include="Command.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Input.cs" />
+    <Compile Include="Interaction.cs" />
     <Compile Include="MyBash.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
