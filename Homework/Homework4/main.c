@@ -1,20 +1,18 @@
 #include <stdio.h>
 #include <math.h>
 
-int mersenNumber()
+int mersenneNumber()
 {
-    int n, b, flag;
-    for (n = 1; n < 32; n++)
+    int numb;
+    for (int n = 1; n < 32; n++)
     {
-        flag = 1;
-        b = pow(2, n) - 1;
-        for (int j = 2; j < (int)sqrt(b); j++)
-        {
+        int prime = 0;
+        numb = pow(2, n) - 1;
+        for (int j = 2; j < sqrt(b); j++)
             if (b % j == 0)
-                flag = 0;
-        }
-        if (flag)
-            printf("%d\n", b);
+                prime = 1;
+        if (prime == 0)
+            printf("%d\n", numb);
     }
     return 0;
 }
@@ -22,6 +20,7 @@ int mersenNumber()
 int main()
 {
     printf("This programm print's all the Mersenne primes in interval [1, 2^31 - 1]\n");
-    mersenNumber();
+    mersenneNumber();
     return 0;
 }
+
