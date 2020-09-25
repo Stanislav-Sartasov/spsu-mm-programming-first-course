@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="pane" prefHeight="620.0" prefWidth="920.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.UIController">
+   <children>
+      <ComboBox fx:id="graphBox" layoutX="26.0" layoutY="42.0" prefHeight="36.0" prefWidth="229.0" promptText="graphs" />
+      <Label fx:id="scaleLabel" alignment="CENTER" layoutX="711.0" layoutY="294.0" prefHeight="87.0" prefWidth="114.0" text="1">
+         <font>
+            <Font size="40.0" />
+         </font>
+      </Label>
+      <Button fx:id="incScaleBtn" disable="true" layoutX="841.0" layoutY="292.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="61.0" text="+" />
+      <Button fx:id="decScaleBtn" disable="true" layoutX="841.0" layoutY="343.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="61.0" text="-" />
+      <Pane fx:id="graphPane" layoutX="26.0" layoutY="93.0" prefHeight="500.0" prefWidth="600.0">
+         <children>
+            <Canvas height="500.0" width="600.0" />
+         </children>
+      </Pane>
+      <Label layoutX="650.0" layoutY="324.0" prefHeight="27.0" prefWidth="61.0" text="Scale">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

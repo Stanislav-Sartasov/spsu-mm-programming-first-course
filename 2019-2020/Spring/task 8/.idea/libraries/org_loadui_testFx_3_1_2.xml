@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="org.loadui:testFx:3.1.2" type="repository">
+    <properties maven-id="org.loadui:testFx:3.1.2" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/loadui/testFx/3.1.2/testFx-3.1.2.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/google/guava/guava/14.0.1/guava-14.0.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-all/1.3/hamcrest-all-1.3.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.10/junit-4.10.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
