@@ -15,7 +15,7 @@ namespace plugins
         {
             String s = Console.ReadLine();
             string[] FileNames = { "", "" };
-            if ((!File.Exists(s)) & (Directory.Exists(s)))
+            if ((!File.Exists(s)) && (Directory.Exists(s)))
             {
                 FileNames = Directory.GetFiles(s, "*.dll");
             }

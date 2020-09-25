@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 
 namespace InterfacePlugin
 {
-    public class InterfaceClass
-    {
-    }
     public interface IPlugin
     {
         void StartAction();
