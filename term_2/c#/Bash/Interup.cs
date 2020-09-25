@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace Bash
 {
-    class Interaction : IInteraction
+    internal enum Interup
     {
-        public string GetStr()
-        {
-            return Console.ReadLine();
-        }
+        queue,
+        inProcess,
+        failed,
     }
-
 }

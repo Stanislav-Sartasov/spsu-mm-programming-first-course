@@ -9,12 +9,6 @@ using System.Threading.Tasks;
 
 namespace PuntoBanco
 {
-    public struct SomeBet
-    {
-        public int money;
-        public int man;
-        public int target;
-    }
     class PuntoBanco
     {
         public int[] cards;

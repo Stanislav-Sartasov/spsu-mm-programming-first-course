@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace tank
+namespace AbstractTanks
 {
     public abstract class AbstractTank
     {
@@ -17,4 +17,4 @@ namespace tank
             return $" name: {title}\n contry: {contry}\n armor: {armor}mm\n number of guns: {gunNumber}";
         }
     }
- }
+}

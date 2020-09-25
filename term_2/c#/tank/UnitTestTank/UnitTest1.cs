@@ -1,6 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using tank;
+using AbstractTanks;
+using TankT34;
+using TankM4;
 
 namespace UnitTestTank
 {

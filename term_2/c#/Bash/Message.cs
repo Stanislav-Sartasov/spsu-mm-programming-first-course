@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bash
 {
-    class Interaction : IInteraction
+    public abstract class Message
     {
-        public string GetStr()
-        {
-            return Console.ReadLine();
-        }
+        internal Status st;
+        internal Interup interup;
     }
-
 }

@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace Bash
 {
-    class Interaction : IInteraction
+    public interface IInteraction
     {
-        public string GetStr()
-        {
-            return Console.ReadLine();
-        }
+        string GetStr();
     }
-
 }

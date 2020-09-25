@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8CE9D5B5-D22C-4EA7-B464-54C653F4E927}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>Bash</RootNamespace>
-    <AssemblyName>Bash</AssemblyName>
+    <ProjectGuid>{2EF04358-CCD6-4D3D-AF76-712E50EE3EF0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>T34</RootNamespace>
+    <AssemblyName>T34</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,23 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Arg.cs" />
-    <Compile Include="Command.cs" />
-    <Compile Include="Engine.cs" />
-    <Compile Include="IInput.cs" />
-    <Compile Include="IInteraction.cs" />
-    <Compile Include="Input.cs" />
-    <Compile Include="Interaction.cs" />
-    <Compile Include="Interup.cs" />
-    <Compile Include="Message.cs" />
-    <Compile Include="MyBash.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="T34.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Status.cs" />
-    <Compile Include="Vari.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <ProjectReference Include="..\AbstractTank\AbstractTank.csproj">
+      <Project>{28f91c3e-cf02-4c1f-b07c-449443c7eb0f}</Project>
+      <Name>AbstractTank</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

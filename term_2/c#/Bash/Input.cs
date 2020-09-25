@@ -6,24 +6,6 @@ using System.Threading.Tasks;
 
 namespace Bash
 {
-    enum Status
-    {
-        arg,
-        cmd,
-        vari,
-        value,
-        undef
-    }
-    internal enum Interup
-    {
-        queue,
-        inProcess,
-        failed,
-    }
-    public interface IInput
-    {
-        List<Message> GetLine();
-    }
     internal class Input : IInput
     {
         private readonly IInteraction inter;
@@ -165,32 +147,6 @@ namespace Bash
                 gotVari = false;
             }
             return list;
-        }
-    }
-
-    public abstract class Message
-    {
-        internal Status st;
-        internal Interup interup;
-    }
-    public class Vari : Message
-    {
-        public readonly string vari;
-        internal Vari(string start, Status myStatus)
-        {
-            interup = Interup.queue;
-            vari = start;
-            st = myStatus;
-        }
-    }
-    public class Arg : Message
-    {
-        public readonly string arg;
-        public Arg(string start)
-        {
-            interup = Interup.queue;
-            arg = start;
-            st = Status.arg;
         }
     }
     

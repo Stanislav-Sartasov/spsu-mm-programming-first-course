@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Bash
 {
-    public class Arg : Message
+    public class Vari : Message
     {
-        public readonly string arg;
-        public Arg(string start)
+        public readonly string vari;
+        internal Vari(string start, Status myStatus)
         {
             interup = Interup.queue;
-            arg = start;
-            st = Status.arg;
+            vari = start;
+            st = myStatus;
         }
     }
 }

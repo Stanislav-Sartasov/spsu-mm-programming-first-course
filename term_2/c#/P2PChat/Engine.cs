@@ -10,19 +10,6 @@ using System.Diagnostics.Contracts;
 
 namespace P2PChat
 {
-    public struct RecivedMessage
-    {
-        public string message;
-        public string ip;
-        public int port;
-    }
-    struct SystemPacket
-    {
-        public int isSystem;
-        public int status;
-        public string ip;
-        public int port;
-    }
     public class Engine
     {
         private bool stop, fail;
@@ -59,9 +46,32 @@ namespace P2PChat
             socketPost = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             socketListen.Listen(10);
         }
-        public Engine(IInteraction start):this()
+        public Engine(IInteraction start)
         {
-            inter = start;
+            stop = false;
+            fail = false;
+            inter = start;////////////////////////
+            ipList = new List<IPEndPoint>();
+            inter.Show("print your port to recive messages\n");
+            bool flag = false;
+            socketListen = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            do
+            {
+                flag = false;
+                int port = inter.GetPort();
+                myIp = new IPEndPoint(IPAddress.Parse("127.0.0.1"), port);
+                try
+                {
+                    socketListen.Bind(myIp);
+                }
+                catch (Exception)
+                {
+                    flag = true;
+                    inter.Show("Exeption, probably this port is not available. type another port\n");
+                }
+            } while (flag);
+            socketPost = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            socketListen.Listen(10);
         }
         public void GetMessage()
         {
@@ -134,16 +144,20 @@ namespace P2PChat
                         socketPost.Send(data);
                         socketPost.Shutdown(SocketShutdown.Both);
                         socketPost.Close();
-                        inter.SystemShow($"good send {ip}");
+                        inter.SystemShow(1, $"good send {ip}");
                     }
                     catch (Exception e)
                     {
-                        inter.SystemShow($"bad try {ip}");
+                        inter.SystemShow(1, $"bad try {ip}");
                         RecivedMessage re = new RecivedMessage();
                         re.message = ((int)1).ToString() + "/" + ((int)5).ToString() + "/" + ip.Address.ToString() + "/" + ip.Port.ToString();
                         re.ip = "127.0.0.0";
                         re.port = 0;
-                        SystemPacket(re);
+                        bool flag = SystemPacket(re);
+                        if (!flag)
+                        {
+                            --i;
+                        }
                     }
                 }
 
@@ -154,21 +168,24 @@ namespace P2PChat
         }
         public void WaitForConnect()
         {
-            SystemPacket packet;
-            packet.isSystem = 1;
-            packet.status = 1;
-            packet.ip = myIp.Address.ToString();
-            packet.port = myIp.Port;
             string sendString = ((int)1).ToString() + "/" + ((int)1).ToString() + "/" + myIp.Address.ToString() + "/" + myIp.Port.ToString();
             RecivedMessage recived = ListenPort();
             string[] parsedAnswer = recived.message.Split('/');
             if (parsedAnswer[0] == "1")
             {
+                if ((recived.message[recived.message.Length - 1] == '\n') || (recived.message[recived.message.Length - 1] == '\0'))
+                {
+                    string str = "";
+                    for (int i = 0; i < recived.message.Length - 1; ++i)
+                        if ((recived.message[i] != '\0') && (recived.message[i] != '\n'))
+                            str = str + recived.message[i];
+                    recived.message = str;
+                }
                 SystemPacket(recived);
             }
             else
             {
-                inter.SystemShow("What a fuck? no system packet for connect");
+                inter.SystemShow("What a f***? no system packet for connect");
             }
             listenTask = new Task<RecivedMessage>(() => ListenPort());
             listenTask.Start();
@@ -186,7 +203,7 @@ namespace P2PChat
             {
                 stop = true;
                 fail = true;
-                inter.SystemShow("you tried to connect to yourself....bad idea");
+                inter.SystemShow(1, "you tried to connect to yourself....bad idea");
                 enteredMessage = new Task<string>(() => TypeMessage());
                 enteredMessage.Start();
                 return;
@@ -206,7 +223,7 @@ namespace P2PChat
             }
             catch (Exception e)
             {
-                inter.SystemShow("bad ip for connect");
+                inter.SystemShow(1, "bad ip for connect");
                 stop = true;
                 fail = true;
             }
@@ -223,16 +240,16 @@ namespace P2PChat
             }
             if (fail)
             {
-                inter.SystemShow("fail system or fail start");
+                inter.SystemShow(1, "fail system or fail start");
             }
             return stop || fail;
         }
-        private void SystemPacket(RecivedMessage recived)
+        private bool SystemPacket(RecivedMessage recived)
         {
             string[] arrStr = recived.message.Split('/');
             if (arrStr[1] == "1")
             {
-                 inter.SystemShow($"we have got new man {recived.ip}:{recived.port}, let us help him");
+                 inter.SystemShow(1, $"we have got new man {arrStr[2]}:{arrStr[3]}, let us help him");
                 string sendString = ((int)1).ToString() + "/" + ((int)3).ToString();
                 foreach (var temp in ipList)
                 {
@@ -242,15 +259,23 @@ namespace P2PChat
                 PostMessage(forTeam);
                 IPEndPoint ip = new IPEndPoint(IPAddress.Parse(arrStr[2]), Int32.Parse(arrStr[3]));/////////////////////////////////////////////////
                 socketPost = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                socketPost.Connect(ip);
-                socketPost.Send(Encoding.Unicode.GetBytes(sendString));
-                socketPost.Shutdown(SocketShutdown.Both);
-                socketPost.Close();
-                ipList.Add(new IPEndPoint(IPAddress.Parse(arrStr[2]), Int32.Parse(arrStr[3])));
+                try
+                {
+                    socketPost.Connect(ip);
+                    socketPost.Send(Encoding.Unicode.GetBytes(sendString));
+                    socketPost.Shutdown(SocketShutdown.Both);
+                    socketPost.Close();
+                    ipList.Add(new IPEndPoint(IPAddress.Parse(arrStr[2]), Int32.Parse(arrStr[3])));
+                }
+                catch (Exception)
+                {
+                    inter.SystemShow(1, "bad help, can not send him ipList");
+                }
+
             }
             if (arrStr[1] == "2")
             {
-                 inter.SystemShow($"new man here, info from {recived.ip}:{recived.port}");
+                 inter.SystemShow(1, $"new man here, info from {recived.ip}:{recived.port}, man is <{arrStr[2]}:{arrStr[3]}>");
                 ipList.Add(new IPEndPoint(IPAddress.Parse(arrStr[2]), Int32.Parse(arrStr[3]))); ///
             }
             if (arrStr[1] == "3")
@@ -267,13 +292,13 @@ namespace P2PChat
             }
             if (arrStr[1] == "4")
             {
-                 inter.SystemShow($"ooh, man is gone {arrStr[2]}:{arrStr[3]}");
+                 inter.SystemShow(1, $"ooh, man is gone {arrStr[2]}:{arrStr[3]}, everything is ok (packet 4)");
                 IPEndPoint temp = new IPEndPoint(IPAddress.Parse(arrStr[2]), Int32.Parse(arrStr[3]));
                 ipList.Remove(temp);
             }
             if (arrStr[1] == "5")
             {
-                 inter.SystemShow($"Hmm, man did not answer for us {arrStr[2]}:{arrStr[3]}");
+                 inter.SystemShow(1, $"Hmm, man did not answer for us {arrStr[2]}:{arrStr[3]}");
                 IPEndPoint temp = new IPEndPoint(IPAddress.Parse(arrStr[2]), Int32.Parse(arrStr[3]));
                 int j = 0;
                 for (int i = 0; i < 3; ++i)
@@ -294,17 +319,23 @@ namespace P2PChat
                 }
                 if (j == 3)
                 {
-                    inter.SystemShow($"man {arrStr[2]}:{arrStr[3]} is gone");
+                    inter.SystemShow(1, $"man {arrStr[2]}:{arrStr[3]} is gone with error");
                     int index = ipList.IndexOf(temp);
                     if (index >= 0)
+                    {
                         ipList.RemoveAt(index);
+                        return false;
+                    }
                     else
                         inter.SystemShow("error delete from ipList");
                 }
                 else
-                    inter.SystemShow("He is with us again");
+                {
+                    inter.SystemShow(1, "He is with us again, but without a message");
+                    return true;
+                }
             }
-
+            return true;
         }
         public string TypeMessage()
         {
@@ -323,11 +354,11 @@ namespace P2PChat
                             socketPost.Send(data);
                             socketPost.Shutdown(SocketShutdown.Both);
                             socketPost.Close();
-                            inter.SystemShow($"good system send {ip}");
+                            inter.SystemShow(1, $"good system send {ip}");
                         }
                         catch (Exception e)
                         {
-                            inter.SystemShow($"bad try system send{ip}");
+                            inter.SystemShow(1, $"bad try system send{ip}");
                             RecivedMessage re = new RecivedMessage();
                             re.message = ((int)1).ToString() + "/" + ((int)5).ToString() + "/" + ip.Address.ToString() + "/" + ip.Port.ToString();
                             re.ip = "127.0.0.0";

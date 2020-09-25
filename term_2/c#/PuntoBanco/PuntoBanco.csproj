@@ -47,11 +47,14 @@
     <Compile Include="Gamer.cs" />
     <Compile Include="GamerFirst.cs" />
     <Compile Include="GamerSecond.cs" />
+    <Compile Include="IDraw.cs" />
+    <Compile Include="IInteraction.cs" />
     <Compile Include="Interaction.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PuntoBanco.cs" />
+    <Compile Include="SomeBet.cs" />
     <Compile Include="UserInterface.cs" />
   </ItemGroup>
   <ItemGroup>

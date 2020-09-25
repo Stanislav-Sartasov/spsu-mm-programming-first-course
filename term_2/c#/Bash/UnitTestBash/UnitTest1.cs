@@ -99,7 +99,7 @@ namespace UnitTestBash
                 if (calls == 0)
                 {
                     ++calls;
-                    return "echo || 123333";
+                    return "echo | | 123333";
                 }
                 else
                     return "exit";

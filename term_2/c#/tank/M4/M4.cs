@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AbstractTanks;
 
-namespace tank
+namespace TankM4
 {
     public class M4 : AbstractTank
     {

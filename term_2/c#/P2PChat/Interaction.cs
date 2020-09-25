@@ -6,16 +6,6 @@ using System.Threading.Tasks;
 
 namespace P2PChat
 {
-    public interface IInteraction
-    {
-        string GetStr();
-        string GetIp();
-        int GetPort();
-        void Show(string str);
-        void SystemShow(string str);
-        void ShowSender(RecivedMessage re);
-        void ShowMessage(RecivedMessage re);
-    }
     class Interaction : IInteraction
     {
         public string GetStr()
@@ -39,7 +29,15 @@ namespace P2PChat
                     foreach (string tmp in ip)
                     {
                         bool b = Int32.TryParse(tmp, out i);
-                        if ((b) && !((0 <= i) && (255 >= i)))
+                        if (b)
+                        {
+                            if (!((0 <= i) && (255 >= i)))
+                            {
+                                flag = false;
+                                break;
+                            }
+                        }
+                        else
                         {
                             flag = false;
                             break;
@@ -76,6 +74,10 @@ namespace P2PChat
             Console.Write(str);
         }
         public void SystemShow(string str)
+        {
+           // Console.WriteLine("<System>" + str + "<System>");
+        }
+        public void SystemShow(int code, string str)
         {
             Console.WriteLine("<System>" + str + "<System>");
         }

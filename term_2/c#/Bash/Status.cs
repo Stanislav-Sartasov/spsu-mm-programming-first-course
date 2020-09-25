@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Bash
 {
-    class Interaction : IInteraction
+    enum Status
     {
-        public string GetStr()
-        {
-            return Console.ReadLine();
-        }
+        arg,
+        cmd,
+        vari,
+        value,
+        undef
     }
-
 }

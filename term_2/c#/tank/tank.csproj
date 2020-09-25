@@ -43,14 +43,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="abstractTank.cs" />
-    <Compile Include="M4.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="T34.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="AbstractTank\AbstractTank.csproj">
+      <Project>{28f91c3e-cf02-4c1f-b07c-449443c7eb0f}</Project>
+      <Name>AbstractTank</Name>
+    </ProjectReference>
+    <ProjectReference Include="M4\M4.csproj">
+      <Project>{b89b4f09-f7f7-4d2d-8d45-35a4cd99be0b}</Project>
+      <Name>M4</Name>
+    </ProjectReference>
+    <ProjectReference Include="T34\T34.csproj">
+      <Project>{2ef04358-ccd6-4d3d-af76-712e50ee3ef0}</Project>
+      <Name>T34</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
