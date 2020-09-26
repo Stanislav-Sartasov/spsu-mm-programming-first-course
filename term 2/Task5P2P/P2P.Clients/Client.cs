@@ -17,7 +17,6 @@ namespace P2P.Clients
         private static Socket socket;
         private static EndPoint local;
         private static List<EndPoint> clients;
-        private static List<EndPoint> potentialClients;
         private enum Signals
         {
             Message = '0',
@@ -28,7 +27,6 @@ namespace P2P.Clients
         public Client()
         {
             clients = new List<EndPoint>();
-            potentialClients = new List<EndPoint>();
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         }
         public void SetClient()
@@ -47,18 +45,10 @@ namespace P2P.Clients
         public void Connect(EndPoint endPoint)
         {
             
-            if (!clients.Contains(endPoint) && clients.Count > 1)
+            if (!clients.Contains(endPoint))
             {
                 socket.SendTo(Serialization.Serialization.Serialize(clients, (char)Signals.Connect), endPoint);
                 clients.Add(endPoint);
-            }
-            else if (!clients.Contains(endPoint) && clients.Count == 1)
-            {
-                List<EndPoint> temp = new List<EndPoint>();
-                temp.Add(local);
-                socket.SendTo(Serialization.Serialization.Serialize(temp, (char)Signals.Connect), endPoint);
-                potentialClients.Add(endPoint);
-                Console.WriteLine("Trying to connect to {0}. . .", endPoint);
             }
             else
             {
@@ -153,23 +143,11 @@ namespace P2P.Clients
                 foreach (EndPoint user in users)
                 {
                         
-                    if (!clients.Contains(user) && clients.Count > 1)
+                    if (!clients.Contains(user))
                     {
                         Console.WriteLine("User {0} connected to room\n", user);
                         clients.Add(user);
                     }
-                    else if (!clients.Contains(user) && clients.Count == 1)
-                    {
-                        if (potentialClients.Contains(user))
-                        {
-                            Console.WriteLine("User {0} connected to you\n", user);
-                            clients.Add(user);
-                            potentialClients.Remove(user);
-                        }
-                        else
-                            Console.WriteLine("Client {0} is trying to connect to you.", user);
-                    }
-                            
                 }
                 if (clients.Count > 1)
                 {
