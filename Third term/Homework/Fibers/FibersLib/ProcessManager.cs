@@ -8,15 +8,17 @@ namespace Fibers
     public static class ProcessManager
     {
         public static bool IsPriority { get; set; }
-        private static bool isStarted;
         public static Dictionary<uint, Process> Processes { get; private set; }
-        private static readonly Random rnd = new Random();
+
+        private static bool isStarted;
+        private static readonly Random rnd;
         private static int numberOfProc;
         private static uint currentFiberId;
 
         static ProcessManager()
         {
             Processes = new Dictionary<uint, Process>();
+            rnd = new Random(); 
             isStarted = false;
         }
 
