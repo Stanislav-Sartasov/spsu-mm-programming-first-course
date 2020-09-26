@@ -14,7 +14,7 @@ namespace Task10
             for(;;)
             {
                 Print(commandHandler.Process(Console.ReadLine(), out CommandHandler.Keys key));
-                if (key == CommandHandler.Keys.exit)
+                if (key == CommandHandler.Keys.Exit)
                 {
                     if (output != null)
                         Console.Write(output);

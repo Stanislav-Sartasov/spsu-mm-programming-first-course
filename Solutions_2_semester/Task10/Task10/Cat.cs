@@ -8,19 +8,19 @@ namespace Task10
         {
             if (!File.Exists(input))
             {
-                key = CommandHandler.Keys.error;
+                key = CommandHandler.Keys.Error;
                 return "File \"" + input + "\" does not exist";
             }
 
             try
             {
                 string output = File.ReadAllText(input);
-                key = CommandHandler.Keys.ok;
+                key = CommandHandler.Keys.Ok;
                 return output;
             }
             catch
             {
-                key = CommandHandler.Keys.error;
+                key = CommandHandler.Keys.Error;
                 return null;
             }
         }

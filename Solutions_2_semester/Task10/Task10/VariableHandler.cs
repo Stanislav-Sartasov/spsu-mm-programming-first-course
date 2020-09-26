@@ -19,13 +19,13 @@ namespace Task10
 
             if (input[0] == ' ')
             {
-                key = CommandHandler.Keys.error;
+                key = CommandHandler.Keys.Error;
                 return "The variable call should be $varName";
             }
 
             if (input.Count((x) => x == '=') > 1)
             {
-                key = CommandHandler.Keys.error;
+                key = CommandHandler.Keys.Error;
                 return "Incorrect operations";
             }
             else if (input.Count((x) => x == '=') == 0)
@@ -37,7 +37,7 @@ namespace Task10
                 foreach (char c in variableName)
                     if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && (c < '0' || c > '9') && c != '_')
                     {
-                        key = CommandHandler.Keys.error;
+                        key = CommandHandler.Keys.Error;
                         return "Invalid variable name \"" + variableName + "\": a..z, A..Z, 0..9, _ should be used";
                     }
 
@@ -45,12 +45,12 @@ namespace Task10
 
                 if (value == null)
                 {
-                    key = CommandHandler.Keys.error;
+                    key = CommandHandler.Keys.Error;
                     return "Variable \"" + variableName + "\" is not defined";
                 }
                 else
                 {
-                    key = CommandHandler.Keys.ok;
+                    key = CommandHandler.Keys.Ok;
                     return value;
                 }
             }
@@ -62,7 +62,7 @@ namespace Task10
             foreach(char c in variableName)
                 if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && (c < '0' || c > '9') && c != '_')
                 {
-                    key = CommandHandler.Keys.error;
+                    key = CommandHandler.Keys.Error;
                     return "Invalid variable name: a..z, A..Z, 0..9, _ should be used";
                 }
 
@@ -75,7 +75,7 @@ namespace Task10
 
             variables[variableName] = value;
 
-            key = CommandHandler.Keys.ok;
+            key = CommandHandler.Keys.Ok;
             return value;
         }
     }

@@ -9,7 +9,7 @@ namespace Task10
         {
             if (!File.Exists(input))
             {
-                key = CommandHandler.Keys.error;
+                key = CommandHandler.Keys.Error;
                 return "File \"" + input + "\" does not exist";
             }
 
@@ -17,12 +17,12 @@ namespace Task10
             try
             {
                 output = input + ":\nlines: " + File.ReadAllLines(input).Length + "; words: " + File.ReadAllText(input).Split(new char[] { ' ', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length + "; bytes: " + File.ReadAllBytes(input).Length;
-                key = CommandHandler.Keys.ok;
+                key = CommandHandler.Keys.Ok;
                 return output;
             }
             catch
             {
-                key = CommandHandler.Keys.error;
+                key = CommandHandler.Keys.Error;
                 return null;
             }
         }

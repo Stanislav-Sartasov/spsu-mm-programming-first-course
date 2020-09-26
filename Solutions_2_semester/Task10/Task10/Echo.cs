@@ -5,7 +5,7 @@ namespace Task10
     {
         public string Process(string input, out CommandHandler.Keys key)
         {
-            key = CommandHandler.Keys.ok;
+            key = CommandHandler.Keys.Ok;
             return input;
         }
     }

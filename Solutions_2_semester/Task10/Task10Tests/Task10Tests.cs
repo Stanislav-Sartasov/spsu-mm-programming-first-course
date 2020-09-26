@@ -31,28 +31,28 @@ namespace Task10Tests
             CommandHandler.Keys key;
 
             Assert.AreEqual("testInfoFile.txt:\nlines: 3; words: 6; bytes: 26", commandHandler.Process("cat testFile.txt | $a = | wc ", out key));
-            Assert.AreEqual(CommandHandler.Keys.ok, key);
+            Assert.AreEqual(CommandHandler.Keys.Ok, key);
             Assert.AreEqual("testInfoFile.txt:\nlines: 3; words: 6; bytes: 26", commandHandler.Process("| echo", out key));
-            Assert.AreEqual(CommandHandler.Keys.ok, key);
+            Assert.AreEqual(CommandHandler.Keys.Ok, key);
             Assert.AreEqual("testInfoFile.txt", commandHandler.Process("$a", out key));
-            Assert.AreEqual(CommandHandler.Keys.ok, key);
+            Assert.AreEqual(CommandHandler.Keys.Ok, key);
             Assert.AreEqual("strings file testInfoFile.txt", commandHandler.Process("$b = strings file $a", out key));
-            Assert.AreEqual(CommandHandler.Keys.ok, key);
+            Assert.AreEqual(CommandHandler.Keys.Ok, key);
             Assert.AreEqual("  testInfoFile.txt strings file testInfoFile.txt", commandHandler.Process("| echo   $a ", out key));
-            Assert.AreEqual(CommandHandler.Keys.ok, key);
+            Assert.AreEqual(CommandHandler.Keys.Ok, key);
 
             Assert.IsTrue(commandHandler.Process("pwd", out _).Contains("testFile.txt"));
             Assert.IsTrue(commandHandler.Process("pwd", out key).Contains("testInfoFile.txt"));
-            Assert.AreEqual(CommandHandler.Keys.ok, key);
+            Assert.AreEqual(CommandHandler.Keys.Ok, key);
 
             commandHandler.Process("$a = b", out _);
             commandHandler.Process("$b = c", out _);
             commandHandler.Process("$c = pointer", out _);
             Assert.AreEqual("pointer", commandHandler.Process("echo $$$a", out key));       //funny feature
-            Assert.AreEqual(CommandHandler.Keys.ok, key);
+            Assert.AreEqual(CommandHandler.Keys.Ok, key);
 
             commandHandler.Process("exit", out key);
-            Assert.AreEqual(CommandHandler.Keys.exit, key);
+            Assert.AreEqual(CommandHandler.Keys.Exit, key);
 
             Assert.AreEqual("", commandHandler.Process("echo |", out _));
 
@@ -85,7 +85,7 @@ namespace Task10Tests
             foreach (string s in wrongCommand)
             {
                 commandHandler.Process(s, out key);
-                Assert.AreEqual(CommandHandler.Keys.error, key);
+                Assert.AreEqual(CommandHandler.Keys.Error, key);
             }
 
             DeleteTestFies();

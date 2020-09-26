@@ -17,9 +17,9 @@ namespace Task10
 
         public enum Keys
         {
-            ok,
-            exit,
-            error
+            Ok,
+            Exit,
+            Error
         }
 
         Hashtable variables = new Hashtable();
@@ -37,16 +37,16 @@ namespace Task10
         {
             if (commands == null)
             {
-                keyOut = Keys.ok;
+                keyOut = Keys.Ok;
                 return null;
             }            
             NewCommandInput();
-            Keys key = Keys.error;
+            Keys key = Keys.Error;
             string commandOut = "";
             foreach (Command i in commands)
             {
                 commandOut = Process(i, out key);
-                if (key != Keys.ok)
+                if (key != Keys.Ok)
                     break;
             }
             keyOut = key;
@@ -58,7 +58,7 @@ namespace Task10
             if (command.command == "pipe")
             {
                 preCommandOut = oldPreCommandOut;
-                keyOut = Keys.ok;
+                keyOut = Keys.Ok;
                 return null;
             }
 
@@ -82,16 +82,16 @@ namespace Task10
 
                 if (variableName == "")
                 {
-                    keyOut = Keys.error;
-                    return OutStringParse(command, Keys.error, "Invalid variable name: a..z, A..Z, 0..9, _ should be used");
+                    keyOut = Keys.Error;
+                    return OutStringParse(command, Keys.Error, "Invalid variable name: a..z, A..Z, 0..9, _ should be used");
                 }
 
                 var value = variables[variableName];
 
                 if (value == null)
                 {
-                    keyOut = Keys.error;
-                    return OutStringParse(command, Keys.error, "Variable \"" + variableName + "\" is not defined");
+                    keyOut = Keys.Error;
+                    return OutStringParse(command, Keys.Error, "Variable \"" + variableName + "\" is not defined");
                 }
 
                 argument = argument[0..pos] + (string)value + argument.Substring(pos + variableName.Length + 1);
@@ -103,7 +103,7 @@ namespace Task10
 
             string commandOut = commandExecutor.Process(argument, out key);
 
-            if (command.argument != "" && key == Keys.error && preCommandOut != null && command.command == "unidentified")
+            if (command.argument != "" && key == Keys.Error && preCommandOut != null && command.command == "unidentified")
                 commandOut = commandExecutor.Process(argument + " " + preCommandOut, out key);
 
             preCommandOut = commandOut;
@@ -117,10 +117,10 @@ namespace Task10
         {
             string outString = null;
 
-            if (commandOut != null && key == Keys.ok)
+            if (commandOut != null && key == Keys.Ok)
                 outString = commandOut;
 
-            else if (key == Keys.error)
+            else if (key == Keys.Error)
             {
                 if (command.command == "$")
                     outString = "\"" + command.command + command.argument;
