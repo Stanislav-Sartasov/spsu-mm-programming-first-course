@@ -146,9 +146,10 @@ namespace WF
 
         private void MainWindow_Resize(object sender, EventArgs e)
         {
-            graphics.Clear(Color.White);
+            
             if (buildButtonWasClicked)
             {
+                graphics.Clear(Color.White);
                 BuildCoordinateSystem();
                 buildButton_Click(sender, e);
             }
