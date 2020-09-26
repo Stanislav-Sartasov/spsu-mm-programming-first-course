@@ -50,12 +50,12 @@
             // 
             // collectionOfCurves
             // 
+            this.collectionOfCurves.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.collectionOfCurves.FormattingEnabled = true;
             this.collectionOfCurves.Location = new System.Drawing.Point(12, 20);
             this.collectionOfCurves.Name = "collectionOfCurves";
             this.collectionOfCurves.Size = new System.Drawing.Size(151, 28);
             this.collectionOfCurves.TabIndex = 1;
-            this.collectionOfCurves.Text = "Curves";
             // 
             // graphArea
             // 
