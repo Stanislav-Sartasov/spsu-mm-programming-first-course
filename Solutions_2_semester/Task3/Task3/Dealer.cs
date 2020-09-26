@@ -51,11 +51,11 @@ namespace Task3
                 bankScore = (bankScore + cardPull[5].cost) % 10;
 
             if (playerScore > bankScore)
-                winField = Field.player;
+                winField = Field.Player;
             else if (bankScore > playerScore)
-                winField = Field.bank;
+                winField = Field.Bank;
             else
-                winField = Field.draw;
+                winField = Field.Draw;
         }
 
         public readonly Card[] cardPull;

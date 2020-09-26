@@ -47,13 +47,13 @@ namespace Task3
         {
             if (!active || betDone)
                 return false;
-            if ((int)field < -1 || (int)field > 2 || (count <= 0 && field != Field.none))
+            if ((int)field < -1 || (int)field > 2 || (count <= 0 && field != Field.None))
                 return false;
 
-            if (field == Field.none || bank == 0)
+            if (field == Field.None || bank == 0)
             {
                 bet = 0;
-                betField = Field.none;
+                betField = Field.None;
                 betDone = true;
                 return true;
             }
@@ -82,7 +82,7 @@ namespace Task3
                 int betWas = bet;
                 bet = 0;
                 bank += betWas;
-                betField = Field.none;
+                betField = Field.None;
                 betDone = false;
             }
             currentGameSession = null;
@@ -93,7 +93,7 @@ namespace Task3
         {
             bank += (int)(bet * coefficient);
             bet = 0;
-            betField = Field.none;
+            betField = Field.None;
             betDone = false;
         }
     }

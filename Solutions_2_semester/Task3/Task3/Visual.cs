@@ -148,16 +148,16 @@ namespace Task3
             char sym;
             switch (card.suit)
             {
-                case Card.Suits.hearts:
+                case Card.Suits.Hearts:
                     sym = 'v';
                     break;
-                case Card.Suits.diamonds:
+                case Card.Suits.Diamonds:
                     sym = 'o';
                     break;
-                case Card.Suits.clubs:
+                case Card.Suits.Clubs:
                     sym = '&';
                     break;
-                case Card.Suits.spades:
+                case Card.Suits.Spades:
                     sym = '^';
                     break;
                 default:
@@ -170,13 +170,13 @@ namespace Task3
                 case 1:
                     switch (card.suit)
                     {
-                        case Card.Suits.hearts:
+                        case Card.Suits.Hearts:
                             return (char[,])heartsTMask.Clone();
-                        case Card.Suits.diamonds:
+                        case Card.Suits.Diamonds:
                             return (char[,])diamondsTMask.Clone();
-                        case Card.Suits.clubs:
+                        case Card.Suits.Clubs:
                             return (char[,])clubsTMask.Clone();
-                        case Card.Suits.spades:
+                        case Card.Suits.Spades:
                             return (char[,])spadesTMask.Clone();
                     }
                     break;
@@ -261,16 +261,16 @@ namespace Task3
             if (card.value > 10)
                 switch (card.suit)
                 {
-                    case Card.Suits.hearts:
+                    case Card.Suits.Hearts:
                         outCard = overlay(outCard, heartsMod);
                         break;
-                    case Card.Suits.diamonds:
+                    case Card.Suits.Diamonds:
                         outCard = overlay(outCard, diamondsMod);
                         break;
-                    case Card.Suits.clubs:
+                    case Card.Suits.Clubs:
                         outCard = overlay(outCard, clubsMod);
                         break;
-                    case Card.Suits.spades:
+                    case Card.Suits.Spades:
                         outCard = overlay(outCard, spadesMod);
                         break;
                 }
@@ -338,7 +338,7 @@ namespace Task3
         static void DrawBet(Field field, int pos, string name, int count)
         {
             int col;
-            if (field == Field.draw)
+            if (field == Field.Draw)
                 col = 1;
             else
                 col = (int)field * 2;
@@ -422,7 +422,7 @@ namespace Task3
             for (int i = 0; i < Math.Min(5, log.count); i++)
             {
                 Thread.Sleep(250);
-                if (log.playerBetFieldWas[i] == Field.none)
+                if (log.playerBetFieldWas[i] == Field.None)
                     continue;
                 DrawBet(log.playerBetFieldWas[i], typePoses[(int)log.playerBetFieldWas[i]]++, log.playerName[i], log.playerBetWas[i]);
                 DrawPlayerPos(i, log.playerName[i], log.playerBankWas[i]);
@@ -483,14 +483,14 @@ namespace Task3
             for (int i = 0; i < 6; i++)
                 FreeCardPos(i);
 
-            if (log.winField == Field.player)
+            if (log.winField == Field.Player)
             {
                 Console.SetCursorPosition((80 / 2 - "WIN".Length) / 2, 5);
                 Console.Write("WIN");
                 Console.SetCursorPosition((80 / 2 - "LOOSE".Length + 80) / 2, 5);
                 Console.Write("LOOSE");
             }
-            else if (log.winField == Field.bank)
+            else if (log.winField == Field.Bank)
             {
                 Console.SetCursorPosition((80 / 2 - "WIN".Length + 80) / 2, 5);
                 Console.Write("WIN");

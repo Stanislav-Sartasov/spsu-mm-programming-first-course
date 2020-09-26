@@ -76,24 +76,24 @@ namespace Task3
                         Console.WriteLine("Common types: <player> <bank> <draw> <pass> <leave>");
                         Console.Write("Your bateType: ");
                         Console.CursorVisible = true;
-                        Field type = Field.none;
+                        Field type = Field.None;
                         switch (Console.ReadLine())
                         {
                             case "player":
                             case "1":
-                                type = Field.player;
+                                type = Field.Player;
                                 break;
                             case "bank":
                             case "2":
-                                type = Field.bank;
+                                type = Field.Bank;
                                 break;
                             case "draw":
                             case "3":
-                                type = Field.draw;
+                                type = Field.Draw;
                                 break;
                             case "pass":
                             case "4":
-                                type = Field.none;
+                                type = Field.None;
                                 break;
                             case "leave":
                             case "5":
@@ -104,7 +104,7 @@ namespace Task3
                         }
 
                         int bate = 0;
-                        if (type != Field.none)
+                        if (type != Field.None)
                         {
                             Console.Write("Your bate: ");
                             bate = int.Parse(Console.ReadLine());

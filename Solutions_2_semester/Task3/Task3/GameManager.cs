@@ -38,7 +38,7 @@ namespace Task3
         public int deckCount { get; private set; }
         List<PlayerSeat> playerSeats = new List<PlayerSeat>();
         Hashtable playersBase = new Hashtable();
-        public Field lastWinField { get; private set; } = Field.none;
+        public Field lastWinField { get; private set; } = Field.None;
         public bool sessionStarted { get; private set; } = false;
         public Player AddPlayer(string playerName)
         {
@@ -80,7 +80,7 @@ namespace Task3
                 banks[i] = playerSeats[i].bank;
             }
 
-            return new GameLog(Math.Min(count, playerSeats.Count), names, banks, null, null, null, null, null, -1, -1, -1, -1, Field.none);
+            return new GameLog(Math.Min(count, playerSeats.Count), names, banks, null, null, null, null, null, -1, -1, -1, -1, Field.None);
         }
         public GameLog ProduceGame()
         {

@@ -8,7 +8,7 @@ namespace Task3
         const double GoldenRat = 1.6180339887498948482;
         int bateNumber = 0;
         int[] bate;
-        Field actType = Field.player;
+        Field actType = Field.Player;
         int count = 4;
         int playWin = 0;
         int bankWin = 0;
@@ -76,17 +76,17 @@ namespace Task3
                     bateNumber = 0;
                 }
 
-                if (connectedPlayer.lastWinField != Field.none)
+                if (connectedPlayer.lastWinField != Field.None)
                 {
                     switch (connectedPlayer.lastWinField)
                     {
-                        case Field.player:
+                        case Field.Player:
                             playWin++;
                             break;
-                        case Field.bank:
+                        case Field.Bank:
                             bankWin++;
                             break;
-                        case Field.draw:
+                        case Field.Draw:
                             if (rand.NextDouble() < 0.5)
                                 playWin++;
                             else
@@ -107,37 +107,35 @@ namespace Task3
                     }
                     int n;
                     int m;
-                    char up;
+                    Field upField;
+                    Field downField;
 
-                    if (Math.Abs(a - GoldenRat) > Math.Abs(b - GoldenRat))
+                    if (Math.Abs(b - GoldenRat) < Math.Abs(a - GoldenRat))
                     {
                         n = bankWin;
                         m = playWin;
-                        up = 'b';
+                        upField = Field.Player;
+                        downField = Field.Bank;
                     }
                     else
                     {
                         n = playWin;
                         m = bankWin;
-                        up = 'p';
+                        upField = Field.Bank;
+                        downField = Field.Player;
                     }
 
-                    a = GoldenRat * m - n;          //(n + a) / b or n / (b + a) -> Golden ratio
+                    a = GoldenRat * m - n;          //(n + a) / m or n / (m + a) -> Golden ratio
                     b = n / GoldenRat - m;          //select what's smaller a or b
 
-                    if (Math.Abs(a) > Math.Abs(b))
-                        if (up == 'p')
-                            actType = Field.bank;
-                        else
-                            actType = 0;
-                    else if (up == 'p')
-                        actType = Field.bank;
+                    if (Math.Abs(b) < Math.Abs(a))
+                        actType = downField;
                     else
-                        actType = Field.player;
+                        actType = upField;
 
                     if (m != 0)
                         if (Math.Abs(n / m - GoldenRat) < 0.01)
-                            actType = Field.draw;
+                            actType = Field.Draw;
                 }
                 else
                     actType = (Field)rand.Next(0, 2);

@@ -19,11 +19,11 @@ namespace Task3
         }
         public enum Suits
         {
-            hearts,
-            diamonds,
-            clubs,
-            spades
-        };
+            Hearts,
+            Diamonds,
+            Clubs,
+            Spades
+        }
         public const int SuitsCount = 4;
         public const int MinValue = 1;
         public const int MaxValue = 13;

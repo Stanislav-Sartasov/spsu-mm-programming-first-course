@@ -74,7 +74,7 @@ namespace Task3
             types[2].ReserveCoeff = 0.66;
         }
 
-        Field actField = Field.player;
+        Field actField = Field.Player;
         public int betNumber = 0;
         int bet = -1;
         double[] gameСoefficients
@@ -153,11 +153,11 @@ namespace Task3
 
                     double newRand = rand.NextDouble() * probabilitySum;
                     if (newRand < types[0].Probability)
-                        actField = Field.player;
+                        actField = Field.Player;
                     else if (newRand < types[0].Probability + types[1].Probability)
-                        actField = Field.bank;
+                        actField = Field.Bank;
                     else
-                        actField = Field.draw;
+                        actField = Field.Draw;
 
                     double denominator = 0;
                     for (int i = 0; i < types[(int)actField].BetCount; i++)

@@ -46,6 +46,6 @@ namespace Task3
         public readonly int playerScore = 0;
         public readonly int bankScoreBeforeExtraCard = 0;
         public readonly int bankScore = 0;
-        public readonly Field winField = Field.none;
+        public readonly Field winField = Field.None;
     }
 }

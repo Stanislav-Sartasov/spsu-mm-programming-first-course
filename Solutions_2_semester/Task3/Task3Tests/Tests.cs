@@ -13,14 +13,14 @@ namespace Task3Tests
         [Test]
         public void CardTest()
         {
-            Card card = new Card(Card.MinValue - 1, Card.Suits.clubs);
+            Card card = new Card(Card.MinValue - 1, Card.Suits.Clubs);
             Assert.AreEqual(0, card.value);
-            Assert.AreEqual(Card.Suits.clubs, card.suit);
+            Assert.AreEqual(Card.Suits.Clubs, card.suit);
             Assert.AreEqual(0, card.cost);
 
-            card = new Card(Card.MaxValue + 1, Card.Suits.clubs);
+            card = new Card(Card.MaxValue + 1, Card.Suits.Clubs);
             Assert.AreEqual(0, card.value);
-            Assert.AreEqual(Card.Suits.clubs, card.suit);
+            Assert.AreEqual(Card.Suits.Clubs, card.suit);
             Assert.AreEqual(0, card.cost);
 
             for (int i = Card.MinValue; i <= Card.MaxValue; i++)
@@ -88,7 +88,7 @@ namespace Task3Tests
             firstPlayer = game.AddPlayer("firstPlayer");
             Assert.AreNotEqual(null, firstPlayer);
 
-            secondPlayer.MakeBet(500, Field.player);
+            secondPlayer.MakeBet(500, Field.Player);
 
             Assert.AreEqual(true, game.KickPlayer(secondPlayer));
             Assert.AreEqual(5000, secondPlayer.bank);
@@ -103,9 +103,9 @@ namespace Task3Tests
 
             Assert.AreEqual(5000, player.bank);
 
-            Assert.AreEqual(true, player.MakeBet(1000, Field.player));
+            Assert.AreEqual(true, player.MakeBet(1000, Field.Player));
             Assert.AreEqual(4000, player.bank);
-            Assert.AreEqual(false, player.MakeBet(1000, Field.player));
+            Assert.AreEqual(false, player.MakeBet(1000, Field.Player));
             Assert.AreEqual(4000, player.bank);
 
             game = new GameManager(GameTestsCount * 10 + 1, 0, null, 0);
@@ -145,9 +145,9 @@ namespace Task3Tests
                 Player secondPlayer = game.AddPlayer("second");
                 Player thirdPlayer = game.AddPlayer("third");
 
-                firstPlayer.MakeBet(1000, Field.player);
-                secondPlayer.MakeBet(1000, Field.bank);
-                thirdPlayer.MakeBet(1000, Field.draw);
+                firstPlayer.MakeBet(1000, Field.Player);
+                secondPlayer.MakeBet(1000, Field.Bank);
+                thirdPlayer.MakeBet(1000, Field.Draw);
 
                 GameLog log = game.ProduceGame();
 
@@ -155,28 +155,28 @@ namespace Task3Tests
 
                 switch (log.winField)
                 {
-                    case Field.player:
+                    case Field.Player:
                         Assert.IsTrue(log.bankScore < log.playerScore);
                         player = true;
                         break;
 
-                    case Field.bank:
+                    case Field.Bank:
                         Assert.IsTrue(log.bankScore > log.playerScore);
                         bank = true;
                         break;
 
-                    case Field.draw:
+                    case Field.Draw:
                         Assert.IsTrue(log.bankScore == log.playerScore);
                         draw = true;
                         break;
                 }                
 
-                Assert.AreEqual(log.winField == Field.player, firstPlayer.bank > 5000);
-                Assert.AreEqual(log.winField != Field.player, firstPlayer.bank < 5000);
-                Assert.AreEqual(log.winField == Field.bank, secondPlayer.bank > 5000);
-                Assert.AreEqual(log.winField != Field.bank, secondPlayer.bank < 5000);
-                Assert.AreEqual(log.winField == Field.draw, thirdPlayer.bank > 5000);
-                Assert.AreEqual(log.winField != Field.draw, thirdPlayer.bank < 5000);
+                Assert.AreEqual(log.winField == Field.Player, firstPlayer.bank > 5000);
+                Assert.AreEqual(log.winField != Field.Player, firstPlayer.bank < 5000);
+                Assert.AreEqual(log.winField == Field.Bank, secondPlayer.bank > 5000);
+                Assert.AreEqual(log.winField != Field.Bank, secondPlayer.bank < 5000);
+                Assert.AreEqual(log.winField == Field.Draw, thirdPlayer.bank > 5000);
+                Assert.AreEqual(log.winField != Field.Draw, thirdPlayer.bank < 5000);
             }
         }
 
