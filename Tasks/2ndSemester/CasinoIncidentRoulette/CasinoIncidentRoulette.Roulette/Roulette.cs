@@ -2,15 +2,16 @@
 
 namespace CasinoIncidentRoulette.Roulette
 {
+    public struct Cell
+    {
+        public int Number;
+        public int Color; //0 - green, 1 - red, 2 - black
+        public bool Parity; //false - odd, true - even
+        public int Dozen; //0 - for green, 1 - 1st dozen, 2 - 2nd dozen, 3 - 3rd dozen
+    }
+
     public static class Table
     {
-        public struct Cell
-        {
-            public int Number;
-            public int Color; //0 - green, 1 - red, 2 - black
-            public bool Parity; //false - odd, true - even
-            public int Dozen; //0 - for green, 1 - 1st dozen, 2 - 2nd dozen, 3 - 3rd dozen
-        }
 
         private static Random rnd = new Random();
         private static Cell[] roulette = new Cell[37];

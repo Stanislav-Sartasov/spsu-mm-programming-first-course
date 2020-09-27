@@ -7,9 +7,9 @@ namespace CasinoIncidentRoulette.Player
     public abstract class AbstractPlayer
     {
         public int Money { get; protected set; }
-        public List<Table.Cell> History { get; protected set; }
-        public abstract Tuple<Table.Cell, int, int> Bet();
-        public abstract void CheckResult(Tuple<Table.Cell, int, int> cellBet, Table.Cell exodus);
+        public List<Cell> History { get; protected set; }
+        public abstract Tuple<Cell, int, int> Bet();
+        public abstract void CheckResult(Tuple<Cell, int, int> cellBet, Cell exodus);
         public int GetMoney()
         {
             return Money;

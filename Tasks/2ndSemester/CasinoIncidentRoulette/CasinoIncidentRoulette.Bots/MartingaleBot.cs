@@ -11,7 +11,7 @@ namespace CasinoIncidentRoulette.Bots
         public MartingaleBot()
         {
             Money = 1000;
-            History = new List<Table.Cell>();
+            History = new List<Cell>();
             LoseStreak = 0;
         }
 
@@ -21,12 +21,12 @@ namespace CasinoIncidentRoulette.Bots
         }
 
            //in case of defeat, the bet amount is doubled
-        public override Tuple<Table.Cell, int, int> Bet() // <a, b, c>, a - Cell, b - stake amount, c - type of bet(1 - bet on number, 2 - bet on color, 3 - bet on parity, 4 - bet on dozen)
+        public override Tuple<Cell, int, int> Bet() // <a, b, c>, a - Cell, b - stake amount, c - type of bet(1 - bet on number, 2 - bet on color, 3 - bet on parity, 4 - bet on dozen)
         {
             return Tuple.Create(Table.GetCell(1), 1 << LoseStreak, 2);
         }
 
-        public override void CheckResult(Tuple<Table.Cell, int, int> cellBet, Table.Cell exodus)
+        public override void CheckResult(Tuple<Cell, int, int> cellBet, Cell exodus)
         {
             History.Add(exodus);
             if (cellBet.Item3 == 1 && cellBet.Item1.Number == exodus.Number ||

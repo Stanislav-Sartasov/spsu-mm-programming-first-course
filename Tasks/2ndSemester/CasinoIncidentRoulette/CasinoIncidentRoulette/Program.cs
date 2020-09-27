@@ -9,13 +9,13 @@ namespace CasinoIncidentRoulette
         static void Main(string[] args)
         {
             Table.CreateTable();
-            Table.Cell exodus;
+            Cell exodus;
 
             MartingaleBot martingaleBot = new MartingaleBot();
-            Tuple<Table.Cell, int, int> martingaleBet = martingaleBot.Bet();
+            Tuple<Cell, int, int> martingaleBet = martingaleBot.Bet();
 
             MakarovBot makarovBot = new MakarovBot();
-            Tuple<Table.Cell, int, int> makarovBet = makarovBot.Bet();
+            Tuple<Cell, int, int> makarovBet = makarovBot.Bet();
 
             for (int i = 0; i < 400; i++)
             {
