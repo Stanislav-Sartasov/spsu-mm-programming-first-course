@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CasinoIncidentRoulette", "CasinoIncidentRoulette\CasinoIncidentRoulette.csproj", "{D4C28013-4887-439E-9364-EF3937FF1031}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CasinoIncidentRoulette.Roulette", "CasinoIncidentRoulette.Roulette\CasinoIncidentRoulette.Roulette.csproj", "{FF7F1DD4-E3B9-49E2-BDA5-AD9B4453A45F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CasinoIncidentRoulette.Player", "CasinoIncidentRoulette.Player\CasinoIncidentRoulette.Player.csproj", "{433B1D40-80D8-4539-8D26-EB00BFCDB173}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CasinoIncidentRoulette.Bots", "CasinoIncidentRoulette.Bots\CasinoIncidentRoulette.Bots.csproj", "{F131C54E-CD92-4FFF-8E5F-DD4E8761D0F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CasinoIncidentRoulette.UnitTests", "CasinoIncidentRoulette.Tests\CasinoIncidentRoulette.UnitTests.csproj", "{4BCF87DC-9690-4848-BAFA-A304E161E8DA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D4C28013-4887-439E-9364-EF3937FF1031}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4C28013-4887-439E-9364-EF3937FF1031}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4C28013-4887-439E-9364-EF3937FF1031}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4C28013-4887-439E-9364-EF3937FF1031}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF7F1DD4-E3B9-49E2-BDA5-AD9B4453A45F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF7F1DD4-E3B9-49E2-BDA5-AD9B4453A45F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF7F1DD4-E3B9-49E2-BDA5-AD9B4453A45F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF7F1DD4-E3B9-49E2-BDA5-AD9B4453A45F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{433B1D40-80D8-4539-8D26-EB00BFCDB173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{433B1D40-80D8-4539-8D26-EB00BFCDB173}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{433B1D40-80D8-4539-8D26-EB00BFCDB173}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{433B1D40-80D8-4539-8D26-EB00BFCDB173}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F131C54E-CD92-4FFF-8E5F-DD4E8761D0F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F131C54E-CD92-4FFF-8E5F-DD4E8761D0F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F131C54E-CD92-4FFF-8E5F-DD4E8761D0F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F131C54E-CD92-4FFF-8E5F-DD4E8761D0F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BCF87DC-9690-4848-BAFA-A304E161E8DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BCF87DC-9690-4848-BAFA-A304E161E8DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BCF87DC-9690-4848-BAFA-A304E161E8DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BCF87DC-9690-4848-BAFA-A304E161E8DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9AF41812-82D9-4468-823E-1327AD32EF9F}
+	EndGlobalSection
+EndGlobal
