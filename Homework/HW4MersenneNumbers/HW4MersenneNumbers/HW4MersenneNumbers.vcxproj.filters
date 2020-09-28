@@ -15,8 +15,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HW4MersenneNumbers.cpp">
-      <Filter>Исходные файлы</Filter>
+    <ClCompile Include="main.c">
+      <Filter>Файлы ресурсов</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
