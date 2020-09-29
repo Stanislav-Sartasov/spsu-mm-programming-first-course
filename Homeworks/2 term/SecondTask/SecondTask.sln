@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecondTask", "SecondTask.csproj", "{75DC21E7-B096-4AD0-879A-CAEDD89024B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecondTask", "SecondTask.csproj", "{75DC21E7-B096-4AD0-879A-CAEDD89024B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecondTask.Tests", "SecondTask.Tests\SecondTask.Tests.csproj", "{1B6C8E53-3665-4E64-B0FE-613D7AB494DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecondTask.Tests", "SecondTask.Tests\SecondTask.Tests.csproj", "{1B6C8E53-3665-4E64-B0FE-613D7AB494DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TankCommonTemplate", "TankCommonTemplate\TankCommonTemplate.csproj", "{98629782-30E4-4139-A692-EDBECD5238C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TanksTypes", "TanksTypes\TanksTypes.csproj", "{BF7B329F-9AB0-4EB6-81CF-4E1EB888C369}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{1B6C8E53-3665-4E64-B0FE-613D7AB494DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B6C8E53-3665-4E64-B0FE-613D7AB494DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B6C8E53-3665-4E64-B0FE-613D7AB494DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98629782-30E4-4139-A692-EDBECD5238C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98629782-30E4-4139-A692-EDBECD5238C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98629782-30E4-4139-A692-EDBECD5238C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98629782-30E4-4139-A692-EDBECD5238C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF7B329F-9AB0-4EB6-81CF-4E1EB888C369}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF7B329F-9AB0-4EB6-81CF-4E1EB888C369}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF7B329F-9AB0-4EB6-81CF-4E1EB888C369}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF7B329F-9AB0-4EB6-81CF-4E1EB888C369}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
