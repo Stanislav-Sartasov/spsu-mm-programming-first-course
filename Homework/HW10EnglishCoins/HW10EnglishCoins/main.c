@@ -27,6 +27,6 @@ int main()
 	}
 
 	printf("\nNumber of variants: %lld", tempArr[numberOfPences]);
-
+	free(tempArr);
 	return(0);
 }
