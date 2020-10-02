@@ -23,7 +23,7 @@ struct Hash_table initialization(int size)
 	struct Hash_table table;
 	table.size = size;
 	table.full = 0;
-	table.hash_list = (struct Ñell*) calloc (size, sizeof(struct Cell));
+	table.hash_list = (struct Cell*) calloc (size, sizeof(struct Cell));
 	return table;
 }
 
