@@ -9,11 +9,26 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization.Formatters.Binary;
 using P2P.Serialization;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace P2P.Clients
 {
     public class Client
     {
+        private delegate void SignalHandler(ConsoleSignal consoleSignal);
+        private enum ConsoleSignal
+        {
+            CtrlC = 0,
+            CtrlBreak = 1,
+            Close = 2,
+            LogOff = 5,
+            Shutdown = 6
+        }
+
+        private SignalHandler signalHandler;
+        [DllImport("Kernel32", EntryPoint = "SetConsoleCtrlHandler")]
+        private static extern bool SetConsoleCtrlHandler(SignalHandler handler, bool add);
+
         private static Socket socket;
         private static EndPoint local;
         private static List<EndPoint> clients;
@@ -26,9 +41,17 @@ namespace P2P.Clients
         }
         public Client()
         {
+            signalHandler += HandleConsoleSignal;
+            SetConsoleCtrlHandler(signalHandler, true);
             clients = new List<EndPoint>();
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         }
+
+        private void HandleConsoleSignal(ConsoleSignal signal)
+        {
+            Exit();
+        }
+
         public void SetClient()
         {
             clients.Add(local);
