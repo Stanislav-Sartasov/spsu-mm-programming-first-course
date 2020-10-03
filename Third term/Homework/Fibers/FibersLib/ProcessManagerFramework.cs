@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace Fibers
+namespace FibersLib
 {
     public class Process
     {
@@ -17,7 +17,7 @@ namespace Fibers
         private readonly List<int> _pauseIntervals = new List<int>();
         public Process()
         {
-            IsFinished = false;
+            Status = ProcessStatus.NotStarted;
             int amount = Rng.Next(IntervalsAmountBoundary);
             for (int i = 0; i < amount; i++)
             {
@@ -35,16 +35,17 @@ namespace Fibers
             {
                 Thread.Sleep(_workIntervals[i]); // work emulation
                 DateTime pauseBeginTime = DateTime.Now;
+                Status = ProcessStatus.Suspended;
                 do
                 {
-                    ProcessManager.Switch(IsFinished);
+                    ProcessManager.Switch(false);
                 } while ((DateTime.Now - pauseBeginTime).TotalMilliseconds < _pauseIntervals[i]); // I/O emulation
             }
-            IsFinished = true;
-            ProcessManager.Switch(IsFinished);
+            Status = ProcessStatus.Finished;
+            ProcessManager.Switch(true);
         }
 
-        public bool IsFinished 
+        public ProcessStatus Status 
         {
             get; private set;
         }

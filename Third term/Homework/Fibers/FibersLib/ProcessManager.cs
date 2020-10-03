@@ -3,23 +3,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace Fibers
+namespace FibersLib
 {
     public static class ProcessManager
     {
-        public static bool IsPriority { get; set; }
-        public static Dictionary<uint, Process> Processes { get; private set; }
-
+        private static int currentPriority;
+        private static int minPriority;
+        private static bool isPriority;
         private static bool isStarted;
         private static readonly Random rnd;
-        private static int numberOfProc;
-        private static uint currentFiberId;
+        private static uint currentFiberID;
+        private static List<uint> currentFibers;
+        public static Dictionary<uint, Process> Processes { get; private set; }
+        
+
+        public static bool IsPriority
+        {
+            get
+            {
+                return isPriority;
+            }
+            set
+            {
+                if (!isStarted)
+                    isPriority = value;
+            }
+        }
 
         static ProcessManager()
         {
             Processes = new Dictionary<uint, Process>();
+            currentFibers = new List<uint>();
             rnd = new Random(); 
             isStarted = false;
+            isPriority = false;
         }
 
         public static void AddProcess(Process process)
@@ -43,13 +60,18 @@ namespace Fibers
 
         public static void Run()
         {
-            numberOfProc = Processes.Count();
-            if (numberOfProc == 0 || isStarted)
+            var notFinishedProcessses = Processes.Where(p => p.Value.Status != ProcessStatus.Finished);
+            if (notFinishedProcessses.Count() == 0 || isStarted)
             {
                 return;
             }
+            if (isPriority)
+            {
+                minPriority = notFinishedProcessses.Min(p => p.Value.Priority);
+                currentPriority = notFinishedProcessses.Max(p => p.Value.Priority); 
+                UpdateCurrentFibers();
+            }
             isStarted = true;
-            currentFiberId = Processes.Last().Key;
             Switch(false);
         }
 
@@ -64,44 +86,93 @@ namespace Fibers
                 }
             }
             isStarted = false;
+            isPriority = false;
+            currentFiberID = 0;
+            currentPriority = 0;
+            minPriority = 0;
             Processes.Clear();
+            currentFibers.Clear();
         }
 
-        public static void Switch(bool isFinished)
+        internal static void Switch(bool isFinished)
         {
             if (isFinished)
             {
-                Console.WriteLine("Fiber [{0}] Finished", currentFiberId);
+                Console.WriteLine("Fiber [{0}] Finished", currentFiberID);
             }
 
-            if (Processes.Count(f => !f.Value.IsFinished) != 0)
+            if (Processes.Count(p => p.Value.Status != ProcessStatus.Finished) != 0)
             {
-                currentFiberId = GetNextFiber();
+                currentFiberID = GetNextFiber();
             }
             else
             {
-                currentFiberId = Fiber.PrimaryId;
+                currentFiberID = Fiber.PrimaryId;
             }
 
             Thread.Sleep(5);
-            Fiber.Switch(currentFiberId);
+            if (currentFiberID == Fiber.PrimaryId)
+                Console.WriteLine($"Switched to the primary fiber...");
+            Fiber.Switch(currentFiberID);
         }
 
-        public static uint GetNextFiber()
+        private static uint GetNextFiber()
         {
-            var workingProcesses = Processes.Where(p => !p.Value.IsFinished && p.Key != currentFiberId);
-            if (workingProcesses.Count() == 0)
+            if (IsPriority)
+                return GetNextPriorityFiber();
+            else
+                return GetNextNonPriorityFiber();
+        }
+
+        private static uint GetNextNonPriorityFiber()
+        {
+            var selectedProcesses = Processes
+                .Where(p => p.Value.Status != ProcessStatus.Finished 
+                && p.Key != currentFiberID);
+            if (selectedProcesses.Count() == 0)
             {
-                return currentFiberId;
+                return currentFiberID;
             }
             else
             {
-                if (IsPriority)
-                {
-                    return workingProcesses.OrderByDescending(p => p.Value.Priority).First().Key;
-                }
-                return workingProcesses.ElementAt(rnd.Next(workingProcesses.Count())).Key;
+                return selectedProcesses
+                    .ElementAt(rnd.Next(selectedProcesses
+                    .Count())).Key;
             }
+        }
+
+        private static void CalculateCurrentPriority()
+        {
+            var notFinishedProcessses = Processes
+                .Where(p => p.Value.Status != ProcessStatus.Finished);
+            minPriority = notFinishedProcessses.Min(p => p.Value.Priority);
+            if (currentPriority <= minPriority)
+                currentPriority = notFinishedProcessses.Max(p => p.Value.Priority);
+            else
+                currentPriority = notFinishedProcessses
+                    .Where(p => p.Value.Priority < currentPriority)
+                    .Max(p => p.Value.Priority);
+        }
+
+        private static void UpdateCurrentFibers()
+        {
+            currentFibers = Processes
+                    .Where(p => p.Value.Status != ProcessStatus.Finished
+                    && p.Value.Priority == currentPriority)
+                    .Select(p => p.Key)
+                    .ToList();
+        }
+
+        private static uint GetNextPriorityFiber()
+        {
+            if (currentFibers.Count() == 0)
+            {
+                CalculateCurrentPriority();
+                UpdateCurrentFibers();
+            }
+            var nextFiberID = currentFibers.First();
+            currentFibers.RemoveAt(0);
+            return nextFiberID;
         }
     }
 }

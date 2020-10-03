@@ -1,6 +1,6 @@
 using System;
 
-namespace Fibers
+namespace FibersLib
 {
 	public class Fiber
 	{

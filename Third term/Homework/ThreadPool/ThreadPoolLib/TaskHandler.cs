@@ -5,8 +5,8 @@ namespace ThreadPoolLib
 {
     class TaskHandler : IDisposable
     {
-        private object locker;
-        private bool isWorking;
+        private readonly object locker;
+        private volatile bool isWorking;
         private Thread handler;
         public Action Task { get; internal set; }
         
@@ -19,6 +19,7 @@ namespace ThreadPoolLib
             Task = task;
             Status = TaskStatus.Completed;
             handler = new Thread(DoWork);
+            handler.IsBackground = true;
             handler.Start();
         }
 

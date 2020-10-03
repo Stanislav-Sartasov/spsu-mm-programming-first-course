@@ -13,10 +13,10 @@ namespace Task1
                 for (int i = 0; i < 1000; i++)
                 {
                     int num = i;
+                    Thread.Sleep(1);
                     pool.Enqueue(() =>
                     {
                         Console.WriteLine(num);
-                        Thread.Sleep(10);
                     });
                 }
             }

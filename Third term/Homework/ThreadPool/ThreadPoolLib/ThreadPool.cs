@@ -7,11 +7,11 @@ namespace ThreadPoolLib
 {
     public class ThreadPool : IDisposable
     {
-        private object taskLock;
+        private readonly object taskLock;
 
-        private object poolLock;
+        private readonly object poolLock;
 
-        private bool isDisposed;
+        private volatile bool isDisposed;
 
         private const int NumberOfThreads = 10;
 
@@ -32,7 +32,6 @@ namespace ThreadPoolLib
         public ThreadPool()
         {
             isDisposed = false;
-
             taskLock = new object();
             poolLock = new object();
             taskQueue = new Queue<Action>();
@@ -40,8 +39,8 @@ namespace ThreadPoolLib
 
             for (int i = 0; i < NumberOfThreads; i++)
             {
-                TaskHandler task = new TaskHandler(() => { });
-                AddTask(task);
+                TaskHandler th = new TaskHandler(() => { });
+                AddTaskHandler(th);
             }
 
             taskScheduler = new Thread(() =>
@@ -54,22 +53,8 @@ namespace ThreadPoolLib
                         for (int i = 0; i < tasksCount; i++)
                         {
                             var nextTask = taskQueue.Peek();
-                            lock (poolLock)
-                            {
-                                foreach (var t in pool)
-                                {
-                                    lock (t)
-                                    {
-                                        if (t.Status != TaskStatus.NotStarted)
-                                        {
-                                            t.Task = nextTask;
-                                            t.Status = TaskStatus.NotStarted;
-                                            taskQueue.Dequeue();
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
+                            SetNextTask(nextTask);
+                            taskQueue.Dequeue();
                         }
                     }
                     Thread.Yield();
@@ -81,7 +66,26 @@ namespace ThreadPoolLib
             taskScheduler.Start();
         }
 
-        private void AddTask(TaskHandler task)
+        private void SetNextTask(Action nextTask)
+        {
+            lock (poolLock)
+            {
+                foreach (var th in pool)
+                {
+                    lock (th)
+                    {
+                        if (th.Status != TaskStatus.NotStarted)
+                        {
+                            th.Task = nextTask;
+                            th.Status = TaskStatus.NotStarted;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AddTaskHandler(TaskHandler task)
         {
             lock (poolLock)
             {
@@ -110,8 +114,8 @@ namespace ThreadPoolLib
                 lock (poolLock)
                 {
                     taskScheduler.Join();
-                    foreach (var t in pool)
-                        t.Dispose();
+                    foreach (var th in pool)
+                        th.Dispose();
                     pool.Clear();
                 }
                 lock (taskLock)

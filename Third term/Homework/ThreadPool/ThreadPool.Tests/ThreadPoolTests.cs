@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Threading;
 
 namespace ThreadPoolLib.Tests
 {
@@ -16,6 +17,7 @@ namespace ThreadPoolLib.Tests
                 for (int i = 0; i < 1000; i++)
                 {
                     int num = i;
+                    Thread.Sleep(1);
                     tp.Enqueue(() => results[num] = num * num);
                 }
             }

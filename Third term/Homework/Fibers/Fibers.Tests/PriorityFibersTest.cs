@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Threading;
+using FibersLib;
 
 namespace Fibers.Tests
 {
@@ -20,7 +21,8 @@ namespace Fibers.Tests
                 ProcessManager.AddProcess(new Process());
             }
             ProcessManager.Run();
-            numOfFinishedProc = ProcessManager.Processes.Count(p => p.Value.IsFinished);
+            numOfFinishedProc = ProcessManager.Processes
+                .Count(p => p.Value.Status == ProcessStatus.Finished);
             Thread.Sleep(1000);
             ProcessManager.Dispose();
         }
