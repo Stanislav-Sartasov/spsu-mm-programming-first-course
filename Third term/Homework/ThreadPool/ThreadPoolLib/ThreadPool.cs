@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 
@@ -7,89 +8,47 @@ namespace ThreadPoolLib
 {
     public class ThreadPool : IDisposable
     {
-        private readonly object taskLock;
-
         private readonly object poolLock;
 
-        private volatile bool isDisposed;
+        volatile bool isWorking;
 
-        private const int NumberOfThreads = 10;
+        private bool isDisposed;
+
+        private const int NumberOfThreads = 8;
 
         private Queue<Action> taskQueue;
 
         private List<TaskHandler> pool;
 
-        private Thread taskScheduler;
 
         public void Enqueue(Action a)
         {
-            lock (taskLock)
+            if (isWorking)
             {
-                taskQueue.Enqueue(a);
+                lock (poolLock)
+                {
+                    taskQueue.Enqueue(a);
+                    Monitor.PulseAll(poolLock);
+                }
+            }
+            else
+            {
+                throw new InvalidOperationException("Thread pool has been disposed");
             }
         }
 
         public ThreadPool()
         {
+            isWorking = true;
             isDisposed = false;
-            taskLock = new object();
             poolLock = new object();
             taskQueue = new Queue<Action>();
             pool = new List<TaskHandler>();
 
             for (int i = 0; i < NumberOfThreads; i++)
             {
-                TaskHandler th = new TaskHandler(() => { });
-                AddTaskHandler(th);
-            }
-
-            taskScheduler = new Thread(() =>
-            {
-                while (!isDisposed)
-                {
-                    lock (taskLock)
-                    {
-                        int tasksCount = taskQueue.Count;
-                        for (int i = 0; i < tasksCount; i++)
-                        {
-                            var nextTask = taskQueue.Peek();
-                            SetNextTask(nextTask);
-                            taskQueue.Dequeue();
-                        }
-                    }
-                    Thread.Yield();
-                }
-            })
-            {
-                Priority = ThreadPriority.AboveNormal
-            };
-            taskScheduler.Start();
-        }
-
-        private void SetNextTask(Action nextTask)
-        {
-            lock (poolLock)
-            {
-                foreach (var th in pool)
-                {
-                    lock (th)
-                    {
-                        if (th.Status != TaskStatus.NotStarted)
-                        {
-                            th.Task = nextTask;
-                            th.Status = TaskStatus.NotStarted;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        private void AddTaskHandler(TaskHandler task)
-        {
-            lock (poolLock)
-            {
-                pool.Add(task);
+                TaskHandler th = new TaskHandler(null, this);
+                pool.Add(th);
             }
         }
 
@@ -107,20 +66,60 @@ namespace ThreadPoolLib
                 return;
             while (taskQueue.Count != 0) ;
 
-            isDisposed = true;
+            
+            lock (poolLock)
+            {
+                isWorking = false;
+                Monitor.PulseAll(poolLock);
+            }
+            foreach (var th in pool)
+            {
+                th.Handler.Join();
+            }
 
             if (disposing)
             {
-                lock (poolLock)
+                taskQueue.Clear();
+                pool.Clear();
+            }
+
+            isDisposed = true;
+        }
+
+        public class TaskHandler
+        {
+            public Thread Handler { get; private set; }
+            private ThreadPool pool;
+            private Action task;
+
+            public TaskHandler(Action task, ThreadPool pool)
+            {
+                this.pool = pool;
+                this.task = task;
+                Handler = new Thread(DoWork)
                 {
-                    taskScheduler.Join();
-                    foreach (var th in pool)
-                        th.Dispose();
-                    pool.Clear();
-                }
-                lock (taskLock)
+                    IsBackground = true
+                };
+                Handler.Start();
+            }
+
+            private void DoWork()
+            {
+                while (pool.isWorking)
                 {
-                    taskQueue.Clear();
+                    task = null;
+                    lock (pool.poolLock)
+                    {
+                        if (pool.taskQueue.Any())
+                        {
+                            task = pool.taskQueue.Dequeue();
+                        }
+                        else
+                        {
+                            Monitor.Wait(pool.poolLock);
+                        }
+                    }
+                    task?.Invoke();
                 }
             }
         }

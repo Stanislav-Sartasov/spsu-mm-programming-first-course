@@ -8,7 +8,7 @@ namespace Task1
     {
         static void Main(string[] args)
         {
-            using (ThreadPool pool = new ThreadPool())
+            using (var pool = new ThreadPool())
             {
                 for (int i = 0; i < 1000; i++)
                 {
@@ -16,11 +16,11 @@ namespace Task1
                     Thread.Sleep(1);
                     pool.Enqueue(() =>
                     {
-                        Console.WriteLine(num);
+                        while(true)
+                            Console.WriteLine(num);
                     });
                 }
-            }
-            Console.WriteLine("Done");
+            }   
         }
     }
 }
