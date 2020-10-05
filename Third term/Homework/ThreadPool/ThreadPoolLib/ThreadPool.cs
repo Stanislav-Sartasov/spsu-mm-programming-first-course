@@ -64,8 +64,6 @@ namespace ThreadPoolLib
         {
             if (isDisposed)
                 return;
-            while (taskQueue.Count != 0) ;
-
             
             lock (poolLock)
             {
@@ -86,7 +84,7 @@ namespace ThreadPoolLib
             isDisposed = true;
         }
 
-        public class TaskHandler
+        private class TaskHandler
         {
             public Thread Handler { get; private set; }
             private ThreadPool pool;
