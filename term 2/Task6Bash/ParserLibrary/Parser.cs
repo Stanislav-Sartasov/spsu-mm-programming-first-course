@@ -92,11 +92,20 @@ namespace ParserLibrary
             if (input[0] == '$')
             {
                 index = input.IndexOf('=');
-                if (index == -1 || index == input.Length - 1)
+                if (index == -1 || index == input.Length - 1 || index == 1)
                     return pair;
                 else
                 {
-                    string keySubstring = input.Substring(0, index);
+                    int notSpaceIndex = 0;
+                    for (int i = index - 1; notSpaceIndex == 0; i--)
+                    {
+                        if (input[i] != ' ')
+                        {
+                            notSpaceIndex = i;
+                            break;
+                        }
+                    }
+                    string keySubstring = input.Substring(0, notSpaceIndex + 1);
                     string valueSubstring = input.Substring(index + 1);
                     pair = new KeyValuePair<string, string>(keySubstring, valueSubstring);
                 }
