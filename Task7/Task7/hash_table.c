@@ -27,6 +27,52 @@ struct Hash_table initialization(int size)
 	return table;
 }
 
+unsigned int sieve(int size)  // Решето Эратосфена
+{
+	unsigned int* block = (unsigned int*)calloc(size * 4, sizeof(unsigned int));
+	for (int i = 2; i < size * 4; i++)
+	{
+		block[i] = i;
+	}
+	for (int i = 2; i < size * 4; i++)
+	{
+		if (block[i] != 0)
+		{
+			for (int j = i * 2; j < size * 4; j += i)
+			{
+				block[j] = 0;
+			}
+		}
+	}
+	for (int i = size * 2; i < size * 4; i++)
+	{
+		if (block[i] != 0)
+		{
+			unsigned int k = block[i];
+			free(block);
+			return k;
+		}
+	}
+}
+
+struct Hash_table balancing(struct Hash_table* table)
+{
+	if ((table->full + 1) * 4 >= table->size * 3)
+	{
+		int new_size = sieve(table->size);
+		struct Hash_table new_table;
+		new_table = initialization(new_size);
+		for (int i = 0; i <= table->size; i++)
+		{
+			if (table->hash_list[i].remote == 2)
+			{
+				add_value(&new_table, table->hash_list[i].value);
+			}
+		}
+		free(table->hash_list);
+		return new_table;
+	}
+}
 
 void add_value(struct Hash_table *table, int value)
 {
@@ -82,26 +128,6 @@ void find_value(struct Hash_table *table, int value)
 	return printf("value not found\n");
 }
 
-struct Hash_table balancing(struct Hash_table* table)
-{
-	if ((table->full + 1) * 4 >= table->size * 3)
-	{
-		int new_size = sieve(table->size);
-		struct Hash_table new_table;
-		new_table = initialization(new_size);
-		for (int i = 0; i <= table->size; i++)
-		{
-			if (table->hash_list[i].remote == 2)
-			{
-				add_value(&new_table, table->hash_list[i].value);
-			}
-		}
-		free(table->hash_list);
-		return new_table;
-	}
-}
-
-
 void output(struct Hash_table* table)
 {
 	for (int i = 0; i <= table->size - 1; i++)
@@ -110,32 +136,4 @@ void output(struct Hash_table* table)
 		printf("remote: %d \n", table->hash_list[i].remote);
 	}
 	return;
-}
-
-unsigned int sieve(int size)  // Решето Эратосфена
-{
-	unsigned int *block = (unsigned int*)calloc(size * 4, sizeof(unsigned int));
-	for (int i = 2; i < size * 4; i++)
-	{
-		block[i] = i;
-	}
-	for (int i = 2; i < size * 4; i++)
-	{
-		if (block[i] != 0) 
-		{
-			for (int j = i * 2; j < size * 4; j += i)
-			{
-				block[j] = 0;
-			}
-		}
-	}
-	for (int i = size * 2; i < size * 4; i++)
-	{
-		if (block[i] != 0)
-		{
-			unsigned int k = block[i];
-			free(block);
-			return k;
-		}
-	}
 }
