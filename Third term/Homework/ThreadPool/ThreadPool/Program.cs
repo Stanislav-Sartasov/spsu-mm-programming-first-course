@@ -15,9 +15,8 @@ namespace Task1
                     int num = i;
                     Thread.Sleep(1);
                     pool.Enqueue(() =>
-                    {
-                        while(true)
-                            Console.WriteLine(num);
+                    {   
+                        Console.WriteLine(num);
                     });
                 }
             }   
