@@ -25,14 +25,14 @@ namespace P2PChat
             fail = false;
             inter = new Interaction();
             ipList = new List<IPEndPoint>();
-            inter.Show("print your port to recive messages\n");
+            inter.Show("print your ip to recive messages\n");
             bool flag = false;
             socketListen = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             do 
             {
                 flag = false;
-                int port = inter.GetPort();
                 string ipStr = inter.GetIp();
+                int port = inter.GetPort();
                 myIp = new IPEndPoint(IPAddress.Parse(ipStr), port);
                 try
                 {
@@ -53,14 +53,15 @@ namespace P2PChat
             fail = false;
             inter = start;////////////////////////
             ipList = new List<IPEndPoint>();
-            inter.Show("print your port to recive messages\n");
+            inter.Show("print your ip to recive messages\n");
             bool flag = false;
             socketListen = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             do
             {
                 flag = false;
+                string ipStr = inter.GetIp();
                 int port = inter.GetPort();
-                myIp = new IPEndPoint(IPAddress.Parse("127.0.0.1"), port);
+                myIp = new IPEndPoint(IPAddress.Parse(ipStr), port);
                 try
                 {
                     socketListen.Bind(myIp);
@@ -131,6 +132,14 @@ namespace P2PChat
                 if (message == "exit()")
                 {
                     stop = true;
+                    return;
+                }
+                if (message == "connect()")
+                {
+                    AddConnect();
+                    enteredMessage.Dispose();
+                    enteredMessage = new Task<string>(() => TypeMessage());
+                    enteredMessage.Start();
                     return;
                 }
                 message = ((int)0).ToString() + "/" + myIp.Address.ToString() + "/" + myIp.Port.ToString() + "/" + message;
@@ -250,7 +259,7 @@ namespace P2PChat
             string[] arrStr = recived.message.Split('/');
             if (arrStr[1] == "1")
             {
-                 inter.SystemShow(1, $"we have got new man {arrStr[2]}:{arrStr[3]}, let us help him");
+                inter.SystemShow(1, $"we have got new man {arrStr[2]}:{arrStr[3]}, let us help him");
                 string sendString = ((int)1).ToString() + "/" + ((int)3).ToString();
                 foreach (var temp in ipList)
                 {
@@ -276,7 +285,7 @@ namespace P2PChat
             }
             if (arrStr[1] == "2")
             {
-                 inter.SystemShow(1, $"new man here, info from {recived.ip}:{recived.port}, man is <{arrStr[2]}:{arrStr[3]}>");
+                inter.SystemShow(1, $"new man here, info from {recived.ip}:{recived.port}, man is <{arrStr[2]}:{arrStr[3]}>");
                 ipList.Add(new IPEndPoint(IPAddress.Parse(arrStr[2]), Int32.Parse(arrStr[3]))); ///
             }
             if (arrStr[1] == "3")
@@ -336,11 +345,109 @@ namespace P2PChat
                     return true;
                 }
             }
+            if (arrStr[1] == "6")
+            {
+                inter.SystemShow(1, $"new man here, info from {recived.ip}:{recived.port}, man is <{arrStr[2]}:{arrStr[3]}>");
+                string sendString = ((int)1).ToString() + "/" + ((int)7).ToString();
+                foreach (var temp in ipList)
+                {
+                    sendString = sendString + "/" + temp.Address.ToString() + "/" + temp.Port.ToString();
+                }
+                sendString = sendString + "/" + myIp.Address.ToString() + "/" + myIp.Port.ToString();
+                socketPost = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                try
+                {
+                    socketPost.Connect(new IPEndPoint(IPAddress.Parse(arrStr[arrStr.Length - 2]), Int32.Parse(arrStr[arrStr.Length - 1])));
+                    socketPost.Send(Encoding.Unicode.GetBytes(sendString));
+                    socketPost.Shutdown(SocketShutdown.Both);
+                    socketPost.Close();
+                }
+                catch (Exception)
+                {
+                    inter.SystemShow(1, "bad send, can not connect");
+                }
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////
+                string newMes = "1/3";
+                for (int i = 2; i < arrStr.Length; ++i)
+                {
+                    newMes += "/" + arrStr[i];
+                }
+                PostMessage(newMes);
+                for (int i = 2; i < arrStr.Length; ++i)
+                {
+                    string ip = arrStr[i];
+                    ++i;
+                    string port = arrStr[i];
+                    IPEndPoint temp = new IPEndPoint(IPAddress.Parse(ip), Int32.Parse(port));
+                    int index = ipList.IndexOf(temp);
+                    if (index < 0)
+                    {
+                        ipList.Add(temp);
+                        inter.SystemShow(1, $"new man here {temp}");
+                    }
+                    
+                }
+            }
+            if (arrStr[1] == "7")
+            {
+                string newMes = "1/3";
+                for (int i = 2; i < arrStr.Length; ++i)
+                {
+                    newMes += "/" + arrStr[i];
+                }
+                PostMessage(newMes);
+                for (int i = 2; i < arrStr.Length; ++i)
+                {
+                    string ip = arrStr[i];
+                    ++i;
+                    string port = arrStr[i];
+                    IPEndPoint temp = new IPEndPoint(IPAddress.Parse(ip), Int32.Parse(port));
+                    int index = ipList.IndexOf(temp);
+                    if (index < 0)
+                    {
+                        ipList.Add(temp);
+                        inter.SystemShow(1, $"new man here {temp}");
+                    }
+
+                }
+            }
             return true;
         }
         public string TypeMessage()
         {
             return inter.GetStr();
+        }
+        private void AddConnect()
+        {
+            string ip = inter.GetIp();
+            int port = inter.GetPort();
+            IPEndPoint ipE = new IPEndPoint(IPAddress.Parse(ip), port);
+            int index = ipList.IndexOf(ipE);
+            if (index >= 0)
+            {
+                inter.SystemShow(1, "this man is already here");
+                return;
+            }
+            string sendString = ((int)1).ToString() + "/" + ((int)6).ToString();
+            foreach (var temp in ipList)
+            {
+                sendString = sendString + "/" + temp.Address.ToString() + "/" + temp.Port.ToString();
+            }
+            sendString = sendString + "/" + myIp.Address.ToString() + "/" + myIp.Port.ToString();
+            socketPost = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            try
+            {
+                socketPost.Connect(ipE);
+                socketPost.Send(Encoding.Unicode.GetBytes(sendString));
+                socketPost.Shutdown(SocketShutdown.Both);
+                socketPost.Close();
+                //ipList.Add(ipE);
+            }
+            catch (Exception)
+            {
+                inter.SystemShow(1, "bad send, can not connect");
+            }
+
         }
         public void PostMessage(string message)
         {

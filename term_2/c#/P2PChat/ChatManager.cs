@@ -38,7 +38,7 @@ namespace P2PChat
                 engine.OpenConnection(new IPEndPoint(IPAddress.Parse(ip), port));
             }
             bool stop = false;
-            inter.Show("if you want to get out from chating type 'exit()'\n");
+            inter.Show("if you want to get out from chating type 'exit()', if you want to connect to another people type 'connect()'\n");
             while (!stop)
             {
                 Thread.Sleep(100);
