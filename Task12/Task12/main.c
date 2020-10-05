@@ -1,36 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 int main()
 {
-	char* block = (char*)calloc(1, sizeof(char));
+	int n = (1 + (log(3) / log(256)) * 5000);
+	unsigned char* block = (unsigned char*)calloc(n, sizeof(char));
 	block[0] = 3;
-	int count = 1;
+	int over;
+	int over_last = 0;
 	for (int i = 0; i < 4999; i++)
 	{
-		for (int j = 0; j < count; j++)
+		for (int j = 0; j < n; j++)
 		{
-			block[j] *= 3;
-		}
-		if (block[count - 1] > 15)
-		{
-			block = realloc(block, (count + 1) * sizeof(char));
-			block[count] = 0;
-			count++;
-		}
-		for (int j = 0; j < count - 1; j++)
-		{
-			if (block[j] > 15)
+			if ((int)block[j] * 3 + over_last > 255)
 			{
-				block[j + 1] += (char)(block[j] / 16);
-				block[j] %= 16;
+				over = block[j] * 3 + over_last;
+				block[j] = (unsigned char)over % 256;
+				over_last = over / 256;
+			}
+			else
+			{
+				block[j] = block[j] * 3 + over_last;
+				over_last = 0;
 			}
 		}
 	}
 	printf("3^5000 = ");
-	for (int i = (count - 1); i >= 0; i--)
+	for (int i = (n - 1); i >= 0; i--)
 	{
-		printf("%x", block[i]);
+		printf("%x", block[i] >> 4 & 15);
+		printf("%x", block[i] & 15);
+
 	}
 	free(block);
 	return 0;
