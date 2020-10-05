@@ -32,7 +32,8 @@ namespace P2PChat
             {
                 flag = false;
                 int port = inter.GetPort();
-                myIp = new IPEndPoint(IPAddress.Parse("127.0.0.1"), port);
+                string ipStr = inter.GetIp();
+                myIp = new IPEndPoint(IPAddress.Parse(ipStr), port);
                 try
                 {
                     socketListen.Bind(myIp);
