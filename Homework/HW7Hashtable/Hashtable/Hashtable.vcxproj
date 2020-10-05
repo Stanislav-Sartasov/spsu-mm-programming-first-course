@@ -25,7 +25,6 @@
     <ClCompile Include="hashtable.c" />
     <ClCompile Include="insert.c" />
     <ClCompile Include="main.c" />
-    <ClCompile Include="nodePushback.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hashtable.h" />

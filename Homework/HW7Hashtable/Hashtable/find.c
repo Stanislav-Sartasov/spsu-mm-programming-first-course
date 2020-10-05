@@ -1,20 +1,16 @@
 #include "hashTable.h"
 
-int find(int key, node** hashTable)
+int find(int key, HashTable* hashTable)
 {
-	int flag = 0;
-	node* c = hashTable[key % 13];
-	while (c->link)
+	
+	node* c = hashTable->table[key % hashTable->tableSize];
+
+	do
 	{
-		if (c->key == key)
-		{
-			flag = 1;
-			break;
-		}
-		c = c->link;
-	}
-	if (flag)
-		return c->value;
-	else
-		return NULL;
+		if (c && c->key == key)
+			return c->value;
+		else if(c)
+			c = c->link;
+	} while (c);
+	return -1;
 }

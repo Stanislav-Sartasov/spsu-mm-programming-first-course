@@ -1,7 +1,13 @@
 #include "hashTable.h"
 
-node* buildTable(int items)
+HashTable* buildTable(int items)
 {
-	node* hashTable = malloc(items * sizeof(node));
+	HashTable* hashTable = malloc(sizeof(HashTable)*items);
+	hashTable->elementsCount = 0;
+	hashTable->tableSize = items;
+	hashTable->elementInLines = calloc(items, sizeof(int));
+	hashTable->table = calloc(items, sizeof(node));
+
+
 	return hashTable;
 }

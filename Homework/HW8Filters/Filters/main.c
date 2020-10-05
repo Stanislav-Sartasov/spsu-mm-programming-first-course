@@ -1,8 +1,9 @@
-﻿
+
 #include <stdio.h>
 #pragma pack(push)
 #pragma pack(1)
 #include <string.h>
+
 
 typedef struct
 {
@@ -14,7 +15,7 @@ typedef struct
 } BMPHEADER;
 
 
-struct BMPINFO
+typedef struct 
 {
 	unsigned int biSize;
 	unsigned int biWidth;
@@ -27,21 +28,21 @@ struct BMPINFO
 	unsigned int biYPelsPerMeter;
 	unsigned int biColorUsed;
 	unsigned int biColorImportant;
-};
+} BMPINFO;
 
-struct RGBQUAD
+typedef struct 
 {
 	unsigned char rgbBlue;
 	unsigned char rgbGreen;
 	unsigned char rgbRed;
 	unsigned char rgbReserved;
-};
+} RGBQUAD;
 
 double** getMatrix(unsigned int size)
 {
-	double** matrix = new double*[size];
+	double** matrix = (double*) malloc (sizeof(double)*size);
 	for (int x = 0; x < size; x++)
-		matrix[x] = new double[size];
+		matrix[x] = (double*) malloc(sizeof(double)* size);
 	return matrix;
 }
 
@@ -49,7 +50,7 @@ double** getMatrix(unsigned int size)
 unsigned char* filterApply(unsigned int* imageData, int bytesCount, int mx,
 	int my, int mx4, double*** matrixis, unsigned int filterMatrixSize, RGBQUAD* colorData)
 {
-	unsigned char* temp = new unsigned char[mx4*my];
+	unsigned char* temp = (unsigned char*) malloc(sizeof(unsigned char) * mx4 * my);
 	double r, g, b;
 	unsigned char* ptr = (unsigned char*)imageData;
 	double** redFilterMatrix = matrixis[0];
@@ -143,7 +144,6 @@ unsigned char* filterApply(unsigned int* imageData, int bytesCount, int mx,
 						break;
 					}
 
-
 				}
 				int freeIndex = 0;
 				while (findedColorIndex == -1)
@@ -174,6 +174,7 @@ unsigned char* filterApply(unsigned int* imageData, int bytesCount, int mx,
 		}
 	}
 	return temp;
+	
 }
 
 
@@ -184,7 +185,7 @@ double*** getMeanFilter(unsigned char size)
 	for (int x = 0; x < size; x++)
 		for (int y = 0; y < size; y++)
 			matrix[x][y] = 1.0 / (size * size);
-	double*** colorMatrixis = new double**[3];
+	double*** colorMatrixis = (double*) malloc(sizeof(double)*3);
 	colorMatrixis[0] = matrix;
 	colorMatrixis[1] = matrix;
 	colorMatrixis[2] = matrix;
@@ -195,18 +196,18 @@ double*** getMeanFilter(unsigned char size)
 double*** getGrayFilter()
 {
 	double** redMatrix = getMatrix(1);
-	redMatrix[0] = new double[1];
+	redMatrix[0] = (double*) malloc(sizeof(double));
 	redMatrix[0][0] = 0.2125;
 
 	double** greenMatrix = getMatrix(1);
-	greenMatrix[0] = new double[1];
+	greenMatrix[0] = (double*)malloc(sizeof(double));
 	greenMatrix[0][0] = 0.7154;
 
 	double** blueMatrix = getMatrix(1);
-	blueMatrix[0] = new double[1];
+	blueMatrix[0] = (double*)malloc(sizeof(double));
 	blueMatrix[0][0] = 0.0721;
 
-	double*** colorMatrixis = new double**[3];
+	double*** colorMatrixis = (double*)malloc(sizeof(double) * 3);
 	colorMatrixis[0] = redMatrix;
 	colorMatrixis[1] = greenMatrix;
 	colorMatrixis[2] = blueMatrix;
@@ -256,7 +257,7 @@ double*** getGaussFilter(unsigned char size)
 		matrix[4][3] = 0.006581;
 		matrix[4][4] = 0.000789;
 	}
-	double*** colorMatrixis = new double**[3];
+	double*** colorMatrixis = (double*)malloc(sizeof(double) * 3);
 	colorMatrixis[0] = matrix;
 	colorMatrixis[1] = matrix;
 	colorMatrixis[2] = matrix;
@@ -277,7 +278,7 @@ double*** getSobelFilterX()
 	matrix[2][0] = -1;
 	matrix[2][1] = 0;
 	matrix[2][2] = 1;
-	double*** colorMatrixis = new double**[3];
+	double*** colorMatrixis = (double*)malloc(sizeof(double) * 3);
 	colorMatrixis[0] = matrix;
 	colorMatrixis[1] = matrix;
 	colorMatrixis[2] = matrix;
@@ -297,7 +298,7 @@ double*** getSobelFilterY()
 	matrix[2][0] = 1;
 	matrix[2][1] = 2;
 	matrix[2][2] = 1;
-	double*** colorMatrixis = new double**[3];
+	double*** colorMatrixis = (double*)malloc(sizeof(double) * 3);
 	colorMatrixis[0] = matrix;
 	colorMatrixis[1] = matrix;
 	colorMatrixis[2] = matrix;
@@ -318,6 +319,7 @@ int main(int argc, char **argv)
 
 	char* outputFile = argv[3];
 	char fileData[1];
+
 	BMPHEADER header;
 
 	FILE* f;
@@ -351,7 +353,7 @@ int main(int argc, char **argv)
 	RGBQUAD* colorData = NULL;
 	if (info.biBitCount <= 8)
 	{
-		colorData = new RGBQUAD[256];
+		colorData = (RGBQUAD*) malloc(sizeof(RGBQUAD)*256);
 		size = fread(colorData, 1, 1024, f);
 		if (size != 1024)
 		{
@@ -361,14 +363,14 @@ int main(int argc, char **argv)
 		}
 
 	}
-
+	
 	int mx = info.biWidth;
 	int my = info.biHeight;
 	int bytesCount = info.biBitCount / 8;
 	int mx4 = (bytesCount * mx + ((bytesCount*mx) % 4 ? 4 - (bytesCount*mx) % 4 : 0));
 
-	unsigned char* temp = new unsigned char[mx4*my];
-
+	unsigned char* temp = (unsigned char*) malloc(sizeof(unsigned char) * mx4 * my);
+	
 	size = fread(temp, 1, mx4*my, f);
 	if (size != mx4 * my)
 	{
@@ -376,11 +378,12 @@ int main(int argc, char **argv)
 		fclose(f);
 		return 5;
 	}
-
+	
 	fclose(f);
-	unsigned int* imageData = new unsigned int[mx*my];
+	unsigned int* imageData = (unsigned int*) malloc(sizeof(unsigned int) * mx * my);
 	unsigned char* ptr = (unsigned char*)imageData;
 	unsigned int r, g, b;
+
 	for (int y = my - 1; y >= 0; y--)
 	{
 
@@ -410,8 +413,10 @@ int main(int argc, char **argv)
 
 		}
 	}
-	delete[] temp;
-
+	free (temp);
+	
+	
+	
 	double*** matrixis = NULL;
 	int filterMatrixSize = 1;
 
@@ -452,6 +457,19 @@ int main(int argc, char **argv)
 		return 7;
 	}
 	temp = filterApply(imageData, bytesCount, mx, my, mx4, matrixis, filterMatrixSize, colorData);
+	int matrixCount = 3;
+
+	if (matrixis[0] == matrixis[1])
+		matrixCount = 1;
+
+	for (int i = 0; i < matrixCount; i++)
+	{
+		for (int j = 0; j < filterMatrixSize; j++)
+			free(matrixis[i][j]);
+		free(matrixis[i]);
+	}
+
+	free(matrixis);
 
 	fopen_s(&f, outputFile, "wb");
 	if (!f)
@@ -466,8 +484,9 @@ int main(int argc, char **argv)
 	fwrite(&info, 1, sizeof(BMPINFO), f);
 	fwrite(temp, 1, mx4*my, f);
 	fclose(f);
-	delete[] temp;
-	delete[] imageData;
+	free (temp);
+	free (imageData);
+	free (colorData);
 
 	return 0;
 }

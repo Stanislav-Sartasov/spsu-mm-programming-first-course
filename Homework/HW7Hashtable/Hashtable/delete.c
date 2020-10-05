@@ -1,26 +1,43 @@
 #include "hashTable.h"
 
-void delete(int key, node** hashTable)
+int delete(int key, HashTable* hashTable)
 {
-
-	if (hashTable[key % 13]->key == key)
-		hashTable[key % 13] = hashTable[key % 13]->link;
+	int index = key % hashTable->tableSize;
+	if (hashTable->table[index]->key == key)
+	{
+		node* temp = hashTable->table[index];
+		hashTable->table[index] = hashTable->table[index]->link;
+		free(temp);
+		hashTable->elementsCount--;
+		hashTable->elementInLines[index]--;
+		return 0;
+	}
 	else
 	{
-		node* temp = hashTable[key % 13];
-		node* prevTemp = hashTable[key % 13];
+		node* temp = hashTable->table[index];
+		node* prevTemp = hashTable->table[index];
 		while (temp->link)
 		{
 			if (temp->key == key)
 			{
 				prevTemp->link = temp->link;
 				temp->key = NULL;
-				break;
+				free(temp);
+				hashTable->elementsCount--;
+				hashTable->elementInLines[index]--;
+				return 0;
 			}
 			prevTemp = temp;
 			temp = temp->link;
 		}
 		if (temp->key == key)
+		{
 			prevTemp->link = NULL;
+			free(temp);
+			hashTable->elementsCount--;
+			hashTable->elementInLines[index]--;
+			return 0;
+		} 
 	}
+	return -1;
 }

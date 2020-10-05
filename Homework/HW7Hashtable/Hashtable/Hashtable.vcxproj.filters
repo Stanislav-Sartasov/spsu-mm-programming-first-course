@@ -33,9 +33,6 @@
     <ClCompile Include="insert.c">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
-    <ClCompile Include="nodePushback.c">
-      <Filter>Файлы ресурсов</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hashtable.h">
