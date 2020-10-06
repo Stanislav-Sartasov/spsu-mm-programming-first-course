@@ -79,12 +79,12 @@ namespace UnitTestP2PChat
                 if (portCount == 0)
                 {
                     ++portCount;
-                    return 80;
+                    return 81;
                 }
                 if (portCount == 1)
                 {
                     ++portCount;
-                    return 81;
+                    return 80;
                 }
                 ++portCount;
                 return portCount;
@@ -119,7 +119,21 @@ namespace UnitTestP2PChat
                 Console.WriteLine("<2System>" + x + "<System>");
                 return;
             });
-
+            mock.Setup(x => x.GetPort()).Returns(() =>
+            {
+                if (portCount == 0)
+                {
+                    ++portCount;
+                    return 80;
+                }
+                if (portCount == 1)
+                {
+                    ++portCount;
+                    return 81;
+                }
+                ++portCount;
+                return portCount;
+            });
 
             ChatManager manager = new ChatManager(mock.Object);
             manager.StartChatting();
