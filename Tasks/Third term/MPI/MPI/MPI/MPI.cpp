@@ -58,8 +58,7 @@ void merge_split(int* res, int* input, int len, bool isMin)
 
 int main()
 {
-    double exec_time;
-    string name = "data.in";
+    string name = "../resourses/data.in";
     /*cout << "Enter file name\n";
     cin >> name;*/
     
@@ -71,7 +70,6 @@ int main()
 
     MPI_Init(NULL, NULL);
     MPI_Barrier(MPI_COMM_WORLD);
-    exec_time = -MPI_Wtime();
     MPI_Comm_rank(MPI_COMM_WORLD, &number_of_curr_proc);
     MPI_Comm_size(MPI_COMM_WORLD, &amount_of_procs);
     cout << "processor - " << number_of_curr_proc << endl;
@@ -110,18 +108,9 @@ int main()
 
     MPI_Status status;
     for (int i = 0; i < amount_of_procs; i++)
-        if (i % 2 == 1)
+        if (i % 2 == 0)
         {
-            if (0 <= odd_iteration_proc && odd_iteration_proc < amount_of_procs)
-            {
-                MPI_Sendrecv(data_in_proc, block_size, MPI_INT, odd_iteration_proc, 0, received_data, block_size, MPI_INT, odd_iteration_proc, 0, MPI_COMM_WORLD, &status);
-                if (number_of_curr_proc % 2 == 1)
-                    merge_split(data_in_proc, received_data, block_size, true);
-                else
-                    merge_split(data_in_proc, received_data, block_size, false);
-            }
-        }
-        else if (0 <= even_iteration_proc && even_iteration_proc < amount_of_procs)
+            if (0 <= even_iteration_proc && even_iteration_proc < amount_of_procs)
             {
                 MPI_Sendrecv(data_in_proc, block_size, MPI_INT, even_iteration_proc, 0, received_data, block_size, MPI_INT, even_iteration_proc, 0, MPI_COMM_WORLD, &status);
                 if (number_of_curr_proc % 2 == 0)
@@ -129,17 +118,23 @@ int main()
                 else
                     merge_split(data_in_proc, received_data, block_size, false);
             }
+        }
+        else if (0 <= odd_iteration_proc && odd_iteration_proc < amount_of_procs)
+            {
+                MPI_Sendrecv(data_in_proc, block_size, MPI_INT, odd_iteration_proc, 0, received_data, block_size, MPI_INT, odd_iteration_proc, 0, MPI_COMM_WORLD, &status);
+                if (number_of_curr_proc % 2 == 1)
+                    merge_split(data_in_proc, received_data, block_size, true);
+                else
+                    merge_split(data_in_proc, received_data, block_size, false);
+            }
 
     MPI_Gather(data_in_proc, block_size, MPI_INT, ans, block_size, MPI_INT, 0, MPI_COMM_WORLD);
-    exec_time += MPI_Wtime();
-    cout << "time of processor " << number_of_curr_proc << ":" << exec_time << endl;
-    /*for (int i = 0; i < data_len; i++)
-            cout<<ans[i]<<" ";*/
-    ofstream out("data.out");
+    cout << "processor " << number_of_curr_proc << " finished";
+    ofstream out("../resourses/data.out");
     if (number_of_curr_proc == 0)
     {
-        for (long i = 0; i < data_len; i++)
-            out << input_data[i] << " ";
+        for (int i = 0; i < data_len; i++)
+            out << ans[i] << " ";
     }
     MPI_Finalize();
     delete[] input_data;
