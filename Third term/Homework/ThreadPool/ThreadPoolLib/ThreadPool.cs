@@ -72,7 +72,7 @@ namespace ThreadPoolLib
             }
             foreach (var th in pool)
             {
-                th.Handler.Join();
+                th.Join();
             }
 
             if (disposing)
@@ -86,7 +86,7 @@ namespace ThreadPoolLib
 
         private class TaskHandler
         {
-            public Thread Handler { get; private set; }
+            private Thread handler;
             private ThreadPool pool;
             private Action task;
 
@@ -94,12 +94,14 @@ namespace ThreadPoolLib
             {
                 this.pool = pool;
                 this.task = task;
-                Handler = new Thread(DoWork)
+                handler = new Thread(DoWork)
                 {
                     IsBackground = true
                 };
-                Handler.Start();
+                handler.Start();
             }
+
+            public void Join() => handler.Join();
 
             private void DoWork()
             {
