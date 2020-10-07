@@ -20,9 +20,18 @@ namespace Wpf
     /// </summary>
     public partial class MainWindow : Window
     {
+        private float size;
+        private float height;
+        private float width;
         public MainWindow()
         {
             InitializeComponent();
+            size = 1;
+            graphics = pictureBox.CreateGraphics();
+            width = (float)pictureBox.Width;
+            height = (float)pictureBox.Height;
+            labelSize.Text = "Size: " + size.ToString();
+            comboBoxCurves.Items.AddRange(new Cruve[] { new Parabola(), new ClassicParabola(), new Circle() });
         }
     }
 }
