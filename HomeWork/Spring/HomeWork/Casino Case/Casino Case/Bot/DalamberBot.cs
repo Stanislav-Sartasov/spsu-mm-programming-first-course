@@ -12,12 +12,12 @@ namespace Casino_Case.Bot
         {
             int BidOn = 0;
             int bid = MinBid;
-            int BalanceInf = BetInfo.balance;
+            int BalanceInf = BetInfo.Balance;
             int wins = 0;
             for (int i = 0; i < AmountOfBets; i++)
             {
                 BotColorBet.Betting(BidOn, bid);
-                if (BalanceInf + bid == BetInfo.balance)
+                if (BalanceInf + bid == BetInfo.Balance)
                 {
 
                     if (BidOn == 0)
@@ -32,11 +32,11 @@ namespace Casino_Case.Bot
                 {
                     bid += MinBid;
                 }
-                BalanceInf = BetInfo.balance;
+                BalanceInf = BetInfo.Balance;
             }
 
             Console.WriteLine("\n\n\n\n");
-            Console.WriteLine("Total profit " + BetInfo.profit);
+            Console.WriteLine("Total Profit " + BetInfo.Profit);
             Console.WriteLine("Amount of bets " + BetInfo.AmountOfBets);
             Console.WriteLine("Amount of wins " + wins);
         }

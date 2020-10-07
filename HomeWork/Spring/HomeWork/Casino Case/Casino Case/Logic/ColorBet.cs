@@ -24,7 +24,6 @@ namespace Casino_Case.Logic
             {
                 OutputLose(bid);
             }
-            Console.WriteLine();
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Casino_Case
                 Wheel[i].Bid = 0;
                 k++;
 
-                if (i % parity == 0)
+                if ((i % 2 == 0 && parity == 2) || (i % 2 == 1 && parity == 1))
                     Wheel[i].Color = Colors.Black;
                 else
                     Wheel[i].Color = Colors.Red;

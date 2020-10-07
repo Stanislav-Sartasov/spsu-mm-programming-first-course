@@ -48,11 +48,11 @@ namespace Casino_Case
                         while (balance <= 0)
                         {
                             Console.Clear();
-                            Console.WriteLine("Inter you balance (more than 0)");
+                            Console.WriteLine("Inter you Balance (more than 0)");
                             balance = Convert.ToInt32(Console.ReadLine());
                         }
 
-                        BetInfo.balance = balance;
+                        BetInfo.Balance = balance;
 
 
                         Console.Clear();
@@ -69,14 +69,14 @@ namespace Casino_Case
                             Console.Clear();
                             Console.WriteLine("What bot do you wanna play?\n 1 - Dalamber \n 2 - Martingale ");
                             BotChoice = Convert.ToInt32(Console.ReadLine());
-                            Console.WriteLine("Enter bot balance, minimum bid and amount of bets");
+                            Console.WriteLine("Enter bot Balance, minimum bid and amount of bets");
                             balance = Convert.ToInt32(Console.ReadLine());
                             MinBid = Convert.ToInt32(Console.ReadLine());
                             BetAmount = Convert.ToInt32(Console.ReadLine());
                             if ((BotChoice == 1 || BotChoice == 2) && balance > 0 && MinBid > 0 && BetAmount > 0)
                                 right = true;
                         }
-                        BetInfo.balance = balance;
+                        BetInfo.Balance = balance;
                         if (BotChoice == 1)
                             Dalamber.Action(BetAmount, MinBid);
                         else
@@ -111,9 +111,9 @@ namespace Casino_Case
             {
 
                 Console.WriteLine("1 - " + "Stright Bet" + "                Info:");
-                Console.WriteLine("2 - " + "Red or Black Bet" + "           Balance: " + BetInfo.balance);
+                Console.WriteLine("2 - " + "Red or Black Bet" + "           Balance: " + BetInfo.Balance);
                 Console.WriteLine("3 - " + "Even or Odd Bet" + "            Amount of bets: " + BetInfo.AmountOfBets);
-                Console.WriteLine("4 - " + "Dozen Bet" + "                  Total Profit: " + BetInfo.profit);
+                Console.WriteLine("4 - " + "Dozen Bet" + "                  Total Profit: " + BetInfo.Profit);
                 Console.WriteLine("5 - " + "Column Bet");
                 Console.WriteLine("6 - " + "Exit");
                 choice_nd = Convert.ToInt32(Console.ReadLine());

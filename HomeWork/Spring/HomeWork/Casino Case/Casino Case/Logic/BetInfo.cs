@@ -6,8 +6,8 @@ namespace Casino_Case.Logic
 {
     abstract public class BetInfo
     {
-        public static int balance;
-        public static int profit = 0;
+        public static int Balance;
+        public static int Profit = 0;
         public static int AmountOfBets = 0;
     }
 }
