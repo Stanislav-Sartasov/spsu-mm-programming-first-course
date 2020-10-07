@@ -35,9 +35,12 @@ namespace Casino_Case.Bot
                 BalanceInf = BetInfo.Balance;
             }
 
+            int DisplayBalance = BetInfo.Balance;
+            int DisplayAmountOfBets = BetInfo.AmountOfBets;
+
             Console.WriteLine("\n\n\n\n");
-            Console.WriteLine("Total Profit " + BetInfo.Profit);
-            Console.WriteLine("Amount of bets " + BetInfo.AmountOfBets);
+            Console.WriteLine("Total Profit " + DisplayBalance);
+            Console.WriteLine("Amount of bets " + DisplayAmountOfBets);
             Console.WriteLine("Amount of wins " + wins);
         }
     }

@@ -109,11 +109,14 @@ namespace Casino_Case
 
             for (; ; )
             {
+                int DisplayBalance = BetInfo.Balance;
+                int DisplayAmountOfBets = BetInfo.AmountOfBets;
+                int DisplayProfit = BetInfo.Profit;
 
                 Console.WriteLine("1 - " + "Stright Bet" + "                Info:");
-                Console.WriteLine("2 - " + "Red or Black Bet" + "           Balance: " + BetInfo.Balance);
-                Console.WriteLine("3 - " + "Even or Odd Bet" + "            Amount of bets: " + BetInfo.AmountOfBets);
-                Console.WriteLine("4 - " + "Dozen Bet" + "                  Total Profit: " + BetInfo.Profit);
+                Console.WriteLine("2 - " + "Red or Black Bet" + "           Balance: " + DisplayBalance);
+                Console.WriteLine("3 - " + "Even or Odd Bet" + "            Amount of bets: " + DisplayAmountOfBets);
+                Console.WriteLine("4 - " + "Dozen Bet" + "                  Total Profit: " + DisplayProfit);
                 Console.WriteLine("5 - " + "Column Bet");
                 Console.WriteLine("6 - " + "Exit");
                 choice_nd = Convert.ToInt32(Console.ReadLine());
