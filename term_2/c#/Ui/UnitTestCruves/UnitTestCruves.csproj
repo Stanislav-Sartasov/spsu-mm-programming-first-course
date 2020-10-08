@@ -66,6 +66,10 @@
       <Project>{c20218db-c9ea-402c-8e5a-0371f486bf7f}</Project>
       <Name>WindowsForms</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Wpf\Wpf.csproj">
+      <Project>{666f409d-76a6-4e2f-95b3-82773928d9f7}</Project>
+      <Name>Wpf</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

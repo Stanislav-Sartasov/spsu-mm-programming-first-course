@@ -50,6 +50,43 @@ namespace UnitTestCruves
 
             app.Close();
         }
+        [TestMethod]
+        public void TestWpf()
+        {
+            Application app = Application.Launch("Wpf.exe");
+
+            //can't to use trackbar, because it’s not in TestStack.White
+            Window window = app.GetWindow("CruvesDrawer", InitializeOption.NoCache);
+
+            Button button = window.Get<Button>("buttonStart");
+            Button buttonPlus = window.Get<Button>("buttonPlus");
+            Button buttonMinus = window.Get<Button>("buttonMinus");
+            Label label = window.Get<Label>("labelSize");
+
+            ComboBox comboBox = window.Get<ComboBox>("comboBoxCurves");
+            comboBox.Select(0);
+            for (var i = 1; i < 7; i++)
+            {
+                buttonMinus.Click();
+                button.Click();
+            }
+
+            comboBox.Select(1);
+            for (var i = 1; i < 15; i++)
+            {
+                buttonPlus.Click();
+                button.Click();
+            }
+
+            comboBox.Select(2);
+            for (var i = 1; i < 10; i++)
+            {
+                buttonMinus.Click();
+                button.Click();
+            }
+
+            app.Close();
+        }
     }
     
 }

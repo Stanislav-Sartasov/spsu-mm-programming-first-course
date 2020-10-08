@@ -5,15 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wpf"
         mc:Ignorable="d"
-        Title="CruvesDrawer" Height="550" Width="800">
-    <Grid>
-        <Button x:Name="buttonStart" Content="Draw" HorizontalAlignment="Left" Margin="49,155,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="buttonPlus" Content="+ 0.1" HorizontalAlignment="Left" Margin="12,222,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button x:Name="buttonMinus" Content="- 0.1" HorizontalAlignment="Left" Margin="109,222,0,0" VerticalAlignment="Top" Width="75"/>
-        <Label x:Name="labelSize" Content="Size: xx" HorizontalAlignment="Left" Margin="64,277,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="comboBoxCurves" HorizontalAlignment="Left" Margin="38,76,0,0" VerticalAlignment="Top" Width="120"/>
-        <Label x:Name="labelCruves" Content="Cruves" HorizontalAlignment="Left" Margin="38,28,0,0" VerticalAlignment="Top"/>
-        <Canvas x:Name="pictureBox" HorizontalAlignment="Left" Height="400" Margin="290,50,0,0" VerticalAlignment="Top" Width="400"/>
-
-    </Grid>
+        Title="CruvesDrawer" Height="550" Width="800" Name="mainWindow">
+	<Grid>
+        <Button x:Name="buttonStart" Content="Draw" HorizontalAlignment="Left" Margin="49,155,0,0" VerticalAlignment="Top" Width="75" Click="buttonStart_Click"/>
+		<Button x:Name="buttonPlus" Content="+ 0.1" HorizontalAlignment="Left" Margin="12,222,0,0" VerticalAlignment="Top" Width="75"
+				Command="{Binding Path=PlusSizeCommand}"/>
+        <Button x:Name="buttonMinus" Content="- 0.1" HorizontalAlignment="Left" Margin="109,222,0,0" VerticalAlignment="Top" Width="75"
+				Command="{Binding Path=MinusSizeCommand}"/>
+		<Label x:Name="labelSize" Content="{Binding Path=SizeStr}"  HorizontalAlignment="Left" Margin="64,277,0,0" VerticalAlignment="Top"/>
+		<ComboBox x:Name="comboBoxCurves" ItemsSource="{Binding Path=LstCombo}" SelectedItem="{Binding Path=SelectedObj}" HorizontalAlignment="Left" Margin="38,76,0,0" VerticalAlignment="Top" Width="120"/>
+		<Label x:Name="labelCruves" Content="Cruves" HorizontalAlignment="Left" Margin="38,28,0,0" VerticalAlignment="Top"/>
+		<Canvas x:Name="pictureBox"  HorizontalAlignment="Left" Height="400" Margin="290,50,0,0" VerticalAlignment="Top" Width="400"/>
+	</Grid>
 </Window>
