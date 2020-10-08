@@ -92,6 +92,11 @@ void medianFilter(unsigned char* inImage, int height, int width)
 {
 	int size = 3;
 	double* bit = (double*)malloc(size * size * sizeof(double));
+	if (bit == NULL)
+	{
+		printf("An error occurred during memory allocation\nPlease, try again or use \"help\"\n");
+		exit(-1);
+	}
 
 	for (int i = 0; i < size * size; i++)
 	{
@@ -103,18 +108,24 @@ void medianFilter(unsigned char* inImage, int height, int width)
 	free(bit);
 }
 
-void gaussFilter(char type[], unsigned char *inImage, int height, int width)
+void gaussFilter(char type[], unsigned char* inImage, int height, int width)
 {
 	int size;
-	if (strcmp(type, "gauss3") == 0)
+	if (strcmp(type, "gauss3") == 0) // gauss3
 	{
 		size = 3;
 	}
-	if (strcmp(type, "gauss5") == 0)
+	else // gauss5
 	{
 		size = 5;
 	}
+
 	double* bit = (double*)malloc(size * size * sizeof(double));
+	if (bit == NULL)
+	{
+		printf("An error occurred during memory allocation\nPlease, try again or use \"help\"\n");
+		exit(-1);
+	}
 
 	double sig = 0.6, pi = 3.141592653589793238462643383279;
 	
@@ -131,10 +142,15 @@ void gaussFilter(char type[], unsigned char *inImage, int height, int width)
 	free(bit);
 }
 
-void sobelFilter(char type[], unsigned char *inImage, int height, int width)
+void sobelFilter(char type[], unsigned char* inImage, int height, int width)
 {
 	int size = 3;
 	double* bit = (double*)malloc(size * size * sizeof(double));
+	if (bit == NULL)
+	{
+		printf("An error occurred during memory allocation\nPlease, try again or use \"help\"\n");
+		exit(-1);
+	}
 
 	if (strcmp(type, "sobelX") == 0)
 	{
@@ -160,11 +176,11 @@ void sobelFilter(char type[], unsigned char *inImage, int height, int width)
 	free(bit);
 }
 
-void greyFilter(unsigned char *inImage, int height, int width)
+void greyFilter(unsigned char* inImage, int height, int width)
 {
 	for (int i = 0; i < height * width; i++)
 	{
-		unsigned char out = (2126 * inImage[i * 3] + 7152 * inImage[i * 3 + 1] + 722 * inImage[i * 3 + 2]) / 10000;
+		unsigned char out = (20 * inImage[i * 3] + 70 * inImage[i * 3 + 1] + 5 * inImage[i * 3 + 2]) / 100;
 		for (int k = 0; k < 3; k++)
 		{
 			inImage[i * 3 + k] = out;
@@ -172,7 +188,7 @@ void greyFilter(unsigned char *inImage, int height, int width)
 	}
 }
 
-void filterSelect(unsigned char *binImage, int height, int width, char type[])
+void filterSelect(unsigned char* binImage, int height, int width, char type[])
 {
 	if (strcmp(type, "grey") == 0)
 	{
@@ -192,7 +208,7 @@ void filterSelect(unsigned char *binImage, int height, int width, char type[])
 	}
 }
 
-void inputCheckNames(int argc, char *argv[])
+void inputCheckNames(int argc, char* argv[])
 {
 	if ((argc == 2) && (strcmp(argv[1], "help") == 0))
 	{
@@ -202,7 +218,13 @@ void inputCheckNames(int argc, char *argv[])
 	else
 	{
 		int fl = 0;
-		if (!((strcmp(argv[2], "median") == 0) || (strcmp(argv[2], "gauss3") == 0) || (strcmp(argv[2], "gauss5") == 0) || (strcmp(argv[2], "sobelX") == 0) || (strcmp(argv[2], "sobelY") == 0) || (strcmp(argv[2], "grey") == 0)))
+		if (
+			!((strcmp(argv[2], "median") == 0)
+				|| (strcmp(argv[2], "gauss3") == 0)
+				|| (strcmp(argv[2], "gauss5") == 0)
+				|| (strcmp(argv[2], "sobelX") == 0)
+				|| (strcmp(argv[2], "sobelY") == 0)
+				|| (strcmp(argv[2], "grey") == 0)))
 		{
 			printf("Wrong name of the filter\n");
 			fl = 1;
@@ -211,9 +233,9 @@ void inputCheckNames(int argc, char *argv[])
 		char ext[] = ".bmp";
 		for (int i = 1; i < 5; i++)
 		{
-			if ((argv[3][strlen(argv[3]) - i] != ext[4 - i]) || (argv[1][strlen(argv[1]) - i] != ext[4 - i]))
+			if ((argv[1][strlen(argv[1]) - i] != ext[4 - i]) || (argv[3][strlen(argv[3]) - i] != ext[4 - i]))
 			{
-				printf("Wrong name of the output file\n");
+				printf("Wrong name of the input/output file\n");
 				fl = 1;
 				break;
 			}
@@ -227,7 +249,7 @@ void inputCheckNames(int argc, char *argv[])
 	}	
 }
 
-void inputCheckFiles(int argc, char *argv[], FILE *fileIn, FILE *fileOut)
+void inputCheckFiles(int argc, char* argv[], FILE* fileIn, FILE* fileOut)
 {
 	short fl = 0;
 	if (fileIn == NULL)
@@ -242,12 +264,12 @@ void inputCheckFiles(int argc, char *argv[], FILE *fileIn, FILE *fileOut)
 	}
 	if (fl == 1)
 	{
-		printf("Please, try again or use \"help\"\n");
-		exit(0);
+		printf("Please, try again\n");
+		exit(-1);
 	}
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
 	if (!((argc == 2) && (strcmp(argv[1], "help") == 0)) && (argc != 4))
 	{
@@ -257,8 +279,8 @@ int main(int argc, char *argv[])
 
 	inputCheckNames(argc, argv);
 
-	FILE *fileIn = fopen(argv[1], "rb");
-	FILE *fileOut = fopen(argv[3], "wb");
+	FILE* fileIn = fopen(argv[1], "rb");
+	FILE* fileOut = fopen(argv[3], "wb");
 
 	inputCheckFiles(argc, argv, fileIn, fileOut);
 
@@ -268,16 +290,40 @@ int main(int argc, char *argv[])
 	fread(&fileHeader, sizeof(fileHeader), 1, fileIn);
 	fread(&infoHeader, sizeof(infoHeader), 1, fileIn);
 
-	unsigned char *binImage = (unsigned char*)malloc(infoHeader.size_image);
+	const offsetSize = fileHeader.bf_off_bits - 54;
+	unsigned char* palette = (unsigned char*)malloc(offsetSize);
+	if (palette == NULL)
+	{
+		printf("An error occurred during memory allocation\nPlease, try again or use \"help\"\n");
+		exit(-1);
+	}
+
+	fread(palette, 1, offsetSize, fileIn);
+
+	if (infoHeader.size_image == 0)
+	{
+		infoHeader.size_image = infoHeader.width * infoHeader.height * (infoHeader.bit_count / 8);
+	}
+
+	unsigned char* binImage = (unsigned char*)malloc(infoHeader.size_image);
+	if (binImage == NULL)
+	{
+		printf("An error occurred during memory allocation\nPlease, try again or use \"help\"\n");
+		exit(-1);
+	}
+
 	fseek(fileIn, fileHeader.bf_off_bits, SEEK_SET);
 	fread(binImage, 1, infoHeader.size_image, fileIn);
 
 	filterSelect(binImage, infoHeader.height, infoHeader.width, argv[2]);
 
-	printf("Success!\n");
-
 	fwrite(&fileHeader, sizeof(fileHeader), 1, fileOut);
 	fwrite(&infoHeader, sizeof(infoHeader), 1, fileOut);
+
+	for (int i = 0; i < offsetSize; i++)
+	{
+		fwrite(&palette[i], 1, 1, fileOut);
+	}
 
 	for (int i = 0; i < infoHeader.size_image; i++)
 	{
@@ -285,6 +331,9 @@ int main(int argc, char *argv[])
 	}
 
 	free(binImage);
+	free(palette);
 	fclose(fileIn);
 	fclose(fileOut);
+
+	printf("Success!\n");
 }
