@@ -38,19 +38,6 @@ namespace Wpf
         }
         private void NumberInCoord(float number, float x, float y)
         {
-            /*TextBlock textBlock = new TextBlock
-            {
-                Text = number.ToString(),
-                Fontsize = 10
-            };
-            Canvas.SetLeft(textBlock, Logic.width + number * pixels - 4);
-            Canvas.SetTop(textBlock, Logic.height + 4);
-            canvas.Children.Add(textBlock);
-
-            number = (float)Math.Round(number, 1);
-            var font = new Font(Font.FontFamily, 9);
-            graphics.DrawString(number.ToString(), font, Brushes.Black, x, y);
-            */
         }
         private void SysCoord()
         {
@@ -167,12 +154,10 @@ namespace Wpf
             {
                 lst[i] = (new PointF(Logic.width / 2 + step * lst[i].X, Logic.height / 2 - step * lst[i].Y));
                 DrawLine(lst[i - 1].X, lst[i - 1].Y, lst[i].X, lst[i].Y);
-                //DrawLine(lst[i - 1], lst[i]);
             }
         }
         private void buttonStart_Click(object sender, RoutedEventArgs e)
         {
-            //Cruve cr = (Cruve)comboBoxCurves.SelectedItem;
             Cruve cr = (Cruve)Logic.SelectedObj;
             pictureBox.Children.Clear();
             SysCoord();

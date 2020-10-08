@@ -60,7 +60,6 @@ namespace Wpf
             if (size + 0.1f < 10.1f)
                 size = size + 0.1f;
             SizeStr = "Size: " + size.ToString();
-            //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SizeStr"));
         }
         public ICommand MinusSizeCommand
         {
@@ -74,7 +73,6 @@ namespace Wpf
             if (size - 0.1f > 0.1f)
                 size = size - 0.1f;
             SizeStr = "Size: " + size.ToString();
-            //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SizeStr"));
         }
     }
 }

@@ -16,7 +16,6 @@ namespace UnitTestCruves
         {
             Application app = Application.Launch("WindowsForms.exe");
 
-            //can't to use trackbar, because it’s not in TestStack.White
             Window window = app.GetWindow("winForm", InitializeOption.NoCache);
 
             Button button = window.Get<Button>("buttonStart");
@@ -54,8 +53,6 @@ namespace UnitTestCruves
         public void TestWpf()
         {
             Application app = Application.Launch("Wpf.exe");
-
-            //can't to use trackbar, because it’s not in TestStack.White
             Window window = app.GetWindow("CruvesDrawer", InitializeOption.NoCache);
 
             Button button = window.Get<Button>("buttonStart");
