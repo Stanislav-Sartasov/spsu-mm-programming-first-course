@@ -3,10 +3,11 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Fibers.Processes\Fibers.Processes.csproj" />
+    <ProjectReference Include="..\Fibers.Framework\Fibers.Framework.csproj" />
   </ItemGroup>
 
 </Project>
