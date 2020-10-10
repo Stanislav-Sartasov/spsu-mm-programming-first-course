@@ -1,4 +1,4 @@
-module hellofx {
+module task_8 {
     requires javafx.controls;
     requires javafx.fxml;
 
