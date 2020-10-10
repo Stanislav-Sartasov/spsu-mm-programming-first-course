@@ -1,4 +1,4 @@
-package app;
+package com.company.app;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -7,10 +7,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import math.Graph;
-import math.Ellipse;
-import math.Hyperbola;
-import math.Parabola;
+import com.company.math.*;
 
 import java.util.ArrayList;
 

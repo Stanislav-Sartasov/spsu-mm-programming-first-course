@@ -1,18 +1,19 @@
-package math;
+package com.company.math;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static junit.framework.TestCase.assertEquals;
 
-class GraphTest {
+
+public class GraphTest {
 
     private Graph ellipse;
     private Graph parabola;
     private Graph hyperbola;
-    @BeforeEach
+    @Before
     public void setUp() {
         ellipse = new Ellipse(2,3, -100, 100);
         parabola = new Parabola(2, -100, 100);
@@ -23,27 +24,27 @@ class GraphTest {
     public void getYPointsEllipseTest() {
         ArrayList<Float> points = ellipse.getYPoints(0);
         assertEquals(points.size(), 2);
-        assertEquals(points.get(0), 3);
-        assertEquals(points.get(1), -3);
+        assertEquals(points.get(0), (float)3);
+        assertEquals(points.get(1), (float)-3);
         points = ellipse.getYPoints(2);
         assertEquals(points.size(), 1);
-        assertEquals(points.get(0), 0);
+        assertEquals(points.get(0), (float)0);
     }
     @Test
     public void getYPointsHyperbolaTest() {
         ArrayList<Float> points = hyperbola.getYPoints(5);
         assertEquals(points.size(), 1);
-        assertEquals(points.get(0), 0);
+        assertEquals(points.get(0), (float)0);
     }
     @Test
     public void getYPointsParabolaTest() {
         ArrayList<Float> points = parabola.getYPoints(0);
         assertEquals(points.size(), 1);
-        assertEquals(points.get(0), 0);
+        assertEquals(points.get(0), (float)0);
         points = parabola.getYPoints(1);
         assertEquals(points.size(), 2);
-        assertEquals(points.get(0), 2);
-        assertEquals(points.get(1), -2);
+        assertEquals(points.get(0), (float)2);
+        assertEquals(points.get(1), (float)-2);
 
     }
 }

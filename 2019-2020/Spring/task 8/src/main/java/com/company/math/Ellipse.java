@@ -1,6 +1,4 @@
-package math;
-
-import math.Graph;
+package com.company.math;
 
 import java.util.ArrayList;
 

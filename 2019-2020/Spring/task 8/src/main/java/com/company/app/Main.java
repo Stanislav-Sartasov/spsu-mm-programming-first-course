@@ -1,4 +1,4 @@
-package app;
+package com.company.app;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
-    public static final String FXMLPATH = "/resources/uiMenu.fxml";
+    public static final String FXMLPATH = "uiMenu.fxml";
     public static final String TITLE = "Function Graphs Drawer";
 
     @Override

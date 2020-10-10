@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="pane" prefHeight="620.0" prefWidth="920.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.UIController">
+<AnchorPane fx:id="pane" prefHeight="620.0" prefWidth="920.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.company.app.UIController">
    <children>
       <ComboBox fx:id="graphBox" layoutX="26.0" layoutY="42.0" prefHeight="36.0" prefWidth="229.0" promptText="graphs" />
       <Label fx:id="scaleLabel" alignment="CENTER" layoutX="711.0" layoutY="294.0" prefHeight="87.0" prefWidth="114.0" text="1">

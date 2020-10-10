@@ -1,11 +1,10 @@
-package math;
+package com.company.math;
 
 import javafx.geometry.Point2D;
 
 import java.util.ArrayList;
 
 public abstract class Graph {
-    ArrayList<Point2D> points;
     String equation;
     float from, to;
 

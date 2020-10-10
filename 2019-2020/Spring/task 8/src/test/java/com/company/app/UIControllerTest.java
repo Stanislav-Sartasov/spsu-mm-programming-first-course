@@ -1,8 +1,4 @@
-/*
-    VM options: --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
- */
-
-package app;
+package com.company.app;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
@@ -15,10 +11,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import math.Ellipse;
-import math.Graph;
-import math.Hyperbola;
-import math.Parabola;
+import com.company.math.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +20,7 @@ import org.testfx.framework.junit.ApplicationTest;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 public class UIControllerTest extends ApplicationTest {
     private Button incScaleBtn, decScaleBtn;
@@ -36,6 +29,7 @@ public class UIControllerTest extends ApplicationTest {
     private DrawingField drawingField;
 
     public void initGraphs() {
+        System.out.println("world");
         ArrayList<Graph> toBox = new ArrayList<>();
         toBox.add(new Ellipse(1,1, (float) (-drawingField.getWidth() / 2), (float) drawingField.getWidth() / 2));
         toBox.add(new Ellipse(5, 3, (float) (-drawingField.getWidth() / 2), (float) drawingField.getWidth() / 2));
@@ -59,6 +53,7 @@ public class UIControllerTest extends ApplicationTest {
 
     @Override
     public void start(Stage stage) throws Exception {
+        System.out.println("HI");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(UIController.class.getResource(Main.FXMLPATH));
         AnchorPane pane = loader.load();

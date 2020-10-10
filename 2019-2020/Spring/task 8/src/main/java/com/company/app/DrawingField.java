@@ -1,4 +1,4 @@
-package app;
+package com.company.app;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
@@ -6,7 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
-import math.Graph;
+import com.company.math.Graph;
 
 import java.util.ArrayList;
 
@@ -137,10 +137,6 @@ public class DrawingField extends Canvas {
         drawQuarter(quarters[1], 2);
         drawQuarter(quarters[2], 3);
         drawQuarter(quarters[3], 4);
-    }
-
-    public void setScale(float scale) {
-        this.scale = scale;
     }
 
     public void incScale() {
