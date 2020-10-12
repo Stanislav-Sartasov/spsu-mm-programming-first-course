@@ -29,7 +29,6 @@ public class UIControllerTest extends ApplicationTest {
     private DrawingField drawingField;
 
     public void initGraphs() {
-        System.out.println("world");
         ArrayList<Graph> toBox = new ArrayList<>();
         toBox.add(new Ellipse(1,1, (float) (-drawingField.getWidth() / 2), (float) drawingField.getWidth() / 2));
         toBox.add(new Ellipse(5, 3, (float) (-drawingField.getWidth() / 2), (float) drawingField.getWidth() / 2));
@@ -53,7 +52,6 @@ public class UIControllerTest extends ApplicationTest {
 
     @Override
     public void start(Stage stage) throws Exception {
-        System.out.println("HI");
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(UIController.class.getResource(Main.FXMLPATH));
         AnchorPane pane = loader.load();

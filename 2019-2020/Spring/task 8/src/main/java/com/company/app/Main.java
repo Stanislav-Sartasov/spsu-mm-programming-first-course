@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
-    public static final String FXMLPATH = "uiMenu.fxml";
+    public static final String FXMLPATH = "/app/uiMenu.fxml";
     public static final String TITLE = "Function Graphs Drawer";
 
     @Override
@@ -18,7 +18,6 @@ public class Main extends Application {
         System.out.println(absolutePath);*/
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLPATH));
-
         Parent root = loader.load();
         Scene startScene = new Scene(root, 920, 620);
         stage.setScene(startScene);

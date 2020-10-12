@@ -1,41 +1,31 @@
 plugins {
-  id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.8'
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
 }
 
+sourceCompatibility = 11
+
 repositories {
-    jcenter()
     mavenCentral()
 }
 
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile "org.testfx:testfx-core:4.0.15-alpha"
+    testCompile "org.testfx:testfx-junit:4.0.15-alpha"
+    testCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.1'
+}
+
 javafx {
-    version = "13"
+    version = '12'
     modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
-mainClassName = "$moduleName/com.company.app.Main"
 
-
-dependencies {
-
-    testCompile ('junit:junit:4.13') {
-        exclude group: 'org.hamcrest'
-    }
-    testCompile 'org.hamcrest:hamcrest:2.1'
-    testCompile ('org.testfx:testfx-core:4.0.13-alpha') {
-        exclude group: 'org.hamcrest'
-    }
-    testImplementation ('org.testfx:testfx-junit:4.0.13-alpha') {
-        exclude group: 'org.hamcrest'
-    }
-    testCompile ('org.loadui:testFx:3.1.2') {
-        exclude group: 'org.hamcrest'
-    }
-    testCompile ('com.google.guava:guava:18.0')
-}
+mainClassName = 'com.company.app.Main'
 
 test {
-    useJUnit()
     // Always run tests, even when nothing changed.
     dependsOn 'cleanTest'
 
