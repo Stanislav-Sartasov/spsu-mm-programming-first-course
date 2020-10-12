@@ -25,7 +25,6 @@ namespace ProducerConsumer.Library
         internal static void Put(string name, T t)
         {
             Monitor.Enter(Buffer);
-            Monitor.PulseAll(Buffer);
             Buffer.Add(t);
             Console.WriteLine($"Producer {name} add the element {t}");
             Monitor.PulseAll(Buffer);
@@ -36,7 +35,6 @@ namespace ProducerConsumer.Library
         {
             Random random = new Random();
             Monitor.Enter(Buffer);
-            Monitor.PulseAll(Buffer);
             if (Buffer.Count != 0)
             {
                 Console.WriteLine($"Consumer {name} take a element");

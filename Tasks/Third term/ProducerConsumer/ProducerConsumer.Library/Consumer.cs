@@ -21,7 +21,10 @@ namespace ProducerConsumer.Library
         private void Run(object obj)
         {
             while (continueRun)
+            {
                 Manager<T>.Take(name);
+                Thread.Sleep(1000);
+            }
         }
 
         internal void Start()
