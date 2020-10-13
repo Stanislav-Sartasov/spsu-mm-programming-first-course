@@ -7,52 +7,52 @@ namespace HTClass
 {
 	public class MyHashtable<TKey, TValue> : IEnumerable<Item<TKey, TValue>>
 	{
-		public int listSize { get; private set; } = 4;
-		public int listMaxSize { get; private set; } = 1;
-		public int countOfItems { get; private set; } = 0;
+		public int ListSize { get; private set; } = 4;
+		public int ListMaxSize { get; private set; } = 1;
+		public int CountOfItems { get; private set; } = 0;
 		LinkedList<Item<TKey, TValue>>[] listOfItems;
 
 		public int HashFunc(TKey key, int Size) => Math.Abs(key.GetHashCode() % Size);
 
 		public MyHashtable()
 		{
-			listOfItems = new LinkedList<Item<TKey, TValue>>[listSize];
+			listOfItems = new LinkedList<Item<TKey, TValue>>[ListSize];
 		}
 
 		public void Resize()
 		{
-			int checkListSize = listSize * 2;
+			int checkListSize = ListSize * 2;
 			int checkListMaxSize = checkListSize / 4;
 			var checkList = new LinkedList<Item<TKey, TValue>>[checkListSize];
 
 			foreach (var item in this)
 			{
-				int index = HashFunc(item.Key, listSize);
+				int index = HashFunc(item.Key, ListSize);
 				if (checkList[index] == null)
 					checkList[index] = new LinkedList<Item<TKey, TValue>>();
 				checkList[index].AddLast(item);
 			}
 
 			listOfItems = checkList;
-			listSize = checkListSize;
-			listMaxSize = checkListMaxSize;
+			ListSize = checkListSize;
+			ListMaxSize = checkListMaxSize;
 		}
 
 		public void MyAdd(TKey key, TValue value)
 		{
 			if (listOfItems == null)
-				listOfItems = new LinkedList<Item<TKey, TValue>>[listSize];
+				listOfItems = new LinkedList<Item<TKey, TValue>>[ListSize];
 			if (!KeyExistence(key))
 			{
-				int index = HashFunc(key, listSize);
+				int index = HashFunc(key, ListSize);
 				if (listOfItems[index] == null)
 				{
 					listOfItems[index] = new LinkedList<Item<TKey, TValue>>();
 				}
 				listOfItems[index].AddLast(new Item<TKey, TValue>(key, value));
-				countOfItems += countOfItems;
+				CountOfItems += CountOfItems;
 
-				if (listOfItems[index].Count > listMaxSize)
+				if (listOfItems[index].Count > ListMaxSize)
 				{
 					Resize();
 				}
@@ -63,14 +63,14 @@ namespace HTClass
 		{
 			if (KeyExistence(key))
 			{
-				int index = HashFunc(key, listSize);
+				int index = HashFunc(key, ListSize);
 				var removableItem = listOfItems[index].First;
 				while (removableItem != null)
 				{
 					if (removableItem.Value.Key.Equals(key))
 					{
 						listOfItems[index].Remove(removableItem);
-						countOfItems -= countOfItems;
+						CountOfItems -= CountOfItems;
 						break;
 					}
 					removableItem = removableItem.Next;
@@ -83,7 +83,7 @@ namespace HTClass
 			value = default;
 			if (KeyExistence(key))
 			{
-				int index = HashFunc(key, listSize);
+				int index = HashFunc(key, ListSize);
 				var requiredKey = listOfItems[index].First;
 				while (listOfItems[index] != null)
 				{
@@ -100,7 +100,7 @@ namespace HTClass
 
 		public bool KeyExistence(TKey key)
 		{
-			int index = HashFunc(key, listSize);
+			int index = HashFunc(key, ListSize);
 
 			if (listOfItems[index] != null)
 			{
@@ -123,7 +123,7 @@ namespace HTClass
 		}
 		public IEnumerator<Item<TKey, TValue>> GetEnumerator()
 		{
-			for (int i = 0; i < listSize; i++)
+			for (int i = 0; i < ListSize; i++)
 			{
 				if (listOfItems[i] != null)
 				{

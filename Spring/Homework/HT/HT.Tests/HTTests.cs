@@ -56,12 +56,12 @@ namespace HT.Tests
 		public void CorrectResize()
 		{
 			table = new MyHashtable<int, int>();
-			Assert.AreEqual(table.listMaxSize, 1);
-			Assert.AreEqual(table.listSize, 4);
+			Assert.AreEqual(table.ListMaxSize, 1);
+			Assert.AreEqual(table.ListSize, 4);
 			for (int i = 0; i < 8; i++)
 				table.MyAdd(i, i);
-			Assert.AreEqual(table.listMaxSize, 2);
-			Assert.AreEqual(table.listSize, 8);
+			Assert.AreEqual(table.ListMaxSize, 2);
+			Assert.AreEqual(table.ListSize, 8);
 		}
 	}
 }
