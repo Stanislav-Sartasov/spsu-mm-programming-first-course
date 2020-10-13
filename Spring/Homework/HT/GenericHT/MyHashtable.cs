@@ -1,5 +1,4 @@
-﻿using HTItem;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -147,6 +146,22 @@ namespace HTClass
 		{
 			foreach (var item in this)
 				Console.WriteLine(item);
+		}
+	}
+
+	public class Item<TKey, TValue>
+	{
+		public TKey Key { get; private set; }
+		public TValue Value { get; private set; }
+		public Item(TKey key, TValue value)
+		{
+			Key = key;
+			Value = value;
+		}
+
+		public override string ToString()
+		{
+			return $"{Key}, {Value}";
 		}
 	}
 }
