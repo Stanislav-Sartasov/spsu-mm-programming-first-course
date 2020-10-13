@@ -2,15 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using WRMyHashtableItem;
+using System.Threading.Tasks;
 
 namespace WRMyHashTableClass
 {
 	public class MyHashtable<TKey, TValue> : IEnumerable<Item<TKey, TValue>> where TValue : class
 	{
-		public int listSize { get; private set; } = 4;
-		public int listMaxSize { get; private set; } = 1;
-		public int countOfItems { get; private set; } = 0;
+		public int ListSize { get; private set; } = 4;
+		public int ListMaxSize { get; private set; } = 1;
+		public int CountOfItems { get; private set; } = 0;
 		public int StorageTime { get; private set; }
 		LinkedList<Item<TKey, TValue>>[] listOfItems;
 
@@ -23,43 +23,43 @@ namespace WRMyHashTableClass
 
 		public MyHashtable()
 		{
-			listOfItems = new LinkedList<Item<TKey, TValue>>[listSize];
+			listOfItems = new LinkedList<Item<TKey, TValue>>[ListSize];
 			StorageTime = 10000;
 		}
 
 		public void Resize()
 		{
-			int checkListSize = listSize * 2;
+			int checkListSize = ListSize * 2;
 			int checkListMaxSize = checkListSize / 4;
 			var checkList = new LinkedList<Item<TKey, TValue>>[checkListSize];
 
 			foreach (var item in this)
 			{
-				int index = HashFunc(item.Key, listSize);
+				int index = HashFunc(item.Key, ListSize);
 				if (checkList[index] == null)
 					checkList[index] = new LinkedList<Item<TKey, TValue>>();
 				checkList[index].AddLast(item);
 			}
 
 			listOfItems = checkList;
-			listSize = checkListSize;
-			listMaxSize = checkListMaxSize;
+			ListSize = checkListSize;
+			ListMaxSize = checkListMaxSize;
 		}
 
 		public void MyAdd(TKey key, TValue value)
 		{
 			if (listOfItems == null)
-				listOfItems = new LinkedList<Item<TKey, TValue>>[listSize];
+				listOfItems = new LinkedList<Item<TKey, TValue>>[ListSize];
 			if (!KeyExistence(key))
 			{
-				int index = HashFunc(key, listSize);
+				int index = HashFunc(key, ListSize);
 				if (listOfItems[index] == null)
 				{
 					listOfItems[index] = new LinkedList<Item<TKey, TValue>>();
 				}
 				listOfItems[index].AddLast(new Item<TKey, TValue>(StorageTime, key, value));
 
-				if (listOfItems[index].Count > listMaxSize)
+				if (listOfItems[index].Count > ListMaxSize)
 				{
 					Resize();
 				}
@@ -70,14 +70,14 @@ namespace WRMyHashTableClass
 		{
 			if (KeyExistence(key))
 			{
-				int index = HashFunc(key, listSize);
+				int index = HashFunc(key, ListSize);
 				var removableItem = listOfItems[index].First;
 				while (removableItem != null)
 				{
 					if (removableItem.Value.Key.Equals(key))
 					{
 						listOfItems[index].Remove(removableItem);
-						countOfItems -= countOfItems;
+						CountOfItems -= CountOfItems;
 						break;
 					}
 					removableItem = removableItem.Next;
@@ -90,7 +90,7 @@ namespace WRMyHashTableClass
 			value = default;
 			if (KeyExistence(key))
 			{
-				int index = HashFunc(key, listSize);
+				int index = HashFunc(key, ListSize);
 				if (listOfItems[index] != null)
 				{
 					var requireItem = listOfItems[index].First;
@@ -114,13 +114,13 @@ namespace WRMyHashTableClass
 		public void Clear()
 		{
 			listOfItems = null;
-			listSize = 4;
-			listMaxSize = 1;
+			ListSize = 4;
+			ListMaxSize = 1;
 		}
 
 		public bool KeyExistence(TKey key)
 		{
-			int index = HashFunc(key, listSize);
+			int index = HashFunc(key, ListSize);
 
 			if (listOfItems[index] != null)
 			{
@@ -144,7 +144,7 @@ namespace WRMyHashTableClass
 
 		public IEnumerator<Item<TKey, TValue>> GetEnumerator()
 		{
-			for (int i = 0; i < listSize; i++)
+			for (int i = 0; i < ListSize; i++)
 			{
 				if (listOfItems[i] != null)
 				{
@@ -177,6 +177,38 @@ namespace WRMyHashTableClass
 			{
 				Console.WriteLine(item);
 			}
+		}
+	}
+
+	public class Item<TKey, TValue> where TValue : class
+	{
+		public TKey Key { get; private set; }
+		public WeakReference<TValue> Value { get; private set; }
+		private int storageTime;
+		public Item(int storageTime, TKey key, TValue value)
+		{
+			this.storageTime = storageTime;
+			SetPair(key, value);
+		}
+
+		public Item(TKey key, TValue value)
+		{
+			Key = key;
+			Value = new WeakReference<TValue>(value);
+		}
+		async public void SetPair(TKey key, TValue value)
+		{
+			Key = key;
+			Value = new WeakReference<TValue>(value);
+			await Task.Delay(storageTime);
+		}
+
+		public override string ToString()
+		{
+			if (Value.TryGetTarget(out TValue target))
+				return $"{Key}, {target}";
+			else
+				return $"{Key}, collected";
 		}
 	}
 }
