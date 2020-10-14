@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30503.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF", "WPF.csproj", "{D9850712-F08A-4015-AD09-5439224977EE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MathLibrary", "..\MathLibrary\MathLibrary.csproj", "{694B66AE-63AA-450E-9194-F7B9E4560B3E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D9850712-F08A-4015-AD09-5439224977EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9850712-F08A-4015-AD09-5439224977EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9850712-F08A-4015-AD09-5439224977EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9850712-F08A-4015-AD09-5439224977EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{694B66AE-63AA-450E-9194-F7B9E4560B3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{694B66AE-63AA-450E-9194-F7B9E4560B3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{694B66AE-63AA-450E-9194-F7B9E4560B3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{694B66AE-63AA-450E-9194-F7B9E4560B3E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3DFF2847-66D8-4A08-A9E5-FCD3E00E355A}
+	EndGlobalSection
+EndGlobal
