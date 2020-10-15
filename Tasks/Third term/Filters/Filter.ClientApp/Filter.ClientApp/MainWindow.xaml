@@ -1,0 +1,51 @@
+﻿<Window x:Class="Filter.ClientApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Filter.ClientApp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Column="1" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <Grid x:Name="SourceImage"/>
+        </ScrollViewer>
+        <ScrollViewer Grid.Column="2" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <Grid x:Name="ResultImage"/>
+        </ScrollViewer>
+
+        <ProgressBar Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+                     HorizontalAlignment="Center" VerticalAlignment="Center"
+                     Minimum="0" Maximum="100" Height="40" Width="400" x:Name="Progress"/>
+
+        <TextBlock Text="File address - " FontSize="17" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBox Grid.Column="1" x:Name="FileAddress" Height="20" MinWidth="200" HorizontalAlignment="Left"/>
+        <DockPanel Grid.Column="2" LastChildFill="False">
+            <Button Grid.Column="2" Content="Downoload" Width="80" Height="25" HorizontalAlignment="Right" Click="DownloadImage" DockPanel.Dock="Right"/>
+            <TextBlock Grid.Column="2" HorizontalAlignment="Right" Width="40" Background="White" x:Name="ControlAction" DockPanel.Dock="Right"/>
+        </DockPanel>
+
+        <DockPanel Grid.Column="0" Grid.Row="2" LastChildFill="True"> 
+            <TextBlock FontSize="15" Text="Server's IP and port (x:x:x:x:y):" Height="30" DockPanel.Dock="Top"/>
+            <TextBox x:Name="ServerAddress" MinWidth="100"/>
+            <Button Content="Connect" Click="ConnectToServer" DockPanel.Dock="Bottom"/>
+        </DockPanel>
+       
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical">
+            <ComboBox IsReadOnly="True" ItemsSource="{Binding availableFilters}" x:Name="MyComboBox"/>
+            <Button Content="Send" Width="80" Height="25" HorizontalAlignment="Center" Click="SendImage"/>
+            <Button Content="I changed my mind" MinWidth="80" Height="25" HorizontalAlignment="Center" Click="SendStop"/>
+        </StackPanel>
+    </Grid>
+</Window>
