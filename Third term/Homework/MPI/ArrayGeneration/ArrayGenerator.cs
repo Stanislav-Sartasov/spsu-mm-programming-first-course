@@ -13,7 +13,7 @@ namespace ArrayGeneration
 
             for (int i = 0; i < capacity; i++)
             {
-                lst.Add(((-1) ^ i) * r.Next(1000001));
+                lst.Add((i % 2 == 0 ? 1 : -1) * r.Next(1000001));
             }
 
             return lst;

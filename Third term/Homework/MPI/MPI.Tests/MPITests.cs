@@ -11,12 +11,14 @@ namespace MPI.Tests
     public class MPITests
     {
         const int processorsNumber = 4;
-        static readonly string input = Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "input.txt");
-        static readonly string actOutput = Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "actOutput.txt");
-        static readonly string expOutput = Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "expOutput.txt");
+        
         static readonly string appPath = string
-            .Format("{0}MPI\\bin\\Debug\\MPI.exe", 
+            .Format("{0}MPI\\bin\\Debug", 
             Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\")));
+        static readonly string input = Path.Combine(appPath, "input.txt");
+        static readonly string actOutput = Path.Combine(appPath, "actOutput.txt");
+        static readonly string expOutput = Path.Combine(appPath, "expOutput.txt");
+
 
         public bool CompareFiles(string path1, string path2)
         {
@@ -46,7 +48,7 @@ namespace MPI.Tests
             IOManager.WriteArray(input, array);
             array.Sort();
             IOManager.WriteArray(expOutput, array);
-            var args = $"mpiexec -n {processorsNumber} {appPath} {input} {actOutput}";
+            var args = $"mpiexec -n {processorsNumber} MPI.exe input.txt actOutput.txt";
             Process cmd = new Process();
             cmd.StartInfo.FileName = "cmd.exe";
             cmd.StartInfo.RedirectStandardInput = true;
@@ -55,6 +57,7 @@ namespace MPI.Tests
             cmd.StartInfo.UseShellExecute = false;
             cmd.Start();
 
+            cmd.StandardInput.WriteLine($"cd {appPath}");
             cmd.StandardInput.WriteLine(args);
             cmd.StandardInput.Flush();
             cmd.StandardInput.Close();
