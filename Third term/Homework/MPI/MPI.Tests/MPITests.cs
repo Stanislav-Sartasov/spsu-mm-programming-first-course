@@ -17,6 +17,7 @@ namespace MPI.Tests
         static readonly string appPath = string
             .Format("{0}MPI\\bin\\Debug\\MPI.exe", 
             Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\")));
+
         public bool CompareFiles(string path1, string path2)
         {
             string contents1 = File.ReadAllText(path1);

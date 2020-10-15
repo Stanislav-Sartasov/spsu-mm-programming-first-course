@@ -18,6 +18,7 @@ namespace MPI
                 .ToList();
             return res;
         }
+
         public static void WriteArray(string outputPath, List<int> arr)
         {
             using (StreamWriter writer = new StreamWriter(outputPath))
