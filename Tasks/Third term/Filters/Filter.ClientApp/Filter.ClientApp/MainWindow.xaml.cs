@@ -68,7 +68,8 @@ namespace Filter.ClientApp
             }
         }
 
-        // 1 - filter, 2 - image, 3 - stop
+        // отправляемые: 1 - filter, 2 - image, 3 - stop
+        // получаемые: 1 - картинка, 2 - прогресс, 3 - filters
         private void SendImage(object sender, RoutedEventArgs e)
         {
             if (!isConnect)
@@ -86,12 +87,21 @@ namespace Filter.ClientApp
 
                 byte[] pixels = null;
                 bool isSuccess = SecondaryFunctions.ImageToByteArray(sourceImage, out pixels);
-                byte[] sendBytes = new byte[1 + pixels.Length];
+                byte[] sendBytes = new byte[1 + 4 + 4 + pixels.Length];
                 sendBytes[0] = 2;
-                for (int i = 1; i < sendBytes.Length; i++)
-                    sendBytes[i] = pixels[i - 1];
+
+                byte[] temp = BitConverter.GetBytes(DataOfImage.Height);
+                for (int i = 0; i < 4; i++)
+                    sendBytes[i + 1] = temp[i];
+                temp = BitConverter.GetBytes(DataOfImage.Width);
+                for (int i = 0; i < 4; i++)
+                    sendBytes[i + 5] = temp[i];
+
+                for (int i = 0; i < pixels.Length; i++)
+                    sendBytes[i + 9] = pixels[i];
                 if (isSuccess)
                 {
+                    networkStream.Write(chosenFilter, 0, chosenFilter.Length);
                     networkStream.Write(sendBytes, 0, sendBytes.Length);
                     isListening = true;
                     Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new listenDelegate(Listen));
@@ -112,10 +122,23 @@ namespace Filter.ClientApp
 
         private void Listen()
         {
+            networkStream = client.GetStream();
             if (networkStream.CanRead)
             {
-                byte[] bytes = new byte[client.ReceiveBufferSize];
-                networkStream.Read(bytes, 0, (int)client.ReceiveBufferSize);
+
+                byte[] buffer = new byte[256];
+                List<byte> data = new List<byte>(256);
+                int temp = 0;
+                int amount = 0;
+                do
+                {
+                    temp = networkStream.Read(buffer, 0, buffer.Length);
+                    data.AddRange(buffer);
+                    amount += temp;
+                }
+                while (temp != 0 && networkStream.DataAvailable);
+                data.RemoveRange(amount, data.Count - amount);
+                byte[] bytes = data.ToArray();
                 if (bytes[0] == 1) // image
                 {
                     bytes = bytes.Skip(1).ToArray();
@@ -139,8 +162,8 @@ namespace Filter.ClientApp
                 }
                 if (bytes[0] == 3) //list of filters
                 {
-                    string temp = SecondaryFunctions.TranslateByteArrayToStringUnicode(bytes);
-                    availableFilters = temp.Split(' ').ToList();
+                    string tempFilter = SecondaryFunctions.TranslateByteArrayToStringUnicode(bytes);
+                    availableFilters = tempFilter.Split(' ').ToList();
                     MyComboBox.ItemsSource = availableFilters;
                     isListening = false;
                 }
@@ -163,9 +186,12 @@ namespace Filter.ClientApp
             bool isSuccess = SecondaryFunctions.TryParseIp(ServerAddress.Text, out ip);
             if (isSuccess)
             {
-                client = new TcpClient(ip);
+                client = new TcpClient();
+                client.Connect(ip);
                 ControlAction.Background = Brushes.Green;
                 isConnect = true;
+                isListening = true;
+                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new listenDelegate(Listen));
             }
             else
             {
