@@ -24,7 +24,7 @@ namespace Filter.ClientApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        private delegate void listenDelegate();
+        private delegate void messageHandlingDelegate();
 
         private BitmapSource sourceImage = null;
         private BitmapSource resultImage = null;
@@ -35,11 +35,16 @@ namespace Filter.ClientApp
         private bool isListening = false;
         private List<string> availableFilters;
 
+        private Thread getStream;
+        private bool isReceive = false;
+        private byte[] receivedData = null;
+
         // black - проблемы с подключением, yellow - не удалось получить изображение из массива байтов
         public MainWindow()
         {
             InitializeComponent();
             availableFilters = new List<string>();
+            getStream = null;
         }
 
         private void DownloadImage(object sender, RoutedEventArgs e)
@@ -62,8 +67,9 @@ namespace Filter.ClientApp
 
                 ControlAction.Background = Brushes.Green;
             }
-            catch
+            catch (Exception ex)
             {
+                ExceptionConsole.Text = $"{ex}";
                 ControlAction.Background = Brushes.Red;
             }
         }
@@ -78,7 +84,7 @@ namespace Filter.ClientApp
                 return;
             }
             networkStream = client.GetStream();
-            if (networkStream.CanWrite)
+            try
             {
                 ControlAction.Background = Brushes.Green;
 
@@ -102,17 +108,17 @@ namespace Filter.ClientApp
                 if (isSuccess)
                 {
                     networkStream.Write(chosenFilter, 0, chosenFilter.Length);
+                    Thread.Sleep(100); // против склейки буфера, исправить
                     networkStream.Write(sendBytes, 0, sendBytes.Length);
-                    isListening = true;
-                    Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new listenDelegate(Listen));
+                    DataOfImage.Pixels = null;
+                    Listen();
                 }
                 else
                     ControlAction.Background = Brushes.Red;
-
-                
             }
-            else
+            catch (Exception ex)
             {
+                ExceptionConsole.Text = $"{ex}";
                 ControlAction.Background = Brushes.Red;
                 client.Close();
                 networkStream.Close();
@@ -120,10 +126,10 @@ namespace Filter.ClientApp
             }
         }
 
-        private void Listen()
+        private void GetStream()
         {
             networkStream = client.GetStream();
-            if (networkStream.CanRead)
+            try
             {
 
                 byte[] buffer = new byte[256];
@@ -138,11 +144,37 @@ namespace Filter.ClientApp
                 }
                 while (temp != 0 && networkStream.DataAvailable);
                 data.RemoveRange(amount, data.Count - amount);
-                byte[] bytes = data.ToArray();
-                if (bytes[0] == 1) // image
+                receivedData = data.ToArray();
+                isReceive = true;
+            }
+            catch
+            {
+                client.Close();
+                networkStream.Close();
+                ControlAction.Background = Brushes.Black;
+                isListening = false;
+                return;
+            }
+        }
+
+        private void Listen()
+        {
+            getStream = new Thread(GetStream);
+            isListening = true;
+            isReceive = false;
+            getStream.Start();
+            if (isListening)
+                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new messageHandlingDelegate(MessageHandling));
+        }
+
+        private void MessageHandling()
+        {
+            if (isReceive)
+            {
+                if (receivedData[0] == 1) // image
                 {
-                    bytes = bytes.Skip(1).ToArray();
-                    bool isSuccess = SecondaryFunctions.ByteArrayToImage(bytes, DataOfImage, out resultImage);
+                    receivedData = receivedData.Skip(1).ToArray();
+                    bool isSuccess = SecondaryFunctions.ByteArrayToImage(receivedData, DataOfImage, out resultImage);
                     if (isSuccess)
                     {
                         Image image = new Image();
@@ -155,29 +187,21 @@ namespace Filter.ClientApp
                     }
                     isListening = false;
                 }
-                if (bytes[0] == 2) //progress bar
+                if (receivedData[0] == 2) //progress bar
                 {
-                    Progress.Value = bytes[1];
-                    isListening = true;
+                    Progress.Value = receivedData[1];
+                    Listen();
                 }
-                if (bytes[0] == 3) //list of filters
+                if (receivedData[0] == 3) //list of filters
                 {
-                    string tempFilter = SecondaryFunctions.TranslateByteArrayToStringUnicode(bytes);
+                    string tempFilter = SecondaryFunctions.TranslateByteArrayToStringUnicode(receivedData);
                     availableFilters = tempFilter.Split(' ').ToList();
                     MyComboBox.ItemsSource = availableFilters;
                     isListening = false;
                 }
             }
-            else
-            {
-                client.Close();
-                networkStream.Close();
-                ControlAction.Background = Brushes.Black;
-                isListening = false;
-                return;
-            }
             if (isListening)
-                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new listenDelegate(Listen));
+                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.SystemIdle, new messageHandlingDelegate(MessageHandling));
         }
 
         private void ConnectToServer(object sender, RoutedEventArgs e)
@@ -190,8 +214,7 @@ namespace Filter.ClientApp
                 client.Connect(ip);
                 ControlAction.Background = Brushes.Green;
                 isConnect = true;
-                isListening = true;
-                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new listenDelegate(Listen));
+                Listen();
             }
             else
             {
@@ -208,18 +231,34 @@ namespace Filter.ClientApp
                 return;
             }
             networkStream = client.GetStream();
-            if (networkStream.CanWrite)
+            try
             {
                 ControlAction.Background = Brushes.Green;
                 networkStream.Write(new byte[1] { 3 }, 0, 1);
                 Progress.Value = 0;
+                isListening = false;
+                getStream.Abort();
             }
-            else
+            catch (Exception ex)
             {
+                ExceptionConsole.Text = $"{ex}";
                 ControlAction.Background = Brushes.Red;
                 client.Close();
                 networkStream.Close();
                 return;
+            }
+        }
+
+        private void Disconnect(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                getStream.Abort();
+                client.Close();
+            }
+            catch (Exception ex)
+            {
+                ExceptionConsole.Text = $"{ex}";
             }
         }
     }

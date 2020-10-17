@@ -42,8 +42,9 @@ namespace Filter.ClientApp
                 
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                
                 result = default;
                 return false;
             }

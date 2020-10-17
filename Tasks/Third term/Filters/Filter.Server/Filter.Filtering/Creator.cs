@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace Filter.Filtering
@@ -9,29 +10,26 @@ namespace Filter.Filtering
     {
         static Dictionary<string, IFilter> filters;
 
-        public static void Initialize(string path)
+        public static void Initialize()
         {
-            using (StreamReader sr = new StreamReader(path))
-            {
-                string line;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    Console.WriteLine(line);
-                }
-            }
+            filters = new Dictionary<string, IFilter>();
+            filters["Gray"] = new Gray();
+            filters["SobelX"] = new SobelX();
         }
 
-        // переписать на строки и словарь
-        public static IFilter Create(int number)
+        public static IFilter Create(string name)
         {
-            if (number == 1)
-                return new Gray();
+            if (filters.ContainsKey(name))
+                return filters[name];
             return null;
         }
 
         public static string AvailableFilters()
         {
-            return "Gray";
+            StringBuilder result = new StringBuilder();
+            foreach (string filter in filters.Keys)
+                result.Append(filter + " ");
+            return result.ToString() ;
         }
     }
 }

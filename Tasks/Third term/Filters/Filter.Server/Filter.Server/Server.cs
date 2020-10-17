@@ -16,6 +16,7 @@ namespace Filter.Server
         static TcpListener listener;
         static void Main(string[] args)
         {
+            Creator.Initialize();
             try
             {
                 IPEndPoint temp = SelectionIpByPort(port);

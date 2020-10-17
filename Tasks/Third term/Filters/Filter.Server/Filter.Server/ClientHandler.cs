@@ -80,15 +80,16 @@ namespace Filter.Server
 
         private void Wait(byte[] data, int height, int width)
         {
-            IFilter filter = Creator.Create(1); // изменить
+            IFilter filter = Creator.Create(chosenFilter);
 
             Task<byte[]> temp = Task.Factory.StartNew<byte[]>(() => filter.Process(data, height, width));
             while (!temp.IsCompleted)
             {
                 Thread.Sleep(1000);
-                SendProgress(filter.Progress() / height / width / 4);
+                SendProgress((int)((filter.Progress() * 1.0) / height / width / 4 * 100));
             }
             SendProgress(100);
+            Thread.Sleep(300); // против склейки буфера, исправить
             result = temp.Result;
             isCalculating = false;
             SendResult();
