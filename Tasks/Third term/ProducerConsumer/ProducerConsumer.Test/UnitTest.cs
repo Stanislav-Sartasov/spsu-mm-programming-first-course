@@ -24,8 +24,8 @@ namespace ProducerConsumer.Test
             var consumers = manager.GetConsumers();
             for (int i = 0; i < 2; i++)
             {
-                Assert.IsFalse(producers[i].continueRun);
-                Assert.IsFalse(consumers[i].continueRun);
+                Assert.IsFalse(producers[i].IsRunning());
+                Assert.IsFalse(consumers[i].IsRunning());
             }
             manager.Dispose();
         }

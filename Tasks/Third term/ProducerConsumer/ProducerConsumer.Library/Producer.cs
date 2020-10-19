@@ -10,7 +10,7 @@ namespace ProducerConsumer.Library
         private string name;
         private Thread thread;
         private Manager<T> myManager;
-        public bool continueRun { get; private set; }
+        private volatile bool continueRun;
 
         public Producer(string name, Manager<T> manager)
         {
@@ -39,6 +39,10 @@ namespace ProducerConsumer.Library
             continueRun = false;
             thread.Join();
             Console.WriteLine($"Producer {name} exit");
+        }
+        public bool IsRunning()
+        {
+            return continueRun;
         }
     }
 }
