@@ -63,6 +63,8 @@ void convolution(unsigned char* bitMapImage, int height, int width, char* mode)
 
 	double* matrix = (double*)malloc((2 * size + 1) * (2 * size + 1) * sizeof(double));
 
+	//double* matrix[3][9] = { { 1, 2, 1, 2, 4, 2, 1, 2, 1} { -1, 0, 1, -2, 0, 2, -1, 0, 1 }, { -1, -2, -1, 0, 0, 0, 1, 2, 1 } };
+
 	if (strcmp(mode, "Averaging") == 0)
 	{
 		for (int i = 0; i < (2 * size + 1) * (2 * size + 1); i++)
@@ -86,6 +88,8 @@ void convolution(unsigned char* bitMapImage, int height, int width, char* mode)
 		for (int i = 0; i < 9; i++)
 			matrix[i] = source[i];
 	}
+
+
 
 	for (int i = 0; i < height; i++)
 		for (int j = 0; j < width; j++)
@@ -113,7 +117,6 @@ void convolution(unsigned char* bitMapImage, int height, int width, char* mode)
 				bitMapImageCopy[(i * width + j) * 3] = (double)(result[0] / divisor);
 				bitMapImageCopy[(i * width + j) * 3 + 1] = (double)(result[1] / divisor);
 				bitMapImageCopy[(i * width + j) * 3 + 2] = (double)(result[2] / divisor);
-				bitMapImage[i] = bitMapImageCopy[i];
 			}
 		}
 
