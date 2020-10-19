@@ -47,7 +47,7 @@ namespace ThreadPoolLib
 
             for (int i = 0; i < NumberOfThreads; i++)
             {
-                TaskHandler th = new TaskHandler(null, this);
+                TaskHandler th = new TaskHandler(this);
                 pool.Add(th);
             }
         }
@@ -90,10 +90,10 @@ namespace ThreadPoolLib
             private ThreadPool pool;
             private Action task;
 
-            public TaskHandler(Action task, ThreadPool pool)
+            public TaskHandler(ThreadPool pool)
             {
                 this.pool = pool;
-                this.task = task;
+  
                 handler = new Thread(DoWork)
                 {
                     IsBackground = true
