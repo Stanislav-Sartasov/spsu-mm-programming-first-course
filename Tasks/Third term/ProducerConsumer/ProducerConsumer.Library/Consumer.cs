@@ -9,10 +9,12 @@ namespace ProducerConsumer.Library
     {
         private string name;
         private Thread thread;
+        private Manager<T> myManager;
         public bool continueRun { get; private set; }
 
-        public Consumer(string name)
+        public Consumer(string name, Manager<T> manager)
         {
+            myManager = manager;
             this.name = name;
             continueRun = true;
             thread = new Thread(Run);
@@ -22,7 +24,7 @@ namespace ProducerConsumer.Library
         {
             while (continueRun)
             {
-                Manager<T>.Take(name);
+                myManager.Take(name);
                 Thread.Sleep(1000);
             }
         }

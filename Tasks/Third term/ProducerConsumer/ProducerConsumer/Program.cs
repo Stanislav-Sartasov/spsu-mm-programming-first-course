@@ -9,11 +9,12 @@ namespace ProducerConsumer
         {
             const int producer = 5;
             const int consumer = 5;
-            Manager<Object>.Initialize(producer, consumer);
-            Manager<Object>.Run();
+            Manager<Object> manager = new Manager<object>();
+            manager.Initialize(producer, consumer);
+            manager.Run();
             Console.ReadKey();
-            Manager<Object>.Exit();
-            Manager<Object>.Dispose();
+            manager.Exit();
+            manager.Dispose();
         }
     }
 }

@@ -15,18 +15,19 @@ namespace ProducerConsumer.Test
         {
             const int producer = 2;
             const int consumer = 2;
-            Manager<Object>.Initialize(producer, consumer);
-            Manager<Object>.Run();
+            Manager<Object> manager = new Manager<object>();
+            manager.Initialize(producer, consumer);
+            manager.Run();
             Thread.Sleep(100);
-            Manager<Object>.Exit();
-            var producers = Manager<Object>.GetProducers();
-            var consumers = Manager<Object>.GetConsumers();
+            manager.Exit();
+            var producers = manager.GetProducers();
+            var consumers = manager.GetConsumers();
             for (int i = 0; i < 2; i++)
             {
                 Assert.IsFalse(producers[i].continueRun);
                 Assert.IsFalse(consumers[i].continueRun);
             }
-            Manager<Object>.Dispose();
+            manager.Dispose();
         }
     }
 }

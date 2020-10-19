@@ -4,47 +4,47 @@ using System.Threading;
 
 namespace ProducerConsumer.Library
 {
-    public static class Manager<T>  where T : class
+    public class Manager<T> where T : class
     {
-        private static List<Producer<T>> producers;
-        private static List<Consumer<T>> consumers;
-        private static List<T> Buffer;
-        public static void Initialize(int producer, int consumer)
+        private List<Producer<T>> producers;
+        private List<Consumer<T>> consumers;
+        private List<T> buffer;
+        public void Initialize(int producer, int consumer)
         {
             producers = new List<Producer<T>>(producer);
             consumers = new List<Consumer<T>>(consumer);
-            Buffer = new List<T>();
+            buffer = new List<T>();
 
             for (int i = 0; i < producer; i++)
-                producers.Add(new Producer<T>($"Produser {i + 1}"));
+                producers.Add(new Producer<T>($"Produser {i + 1}", this));
 
             for (int i = 0; i < consumer; i++)
-                consumers.Add(new Consumer<T>($"Consumer {i + 1}"));
+                consumers.Add(new Consumer<T>($"Consumer {i + 1}", this));
         }
 
-        internal static void Put(string name, T t)
+        internal void Put(string name, T t)
         {
-            Monitor.Enter(Buffer);
-            Buffer.Add(t);
+            Monitor.Enter(buffer);
+            buffer.Add(t);
             Console.WriteLine($"Producer {name} add the element {t}");
-            Monitor.PulseAll(Buffer);
-            Monitor.Exit(Buffer);
+            Monitor.PulseAll(buffer);
+            Monitor.Exit(buffer);
         }
 
-        internal static void Take(string name)
+        internal void Take(string name)
         {
             Random random = new Random();
-            Monitor.Enter(Buffer);
-            if (Buffer.Count != 0)
+            Monitor.Enter(buffer);
+            if (buffer.Count != 0)
             {
                 Console.WriteLine($"Consumer {name} take a element");
-                Buffer.RemoveAt(random.Next(Buffer.Count));
+                buffer.RemoveAt(random.Next(buffer.Count));
             }
-            Monitor.PulseAll(Buffer);
-            Monitor.Exit(Buffer);
+            Monitor.PulseAll(buffer);
+            Monitor.Exit(buffer);
         }
 
-        public static void Run()
+        public void Run()
         {
             for (int i = 0; i < producers.Count; i++)
                 producers[i].Start();
@@ -53,17 +53,17 @@ namespace ProducerConsumer.Library
                 consumers[i].Start();
         }
 
-        public static List<Producer<T>> GetProducers()
+        public List<Producer<T>> GetProducers()
         {
             return producers;
         }
 
-        public static List<Consumer<T>> GetConsumers()
+        public List<Consumer<T>> GetConsumers()
         {
             return consumers;
         }
 
-        public static void Exit()
+        public void Exit()
         {
             for (int i = 0; i < producers.Count; i++)
                 producers[i].Exit();
@@ -72,11 +72,11 @@ namespace ProducerConsumer.Library
                 consumers[i].Exit();
         }
 
-        public static void Dispose()
+        public void Dispose()
         {
             producers = null;
             consumers = null;
-            Buffer = null;
+            buffer = null;
         }
     }
 }
