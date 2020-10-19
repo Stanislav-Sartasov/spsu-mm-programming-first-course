@@ -122,7 +122,7 @@ void convolution(unsigned char* bitMapImage, int height, int width, char* mode)
 		if (strcmp(mode, "SobelX") == 0 || strcmp(mode, "SobelY") == 0)
 			bitMapImage[i] = bitMapImageCopy[i] > 128 ? 255 : 0;
 		else
-			bitMapImage[i] = bitMapImageCopy[i] > 128 ? 255 : 0;
+			bitMapImage[i] = bitMapImageCopy[i];
 	}
 
 	free(matrix);
