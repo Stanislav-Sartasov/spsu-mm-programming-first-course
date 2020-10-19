@@ -55,5 +55,10 @@ namespace FuturePattern.Library
         {
             return a + b;
         }
+
+        public string Name()
+        {
+            return "Cascade";
+        }
     }
 }

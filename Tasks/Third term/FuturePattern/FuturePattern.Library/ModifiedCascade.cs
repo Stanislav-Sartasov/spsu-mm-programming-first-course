@@ -51,5 +51,10 @@ namespace FuturePattern.Library
                 result += a[i];
             return result;
         }
+
+        public string Name()
+        {
+            return "Modified cascade";
+        }
     }
 }
