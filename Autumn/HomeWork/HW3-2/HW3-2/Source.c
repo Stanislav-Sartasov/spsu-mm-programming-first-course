@@ -106,24 +106,16 @@ void convolution(unsigned char* bitMapImage, int height, int width, char* mode)
 				bitMapImageCopy[(i * width + j) * 3] = (abs(result[0]) + abs(result[1]) + abs(result[2])) / 3;
 				bitMapImageCopy[(i * width + j) * 3 + 1] = (abs(result[0]) + abs(result[1]) + abs(result[2])) / 3;
 				bitMapImageCopy[(i * width + j) * 3 + 2] = (abs(result[0]) + abs(result[1]) + abs(result[2])) / 3;
+				bitMapImage[i] = bitMapImageCopy[i] > 128 ? 255 : 0;
 			}
 			else
 			{
 				bitMapImageCopy[(i * width + j) * 3] = (double)(result[0] / divisor);
 				bitMapImageCopy[(i * width + j) * 3 + 1] = (double)(result[1] / divisor);
 				bitMapImageCopy[(i * width + j) * 3 + 2] = (double)(result[2] / divisor);
+				bitMapImage[i] = bitMapImageCopy[i];
 			}
 		}
-	if (strcmp(mode, "SobelX") == 0 || strcmp(mode, "SobelY") == 0)
-	{
-		for (int i = 0; i < height * width * 3; i++)
-			bitMapImage[i] = bitMapImageCopy[i] > 128 ? 255 : 0;
-	}
-	else
-	{
-		for (int i = 0; i < height * width * 3; i++)
-			bitMapImage[i] = bitMapImageCopy[i];
-	}
 
 	free(matrix);
 	free(bitMapImageCopy);

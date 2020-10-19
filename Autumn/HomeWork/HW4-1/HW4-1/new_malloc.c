@@ -60,7 +60,7 @@ void* new_malloc(size_t size)
 		block = block->next;
 	}
 
-	if (k == NULL) return NULL;
+	if (k == 0) return NULL;
 	if (size == block->block_size)
 	{
 		delete_block(block);
