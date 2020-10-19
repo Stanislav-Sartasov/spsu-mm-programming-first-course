@@ -6,12 +6,19 @@ namespace FuturePattern.Library
 {
     public static class Creator
     {
-        public static IVectorLengthComputer Create(int number)
+        private static Dictionary<string, IVectorLengthComputer> schemes;
+
+        private static void Initialize()
         {
-            if (number == 0)
-                return new Cascade();
-            if (number == 1)
-                return new ModifiedCascade();
+            schemes = new Dictionary<string, IVectorLengthComputer>();
+            schemes["Cascade"] = new Cascade();
+            schemes["ModifiedCascade"] = new ModifiedCascade();
+        }
+        public static IVectorLengthComputer Create(string name)
+        {
+            Initialize();
+            if (schemes.ContainsKey(name))
+                return schemes[name];
             return null;
         }
     }
