@@ -31,9 +31,10 @@ namespace ProducersConsumers.Tests
                 .ToList();
             consumers.ForEach(c => c.Run());
             producers.ForEach(c => c.Run());
-            Thread.Sleep(1000);
-            while (logs.Count() != productsNumber * producersNumber)
-                Thread.Sleep(1000);
+            var expectedProducingTime = productsNumber * producingInterval;
+            var expectedConsumingTime = (productsNumber * producersNumber * consumingInterval) / consumersNumber;
+            var parallelWorkTime = expectedProducingTime < expectedConsumingTime ? expectedProducingTime : expectedConsumingTime;
+            Thread.Sleep(expectedConsumingTime + expectedProducingTime - parallelWorkTime + 1000);
             consumers.ForEach(c => c.Dispose());
             producers.ForEach(c => c.Dispose());
 
