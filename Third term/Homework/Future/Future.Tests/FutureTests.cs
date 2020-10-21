@@ -17,7 +17,12 @@ namespace Future.Tests
         [TestInitialize]
         public void Init()
         {
-            vectorLengthComputers = new IVectorLengthComputer[] { new CascadeModel(), new ModifiedCascadeModel(), new SequentialModel() };
+            vectorLengthComputers = new IVectorLengthComputer[] 
+            { 
+                new CascadeModel(), 
+                new ModifiedCascadeModel(), 
+                new SequentialModel() 
+            };
             results = new List<double>();
             for (int i = 0; i < vectorLengthComputers.Length; i++)
                 results.Add(vectorLengthComputers[i].ComputeLength(vector));

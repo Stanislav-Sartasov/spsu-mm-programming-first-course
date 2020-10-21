@@ -8,7 +8,17 @@ namespace Future
     {
         public double ComputeLength(int[] a)
         {
-            return Task.Factory.StartNew(() => Math.Sqrt(a.Sum(x => x * x))).Result;
+            double result;
+            try
+            {
+                result = Task.Factory.StartNew(() => Math.Sqrt(a.Sum(x => x * x))).Result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+                result = double.NaN;
+            }
+            return result;
         }
     }
 }
