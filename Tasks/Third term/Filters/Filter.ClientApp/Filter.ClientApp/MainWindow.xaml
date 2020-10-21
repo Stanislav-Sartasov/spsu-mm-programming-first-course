@@ -47,7 +47,7 @@
             <Button Content="Send" Width="80" Height="25" HorizontalAlignment="Center" Click="SendImage"/>
             <Button Content="I changed my mind" MinWidth="80" Height="25" HorizontalAlignment="Center" Click="SendStop"/>
             <Button Content="Disconnect" MinWidth="80" Height="25" HorizontalAlignment="Center" Click="Disconnect"/>
-            <TextBox VerticalAlignment="Center" x:Name="ExceptionConsole"/>
+            <TextBox VerticalAlignment="Center" x:Name="ExceptionConsole" TextWrapping="Wrap"/>
         </StackPanel>
     </Grid>
 </Window>

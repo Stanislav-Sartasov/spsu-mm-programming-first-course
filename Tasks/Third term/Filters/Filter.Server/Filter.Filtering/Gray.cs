@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace Filter.Filtering
 {
     class Gray : IFilter
     {
         private int processedPixels = 0;
-        public byte[] Process(byte[] inputImage, int height, int width)
+        public byte[] Process(byte[] inputImage, int height, int width, CancellationToken token)
         {
             byte[] result = new byte[height * width * 4];
             processedPixels = 0;
             for (int i = 0; i < height * width; i++)
                 {
+                    if (token.IsCancellationRequested)
+                        return null;
                     byte x = (byte)(0.299 * inputImage[i * 4] + 0.587 * inputImage[i * 4 + 1] + 0.114 * inputImage[i * 4 + 2]);
                     result[i * 4] = x;
                     result[i * 4 + 1] = x;

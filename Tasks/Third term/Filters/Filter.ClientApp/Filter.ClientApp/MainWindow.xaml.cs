@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Filter.MagicConst;
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,6 +27,7 @@ namespace Filter.ClientApp
     public partial class MainWindow : Window
     {
         private delegate void messageHandlingDelegate();
+        private delegate void listenDelegate();
 
         private BitmapSource sourceImage = null;
         private BitmapSource resultImage = null;
@@ -32,14 +35,13 @@ namespace Filter.ClientApp
         private TcpClient client = null;
         private NetworkStream networkStream = null;
         private bool isConnect = false;
-        private bool isListening = false;
+        private volatile bool isListening = false;
         private List<string> availableFilters;
 
         private Thread getStream;
-        private bool isReceive = false;
-        private byte[] receivedData = null;
+        private volatile bool isReceive = false;
+        private volatile byte[] receivedData = null;
 
-        // black - проблемы с подключением, yellow - не удалось получить изображение из массива байтов
         public MainWindow()
         {
             InitializeComponent();
@@ -51,6 +53,7 @@ namespace Filter.ClientApp
         {
             // C:\Users\pavel\Pictures\wallpapers\1.jpg
             // C:\Users\pavel\Desktop\test.png      10*9
+            // C:\Users\pavel\Desktop\1.jpg      many pixels
             SourceImage.Children.Clear();
             try
             {
@@ -64,7 +67,7 @@ namespace Filter.ClientApp
                 image.Height = DataOfImage.Height;
 
                 SourceImage.Children.Add(image);
-
+                image = null;
                 ControlAction.Background = Brushes.Green;
             }
             catch (Exception ex)
@@ -74,8 +77,6 @@ namespace Filter.ClientApp
             }
         }
 
-        // отправляемые: 1 - filter, 2 - image, 3 - stop
-        // получаемые: 1 - картинка, 2 - прогресс, 3 - filters
         private void SendImage(object sender, RoutedEventArgs e)
         {
             if (!isConnect)
@@ -83,18 +84,16 @@ namespace Filter.ClientApp
                 ControlAction.Background = Brushes.Red;
                 return;
             }
-            networkStream = client.GetStream();
             try
             {
+                ResultImage.Children.Clear();
+                networkStream = client.GetStream();
                 ControlAction.Background = Brushes.Green;
 
-                byte[] chosenFilter = SecondaryFunctions.TranslateToByteArrayUnicode((string)MyComboBox.SelectedItem, 1);
+                byte[] chosenFilter = SecondaryFunctions.TranslateToByteArrayUnicode((string)MyComboBox.SelectedItem, (byte)Protocol.Filter);
 
-
-                byte[] pixels = null;
-                bool isSuccess = SecondaryFunctions.ImageToByteArray(sourceImage, out pixels);
-                byte[] sendBytes = new byte[1 + 4 + 4 + pixels.Length];
-                sendBytes[0] = 2;
+                byte[] sendBytes = new byte[1 + 4 + 4 + DataOfImage.Pixels.Length];
+                sendBytes[0] = (byte)Protocol.Image;
 
                 byte[] temp = BitConverter.GetBytes(DataOfImage.Height);
                 for (int i = 0; i < 4; i++)
@@ -103,18 +102,13 @@ namespace Filter.ClientApp
                 for (int i = 0; i < 4; i++)
                     sendBytes[i + 5] = temp[i];
 
-                for (int i = 0; i < pixels.Length; i++)
-                    sendBytes[i + 9] = pixels[i];
-                if (isSuccess)
-                {
-                    networkStream.Write(chosenFilter, 0, chosenFilter.Length);
-                    Thread.Sleep(100); // против склейки буфера, исправить
-                    networkStream.Write(sendBytes, 0, sendBytes.Length);
-                    DataOfImage.Pixels = null;
-                    Listen();
-                }
-                else
-                    ControlAction.Background = Brushes.Red;
+                for (int i = 0; i < DataOfImage.Pixels.Length; i++)
+                    sendBytes[i + 9] = DataOfImage.Pixels[i];
+                networkStream.Write(chosenFilter, 0, chosenFilter.Length);
+                Thread.Sleep(100);
+                networkStream.Write(sendBytes, 0, sendBytes.Length);
+                Listen();
+
             }
             catch (Exception ex)
             {
@@ -151,7 +145,7 @@ namespace Filter.ClientApp
             {
                 client.Close();
                 networkStream.Close();
-                ControlAction.Background = Brushes.Black;
+                //ControlAction.Background = Brushes.Black;
                 isListening = false;
                 return;
             }
@@ -169,9 +163,9 @@ namespace Filter.ClientApp
 
         private void MessageHandling()
         {
-            if (isReceive)
+            if (isReceive && isListening)
             {
-                if (receivedData[0] == 1) // image
+                if (receivedData[0] == (byte)Protocol.Image)
                 {
                     receivedData = receivedData.Skip(1).ToArray();
                     bool isSuccess = SecondaryFunctions.ByteArrayToImage(receivedData, DataOfImage, out resultImage);
@@ -180,6 +174,7 @@ namespace Filter.ClientApp
                         Image image = new Image();
                         image.Source = resultImage;
                         ResultImage.Children.Add(image);
+                        image = null;
                     }
                     else
                     {
@@ -187,12 +182,19 @@ namespace Filter.ClientApp
                     }
                     isListening = false;
                 }
-                if (receivedData[0] == 2) //progress bar
+                else if (receivedData[0] == (byte)Protocol.Progress)
                 {
-                    Progress.Value = receivedData[1];
-                    Listen();
+                    if (receivedData[1] == (int)Protocol.StopCode)
+                    {
+                        isListening = false;
+                        Progress.Value = 0;
+                    }
+                    else
+                        Progress.Value = receivedData[1];
+                    if (isListening)
+                        Listen();
                 }
-                if (receivedData[0] == 3) //list of filters
+                else if (receivedData[0] == (byte)Protocol.Filter)
                 {
                     string tempFilter = SecondaryFunctions.TranslateByteArrayToStringUnicode(receivedData);
                     availableFilters = tempFilter.Split(' ').ToList();
@@ -234,10 +236,8 @@ namespace Filter.ClientApp
             try
             {
                 ControlAction.Background = Brushes.Green;
-                networkStream.Write(new byte[1] { 3 }, 0, 1);
-                Progress.Value = 0;
-                isListening = false;
-                getStream.Abort();
+                networkStream.Write(new byte[1] { (byte)Protocol.Progress }, 0, 1);
+                Listen();
             }
             catch (Exception ex)
             {

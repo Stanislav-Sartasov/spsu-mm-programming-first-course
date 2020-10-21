@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 
 namespace Filter.Filtering
 {
-    class SobelX : IFilter
+    class SobelY : IFilter
     {
         private int processedPixels = 0;
         public byte[] Process(byte[] inputImage, int height, int width, CancellationToken token)
         {
             processedPixels = 0;
             byte[] result = new byte[height * width * 4];
-            int[,] directions = new int[3, 3] { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 1 } };
+            int[,] directions = new int[3, 3] { { 1, 2, 1 }, { 0, 0, 0 }, { -1, -2, -1 } };
             for (int i = 0; i < height; i++)
                 for (int j = 0; j < width; j++)
                 {

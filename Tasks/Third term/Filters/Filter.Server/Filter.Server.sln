@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Filter.Server", "Filter.Server\Filter.Server.csproj", "{6C74E4D1-B476-49D1-9B4B-38EFC9CCF7DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filter.Server", "Filter.Server\Filter.Server.csproj", "{6C74E4D1-B476-49D1-9B4B-38EFC9CCF7DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Filter.Filtering", "Filter.Filtering\Filter.Filtering.csproj", "{9C9FF450-E3D5-4C4C-9767-E7DF4FAE8230}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filter.Filtering", "Filter.Filtering\Filter.Filtering.csproj", "{9C9FF450-E3D5-4C4C-9767-E7DF4FAE8230}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filter.MagicConst", "..\Filter.MagicConst\Filter.MagicConst.csproj", "{61E9653C-1407-4E2C-99D3-D5BEF69CE769}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{9C9FF450-E3D5-4C4C-9767-E7DF4FAE8230}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C9FF450-E3D5-4C4C-9767-E7DF4FAE8230}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C9FF450-E3D5-4C4C-9767-E7DF4FAE8230}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61E9653C-1407-4E2C-99D3-D5BEF69CE769}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61E9653C-1407-4E2C-99D3-D5BEF69CE769}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61E9653C-1407-4E2C-99D3-D5BEF69CE769}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61E9653C-1407-4E2C-99D3-D5BEF69CE769}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

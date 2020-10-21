@@ -1,6 +1,8 @@
 ﻿using Filter.Filtering;
+using Filter.MagicConst;
 
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -10,13 +12,13 @@ namespace Filter.Server
 {
     class Server
     {
-        // отправляемые: 1 - картинка, 2 - прогресс, 3 - filters
-        // получаемые: 1 - filter, 2 - image, 3 - stop
         const int port = 8000;
         static TcpListener listener;
         static void Main(string[] args)
         {
-            Creator.Initialize();
+            string path = Directory.GetCurrentDirectory() + @"\.." + @"\.." + @"\.." + @"\.." + "/Filters.cfg";
+            Creator.Initialize(path);
+            int count = 0;
             try
             {
                 IPEndPoint temp = SelectionIpByPort(port);
@@ -24,14 +26,15 @@ namespace Filter.Server
                 listener = new TcpListener(temp);
                 
                 listener.Start();
-                Console.WriteLine("Ожидание подключений...");
+                Console.WriteLine("***Start***");
 
                 while (true)
                 {
                     TcpClient client = listener.AcceptTcpClient();
-                    Console.WriteLine("Connection");
+                    count++;
+                    Console.WriteLine($"Connection {count}");
                     SendFilters(client);
-                    ClientHandler clientHandler = new ClientHandler(client);
+                    ClientHandler clientHandler = new ClientHandler(client, $"Client {count}");
 
                     Thread clientThread = new Thread(clientHandler.Listen);
                     clientThread.Start();
@@ -51,16 +54,16 @@ namespace Filter.Server
         private static void SendFilters(TcpClient client)
         {
             NetworkStream stream = client.GetStream();
-            byte[] buffer = TranslateToByteArrayUnicode(Creator.AvailableFilters(), 3);
+            byte[] buffer = TranslateToByteArrayUnicode(Creator.AvailableFilters(), (byte)Protocol.Filter);
 
             stream.Write(buffer, 0, buffer.Length);
         }
 
-        private static byte[] TranslateToByteArrayUnicode(string message, byte source) // source = 3
+        private static byte[] TranslateToByteArrayUnicode(string message, byte source)
         {
             byte[] temp = Encoding.Unicode.GetBytes(message.ToString());
             byte[] result = new byte[temp.Length + 1];
-            result[0] = source; // 3 - filters
+            result[0] = source;
             Array.Copy(temp, 0, result, 1, temp.Length);
             return result;
         }

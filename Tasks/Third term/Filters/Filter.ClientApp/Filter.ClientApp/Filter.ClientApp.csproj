@@ -101,5 +101,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Filter.MagicConst\Filter.MagicConst.csproj">
+      <Project>{B20E97FD-5591-4DED-8FD3-706254DA1B83}</Project>
+      <Name>Filter.MagicConst</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

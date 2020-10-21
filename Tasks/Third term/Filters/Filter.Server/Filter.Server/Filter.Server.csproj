@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Filter.MagicConst\Filter.MagicConst.csproj" />
     <ProjectReference Include="..\Filter.Filtering\Filter.Filtering.csproj" />
   </ItemGroup>
 
