@@ -3,6 +3,7 @@ using Filter.MagicConst;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -14,10 +15,9 @@ namespace Filter.Server
     {
         private TcpClient client;
         private string chosenFilter;
-        private byte[] result = null;
         private volatile bool isCalculating = false;
         private Thread processing;
-        private string name;
+        private readonly string name;
 
         public ClientHandler(TcpClient client, string name)
         {
@@ -32,46 +32,48 @@ namespace Filter.Server
                 stream = client.GetStream();
                 while (true)
                 {
-                    byte[] buffer = new byte[256];
-                    List<byte> data = new List<byte>(256);
-                    int temp = 0;
-                    int bytes = 0;
-                    do
+                    byte[] bufferLenOfInput = new byte[4];
+                    stream.Read(bufferLenOfInput, 0, 4);
+                    int lenOfInput = BitConverter.ToInt32(bufferLenOfInput, 0);
+                    byte[] bytesToRead = new byte[lenOfInput - 4];
+
+                    List<byte> storage = new List<byte>(lenOfInput);
+                    int amount = 0;
+                    int bytesRead = 0;
+                    while (amount < lenOfInput - 4)
                     {
-                        temp = stream.Read(buffer, 0, buffer.Length);
-                        if (temp == 0)
-                        {
-                            Console.WriteLine("Disconnection " + name);
-                            if (stream != null)
-                                stream.Close();
-                            if (client != null)
-                                client.Close();
-                        }
-                        data.AddRange(buffer);
-                        bytes += temp;
+                        bytesRead = stream.Read(bytesToRead, amount, lenOfInput - 4 - amount);
+                        amount += bytesRead;
                     }
-                    while (stream.DataAvailable);
-                    if (bytes != 0)
+                    storage.AddRange(bufferLenOfInput);
+                    storage.AddRange(bytesToRead);
+
+                    while (storage.Count != 0)
                     {
-                        data.RemoveRange(bytes, data.Count - bytes);
+                        int lenOfMessage = BitConverter.ToInt32(storage.ToArray(), 0);
+                        byte[] data = new byte[lenOfMessage - 4];
+                        storage.CopyTo(4, data, 0, lenOfMessage - 4);
+                        storage.RemoveRange(0, lenOfMessage);
+
                         if (data[0] == (byte)Protocol.Filter)
                         {
-                            chosenFilter = TranslateByteArrayToStringUnicode(data.ToArray());
+                            chosenFilter = TranslateByteArrayToStringUnicode(data);
                             continue;
                         }
                         if (data[0] == (byte)Protocol.Image)
                         {
-                            data.RemoveAt(0);
-                            int height = BitConverter.ToInt32(data.ToArray(), 0);
-                            int width = BitConverter.ToInt32(data.ToArray(), 4);
-                            data.RemoveRange(0, 8);
+                            data = data.Skip(1).ToArray();
+                            int height = BitConverter.ToInt32(data, 0);
+                            int width = BitConverter.ToInt32(data, 4);
+                            data = data.Skip(8).ToArray();
                             isCalculating = true;
-                            processing = new Thread(() => { Wait(data.ToArray(), height, width); });
+                            processing = new Thread(() => { Wait(data, height, width); });
                             processing.Start();
                             continue;
                         }
-                        if (data[0] == (byte)Protocol.Progress && isCalculating)
-                            isCalculating = false;
+                        if (data[0] == (byte)Protocol.Progress)
+                            if (2 <= data.Length && data[1] == (byte)Protocol.StopCode && isCalculating)
+                                isCalculating = false;
                     }
                 }
             }
@@ -108,7 +110,6 @@ namespace Filter.Server
                 {
                     tokenSource.Cancel();
                     SendProgress((int)Protocol.StopCode);
-                    result = null;
                     chosenFilter = null;
                     tokenSource.Dispose();
                     return;
@@ -116,16 +117,14 @@ namespace Filter.Server
                 SendProgress((int)((filter.Progress() * 1.0) / height / width / 4 * 100));
             }
             SendProgress(100);
-            Thread.Sleep(400);
-            result = temp.Result;
+            byte[] result = temp.Result;
             isCalculating = false;
-            SendResult();
-            result = null;
+            SendResult(result);
             chosenFilter = null;
             tokenSource.Dispose();
         }
 
-        private void SendResult()
+        private void SendResult(byte[] result)
         {
             try
             {
@@ -135,7 +134,12 @@ namespace Filter.Server
                 buffer[0] = (byte)Protocol.Image;
                 for (int i = 0; i < result.Length; i++)
                     buffer[i + 1] = result[i];
-                stream.Write(buffer, 0, buffer.Length);
+
+                int len = 4 + buffer.Length;
+                List<byte> sendBytes = new List<byte>();
+                sendBytes.AddRange(BitConverter.GetBytes(len));
+                sendBytes.AddRange(buffer);
+                stream.Write(sendBytes.ToArray(), 0, len);
             }
             catch (Exception ex)
             {
@@ -150,7 +154,11 @@ namespace Filter.Server
                 NetworkStream stream = null;
                 stream = client.GetStream();
                 byte[] buffer = new byte[2] { (byte)Protocol.Progress, (byte)v }; // 0 <= progress <= 100
-                stream.Write(buffer, 0, 2);
+                int len = 4 + buffer.Length;
+                List<byte> sendBytes = new List<byte>();
+                sendBytes.AddRange(BitConverter.GetBytes(len));
+                sendBytes.AddRange(buffer);
+                stream.Write(sendBytes.ToArray(), 0, len);
             }
             catch (Exception ex)
             {

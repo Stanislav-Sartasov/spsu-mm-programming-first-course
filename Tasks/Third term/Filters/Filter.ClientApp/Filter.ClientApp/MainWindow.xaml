@@ -44,9 +44,16 @@
        
         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical">
             <ComboBox IsReadOnly="True" ItemsSource="{Binding availableFilters}" x:Name="MyComboBox"/>
-            <Button Content="Send" Width="80" Height="25" HorizontalAlignment="Center" Click="SendImage"/>
-            <Button Content="I changed my mind" MinWidth="80" Height="25" HorizontalAlignment="Center" Click="SendStop"/>
-            <Button Content="Disconnect" MinWidth="80" Height="25" HorizontalAlignment="Center" Click="Disconnect"/>
+            <StackPanel  Orientation="Horizontal">
+                <Button Content="Send" Width="80" Height="25" HorizontalAlignment="Center" Click="SendImage"/>
+                <Button Content="I changed my mind" Width="120" Height="25" HorizontalAlignment="Center" Click="SendStop"/>
+            </StackPanel>
+            <DockPanel LastChildFill="True">
+                <Button DockPanel.Dock="Left" Content="Disconnect" MinWidth="80" Height="25" HorizontalAlignment="Center" Click="Disconnect"/>
+                <TextBlock x:Name="ConnectionStatus" Text="Disconnection" VerticalAlignment="Center"
+                           HorizontalAlignment="Center"/>
+            </DockPanel>
+  
             <TextBox VerticalAlignment="Center" x:Name="ExceptionConsole" TextWrapping="Wrap"/>
         </StackPanel>
     </Grid>

@@ -2,6 +2,7 @@
 using Filter.MagicConst;
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -16,7 +17,12 @@ namespace Filter.Server
         static TcpListener listener;
         static void Main(string[] args)
         {
-            string path = Directory.GetCurrentDirectory() + @"\.." + @"\.." + @"\.." + @"\.." + "/Filters.cfg";
+            Console.WriteLine("Enter the path to .cfg file (or leave the line blank for the default)");
+            string path;
+            path = Console.ReadLine();
+            if (path.Equals(""))
+                path = Directory.GetCurrentDirectory() + @"\.." + @"\.." + @"\.." + @"\.." + "/Filters.cfg";
+
             Creator.Initialize(path);
             int count = 0;
             try
@@ -55,8 +61,11 @@ namespace Filter.Server
         {
             NetworkStream stream = client.GetStream();
             byte[] buffer = TranslateToByteArrayUnicode(Creator.AvailableFilters(), (byte)Protocol.Filter);
-
-            stream.Write(buffer, 0, buffer.Length);
+            int len = 4 + buffer.Length;
+            List<byte> sendBytes = new List<byte>();
+            sendBytes.AddRange(BitConverter.GetBytes(len));
+            sendBytes.AddRange(buffer);
+            stream.Write(sendBytes.ToArray(), 0, len);
         }
 
         private static byte[] TranslateToByteArrayUnicode(string message, byte source)

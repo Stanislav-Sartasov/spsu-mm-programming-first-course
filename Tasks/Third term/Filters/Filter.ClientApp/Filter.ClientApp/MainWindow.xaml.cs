@@ -32,20 +32,21 @@ namespace Filter.ClientApp
         private BitmapSource sourceImage = null;
         private BitmapSource resultImage = null;
         private StructOfImage DataOfImage;
-        private TcpClient client = null;
-        private NetworkStream networkStream = null;
-        private bool isConnect = false;
+        private volatile TcpClient client = null;
+        private volatile NetworkStream networkStream = null;
+        private volatile bool isConnect = false;
         private volatile bool isListening = false;
         private List<string> availableFilters;
 
         private Thread getStream;
         private volatile bool isReceive = false;
-        private volatile byte[] receivedData = null;
+        private volatile List<byte> receivedData = null;
 
         public MainWindow()
         {
             InitializeComponent();
             availableFilters = new List<string>();
+            receivedData = new List<byte>();
             getStream = null;
         }
 
@@ -82,6 +83,7 @@ namespace Filter.ClientApp
             if (!isConnect)
             {
                 ControlAction.Background = Brushes.Red;
+                ConnectionStatus.Text = "Disconnection";
                 return;
             }
             try
@@ -90,23 +92,23 @@ namespace Filter.ClientApp
                 networkStream = client.GetStream();
                 ControlAction.Background = Brushes.Green;
 
+                List<byte> sendingFilter = new List<byte>();
                 byte[] chosenFilter = SecondaryFunctions.TranslateToByteArrayUnicode((string)MyComboBox.SelectedItem, (byte)Protocol.Filter);
+                int lenFilter = 4 + chosenFilter.Length;
+                sendingFilter.AddRange(BitConverter.GetBytes(lenFilter));
+                sendingFilter.AddRange(chosenFilter);
 
-                byte[] sendBytes = new byte[1 + 4 + 4 + DataOfImage.Pixels.Length];
-                sendBytes[0] = (byte)Protocol.Image;
+                networkStream.Write(sendingFilter.ToArray(), 0, lenFilter);
 
-                byte[] temp = BitConverter.GetBytes(DataOfImage.Height);
-                for (int i = 0; i < 4; i++)
-                    sendBytes[i + 1] = temp[i];
-                temp = BitConverter.GetBytes(DataOfImage.Width);
-                for (int i = 0; i < 4; i++)
-                    sendBytes[i + 5] = temp[i];
+                int lenImage = 4 + 1 + 4 + 4 + DataOfImage.Pixels.Length;
+                List<byte> sendBytes = new List<byte>(lenImage);
+                sendBytes.AddRange(BitConverter.GetBytes(lenImage));
+                sendBytes.Add((byte)Protocol.Image);
+                sendBytes.AddRange(BitConverter.GetBytes(DataOfImage.Height));
+                sendBytes.AddRange(BitConverter.GetBytes(DataOfImage.Width));
+                sendBytes.AddRange(DataOfImage.Pixels);
 
-                for (int i = 0; i < DataOfImage.Pixels.Length; i++)
-                    sendBytes[i + 9] = DataOfImage.Pixels[i];
-                networkStream.Write(chosenFilter, 0, chosenFilter.Length);
-                Thread.Sleep(100);
-                networkStream.Write(sendBytes, 0, sendBytes.Length);
+                networkStream.Write(sendBytes.ToArray(), 0, lenImage);
                 Listen();
 
             }
@@ -116,6 +118,8 @@ namespace Filter.ClientApp
                 ControlAction.Background = Brushes.Red;
                 client.Close();
                 networkStream.Close();
+                ConnectionStatus.Text = "Disconnection";
+                isConnect = false;
                 return;
             }
         }
@@ -125,20 +129,22 @@ namespace Filter.ClientApp
             networkStream = client.GetStream();
             try
             {
+                byte[] bufferLenOfMessage = new byte[4];
+                networkStream.Read(bufferLenOfMessage, 0, 4);
+                int lenOfMessage = BitConverter.ToInt32(bufferLenOfMessage, 0);
+                byte[] bytesToRead = new byte[lenOfMessage - 4];
 
-                byte[] buffer = new byte[256];
-                List<byte> data = new List<byte>(256);
-                int temp = 0;
+                receivedData = new List<byte>(lenOfMessage);
                 int amount = 0;
-                do
+                int bytesRead = 0;
+                while (amount < lenOfMessage - 4)
                 {
-                    temp = networkStream.Read(buffer, 0, buffer.Length);
-                    data.AddRange(buffer);
-                    amount += temp;
+                    bytesRead = networkStream.Read(bytesToRead, amount, lenOfMessage - 4 - amount);
+                    amount += bytesRead;
                 }
-                while (temp != 0 && networkStream.DataAvailable);
-                data.RemoveRange(amount, data.Count - amount);
-                receivedData = data.ToArray();
+                receivedData.AddRange(bufferLenOfMessage);
+                receivedData.AddRange(bytesToRead);
+
                 isReceive = true;
             }
             catch
@@ -147,6 +153,7 @@ namespace Filter.ClientApp
                 networkStream.Close();
                 //ControlAction.Background = Brushes.Black;
                 isListening = false;
+                isConnect = false;
                 return;
             }
         }
@@ -165,41 +172,51 @@ namespace Filter.ClientApp
         {
             if (isReceive && isListening)
             {
-                if (receivedData[0] == (byte)Protocol.Image)
+                while (receivedData.Count != 0)
                 {
-                    receivedData = receivedData.Skip(1).ToArray();
-                    bool isSuccess = SecondaryFunctions.ByteArrayToImage(receivedData, DataOfImage, out resultImage);
-                    if (isSuccess)
+                    int lenOfMessage = BitConverter.ToInt32(receivedData.ToArray(), 0);
+                    byte[] data = new byte[lenOfMessage - 4];
+                    receivedData.CopyTo(4, data, 0, lenOfMessage - 4);
+                    receivedData.RemoveRange(0, lenOfMessage);
+
+                    if (data[0] == (byte)Protocol.Image)
                     {
-                        Image image = new Image();
-                        image.Source = resultImage;
-                        ResultImage.Children.Add(image);
-                        image = null;
-                    }
-                    else
-                    {
-                        ControlAction.Background = Brushes.Yellow;
-                    }
-                    isListening = false;
-                }
-                else if (receivedData[0] == (byte)Protocol.Progress)
-                {
-                    if (receivedData[1] == (int)Protocol.StopCode)
-                    {
+                        data = data.Skip(1).ToArray();
+                        bool isSuccess = SecondaryFunctions.ByteArrayToImage(data, DataOfImage, out resultImage);
+                        if (isSuccess)
+                        {
+                            Image image = new Image();
+                            image.Source = resultImage;
+                            image.Width = DataOfImage.Width;
+                            image.Height = DataOfImage.Height;
+                            ResultImage.Children.Add(image);
+                            image = null;
+                        }
+                        else
+                        {
+                            ControlAction.Background = Brushes.Yellow;
+                        }
                         isListening = false;
-                        Progress.Value = 0;
                     }
-                    else
-                        Progress.Value = receivedData[1];
-                    if (isListening)
-                        Listen();
-                }
-                else if (receivedData[0] == (byte)Protocol.Filter)
-                {
-                    string tempFilter = SecondaryFunctions.TranslateByteArrayToStringUnicode(receivedData);
-                    availableFilters = tempFilter.Split(' ').ToList();
-                    MyComboBox.ItemsSource = availableFilters;
-                    isListening = false;
+                    else if (data[0] == (byte)Protocol.Progress)
+                    {
+                        if (data[1] == (int)Protocol.StopCode)
+                        {
+                            isListening = false;
+                            Progress.Value = 0;
+                        }
+                        else
+                            Progress.Value = data[1];
+                        if (isListening)
+                            Listen();
+                    }
+                    else if (data[0] == (byte)Protocol.Filter)
+                    {
+                        string tempFilter = SecondaryFunctions.TranslateByteArrayToStringUnicode(data);
+                        availableFilters = tempFilter.Split(' ').ToList();
+                        MyComboBox.ItemsSource = availableFilters;
+                        isListening = false;
+                    }
                 }
             }
             if (isListening)
@@ -216,12 +233,14 @@ namespace Filter.ClientApp
                 client.Connect(ip);
                 ControlAction.Background = Brushes.Green;
                 isConnect = true;
+                ConnectionStatus.Text = "Connection";
                 Listen();
             }
             else
             {
                 ControlAction.Background = Brushes.Red;
                 isConnect = false;
+                ConnectionStatus.Text = "Disconnection";
             }
         }
 
@@ -230,13 +249,19 @@ namespace Filter.ClientApp
             if (!isConnect)
             {
                 ControlAction.Background = Brushes.Red;
+                ConnectionStatus.Text = "Disconnection";
                 return;
             }
             networkStream = client.GetStream();
             try
             {
                 ControlAction.Background = Brushes.Green;
-                networkStream.Write(new byte[1] { (byte)Protocol.Progress }, 0, 1);
+                List<byte> sendBytes = new List<byte>(6);
+                int len = 4 + 1 + 1;
+                sendBytes.AddRange(BitConverter.GetBytes(len));
+                sendBytes.Add((byte)Protocol.Progress);
+                sendBytes.Add((byte)Protocol.StopCode);
+                networkStream.Write(sendBytes.ToArray(), 0, len);
                 Listen();
             }
             catch (Exception ex)
@@ -245,6 +270,8 @@ namespace Filter.ClientApp
                 ControlAction.Background = Brushes.Red;
                 client.Close();
                 networkStream.Close();
+                isConnect = false;
+                ConnectionStatus.Text = "Disconnection";
                 return;
             }
         }
@@ -255,6 +282,9 @@ namespace Filter.ClientApp
             {
                 getStream.Abort();
                 client.Close();
+                networkStream.Close();
+                isConnect = false;
+                ConnectionStatus.Text = "Disconnection";
             }
             catch (Exception ex)
             {
