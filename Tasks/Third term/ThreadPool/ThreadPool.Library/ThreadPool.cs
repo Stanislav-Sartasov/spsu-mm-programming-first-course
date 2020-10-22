@@ -10,7 +10,7 @@ namespace ThreadPool.Library
         private const int numberOfThreads = 5;
         private Queue<Action> tasks;
         private List<Thread> threads;
-        private bool continueCalc;
+        private volatile bool continueCalc;
 
         public void Start()
         {
@@ -38,7 +38,7 @@ namespace ThreadPool.Library
 
             tasks.Enqueue(action);
 
-            Monitor.PulseAll(tasks);
+            //Monitor.PulseAll(tasks);
             Monitor.Exit(tasks);
         }
 
@@ -47,16 +47,12 @@ namespace ThreadPool.Library
             while(continueCalc)
             {
                 Monitor.Enter(tasks);
-                if (tasks.Count == 0)
+                if (tasks.Count != 0)
                 {
-                    Monitor.Exit(tasks);
-                    Thread.Sleep(100);
-                    continue;
+                    Action action = tasks.Dequeue();
+                    Console.WriteLine($"{Thread.CurrentThread.Name} works");
+                    action();
                 }
-                Action action = tasks.Dequeue();
-                Console.WriteLine($"{Thread.CurrentThread.Name} works");
-                action();
-                Monitor.PulseAll(tasks);
                 Monitor.Exit(tasks);
             }
         }

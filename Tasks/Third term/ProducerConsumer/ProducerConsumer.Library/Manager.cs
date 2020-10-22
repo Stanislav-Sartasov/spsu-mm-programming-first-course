@@ -27,7 +27,6 @@ namespace ProducerConsumer.Library
             Monitor.Enter(buffer);
             buffer.Add(t);
             Console.WriteLine($"Producer {name} add the element {t}");
-            Monitor.PulseAll(buffer);
             Monitor.Exit(buffer);
         }
 
@@ -40,7 +39,6 @@ namespace ProducerConsumer.Library
                 Console.WriteLine($"Consumer {name} take a element");
                 buffer.RemoveAt(random.Next(buffer.Count));
             }
-            Monitor.PulseAll(buffer);
             Monitor.Exit(buffer);
         }
 

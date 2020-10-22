@@ -6,7 +6,7 @@
 using namespace std;
 
 int number_of_curr_proc;
-int* input(string name, int& len)
+int* input(string name, int& len, int amount_of_procs)
 {
     ifstream in(name);
     len = 0;
@@ -83,7 +83,7 @@ int* parallel_sort(string name_in, int& count)
     cout << "processor - " << number_of_curr_proc << endl;
     if (number_of_curr_proc == 0)
     {
-        input_data = input(name_in, data_len);
+        input_data = input(name_in, data_len, amount_of_procs);
         /*cout << data_len << endl;
         for (int i = 0; i < data_len; i++)
             cout << input_data[i] << " ";*/
