@@ -94,10 +94,10 @@ void multByConvMatrix(double* core, unsigned char* mas, unsigned int biWidth, un
 				block[(i * biWidth + j) * 3 + 1] = (unsigned char)x;
 				block[(i * biWidth + j) * 3 + 2] = (unsigned char)x;
 			}
-				r = g = b = 0;
+			r = g = b = 0;
 
 		}
-		
+
 	}
 	for (int i = 1; i < biHeight - 1; i++)
 	{
@@ -113,7 +113,7 @@ void multByConvMatrix(double* core, unsigned char* mas, unsigned int biWidth, un
 
 void averaging(unsigned char* mas, unsigned int biHeight, unsigned int biWidth)
 {
-	double core[9] = {1, 1, 1, 1, 1, 1, 1, 1, 1};
+	double core[9] = { 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 	multByConvMatrix(core, mas, biWidth, biHeight, 9);
 }
 
@@ -143,70 +143,75 @@ void output(unsigned char* mas, unsigned int biSizeImage, FILE* output_file)
 	}
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
 	if (argc != 4)
 	{
-		printf("Incorrect input. Wrong number of input arguments");
+		printf("Incorrect input. Wrong number of input arguments.");
 		exit(EXIT_FAILURE);
 	}
-		
 
-	FILE* input_file = fopen(argv[1], "rb");
-	FILE* output_file = fopen(argv[3], "w+b");
+
+	FILE* input_file;
+
+	if ((input_file = (fopen(argv[1], "rb"))) == NULL)
+	{
+		printf("Incorrect input. Invalid input file name.");
+		exit(EXIT_FAILURE);
+	}
+
 	bitMapFileHeader bMFH;
 	bitMapInfoHeader bMIH;
 
-	fread(&bMFH, sizeof(bMFH), 1, input_file );
-	fread(&bMIH, sizeof(bMIH), 1, input_file );
+	fread(&bMFH, sizeof(bMFH), 1, input_file);
+	fread(&bMIH, sizeof(bMIH), 1, input_file);
 
 	unsigned char* mas = malloc(bMIH.biSizeImage * sizeof(unsigned char));
 	if (mas)
 	{
 		fread(mas, sizeof(unsigned char), bMIH.biSizeImage, input_file);
-
 	}
-	fwrite(&bMFH, sizeof(bMFH), 1, output_file);
-	fwrite(&bMIH, sizeof(bMIH), 1, output_file);
-
 	char* filter = argv[2];
 
 	if (strcmp(filter, "grayScale") == 0)
 	{
 		greyScale(mas, bMIH.biSizeImage);
-		output(mas, bMIH.biSizeImage, output_file);
 	}
 	else if (strcmp(filter, "averaging") == 0)
 	{
 		averaging(mas, bMIH.biHeight, bMIH.biWidth);
-		output(mas, bMIH.biSizeImage, output_file);
 	}
 	else if (strcmp(filter, "negativ") == 0)
 	{
 		negativ(mas, bMIH.biSizeImage);
-		output(mas, bMIH.biSizeImage, output_file);
 	}
 	else if (strcmp(filter, "gauss") == 0)
 	{
 		gauss(mas, bMIH.biHeight, bMIH.biWidth);
-		output(mas, bMIH.biSizeImage, output_file);
 	}
 	else if (strcmp(filter, "sobelX") == 0)
 	{
 		sobelX(mas, bMIH.biHeight, bMIH.biWidth);
-		output(mas, bMIH.biSizeImage, output_file);
 	}
 	else if (strcmp(filter, "sobelY") == 0)
 	{
 		sobelY(mas, bMIH.biHeight, bMIH.biWidth);
-		output(mas, bMIH.biSizeImage, output_file);
 	}
 	else
-		printf("This filter does not exist");
+	{
+		printf("This filter does not exist.");
+		fclose(input_file);
+		free(mas);
+		exit(EXIT_FAILURE);
+	}
 
+	FILE* output_file = fopen(argv[3], "w+b");
+	fwrite(&bMFH, sizeof(bMFH), 1, output_file);
+	fwrite(&bMIH, sizeof(bMIH), 1, output_file);
+	output(mas, bMIH.biSizeImage, output_file);
 
 	free(mas);
 	fclose(input_file);
 	fclose(output_file);
-    return 0;
+	return 0;
 }
