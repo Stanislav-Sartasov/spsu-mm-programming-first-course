@@ -77,13 +77,6 @@ void* new_malloc(size_t size)
 
 void new_free(void* ptr)
 {
-	
-	if (ptr == 0xcdcdcdcdcdcdcdcd)
-	{
-		printf("Error");
-		exit(-1);
-	}
-
 		mem_block* block = (mem_block*)((char*)ptr - sizeof(size_t));
 	if (stack == NULL)
 	{
