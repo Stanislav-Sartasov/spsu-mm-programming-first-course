@@ -127,8 +127,6 @@ void new_free(void* ptr)
 		(block->previous)->block_size = (block->previous)->block_size + (block)->block_size;
 
 	}
-
-
 }
 
 void* new_realloc(void* ptr, size_t newSize)
