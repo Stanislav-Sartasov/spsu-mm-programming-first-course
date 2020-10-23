@@ -13,7 +13,7 @@ double sigma = 0.6;
 #pragma pack(push, 1)
 struct BITMAPFILEHEADER
 {
-	unsigned short	bfType;
+	unsigned short bfType;
 	unsigned int bfSize;
 	unsigned short bfReserved1;
 	unsigned short bfReserved2;
@@ -36,7 +36,7 @@ struct BITMAPINFOHEADER
 };
 #pragma pack(pop)
 
-void convolution(unsigned char* bitMapImage, int height, int width, char* mode)
+void convolution(unsigned char* bitMapImage, double height, int width, char* mode)
 {
 	if (strcmp(mode, "BlackWhite") == 0)
 	{
@@ -52,83 +52,65 @@ void convolution(unsigned char* bitMapImage, int height, int width, char* mode)
 
 	double* bitMapImageCopy = (double*)malloc(3 * height * width * sizeof(double));
 
-	int size = strcmp(mode, "Gauss5") == 0 ? 2 : 1;
-	int* steps = (int*)malloc(2 * (2 * size + 1) * (2 * size + 1) * sizeof(int));
-	for (int i = -size; i <= size; i++)
-		for (int j = -size; j <= size; j++)
-		{
-			steps[2 * ((i + size) * (2 * size + 1) + j + size)] = i;
-			steps[2 * ((i + size) * (2 * size + 1) + j + size) + 1] = j;
-		}
+	int size = 3;
 
-	double* matrix = (double*)malloc((2 * size + 1) * (2 * size + 1) * sizeof(double));
+	double matrix[4][9] =
+	{
+		{  1, 2, 1, 2, 4, 2, 1, 2, 1},
+		{ -1, 0, 1, -2,  0, 2, -1, 0, 1 },
+		{ -1, -2,-1, 0, 0, 0, 1, 2, 1 },
+		{  1, 1, 1, 1, 1, 1, 1, 1, 1 }
+	};
 
-	//double* matrix[3][9] = { { 1, 2, 1, 2, 4, 2, 1, 2, 1} { -1, 0, 1, -2, 0, 2, -1, 0, 1 }, { -1, -2, -1, 0, 0, 0, 1, 2, 1 } };
+	double* selected = 0;
+	int isSobel = 0;
 
 	if (strcmp(mode, "Averaging") == 0)
 	{
-		for (int i = 0; i < (2 * size + 1) * (2 * size + 1); i++)
-			matrix[i] = 1;
+		selected = matrix[3];
 	}
-	else if (strcmp(mode, "Gauss3") == 0 || strcmp(mode, "Gauss5") == 0)
+	else if (strcmp(mode, "Gauss3") == 0)
 	{
-		for (int x = -size; x < size + 1; x++)
-			for (int y = -size; y < size + 1; y++)
-				matrix[(x + size) * (2 * size + 1) + y + size] = 1 / sqrt(2 * M_PI * sigma) * exp(-(x * x + y * y) / (2 * sigma * sigma));
+		selected = matrix[0];
 	}
 	else if (strcmp(mode, "SobelX") == 0)
 	{
-		double source[] = { -1, 0, 1, -2, 0, 2, -1, 0, 1 };
-		for (int i = 0; i < 9; i++)
-			matrix[i] = source[i];
+		selected = matrix[2];
+		isSobel = 1;
 	}
 	else if (strcmp(mode, "SobelY") == 0)
 	{
-		double source[] = { -1, -2, -1, 0, 0, 0, 1, 2, 1 };
-		for (int i = 0; i < 9; i++)
-			matrix[i] = source[i];
+		selected = matrix[1];
+		isSobel = 1;
 	}
 
-
-
-	for (int i = 0; i < height; i++)
-		for (int j = 0; j < width; j++)
+	int bc = 3;
+	for (int j = 0; j < 3; j++)
+	{
+		for (int i = bc * width + j; i < (width * (height - 1)) * 3; i += 3)
 		{
-			double result[3] = { 0, 0, 0 };
-			double divisor = 0;
-
-			for (int step = 0; step < (2 * size + 1) * (2 * size + 1); step++)
-				if (i + steps[2 * step] >= 0 && i + steps[2 * step] < height && j + steps[2 * step + 1] >= 0 && j + steps[2 * step + 1] < width)
-				{
-					result[0] += bitMapImage[((i + steps[2 * step]) * width + j + steps[2 * step + 1]) * 3] * matrix[(steps[2 * step] + size) * (2 * size + 1) + steps[2 * step + 1] + size];
-					result[1] += bitMapImage[((i + steps[2 * step]) * width + j + steps[2 * step + 1]) * 3 + 1] * matrix[(steps[2 * step] + size) * (2 * size + 1) + steps[2 * step + 1] + size];
-					result[2] += bitMapImage[((i + steps[2 * step]) * width + j + steps[2 * step + 1]) * 3 + 2] * matrix[(steps[2 * step] + size) * (2 * size + 1) + steps[2 * step + 1] + size];
-					divisor += matrix[(steps[2 * step] + size) * (2 * size + 1) + steps[2 * step + 1] + size];
-				}
-			if (strcmp(mode, "SobelX") == 0 || strcmp(mode, "SobelY") == 0)
+			if ((i % (width * bc) < bc) || ((i + bc) % (width * bc) < bc))
+				continue;
+			double pixel_value = selected[0] * bitMapImage[i + bc * width - bc] + selected[1] * bitMapImage[i + bc * width] + selected[2] * bitMapImage[i + bc * width + bc]
+				+ selected[3] * bitMapImage[i - bc] + selected[4] * bitMapImage[i] + selected[5] * bitMapImage[i + bc] + selected[6] * bitMapImage[i - bc * width - bc]
+				+ selected[7] * bitMapImage[i - bc * width] + selected[8] * bitMapImage[i - bc * width + bc];
+			if (isSobel)
 			{
-				bitMapImageCopy[(i * width + j) * 3] = (abs(result[0]) + abs(result[1]) + abs(result[2])) / 3;
-				bitMapImageCopy[(i * width + j) * 3 + 1] = (abs(result[0]) + abs(result[1]) + abs(result[2])) / 3;
-				bitMapImageCopy[(i * width + j) * 3 + 2] = (abs(result[0]) + abs(result[1]) + abs(result[2])) / 3;
-				
+				if (pixel_value > 255)
+					pixel_value = 255;
+				if (pixel_value < 0)
+					pixel_value = 0;
 			}
 			else
 			{
-				bitMapImageCopy[(i * width + j) * 3] = (double)(result[0] / divisor);
-				bitMapImageCopy[(i * width + j) * 3 + 1] = (double)(result[1] / divisor);
-				bitMapImageCopy[(i * width + j) * 3 + 2] = (double)(result[2] / divisor);
+				pixel_value /= 16;
 			}
+			bitMapImageCopy[i] = (unsigned char)pixel_value;
 		}
-
-	for (int i = 0; i < height * width * 3; i++) 
-	{
-		if (strcmp(mode, "SobelX") == 0 || strcmp(mode, "SobelY") == 0)
-			bitMapImage[i] = bitMapImageCopy[i] > 128 ? 255 : 0;
-		else
-			bitMapImage[i] = bitMapImageCopy[i];
 	}
 
-	free(matrix);
+	for (int i = 0; i < height * width * bc; i++)
+		bitMapImage[i] = bitMapImageCopy[i];
 	free(bitMapImageCopy);
 }
 
