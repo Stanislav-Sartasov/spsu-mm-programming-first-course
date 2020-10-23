@@ -116,7 +116,7 @@ void convolution(unsigned char* bitMapImage, double height, int width, char* mod
 
 int main(int argc, char* argv[])
 {
-	if (argc != 4 || !(strcmp(argv[2], "Averaging") == 0 || strcmp(argv[2], "Gauss3") == 0 || strcmp(argv[2], "Gauss5") == 0 || strcmp(argv[2], "Sobel") == 0
+	if (argc != 4 || !(strcmp(argv[2], "Averaging") == 0 || strcmp(argv[2], "Gauss3") == 0 || strcmp(argv[2], "Sobel") == 0
 		|| strcmp(argv[2], "SobelX") == 0 || strcmp(argv[2], "SobelY") == 0 || strcmp(argv[2], "BlackWhite") == 0) || fopen_s(&fileIn, argv[1], "rb") != 0)
 	{
 		printf("Invalid input. Try again.");
