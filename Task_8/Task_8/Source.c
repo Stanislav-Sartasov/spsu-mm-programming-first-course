@@ -35,7 +35,7 @@ typedef struct bitMapInfoHeader
 
 void toGrey(unsigned char* image, unsigned int height, unsigned int width)
 {
-    for (int i = 0; i < height * width; i++)
+    /*for (int i = 0; i < height * width; i++)
     {
         int brightness = (int)(image[i * 3] * 0.2126 + image[i * 3 + 1] * 0.7152 + image[i * 3 + 2] * 0.0722);
         if (brightness > 255)
@@ -44,6 +44,13 @@ void toGrey(unsigned char* image, unsigned int height, unsigned int width)
             image[i * 3 + 1] = 255;
             image[i * 3 + 2] = 255;
         }
+        image[i * 3] = brightness;
+        image[i * 3 + 1] = brightness;
+        image[i * 3 + 2] = brightness;
+    }*/
+    for (int i = 0; i < height * width; i++)
+    {
+        int brightness = (int)((image[i * 3] + image[i * 3 + 1] + image[i * 3 + 2]) / 3);
         image[i * 3] = brightness;
         image[i * 3 + 1] = brightness;
         image[i * 3 + 2] = brightness;
