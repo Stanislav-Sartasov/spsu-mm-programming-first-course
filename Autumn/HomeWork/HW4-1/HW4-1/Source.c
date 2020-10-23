@@ -8,8 +8,6 @@ int main()
     int i, j;
     A = (int**)new_malloc(SIZE * sizeof(int*));
 
-    A[4] = (int*)new_malloc(5 * sizeof(int));
-
     new_free(A[4]);
 
     for (i = 0; i < SIZE; i++) {

@@ -4,6 +4,7 @@
 int amount_of_space = 10000;
 void* memory;
 int has_initialized = 0;
+int s = 0;
 
 typedef struct mem_block
 {
@@ -44,6 +45,7 @@ void delete_block(mem_block* block)
 
 void* new_malloc(size_t size)
 {
+	s = size;
 	if (has_initialized == 0) init();
 	int k = 0;
 
@@ -75,7 +77,7 @@ void* new_malloc(size_t size)
 
 void new_free(void* ptr)
 {
-	mem_block* block = (mem_block*)((char*)ptr - sizeof(size_t));
+		mem_block* block = (mem_block*)((char*)ptr - sizeof(size_t));
 	if (stack == NULL)
 	{
 		block->previous = NULL;
@@ -85,11 +87,10 @@ void new_free(void* ptr)
 	}
 
 	mem_block* tmp = stack;
-	while ((tmp->next != NULL) && (tmp->next < block)) {
+	int i = 0;
+
+	while ((tmp->next != NULL) && (tmp->next < block))
 		tmp = tmp->next;
-	}
-	if (tmp != ptr)
-		abort();
 
 	if ((tmp->previous != NULL) && (tmp->next != NULL))
 	{
