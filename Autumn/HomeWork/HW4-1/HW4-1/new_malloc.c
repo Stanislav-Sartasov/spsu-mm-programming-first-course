@@ -1,4 +1,5 @@
 #include "new_malloc.h"
+#define _CRT_SECURE_NO_WARNINGS
 
 int amount_of_space = 10000;
 void* memory;
@@ -27,8 +28,6 @@ void init()
 
 void delete_block(mem_block* block)
 {
-	if (!block)
-		abort();
 	if (block == stack)
 	{
 		stack = block->next;
@@ -86,7 +85,11 @@ void new_free(void* ptr)
 	}
 
 	mem_block* tmp = stack;
-	while ((tmp->next != NULL) && (tmp->next < block))	tmp = tmp->next;
+	while ((tmp->next != NULL) && (tmp->next < block)) {
+		tmp = tmp->next;
+	}
+	if (tmp != ptr)
+		abort();
 
 	if ((tmp->previous != NULL) && (tmp->next != NULL))
 	{
@@ -101,6 +104,7 @@ void new_free(void* ptr)
 	{
 		tmp->next->previous = block;
 	}
+
 	if ((block->next != NULL) && (block->next == (char*)block + sizeof(block)))
 	{
 
