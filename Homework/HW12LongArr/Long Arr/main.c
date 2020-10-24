@@ -1,24 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdint.h>
 
-void powerArithmetics (int number, int power)
+void powerArithmetics (uint8_t number, unsigned short int power)
 {
-	int hexDigitsCount = (1 + (log(number) / log(16)) * power);
-	int* hexDigits;
-	hexDigits = (int*)malloc(hexDigitsCount * sizeof(int));
+	unsigned short int hexDigitsCount = (1 + (log(number) / log(16)) * power);
+	uint8_t* hexDigits;
+	hexDigits = (uint8_t*)malloc(hexDigitsCount * sizeof(uint8_t));
 	
-	for (int i = 0; i < hexDigitsCount; i++)
+	for (unsigned short int i = 0; i < hexDigitsCount; i++)
 	{
 		hexDigits[i] = 0;
 	} 
 	hexDigits[0] = 1;
-	for (int i = 0; i < power; i++)
+	for (unsigned short int i = 0; i < power; i++)
 	{
-		for (int j = 0; j < hexDigitsCount; j++)
+		for (unsigned short int j = 0; j < hexDigitsCount; j++)
 			hexDigits[j] = hexDigits[j] * 3;
 
-		for (int j = 0; j < hexDigitsCount - 1; j++)
+		for (unsigned short int j = 0; j < hexDigitsCount - 1; j++)
 		{
 			if (hexDigits[j] > 15)
 			{
@@ -27,7 +28,7 @@ void powerArithmetics (int number, int power)
 			}
 		}
 	}
-	for (int i = hexDigitsCount - 1; i > -1; i--)
+	for (short int i = hexDigitsCount - 1; i >= 0; i--)
 		printf("%x", hexDigits[i]);
 	free(hexDigits);
 }
@@ -35,8 +36,6 @@ void powerArithmetics (int number, int power)
 
 int main()
 {
-	int n = 3, power = 5000;
 	powerArithmetics(3, 5000);
-
 	return 0;
 }
