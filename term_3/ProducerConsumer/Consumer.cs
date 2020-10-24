@@ -37,12 +37,13 @@ namespace ProducerConsumer
 				Monitor.Exit(taskLst);
 			}
 		}
-		public void Stop()
+		private void Stop()
 		{
 			stop = true;
 		}
 		public void Join()
 		{
+			Stop();
 			myThread.Join();
 		}
 	}

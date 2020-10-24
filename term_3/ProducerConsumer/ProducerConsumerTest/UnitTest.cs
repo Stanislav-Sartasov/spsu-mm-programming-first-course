@@ -16,13 +16,13 @@ namespace ProducerConsumerTest
 			lst.Clear();
 			Producer prod = new Producer(lst, "producer 1");
 			Thread.Sleep(50);
-			prod.Stop();
+			//prod.Stop();
 			prod.Join();
 			Assert.AreEqual(1, lst.Count);
 
 			Consumer cons = new Consumer(lst, "consumer 1");
 			Thread.Sleep(50);
-			cons.Stop();
+			//cons.Stop();
 			cons.Join();
 			Assert.AreEqual(0, lst.Count);
 		}

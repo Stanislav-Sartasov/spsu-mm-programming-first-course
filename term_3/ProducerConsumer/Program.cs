@@ -34,12 +34,8 @@ namespace ProducerConsumer
 
 			foreach (var prods in producers)
 			{
-				prods.Stop();
+				//prods.Stop();
 				prods.Join();
-			}
-			foreach (var cons in consumers)
-			{
-				cons.Stop();
 			}
 			foreach (var cons in consumers)
 			{
