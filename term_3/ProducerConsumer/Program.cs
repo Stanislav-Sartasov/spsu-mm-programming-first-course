@@ -15,6 +15,7 @@ namespace ProducerConsumer
 			int amountCons = inter.GetInt();
 			Console.Write("Type int number - amountCons of producers: ");
 			int amountProd = inter.GetInt();
+			Console.WriteLine("When you want to finish, press any key");
 
 			List<Data<string>> lst = new List<Data<String>>();
 			lst.Clear();

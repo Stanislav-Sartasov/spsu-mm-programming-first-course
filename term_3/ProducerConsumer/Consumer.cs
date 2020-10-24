@@ -22,19 +22,17 @@ namespace ProducerConsumer
 		}
 		private void Work()
 		{
-			bool lockStatus = false;
 			while (!stop)
 			{
-				lockStatus = false;
-				Monitor.Enter(taskLst, ref lockStatus);
+				Monitor.Enter(taskLst);
 				if (taskLst.Count > 0)
 				{
 					Data<string> dat = taskLst.First();
 					taskLst.RemoveAt(0);
 				}
 				//Console.WriteLine($"{Thread.CurrentThread.Name}");
-				Thread.Sleep(100);
 				Monitor.Exit(taskLst);
+				Thread.Sleep(100);
 			}
 		}
 		private void Stop()
