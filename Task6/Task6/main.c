@@ -128,10 +128,10 @@ int main(int argc, char* argv[])
 	}
 
 	qsort(text, lines, sizeof(char*), cmp);
-	int p = 10;
+
 	for (int i = 0; i < lines; i++)
 	{
-		_write(fdout, text[i],trim_right(text[i])/*max_char(text[i])*/);
+		_write(fdout, text[i], trim_right(text[i]));
 		_write(fdout, text[i] + max_char(text[i]) - 1, 1);
 	}
 
