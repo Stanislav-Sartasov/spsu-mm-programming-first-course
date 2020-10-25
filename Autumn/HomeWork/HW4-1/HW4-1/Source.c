@@ -25,10 +25,31 @@ int main()
         printf("\n");
     }
 
-    for (i = SIZE - 1; i > 0; i--) {
+    for (i = SIZE - 1; i >= 0; i--) {
         new_free(A[i]);
     }
 
-    new_free(A);
+    for (i = 0; i < SIZE; i++) {
+        A[i] = (int*)new_malloc((i + 1) * sizeof(int));
+    }
+
+    for (i = 0; i < SIZE; i++) {
+        for (j = i; j > 0; j--) {
+            A[i][j] = i * j;
+        }
+    }
+
+    for (i = 0; i < SIZE; i++) {
+        for (j = i; j > 0; j--) {
+            printf("%d ", A[i][j]);
+        }
+        printf("\n");
+    }
+
+    for (i = SIZE - 1; i >= 0; i--) {
+        new_free(A[i]);
+    }
+
+    new_free(A+1);
     _getch();
 }
