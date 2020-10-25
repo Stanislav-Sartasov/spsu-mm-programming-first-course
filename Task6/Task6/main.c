@@ -9,6 +9,31 @@
 #include <io.h>
 
 
+char* trim_left(char* string)
+{
+	while ((*string == ' ') || (*string == '\t'))
+	{
+		string++;
+	}
+	return string;
+}
+
+int trim_right(char* string)
+{
+	char* start = string;
+	char* frs = string;  // указатель на последний не пробел
+	while (*string != '\n')
+	{
+		if ((*string != ' ') && (*string != '\t'))
+		{
+			frs = string;
+		}
+		string++;
+	}
+	int count = frs - start + 1;
+	return count;
+}
+
 int max_lines(char* src, int size)
 {
 	int count = 0;
@@ -20,34 +45,24 @@ int max_lines(char* src, int size)
 	return count;
 }
 
-int lenght_string(char* src, int size)
+int max_char(char* text)
 {
-	int max_lenght = 0;
 	int count = 0;
-	for (int i = 0; i < size; i++)
+	while (*text != '\n')
 	{
-		if (src[i] != '\n')
-		{
-			count++;
-		}
-		else if (count > max_lenght)
-		{
-			max_lenght = count;
-			count = 0;
-		}
-		else
-			count = 0;
+		count++;
+		text++;
 	}
-	return max_lenght;
+	return ++count;
 }
 
-int cmp(const void* p1, const void* p2)	
+int cmp(const void* p1, const void* p2)
 {
 	const char* s1, * s2;
 
 	s1 = *(char**)p1;
 	s2 = *(char**)p2;
-	return strcmp(s1, s2);
+	return -strcmp(s1, s2);
 }
 
 int main(int argc, char* argv[])
@@ -67,14 +82,14 @@ int main(int argc, char* argv[])
 		printf("Unable to open %s for reading", argv[1]);
 		exit(-1);
 	}
-		
+
 
 	if ((fdout = _open(argv[2], O_RDWR | O_CREAT | O_TRUNC, S_IWRITE)) < 0)
 	{
 		printf("Unable to open %s for writing", argv[2]);
 		exit(-1);
 	}
-	
+
 
 	if (fstat(fdin, &statbuf) < 0)
 	{
@@ -87,90 +102,42 @@ int main(int argc, char* argv[])
 		printf("Error in calling mmap function");
 		exit(-1);
 	}
-	
-	int lines = max_lines(src, statbuf.st_size);
 
-	char** text = (char**)malloc(lines * sizeof(char*));
+	char** text = (char**)malloc(max_lines(src, statbuf.st_size) * sizeof(char*));
+	text[0] = src;
+	char* current_char = src + 1;
+	int lines = 0;
 
-	int max_lenght = lenght_string(src, statbuf.st_size);
-	char* strings = (char*)malloc(max_lenght * sizeof(char));
-	int k = 0;
-
-	int j, i, ctr;
-	int y = 0;
-
-	for (i = 0; i < statbuf.st_size; i++)
+	while (current_char != src + statbuf.st_size)
 	{
-		j = 0;
-
-		while (k < statbuf.st_size)
+		if ((*(current_char - 1) == '\n') && *current_char == '\n')
 		{
-			if (src[k] == '\n')
-			{
-				strings[j] = '\n';
-				j++;
-				k++;
-				break;
-			}
-
-			strings[j] = src[k];
-			j++;
-			k++;
+			current_char++;
+			continue;
 		}
-		text[i] = _strdup(strings);
-		if (k == statbuf.st_size)
+		if (*(current_char - 1) == '\n')
 		{
-			break;
+			text[++lines] = current_char;
 		}
-	}
-	ctr = i;
-	
-	qsort(text, ctr, sizeof(char*), cmp);
-
-	for (i = 0; i < ctr; i++)
-	{
-		char* block = text[i];
-
-		while (*block != '\n')
-		{
-			y++;
-			block++;
-		}
-
-		if (*block == '\n')
-		{
-			y++;
-		}
+		current_char++;
 	}
 
-	char* sort_src = (char**)malloc(y * sizeof(char*));
-	k = 0;
-
-	for (i = 0; i < ctr; i++)
+	for (int i = 0; i < lines; i++)
 	{
-		char* block = text[i];
-
-		while (*block != '\n')
-		{
-			sort_src[k] = *block;
-			k++;
-			block++;
-		}
-
-		if (*block == '\n')
-		{
-			sort_src[k] = '\n';
-			k++;
-		}
-
-		free(text[i]);
+		text[i] = trim_left(text[i]);
 	}
 
-	_write(fdout, sort_src, y);
+	qsort(text, lines, sizeof(char*), cmp);
+	int p = 10;
+	for (int i = 0; i < lines; i++)
+	{
+		_write(fdout, text[i],trim_right(text[i])/*max_char(text[i])*/);
+		_write(fdout, text[i] + max_char(text[i]) - 1, 1);
+	}
+
 	munmap(src, statbuf.st_size);
 	_close(fdin);
 	_close(fdout);
-	free(sort_src);
 	free(text);
 	return 0;
 }

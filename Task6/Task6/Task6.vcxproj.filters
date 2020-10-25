@@ -31,8 +31,5 @@
     <Text Include="genomeset.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
-    <Text Include="outgenomeset.txt">
-      <Filter>Файлы ресурсов</Filter>
-    </Text>
   </ItemGroup>
 </Project>
