@@ -45,7 +45,7 @@ void delete_block(mem_block* block)
 
 void* new_malloc(size_t size)
 {
-	s = size;
+	s = s + size + sizeof(size);
 	if (has_initialized == 0) init();
 	int k = 0;
 
@@ -77,7 +77,7 @@ void* new_malloc(size_t size)
 
 void new_free(void* ptr)
 {
-		mem_block* block = (mem_block*)((char*)ptr - sizeof(size_t));
+	mem_block* block = (mem_block*)((char*)ptr - sizeof(size_t));
 	if (stack == NULL)
 	{
 		block->previous = NULL;
@@ -87,6 +87,7 @@ void new_free(void* ptr)
 	}
 
 	mem_block* tmp = stack;
+	int i = 0;
 
 	while ((tmp->next != NULL) && (tmp->next < block))
 		tmp = tmp->next;
@@ -104,10 +105,19 @@ void new_free(void* ptr)
 	{
 		tmp->next->previous = block;
 	}
+	
+	if (block->block_size <= 0 || block->block_size > s)
+	{
+		printf("error ");
+		return 0;
+	}
+	else
+	{
+		s = s - block->block_size;
+	}
 
 	if ((block->next != NULL) && (block->next == (char*)block + sizeof(block)))
 	{
-
 		(block)->next = (block->next)->next;
 		if ((block->next)->next != NULL)
 		{
@@ -127,6 +137,7 @@ void new_free(void* ptr)
 		(block->previous)->block_size = (block->previous)->block_size + (block)->block_size;
 
 	}
+
 }
 
 void* new_realloc(void* ptr, size_t newSize)

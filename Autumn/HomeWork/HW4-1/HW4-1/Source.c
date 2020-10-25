@@ -8,9 +8,6 @@ int main()
     int i, j;
     A = (int**)new_malloc(SIZE * sizeof(int*));
 
-
-    new_free(3123123);
-
     for (i = 0; i < SIZE; i++) {
         A[i] = (int*)new_malloc((i + 1) * sizeof(int));
     }
@@ -33,6 +30,5 @@ int main()
     }
 
     new_free(A);
-
     _getch();
 }
