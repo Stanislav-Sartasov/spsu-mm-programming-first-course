@@ -33,7 +33,7 @@ int main()
 		b[i] = 2 * i;
 		printf("b[%d] = %d\n", i, b[i]);
 	}
-	char* d = myMalloc(16341);		//Out of memory
+	char* d = myMalloc(16344);		//Out of memory
 	free(memory_block);
 	return 0;
 }

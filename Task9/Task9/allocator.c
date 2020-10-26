@@ -3,7 +3,13 @@
 #include <string.h>
 
 const size_t max_size = 16384;
-mem_control_block* memory_list;
+unsigned int* memory_list;
+
+void mem_block_change(unsigned int* mem_control_block, int size, char is_available)
+{
+	*mem_control_block = size << 1;
+	*mem_control_block += is_available;
+}
 
 void init()
 {
@@ -17,10 +23,10 @@ void init()
 	{
 		exit(-1);
 	}
-	memory_list = (mem_control_block*)memory_block;
-	memory_list->size = max_size;
-	memory_list->is_available = 1;
+	memory_list = memory_block;
+	mem_block_change(memory_list, max_size, 1);
 }
+
 
 void* myMalloc(size_t size)
 {
@@ -29,11 +35,11 @@ void* myMalloc(size_t size)
 		init();
 	}
 	void* current_location;
-	mem_control_block* current_location_mcb;
+	unsigned int* current_location_mcb;
 	void* memory_location = 0;
 	current_location = memory_list;
 
-	size += sizeof(mem_control_block);
+	size += sizeof(unsigned int);
 	int current_number = 0;
 	int free_size = 0;
 	while (memory_location != current_location)
@@ -43,68 +49,69 @@ void* myMalloc(size_t size)
 			printf("Out of memory");
 			exit(0);
 		}
-		current_location_mcb = (mem_control_block*)current_location;
-		if (current_location_mcb->is_available)
+		current_location_mcb = (unsigned int*)current_location;
+		if (*current_location_mcb & 1)
 		{
-			if (current_location_mcb->size + sizeof(mem_control_block) >= size)
+			if ((*current_location_mcb >> 1) + sizeof(unsigned int) >= size)
 			{
-				current_location_mcb->is_available = 0;
-				current_location_mcb->size = size;
+				mem_block_change(current_location_mcb, size, 0);
 				memory_location = current_location;
 				free_size = 0;
 				break;
 			}
-			else if (current_location_mcb->size + free_size >= size)
+			else if ((*current_location_mcb >> 1) + free_size >= size)
 			{
 				current_location = (char*)current_location - free_size;
-				current_location_mcb = (mem_control_block*)current_location;
-				current_location_mcb->is_available = 0;
-				current_location_mcb->size = size;
+				current_location_mcb = (unsigned int*)current_location;
+				mem_block_change(current_location_mcb, size, 0);
 				memory_location = current_location;
 				free_size = 0;
 				break;
 			}
-			free_size = free_size + current_location_mcb->size;
+			free_size = free_size + (*current_location_mcb >> 1);
 		}
 		else
 			free_size = 0;
-		current_number += current_location_mcb->size;
+		current_number += (*current_location_mcb >> 1);
 		current_location = (char*)memory_list + current_number;
 	}
-	memory_location = sizeof(mem_control_block) + (char*)memory_location;
+	memory_location = sizeof(unsigned int) + (char*)memory_location;
 	return memory_location;
 }
 
 void* myRealloc(void* ptr, size_t new_size)
 {
-	void* current_location = (char*)ptr - sizeof(mem_control_block);
-	mem_control_block* current_location_mcb;
-	current_location_mcb = (mem_control_block*)current_location;
-	if (new_size + sizeof(mem_control_block) < current_location_mcb->size)
+	void* current_location = (char*)ptr - sizeof(unsigned int);
+	unsigned int* current_location_mcb;
+	current_location_mcb = (unsigned int*)current_location;
+	if (new_size + sizeof(unsigned int) < (*current_location_mcb >> 1))
 	{
-		current_location_mcb->size = new_size + sizeof(mem_control_block);
+		*current_location_mcb = (new_size + sizeof(unsigned)) << 1;
 		return ptr;
 	}
-	else if (current_location_mcb->is_available == 1)
+	else if (*current_location_mcb & 1)
 	{
 		void* new_ptr = myMalloc(new_size);
-		memcpy(new_ptr, ptr, current_location_mcb->size - sizeof(mem_control_block));
+		memcpy(new_ptr, ptr, (*current_location_mcb >> 1) - sizeof(unsigned int));
 		return new_ptr;
 	}
 	else
 	{
-		current_location_mcb->is_available = 1;
+		(*current_location_mcb)++;
 		void* new_ptr = myMalloc(new_size);
-		memcpy(new_ptr, ptr, current_location_mcb->size);
-		if (current_location != (char*)new_ptr - sizeof(mem_control_block))
-			current_location_mcb->is_available = 0;
+		memcpy(new_ptr, ptr, (*current_location_mcb >> 1));
+		if (current_location != (char*)new_ptr - sizeof(unsigned int))
+		{
+			*current_location_mcb >>= 1;
+			*current_location_mcb <<= 1;
+		}
 		return new_ptr;
 	}
 }
 
 void myFree(void* ptr)
 {
-	struct mem_control_block* mcb;
-	mcb = (char*)ptr - sizeof(mem_control_block);
-	mcb->is_available = 1;
+	unsigned int* mcb;
+	mcb = (char*)ptr - sizeof(unsigned int);
+	*mcb = *mcb | 1;
 }
