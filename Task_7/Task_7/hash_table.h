@@ -3,15 +3,15 @@ typedef struct Hash Hash;
 
 struct Node
 {
-    int key;
-    int value;
-    struct Node* next;
+	int key;
+	int value;
+	struct Node* next;
 };
 
 struct Hash
 {
-    int size;
-    Node* hash_list;
+	int size;
+	Node* hash_list;
 };
 
 Hash hash_initialization(int size);
