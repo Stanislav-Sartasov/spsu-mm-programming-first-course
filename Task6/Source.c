@@ -140,6 +140,8 @@ int main(int argc, char* argv[])
 		}
 	}
 
+	free(mas);
+
 	munmap(addr_src, file_stat.st_size);
 	_close(fd_dst);
 	_close(fd_src);
