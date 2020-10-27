@@ -84,6 +84,7 @@ void convolution(unsigned char* bitMapImage, double height, int width, char* mod
 	}
 	else if (strcmp(mode, "Gauss5") == 0)
 	{
+		size = 5;
 		selected = matrix5x5[0];
 	}
 	else if (strcmp(mode, "SobelX") == 0)
