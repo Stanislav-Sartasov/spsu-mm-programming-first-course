@@ -1,14 +1,13 @@
 #define _CRT_SECURE_NO_WARNINGS
-#define M_PI		3.14159265358979323846
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
 #include <malloc.h>
+#define to_byte(x) x > 128 ? 255 : 0
 FILE* fileIn;
 FILE* fileOut;
 
-double sigma = 0.6;
 
 #pragma pack(push, 1)
 struct BITMAPFILEHEADER
@@ -54,12 +53,22 @@ void convolution(unsigned char* bitMapImage, double height, int width, char* mod
 
 	int size = 3;
 
-	double matrix[4][9] =
+	double matrix3x3[4][9] =
 	{
-		{  1, 2, 1, 2, 4, 2, 1, 2, 1},
+		{  1 / 16.0, 2 / 16.0, 1 / 16.0, 2 / 16.0, 4 / 16.0, 2 / 16.0, 1 / 16.0, 2 / 16.0, 1 / 16.0},
 		{ -1, 0, 1, -2,  0, 2, -1, 0, 1 },
 		{ -1, -2,-1, 0, 0, 0, 1, 2, 1 },
-		{ 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+		{  1, 1, 1, 1, 1, 1, 1, 1, 1 }
+	};
+	double matrix5x5[1][25] =
+	{
+		{
+			1 / 256.0, 4 / 256.0, 6 / 256.0, 4 / 256.0, 1 / 256.0,
+			4 / 256.0, 16 / 256.0, 24 / 256.0, 16 / 256.0, 4 / 256.0,
+			6 / 256.0, 24 / 256.0, 36 / 256.0, 24 / 256.0, 6 / 256.0,
+			4 / 256.0, 16 / 256.0, 24 / 256.0, 16 / 256.0, 4 / 256.0,
+			1 / 256.0, 4 / 256.0, 6 / 256.0, 4 / 256.0, 1 / 256.0
+		}
 	};
 
 	double* selected = 0;
@@ -67,60 +76,67 @@ void convolution(unsigned char* bitMapImage, double height, int width, char* mod
 
 	if (strcmp(mode, "Averaging") == 0)
 	{
-		selected = matrix[3];
+		selected = matrix3x3[3];
 	}
 	else if (strcmp(mode, "Gauss3") == 0)
 	{
-		selected = matrix[0];
+		selected = matrix3x3[0];
 	}
-	else if (strcmp(mode, "Gauss3") == 0)
+	else if (strcmp(mode, "Gauss5") == 0)
 	{
-		selected = matrix[0];
+		selected = matrix5x5[0];
 	}
 	else if (strcmp(mode, "SobelX") == 0)
 	{
-		selected = matrix[2];
 		isSobel = 1;
+		selected = matrix3x3[2];
 	}
 	else if (strcmp(mode, "SobelY") == 0)
 	{
-		selected = matrix[1];
 		isSobel = 1;
+		selected = matrix3x3[1];
 	}
 
-	int bc = 3;
-	for (int j = 0; j < 3; j++)
+	for (int h = 0; h < height; h++)
 	{
-		for (int i = bc * width + j; i < (width * (height - 1)) * 3; i += 3)
+		for (int w = 0; w < width; w++)
 		{
-			if ((i % (width * bc) < bc) || ((i + bc) % (width * bc) < bc))
-				continue;
-			double pixel_value = selected[0] * bitMapImage[i + bc * width - bc] + selected[1] * bitMapImage[i + bc * width] + selected[2] * bitMapImage[i + bc * width + bc]
-				+ selected[3] * bitMapImage[i - bc] + selected[4] * bitMapImage[i] + selected[5] * bitMapImage[i + bc] + selected[6] * bitMapImage[i - bc * width - bc]
-				+ selected[7] * bitMapImage[i - bc * width] + selected[8] * bitMapImage[i - bc * width + bc];
+
+			double result[3] = { 0, 0, 0 };
+			double divider = 0;
+			for (int x = 0; x < size; x++)
+				for (int y = 0; y < size; y++)
+					if ((h + x - 1) >= 0 && (h + x - 1) <= (height - 1) && (w + y - 1) >= 0 && (w + y - 1) <= (width - 1))
+					{
+						result[0] += bitMapImage[((h + x - 1) * width + w + y - 1) * 3 + 0] * selected[x * size + y];
+						result[1] += bitMapImage[((h + x - 1) * width + w + y - 1) * 3 + 1] * selected[x * size + y];
+						result[2] += bitMapImage[((h + x - 1) * width + w + y - 1) * 3 + 2] * selected[x * size + y];
+					}
 			if (isSobel)
 			{
-				if (pixel_value > 255)
-					pixel_value = 255;
-				if (pixel_value < 0)
-					pixel_value = 0;
+				bitMapImageCopy[(h * width + w) * 3] = to_byte(result[0]);
+				bitMapImageCopy[(h * width + w) * 3 + 1] = to_byte(result[1]);
+				bitMapImageCopy[(h * width + w) * 3 + 2] = to_byte(result[2]);
 			}
 			else
 			{
-				pixel_value /= 16;
+				bitMapImageCopy[(h * width + w) * 3] = (unsigned char)(result[0]);
+				bitMapImageCopy[(h * width + w) * 3 + 1] = (unsigned char)(result[1]);
+				bitMapImageCopy[(h * width + w) * 3 + 2] = (unsigned char)(result[2]);
 			}
-			bitMapImageCopy[i] = (unsigned char)pixel_value;
+
 		}
 	}
 
-	for (int i = 0; i < height * width * bc; i++)
+
+	for (int i = 0; i < height * width * 3; i++)
 		bitMapImage[i] = bitMapImageCopy[i];
 	free(bitMapImageCopy);
 }
 
 int main(int argc, char* argv[])
 {
-	if (argc != 4 || !(strcmp(argv[2], "Averaging") == 0 || strcmp(argv[2], "Gauss3") == 0 || strcmp(argv[2], "Gauss5") == 0 || strcmp(argv[2], "Sobel") == 0
+	if (argc != 4 || !(strcmp(argv[2], "Averaging") == 0 || strcmp(argv[2], "Gauss3") == 0 || strcmp(argv[2], "Gauss5") == 0
 		|| strcmp(argv[2], "SobelX") == 0 || strcmp(argv[2], "SobelY") == 0 || strcmp(argv[2], "BlackWhite") == 0) || fopen_s(&fileIn, argv[1], "rb") != 0)
 	{
 		printf("Invalid input. Try again.");
