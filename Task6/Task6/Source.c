@@ -1,155 +1,151 @@
-#define _CRT_SECURE_NO_WARNINGS
+п»ї#define _CRT_SECURE_NO_WARNINGS
 #include <sys/stat.h>
 #include "mman.c"
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
-//#include <string.h>
+#include <string.h>
+
+int check_in_space(char* str)
+{
+	int count = 0;
+	int flag = 0;
+	while (str[count] != '\n')
+	{
+		if (str[count] != ' ')
+			flag = 1;
+		count++;
+	}
+
+	if (flag)
+		return 1;
+	else
+		return 0;
+}
+
+int chars_count(char* str)
+{
+	int count = 0;
+	while (str[count] != '\n')
+	{
+		count++;
+	}
+	return count;
+}
 
 int compare_ascending(const void* ptr1, const void* ptr2)
 {
-    return strcmp(*(char**)ptr1, *(char**)ptr2);
+	return strcmp(*(char**)ptr1, *(char**)ptr2);
 }
 
 int compare_decending(const void* ptr1, const void* ptr2)
 {
-    return strcmp(*(char**)ptr2, *(char**)ptr1);
+	return strcmp(*(char**)ptr2, *(char**)ptr1);
 }
 
 int main(int argc, char* argv[])
 {
-    int flag = 0; int n = 0; char eol = 0;
-    int fd_src;
-    void* addr_src;
-    struct stat file_stat;
-    FILE* fd_dst;
+	char* flag;
+	int line = 0;
+	int fd_src;
+	char* addr_src;
+	struct stat file_stat;
 
-    fd_src = _open(argv[1], O_RDWR);
-    fd_dst = fopen(argv[2], "w+");
+	if (argc != 4)
+	{
+		printf("Check the number of arguments\n");
+		exit(EXIT_FAILURE);
+	}
 
-    if (fd_src < 0)
-    {
-        printf("Check the input file");
-        exit(EXIT_FAILURE);
-    }
-    if (fd_dst < 0)
-    {
-        printf("Check the output file");
-        exit(EXIT_FAILURE);
-    }
-    if (argc != 3)
-    {
-        printf("Check the number of arguments\n");
-        exit(EXIT_FAILURE);
-    }
+	fd_src = _open(argv[1], O_RDWR);
 
-    printf("The program sorts the lines in the file. Choose a sort order. To sort in ascending order, enter 1.\n"
-        "To sort in descending order, enter 2.\n");
-    
-    while (n == 0)
-    {
-        scanf("%d%c", &flag, &eol);
-        if ((flag == 1 || flag == 2) && eol == '\n')
-        {
-            n = 1;
-        }
-        else
-        {
-            printf("Error. Try again\n");
-        }
-    }
-    
-    fstat(fd_src, &file_stat);
-    
-    addr_src = mmap(0, file_stat.st_size, PROT_READ, MAP_SHARED, fd_src, 0);
-    if (addr_src == MAP_FAILED)
-    {
-        printf("Error mmap function");
-        exit(EXIT_FAILURE);
-    }
-    unsigned int number_count = file_stat.st_size;
-    unsigned int number_line = 0;
+	if (fd_src < 0)
+	{
+		printf("Check the input file");
+		exit(EXIT_FAILURE);
+	}
 
-    // подсчёт колличества строк
-    for (int i = 0; i < number_count; i++)
-    {
-        const char a = ((char*)addr_src)[i];
-        const char b = 10;
-        if (!(a - b))
-        {
-            number_line++;
-        }
-    }
-
-    //  подсчет колличества символов в каждой строке
-    unsigned int* number_of_characters_per_line = (unsigned int*)malloc(sizeof(unsigned int) * (number_line + 1));
-    int y = 0, x = 0;
-    for (int i = 0; i < number_count; i++)
-    {
-        x++;
-        const char a = ((char*)addr_src)[i];
-        const char b = 10;
-        if (!(a - b))
-        {
-            number_of_characters_per_line[y] = x;
-            y++;
-            x = 0;
-        }
-        else if (i == number_count - 1)
-        {
-            number_line = number_line + 1;
-            number_of_characters_per_line[y] = x;
-            x = 0;
-        }
-    }
-
-    // создание массива
-    char** mas = (char**)malloc(sizeof(char*) * number_line + 1);
-    for (int i = 0; i < number_line; i++)
-    {
-        mas[i] = (char*)malloc(sizeof(char) * number_of_characters_per_line[i] + 1);
-    }
+	if (!strcmp(argv[3], "ascending"))
+	{
+		flag = "ascending";
+	}
+	else if (!strcmp(argv[3], "decending"))
+	{
+		flag = "decending";
+	}
+	else
+	{
+		printf("Sorting direction not selected");
+		exit(EXIT_FAILURE);
+	}
 
 
-    // копирование из addr_src в массив
-    int len_str = 0;
-    int num_str = 0;
-    for (int i = 0; i < number_count; i++)
-    {
-        mas[num_str][len_str] = ((char*)(addr_src))[i];
-        len_str++;
-        if (len_str == number_of_characters_per_line[num_str])
-        {
-            mas[num_str][len_str] = '\0';
-            len_str = 0;
-            num_str++;
-        }
-    }
 
-    // сортировка
-    if (flag == 1)
-    {
-        qsort(mas, number_line, sizeof(char*), compare_ascending);
-    }
-    if (flag == 2)
-    {
-        qsort(mas, number_line, sizeof(char*), compare_decending);
-    }
+	fstat(fd_src, &file_stat);
 
-    for (int i = 0; i < number_line; i++)
-    {
-        fprintf(fd_dst, "%s", mas[i]);
-    }
+	addr_src = mmap(0, file_stat.st_size, PROT_READ, MAP_SHARED, fd_src, 0);
+	if (addr_src == MAP_FAILED)
+	{
+		printf("Error mmap function");
+		exit(EXIT_FAILURE);
+	}
+	unsigned int number_character = file_stat.st_size;
+	unsigned int number_line = 0;
 
-    _close(fd_src);
-    fclose(fd_dst);
-    free(number_of_characters_per_line);
-    for (int i = 0; i < number_line; i++)
-    {
-        free(mas[i]);
-    }
-    free(mas);
-    munmap(addr_src, file_stat.st_size);
-    printf("successfully\n");
-    return 0;
+	for (int i = 0; i < number_character; i++)
+	{
+		const char a = ((char*)addr_src)[i];
+		const char b = 10;
+		if (!(a - b))
+		{
+			number_line++;
+		}
+	}
+
+	char** mas = (char**)malloc((number_line + 1) * sizeof(char*));
+
+	int j = 0;
+	while (j < number_character)
+	{
+		mas[line] = &addr_src[j];
+		while (addr_src[j] != '\n' && j < number_character)
+		{
+			j++;
+		}
+		j++;
+		line++;
+	}
+
+	if (flag == "ascending")
+	{
+		qsort(mas, line, sizeof(char*), compare_ascending);
+	}
+	if (flag == "decending")
+	{
+		qsort(mas, line, sizeof(char*), compare_decending);
+	}
+
+	int fd_dst = _open(argv[2], O_RDWR | O_CREAT);
+	if (fd_dst < 0)
+	{
+		printf("Check the output file");
+		exit(EXIT_FAILURE);
+	}
+
+	for (int i = 0; i < line; i++)
+	{
+		if (check_in_space(mas[i]))
+		{
+			_write(fd_dst, mas[i], chars_count(mas[i]) + 1);
+		}
+	}
+
+	munmap(addr_src, file_stat.st_size);
+	_close(fd_dst);
+	_close(fd_src);
+	printf("Successfully");
+	return 0;
 }
+
+
+
