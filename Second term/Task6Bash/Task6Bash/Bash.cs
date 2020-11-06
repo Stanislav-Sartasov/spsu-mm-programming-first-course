@@ -16,6 +16,12 @@ namespace Task6Bash
             while (true)
             {
                 string input = Console.ReadLine().Trim();
+                if (input == "")
+                {
+                    Console.WriteLine("Enter a command.");
+                    continue;
+                }
+                    
                 int index = 0;
                 string substring;
                 string args;
