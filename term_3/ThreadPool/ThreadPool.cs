@@ -31,23 +31,42 @@ namespace ThreadPool
 		{
 			lock (queue)
 			{
-				queue.Enqueue(a);
+				if (queue.Count == 0)
+				{
+					queue.Enqueue(a);
+					for (int i = 0; i < number; i++)
+					{
+						if (!threadLst[i].IsAlive)
+						{
+							threadLst[i].Join();
+							threadLst[i] = new Thread(Work);
+							threadLst[i].Name = i.ToString();
+							threadLst[i].Start();
+						}
+					}
+				}
+				else
+					queue.Enqueue(a);
 			}
 		}
 		private void Work()
 		{
-			while (!stop)
-			{
 				for (int i = 0; i < queue.Count; ++i)
 				{
-					Action act;
+					Action act = null;
+					bool flag;
+					flag = false;
 					lock (queue)
 					{
+						if (queue.Count > 0)
+						{
 						act = queue.Dequeue();
+						flag = true;
+						}
 					}
-					act?.Invoke();
+					if (flag)
+						act?.Invoke();
 				}	
-			}
 		}
 		public void Dispose()
 		{

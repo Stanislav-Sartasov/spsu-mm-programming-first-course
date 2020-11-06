@@ -23,7 +23,10 @@ namespace ThreadPool
 			MyThreadPool myPool = new MyThreadPool(n);
 			for  (int i = 0; i < 5; ++i)
 				myPool.Enqueue(a);
-			Thread.Sleep(100);
+			Thread.Sleep(1000);
+			for (int i = 0; i < 5; ++i)
+				myPool.Enqueue(a);
+			Thread.Sleep(1000);
 			myPool.Dispose();
 			Console.ReadKey();
 		}
