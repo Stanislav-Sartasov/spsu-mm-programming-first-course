@@ -1,14 +1,13 @@
 package com.company;
 
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
 public class Client {
     private final Scanner scanner = new Scanner(System.in);
+    private final Channel channel = new Channel();
 
     private Set<InetSocketAddress> updateFriends() {
         Set<InetSocketAddress> addresses = new HashSet<>();
@@ -30,8 +29,7 @@ public class Client {
         return addresses;
     }
 
-    public void start() throws UnknownHostException {
-        String host = String.valueOf(InetAddress.getByName("localhost")).split("/")[1];
+    public void start() {
         System.out.print("> enter your name: ");
         String name = scanner.nextLine().strip();
         while (name.isEmpty()) {
@@ -46,7 +44,7 @@ public class Client {
             line = scanner.nextLine().strip();
         }
         int sourcePort = Integer.parseInt(line);
-        Channel channel = new Channel();
+        InetSocketAddress myAddress = new InetSocketAddress("127.0.0.1", sourcePort);
         while (channel.bind(sourcePort)) {
             System.out.print("> enter your port: ");
             sourcePort = Integer.parseInt(scanner.nextLine());
@@ -55,7 +53,7 @@ public class Client {
         channel.start();
         channel.setAddresses(updateFriends());
         channel.setReceiveMessage(true);
-        channel.send(host + ":" + sourcePort + "~");
+        channel.send(myAddress.getHostString() + ":" + sourcePort + "~");
 
         while (true) {
             String msg = scanner.nextLine();
@@ -66,30 +64,39 @@ public class Client {
             if (msg.equals("--add-connections")) {
                 Set<InetSocketAddress> s = updateFriends();
                 for (InetSocketAddress a: s)
-                    channel.update(String.valueOf(a.getHostName()), String.valueOf(a.getPort()));
+                    channel.update(String.valueOf(a.getHostString()), String.valueOf(a.getPort()));
                 continue;
             }
 
             if (msg.equals("--exit")) {
+                String[] address = {String.valueOf(myAddress).split("/")[1]};
+                disconnect(address, true);
                 break;
             }
 
             if (msg.equals("--list-of-connections")) {
                 Set<InetSocketAddress> lst = channel.getAddresses();
-                if (lst.isEmpty() || (lst.size() == 1 && lst.contains(new InetSocketAddress("localhost", sourcePort)))) {
+                if (lst.isEmpty() || (lst.size() == 1 && lst.contains(myAddress))) {
                     System.out.println("> No connections.");
                     continue;
                 }
                 System.out.println("> Your connections: ");
                 for (InetSocketAddress address: lst) {
-                    if (!(sourcePort == address.getPort() && address.getAddress() == InetAddress.getByName("localhost")))
+                    if (!(address.equals(myAddress)))
                         System.out.println("\t> " + address.getAddress() + ":" + address.getPort());
                 }
                 System.out.println("> Now you can communicate.");
                 continue;
             }
 
-            msg = host + ":" + sourcePort + "~[" + name + "]:  " + msg;
+            if (msg.equals("--disconnect")) {
+                System.out.println("> enter IP:port to disconnect with (space separated): ");
+                String[] input = scanner.nextLine().strip().split(" ");
+                disconnect(input, false);
+                continue;
+            }
+
+            msg = myAddress.getHostString() + ":" + sourcePort + "~[" + name + "]:  " + msg;
 
            channel.send(msg);
         }
@@ -98,6 +105,19 @@ public class Client {
         channel.stop();
 
         System.out.println("Closed.");
+    }
+
+    private void disconnect(String[] input, boolean skip) {
+        for (String inputValue: input) {
+            if (inputValue.strip().isEmpty())
+                continue;
+            String[] address = inputValue.strip().split(":");
+            if (address.length != 2) {
+                System.out.println("[Error] Wrong address, try again (enter it in the format IP:port)");
+                disconnect(scanner.nextLine().strip().split(" "), skip);
+            }
+            channel.disconnect(address[0], address[1], skip);
+        }
     }
 
 }

@@ -10,7 +10,7 @@ public class Channel implements Runnable {
     private boolean running;
     private boolean receiveMessage;
     private Set<InetSocketAddress> addresses;
-    private int myPort;
+    private InetSocketAddress myAddress;
 
     public void setReceiveMessage(boolean f) {
         receiveMessage = f;
@@ -20,20 +20,19 @@ public class Channel implements Runnable {
         return addresses;
     }
 
-    public void setAddresses(Set<InetSocketAddress> a) throws UnknownHostException {
+    public void setAddresses(Set<InetSocketAddress> a) {
         for (InetSocketAddress address: a) {
             if (address.isUnresolved()) {
                 System.out.println("[Error] Wrong address " + address);
                 continue;
             }
-            byte[] buffer = ("?" + String.valueOf(InetAddress.getByName("localhost")).split("/")[1]+ ":" + myPort).getBytes();
+            byte[] buffer = ("?" + String.valueOf(myAddress).split("/")[1]).getBytes();
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
             packet.setSocketAddress(address);
             try {
                 socket.send(packet);
             } catch (IOException e) {
-                System.out.println("[Error] No user with such address (" + address.getPort() +
-                        "). If you are not mistaken in writing the address, ask him to connect and then add it again.");
+                e.printStackTrace();
             }
         }
         try {
@@ -50,7 +49,7 @@ public class Channel implements Runnable {
 
     public boolean bind(int port) {
         try {
-            myPort = port;
+            myAddress = new InetSocketAddress("127.0.0.1", port);
             socket = new DatagramSocket(port);
             addresses = new HashSet<>();
             return false;
@@ -71,7 +70,7 @@ public class Channel implements Runnable {
         socket.close();
     }
 
-    protected void update(String host, String port) throws UnknownHostException {
+    protected void update(String host, String port) {
         InetSocketAddress newConnection = new InetSocketAddress(host, Integer.parseInt(port));
         if (!addresses.contains(newConnection)) {
             for (InetSocketAddress address: addresses) {
@@ -85,7 +84,7 @@ public class Channel implements Runnable {
                     e.printStackTrace();
                 }
 
-                if (address.getPort() == myPort  && address.getAddress() == InetAddress.getByName("localhost"))
+                if (address.equals(myAddress))
                     continue;
 
                 buf = (host + ":" + port + "~").getBytes();
@@ -98,10 +97,10 @@ public class Channel implements Runnable {
                     e.printStackTrace();
                 }
             }
-            if (!(myPort == Integer.parseInt(port) &&
-                    host.equals(String.valueOf(InetAddress.getByName("localhost")).split("/")[1])))
+            if (!(myAddress.equals(newConnection)) && !addresses.contains(newConnection)) {
                 System.out.println(">>> Connected to " + host + ":" + port);
-            addresses.add(newConnection);
+                addresses.add(newConnection);
+            }
         }
     }
 
@@ -117,8 +116,9 @@ public class Channel implements Runnable {
                 String msg = new String(buffer, 0, packet.getLength());
                 if (msg.isEmpty())
                     continue;
+
                 if (msg.charAt(0) == '?') {
-                    byte[] b = ("!" +  String.valueOf(InetAddress.getByName("localhost")).split("/")[1] + ":" + myPort).getBytes();
+                    byte[] b = ("!" +  String.valueOf(myAddress).split("/")[1]).getBytes();
                     DatagramPacket p = new DatagramPacket(b, b.length);
                     p.setSocketAddress(new InetSocketAddress(msg.substring(1).split(":")[0],
                                             Integer.parseInt(msg.split(":")[1])));
@@ -129,13 +129,21 @@ public class Channel implements Runnable {
                     }
                     continue;
                 }
+
                 if (msg.charAt(0) == '!') {
-                    addresses.add(new InetSocketAddress(msg.substring(1).split(":")[0],
-                            Integer.parseInt(msg.split(":")[1])));
+                    update(msg.substring(1).split(":")[0], msg.split(":")[1]);
                     continue;
                 }
+
+                if (msg.charAt(0) == '-') {
+                    msg = msg.substring(1);
+                    String[] a = msg.split(":");
+                    InetSocketAddress del = new InetSocketAddress(a[0], Integer.parseInt(a[1]));
+                    addresses.remove(del);
+                    continue;
+                }
+
                 String port = msg.split("~")[0];
-                //System.out.println(port);
                 update(port.split(":")[0], port.split(":")[1]);
                 if (msg.split("~").length <= 1)
                     continue;
@@ -149,16 +157,43 @@ public class Channel implements Runnable {
         }
     }
 
-    public void send(String msg) throws UnknownHostException {
+    public void send(String msg) {
         byte[] buffer = msg.getBytes();
         String port = msg.split("~")[0];
         String[] a = port.split(":");
         update(a[0], a[1]);
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
         for (InetSocketAddress address: addresses) {
-            if (myPort == address.getPort() &&
-                    address.getHostString().equals(String.valueOf(InetAddress.getByName("localhost")).split("/")[1]))
+            if (address.equals(myAddress))
                 continue;
+            packet.setSocketAddress(address);
+            try {
+                socket.send(packet);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    protected void disconnect(String host, String port, boolean skip) {
+        InetSocketAddress oldAddress = new InetSocketAddress(host, Integer.parseInt(port));
+        addresses.remove(oldAddress);
+        byte[] buffer;
+        DatagramPacket packet;
+        for (InetSocketAddress address: addresses) {
+            if (!skip) {
+                buffer = ("-" + address.getHostString() + ":" + address.getPort()).getBytes();
+                packet = new DatagramPacket(buffer, buffer.length);
+                packet.setSocketAddress(oldAddress);
+                try {
+                    socket.send(packet);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            buffer = ("-" + host + ":" + port).getBytes();
+            packet = new DatagramPacket(buffer, buffer.length);
             packet.setSocketAddress(address);
             try {
                 socket.send(packet);
