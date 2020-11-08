@@ -1,6 +1,8 @@
 package com.company;
 
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -8,6 +10,15 @@ import java.util.Set;
 public class Client {
     private final Scanner scanner = new Scanner(System.in);
     private final Channel channel = new Channel();
+
+    private String getHost() {
+        try {
+            return String.valueOf(InetAddress.getLocalHost()).split("/")[1];
+        } catch (UnknownHostException e) {
+            System.out.println("[Error] Internet connection error");
+        }
+        return "";
+    }
 
     private Set<InetSocketAddress> updateFriends() {
         Set<InetSocketAddress> addresses = new HashSet<>();
@@ -44,11 +55,13 @@ public class Client {
             line = scanner.nextLine().strip();
         }
         int sourcePort = Integer.parseInt(line);
-        InetSocketAddress myAddress = new InetSocketAddress("127.0.0.1", sourcePort);
-        while (channel.bind(sourcePort)) {
+
+        while (channel.bind(getHost(), sourcePort)) {
             System.out.print("> enter your port: ");
             sourcePort = Integer.parseInt(scanner.nextLine());
         }
+        InetSocketAddress myAddress = new InetSocketAddress(getHost(), sourcePort);
+        System.out.println("> Your address is " + myAddress);
 
         channel.start();
         channel.setAddresses(updateFriends());

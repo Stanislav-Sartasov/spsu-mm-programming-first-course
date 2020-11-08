@@ -47,9 +47,9 @@ public class Channel implements Runnable {
         }
     }
 
-    public boolean bind(int port) {
+    public boolean bind(String host, int port) {
         try {
-            myAddress = new InetSocketAddress("127.0.0.1", port);
+            myAddress = new InetSocketAddress(host, port);
             socket = new DatagramSocket(port);
             addresses = new HashSet<>();
             return false;
@@ -178,8 +178,14 @@ public class Channel implements Runnable {
     protected void disconnect(String host, String port, boolean skip) {
         InetSocketAddress oldAddress = new InetSocketAddress(host, Integer.parseInt(port));
         addresses.remove(oldAddress);
-        byte[] buffer;
-        DatagramPacket packet;
+        byte[] buffer = ("-" + myAddress.getHostString() + ":" + myAddress.getPort()).getBytes();;
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+        packet.setSocketAddress(oldAddress);
+        try {
+            socket.send(packet);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         for (InetSocketAddress address: addresses) {
             if (!skip) {
                 buffer = ("-" + address.getHostString() + ":" + address.getPort()).getBytes();
