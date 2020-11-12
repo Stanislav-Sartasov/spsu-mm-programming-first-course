@@ -10,36 +10,26 @@ namespace TaskProducersConsumers.Tests
     public class TestProducersConsumers
     {
         [TestMethod]
-        public void TestProducers()
+        public void TestManager()
         {
-            List<int> products = new List<int>();
+            Manager manager = new Manager();
             List<Producer> producers = new List<Producer>();
+            List<Consumer> consumers = new List<Consumer>();
+            for (int i = 0; i < 6; i++)
+            {
+                consumers.Add(new Consumer(manager));
+            }
             for (int i = 0; i < 3; i++)
             {
-                producers.Add(new Producer(products));
+                producers.Add(new Producer(manager));
             }
+            manager.Initialize(consumers, producers);
             Thread.Sleep(100);
-            Assert.AreEqual(3, products.Count);
-            foreach (var producer in producers)
-                producer.Dispose();
+            Assert.AreEqual(3, manager.GetCount());
+            manager.Dispose();
+            Assert.AreEqual(0, manager.GetCount());
 
         }
-        [TestMethod]
-        public void TestConsumers()
-        {
-            Random random = new Random();
-            List<int> products = new List<int>();
-            for (int i = 0; i < 3; i++)
-                products.Add(random.Next(100));
-            List<Consumer> consumers = new List<Consumer>();
-            for (int i = 0; i < 3; i++)
-            {
-                consumers.Add(new Consumer(products));
-            }
-            Thread.Sleep(100);
-            Assert.AreEqual(0, products.Count);
-            foreach (var consumer in consumers)
-                consumer.Dispose();
-        }
+        
     }
 }
