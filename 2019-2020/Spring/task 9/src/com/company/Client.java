@@ -8,12 +8,25 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class Client {
-    private final Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
     private final Channel channel = new Channel();
+    private boolean running = true;
 
-    private String getHost() {
+    void setRunning(boolean running) {
+        this.running = running;
+    }
+
+    public Channel getChannel() {
+        return channel;
+    }
+
+    void setScanner(Scanner scanner) {
+        this.scanner = scanner;
+    }
+
+    String getHost() {
         try {
-            return String.valueOf(InetAddress.getLocalHost()).split("/")[1];
+            return InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
             System.out.println("[Error] Internet connection error");
         }
@@ -68,22 +81,30 @@ public class Client {
         channel.setReceiveMessage(true);
         channel.send(myAddress.getHostString() + ":" + sourcePort + "~");
 
-        while (true) {
-            String msg = scanner.nextLine();
+        while (running) {
+
+            String msg = "";
+            if (scanner.hasNext())
+                msg = scanner.nextLine();
+
 
             if (msg.isEmpty())
                 continue;
 
             if (msg.equals("--add-connections")) {
                 Set<InetSocketAddress> s = updateFriends();
-                for (InetSocketAddress a: s)
-                    channel.update(String.valueOf(a.getHostString()), String.valueOf(a.getPort()));
+                channel.setAddresses(s);
+                /*for (InetSocketAddress a: s)
+                    channel.update(String.valueOf(a.getHostString()), String.valueOf(a.getPort()));*/
                 continue;
             }
 
             if (msg.equals("--exit")) {
                 String[] address = {String.valueOf(myAddress).split("/")[1]};
                 disconnect(address, true);
+                scanner.close();
+                channel.stop();
+                System.out.println("Closed.");
                 break;
             }
 
@@ -113,11 +134,6 @@ public class Client {
 
            channel.send(msg);
         }
-
-        scanner.close();
-        channel.stop();
-
-        System.out.println("Closed.");
     }
 
     private void disconnect(String[] input, boolean skip) {
