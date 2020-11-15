@@ -138,7 +138,7 @@ namespace Wpf
             };
            pictureBox.Children.Add(line);
         }
-        private void DrawCruve(Cruve cruve)
+        private void DrawCruve(Curve cruve)
         {
             bool error = false;
             float step = (float)((Logic.width / 22) / Logic.size);
@@ -158,7 +158,7 @@ namespace Wpf
         }
         private void buttonStart_Click(object sender, RoutedEventArgs e)
         {
-            Cruve cr = (Cruve)Logic.SelectedObj;
+            Curve cr = (Curve)Logic.SelectedObj;
             pictureBox.Children.Clear();
             SysCoord();
             if (cr != null)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MathCruves
 {
-    public class ClassicParabola : Cruve
+    public class ClassicParabola : Curve
     {
         public override List<PointF> Raschet(List<float> lst, out bool error)
         {
@@ -17,7 +17,7 @@ namespace MathCruves
         }
         public ClassicParabola()
         {
-            cruve = "x * x";
+            curve = "x * x";
         }
     }
 }

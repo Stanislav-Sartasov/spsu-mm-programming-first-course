@@ -17,7 +17,7 @@ namespace Wpf
             width = 1;
             height = 1;
             SizeStr = "Size: 1";
-            LstCombo = new Cruve[] { new Parabola(), new ClassicParabola(), new Circle() };
+            LstCombo = new Curve[] { new Parabola(), new ClassicParabola(), new Circle() };
             SelectedObj = null;
         }
         public float size;

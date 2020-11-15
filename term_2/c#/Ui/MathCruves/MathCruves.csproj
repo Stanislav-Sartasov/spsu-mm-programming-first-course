@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="Circle.cs" />
     <Compile Include="ClassicParapola.cs" />
-    <Compile Include="Cruve.cs" />
+    <Compile Include="Curve.cs" />
     <Compile Include="Parabola.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

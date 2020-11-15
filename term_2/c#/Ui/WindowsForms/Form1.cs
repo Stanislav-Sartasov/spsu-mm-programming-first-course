@@ -112,7 +112,7 @@ namespace WindowsForms
                 NumberInCoord(number, x - 25 - delta, y);
             }
         }
-        private void DrawCruve(Cruve cruve)
+        private void DrawCruve(Curve cruve)
         {
             bool error = false;
             float step = (float)((width / 22) / size);
@@ -139,14 +139,14 @@ namespace WindowsForms
             width = (float)pictureBox.Width;
             height = (float)pictureBox.Height;
             labelSize.Text = "Size: " + size.ToString();
-            comboBoxCurves.Items.AddRange(new Cruve[] {new Parabola(), new ClassicParabola(), new Circle()});
+            comboBoxCurves.Items.AddRange(new Curve[] {new Parabola(), new ClassicParabola(), new Circle()});
         }
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
             graphics.Clear(BackColor);
             SysCoord();
-            Cruve cruve = (Cruve)comboBoxCurves.SelectedItem;
+            Curve cruve = (Curve)comboBoxCurves.SelectedItem;
             if  (cruve != null)
             {
                 DrawCruve(cruve);

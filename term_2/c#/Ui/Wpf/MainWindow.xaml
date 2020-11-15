@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wpf"
         mc:Ignorable="d"
-        Title="CruvesDrawer" Height="550" Width="800" Name="mainWindow">
+        Title="Show Curve" Height="550" Width="800" x:Name="Show_Curve" ResizeMode="CanMinimize">
 	<Grid>
         <Button x:Name="buttonStart" Content="Draw" HorizontalAlignment="Left" Margin="49,155,0,0" VerticalAlignment="Top" Width="75" Click="buttonStart_Click"/>
 		<Button x:Name="buttonPlus" Content="+ 0.1" HorizontalAlignment="Left" Margin="12,222,0,0" VerticalAlignment="Top" Width="75"

@@ -5,7 +5,7 @@ using System;
 
 namespace MathCruves
 {
-    public class Circle : Cruve
+    public class Circle : Curve
     {
         public override List<PointF> Raschet(List<float> lst, out bool error)
         {
@@ -51,7 +51,7 @@ namespace MathCruves
         }
         public Circle()
         {
-            cruve = "x * x + y * y = 1";
+            curve = "x * x + y * y = 1";
         }
     }
 }

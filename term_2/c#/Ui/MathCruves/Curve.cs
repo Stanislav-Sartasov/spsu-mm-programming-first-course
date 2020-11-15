@@ -7,9 +7,9 @@ using System.Drawing;
 
 namespace MathCruves
 {
-    public abstract class Cruve
+    public abstract class Curve
     {
-        public string cruve;
+        public string curve;
         public virtual List<PointF> Raschet(List<float> lst, out bool error)
         {
             error = false;
@@ -17,7 +17,7 @@ namespace MathCruves
         }
         public override string ToString()
         {
-            return cruve;
+            return curve;
         }
     }
 }

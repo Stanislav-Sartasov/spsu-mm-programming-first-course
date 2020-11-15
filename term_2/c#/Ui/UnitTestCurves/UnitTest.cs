@@ -6,11 +6,12 @@ using TestStack.White.Factory;
 using TestStack.White.UIItems.ListBoxItems;
 using TestStack.White.UIItems.WindowItems;
 
-namespace UnitTestCruves
+
+namespace UnitTestCurves
 {
-    [TestClass]
-    public class UnitTest1
-    {
+	[TestClass]
+	public class UnitTest
+	{
         [TestMethod]
         public void TestWinForms()
         {
@@ -53,7 +54,7 @@ namespace UnitTestCruves
         public void TestWpf()
         {
             Application app = Application.Launch("Wpf.exe");
-            Window window = app.GetWindow("CruvesDrawer", InitializeOption.NoCache);
+            Window window = app.GetWindow("Show_Curve", InitializeOption.NoCache);
 
             Button button = window.Get<Button>("buttonStart");
             Button buttonPlus = window.Get<Button>("buttonPlus");
@@ -85,5 +86,4 @@ namespace UnitTestCruves
             app.Close();
         }
     }
-    
 }
