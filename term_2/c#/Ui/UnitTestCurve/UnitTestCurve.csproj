@@ -5,11 +5,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{24A16C2D-8139-48C7-8512-88AAF15013F1}</ProjectGuid>
+    <ProjectGuid>{687ACFE8-815A-44CB-8115-6CA7817FD658}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UnitTestCurves</RootNamespace>
-    <AssemblyName>UnitTestCurves</AssemblyName>
+    <RootNamespace>UnitTestCurve</RootNamespace>
+    <AssemblyName>UnitTestCurve</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

@@ -6,8 +6,7 @@ using TestStack.White.Factory;
 using TestStack.White.UIItems.ListBoxItems;
 using TestStack.White.UIItems.WindowItems;
 
-
-namespace UnitTestCurves
+namespace UnitTestCurve
 {
 	[TestClass]
 	public class UnitTest
