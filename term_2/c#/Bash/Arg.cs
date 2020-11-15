@@ -11,9 +11,9 @@ namespace Bash
         public readonly string arg;
         public Arg(string start)
         {
-            interup = Interup.queue;
+            interup = Interup.Queue;
             arg = start;
-            st = Status.arg;
+            st = Status.Arg;
         }
     }
 }

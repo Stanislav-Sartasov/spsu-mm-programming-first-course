@@ -8,10 +8,10 @@ namespace Bash
 {
     enum Status
     {
-        arg,
-        cmd,
-        vari,
-        value,
-        undef
+        Arg,
+        Cmd,
+        Vari,
+        Value,
+        Undef
     }
 }

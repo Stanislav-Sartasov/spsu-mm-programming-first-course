@@ -20,7 +20,7 @@ namespace Bash
         public List<Message> GetLine()
         {
             bool gotVari = false, needStick = false;
-            Status flag = Status.undef;
+            Status flag = Status.Undef;
             string data = inter.GetStr();
             string[] dataTokens = data.Split(' ');
             List<Message> list = new List<Message>();
@@ -31,35 +31,35 @@ namespace Bash
                 switch(token)
                 {
                     case "exit" :
-                        if ((!needStick) && ((flag == Status.cmd) || (flag == Status.undef)))
+                        if ((!needStick) && ((flag == Status.Cmd) || (flag == Status.Undef)))
                         {
                             list.Add(new Command("exit"));
-                            flag = Status.arg;
+                            flag = Status.Arg;
                             needStick = true;
                         }
                         else
                         {
                             list.Clear();
-                            list.Add(new Command("exit", Interup.failed));
+                            list.Add(new Command("exit", Interup.Failed));
                             break;
                         }
                         continue;
                     case "echo":
-                        if ((!needStick) && ((flag == Status.cmd) || (flag == Status.undef)))
+                        if ((!needStick) && ((flag == Status.Cmd) || (flag == Status.Undef)))
                         {
                             list.Add(new Command("echo"));
-                            flag = Status.arg;
+                            flag = Status.Arg;
                             needStick = true;
                         }
                         else
                         {
                             list.Clear();
-                            list.Add(new Command("exit", Interup.failed));
+                            list.Add(new Command("exit", Interup.Failed));
                             break;
                         }
                         continue;
                     case "pwd":
-                        if ((!needStick) && ((flag == Status.cmd) || (flag == Status.undef)))
+                        if ((!needStick) && ((flag == Status.Cmd) || (flag == Status.Undef)))
                         {
                             list.Add(new Command("pwd"));
                             needStick = true;
@@ -67,35 +67,35 @@ namespace Bash
                         else
                         {
                             list.Clear();
-                            list.Add(new Command("exit", Interup.failed));
+                            list.Add(new Command("exit", Interup.Failed));
                             break;
                         }
                         continue;
                     case "cat":
-                        if ((!needStick) && ((flag == Status.cmd) || (flag == Status.undef)))
+                        if ((!needStick) && ((flag == Status.Cmd) || (flag == Status.Undef)))
                         {
                             list.Add(new Command("cat"));
-                            flag = Status.arg;
+                            flag = Status.Arg;
                             needStick = true;
                         }
                         else
                         {
                             list.Clear();
-                            list.Add(new Command("exit", Interup.failed));
+                            list.Add(new Command("exit", Interup.Failed));
                             break;
                         }
                         continue;
                     case "wc":
-                        if ((!needStick) && ((flag == Status.cmd) || (flag == Status.undef)))
+                        if ((!needStick) && ((flag == Status.Cmd) || (flag == Status.Undef)))
                         {
                             list.Add(new Command("wc"));
-                            flag = Status.arg;
+                            flag = Status.Arg;
                             needStick = true;
                         }
                         else
                         {
                             list.Clear();
-                            list.Add(new Command("exit", Interup.failed));
+                            list.Add(new Command("exit", Interup.Failed));
                             break;
                         }
                         continue;
@@ -103,20 +103,20 @@ namespace Bash
                         if (needStick)
                         {
                             list.Add(new Command("|"));
-                            flag = Status.cmd;
+                            flag = Status.Cmd;
                             needStick = false;
                         }
                         else
                         {
                             list.Clear();
-                            list.Add(new Command("exit", Interup.failed));
+                            list.Add(new Command("exit", Interup.Failed));
                             break;
                         }
                         continue;
                 }
-                if ((token != "") && (token[0] == '$') && ((flag == Status.arg) || (flag == Status.undef)))
+                if ((token != "") && (token[0] == '$') && ((flag == Status.Arg) || (flag == Status.Undef)))
                 {
-                    list.Add(new Vari(token, Status.vari));
+                    list.Add(new Vari(token, Status.Vari));
                     //gotVari = true;
                     if (i + 1 < dataTokens.Length)
                     {
@@ -128,21 +128,21 @@ namespace Bash
                             else
                             {
                                 list.Clear();
-                                list.Add(new Command("exit", Interup.failed));
+                                list.Add(new Command("exit", Interup.Failed));
                                 break;
                             }
-                            list.Add(new Vari(dataTokens[i], Status.value));
+                            list.Add(new Vari(dataTokens[i], Status.Value));
                         }
                         else
                             --i;
                     }
-                    flag = Status.undef;
+                    flag = Status.Undef;
                     continue;
                 }
-                if ((flag == Status.arg) || (flag == Status.undef))
+                if ((flag == Status.Arg) || (flag == Status.Undef))
                 {
                     list.Add(new Arg(token));
-                    flag = Status.undef;
+                    flag = Status.Undef;
                 }
                 gotVari = false;
             }

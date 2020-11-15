@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bash
 {
-    internal enum Interup
+    internal class VariStruct
     {
-        Queue,
-        InProcess,
-        Failed,
+        public string name;
+        public string value;
     }
 }

@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bash
 {
-    internal enum Interup
+    public interface IEngine
     {
-        Queue,
-        InProcess,
-        Failed,
+        void InitInput(List<Message> start);
+        bool StartCommand();
     }
 }

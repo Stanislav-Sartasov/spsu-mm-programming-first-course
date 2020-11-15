@@ -11,15 +11,15 @@ namespace Bash
         public readonly string cmd;
         public Command(string start)
         {
-            interup = Interup.queue;
+            interup = Interup.Queue;
             cmd = start;
-            st = Status.cmd;
+            st = Status.Cmd;
         }
         internal Command(string start, Interup myInterup)
         {
             interup = myInterup;
             cmd = start;
-            st = Status.cmd;
+            st = Status.Cmd;
         }
     }
 }

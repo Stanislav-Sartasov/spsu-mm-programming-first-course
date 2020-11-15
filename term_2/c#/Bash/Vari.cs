@@ -11,7 +11,7 @@ namespace Bash
         public readonly string vari;
         internal Vari(string start, Status myStatus)
         {
-            interup = Interup.queue;
+            interup = Interup.Queue;
             vari = start;
             st = myStatus;
         }

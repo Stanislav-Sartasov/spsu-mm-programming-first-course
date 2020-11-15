@@ -8,16 +8,6 @@ using System.Threading.Tasks;
 
 namespace Bash
 {
-    internal class VariStruct
-    {
-        public string name;
-        public string value;
-    }
-    public interface IEngine
-    {
-        void InitInput(List<Message> start);
-        bool StartCommand();
-    }
     class Engine : IEngine
     {
 
@@ -40,7 +30,7 @@ namespace Bash
         {
             if (cmd.cmd == "pwd")
             {
-                cmd.interup = Interup.inProcess;
+                cmd.interup = Interup.InProcess;
                 try
                 {
                     lastResult = Directory.GetCurrentDirectory();
@@ -53,7 +43,7 @@ namespace Bash
             }
             if (cmd.cmd == "cat")
             {
-                cmd.interup = Interup.inProcess;
+                cmd.interup = Interup.InProcess;
                 string path;
                 if (i + 1 > len)
                     path = ArgSolver(list[i], ref i);
@@ -76,7 +66,7 @@ namespace Bash
             }
             if (cmd.cmd == "wc")
             {
-                cmd.interup = Interup.inProcess;
+                cmd.interup = Interup.InProcess;
                 string path;
                 if (i + 1 > len)
                     path = ArgSolver(list[i], ref i);
@@ -109,7 +99,7 @@ namespace Bash
             if (cmd.cmd == "echo")
             {
                 
-                cmd.interup = Interup.inProcess;
+                cmd.interup = Interup.InProcess;
                 string args;
                 if (i + 1 > len)
                     args = ArgSolver(list[i], ref i);
@@ -123,7 +113,7 @@ namespace Bash
             }
             if (cmd.cmd == "exit")
             {
-                if (cmd.interup == Interup.failed)
+                if (cmd.interup == Interup.Failed)
                 {
                     lastResult = "Failed Command";
                     return;
@@ -137,18 +127,18 @@ namespace Bash
         private string ArgSolver(Message preArg, ref int i)
         {
             string result;
-            if ((i + 1 > len) && (i - 1 >= 0) && (list[i - 1].st == Status.cmd))
+            if ((i + 1 > len) && (i - 1 >= 0) && (list[i - 1].st == Status.Cmd))
                 if (((Command)list[i - 1]).cmd == "|")
                     return lastResult;
-            if ((i - 2 >= 0) && (list[i - 2].st == Status.cmd))
+            if ((i - 2 >= 0) && (list[i - 2].st == Status.Cmd))
                 if (((Command)list[i - 2]).cmd == "|")
                     return lastResult;
-            if (preArg.st == Status.cmd)
+            if (preArg.st == Status.Cmd)
             {
-                preArg.interup = Interup.failed;
+                preArg.interup = Interup.Failed;
                 return "";
             }
-            if (preArg.st == Status.arg)
+            if (preArg.st == Status.Arg)
             {
                 Arg arg = (Arg)preArg;
                 result = arg.arg;
@@ -159,7 +149,7 @@ namespace Bash
                 Vari vari = (Vari)preArg;
                 result = VariSolver(vari, ref i);
             }
-            if ((i + 1 <= len) && (list[i+1].st != Status.cmd))
+            if ((i + 1 <= len) && (list[i+1].st != Status.Cmd))
             {
                 ++i;
                 result = result + ArgSolver(list[i], ref i);
@@ -186,7 +176,7 @@ namespace Bash
                 varies.Add(tmp);
                 index = varies.IndexOf(tmp);
             }
-            if ((i + 1 <= len) && (list[i + 1].st == Status.value))
+            if ((i + 1 <= len) && (list[i + 1].st == Status.Value))
             {
                 ++i;
                 varies[index].value = ((Vari)list[i]).vari;
@@ -197,17 +187,16 @@ namespace Bash
         public bool StartCommand()
         {
             stop = false;
-            //foreach(Message cmd in list)
             for (int i = 0; i <= len; ++i)
             {
                 Message cmd = list[i];
                 //Console.WriteLine(cmd);
-                if (cmd.st == Status.cmd)
+                if (cmd.st == Status.Cmd)
                 {
                     CmdSolver((Command)cmd, ref i);
                 }
                 else
-                    if (cmd.st == Status.vari)
+                    if (cmd.st == Status.Vari)
                     {
                     VariSolver((Vari)cmd, ref i);
                     }
