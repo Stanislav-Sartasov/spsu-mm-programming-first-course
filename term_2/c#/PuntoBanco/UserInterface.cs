@@ -9,69 +9,23 @@ namespace PuntoBanco
     public class UserInterface
     {
         private int Bots = 2;
-        private int[] deck;
-        private int index = 0;
+        private Deck myDeck;
         private Gamer[] gamers;
         private IInteraction inter;
         public UserInterface(IInteraction YourInter)
         {
-            index = 0;
             Bots = 2;
             inter = YourInter;
+            myDeck = new Deck();
         }
         public UserInterface()
         {
-            index = 0;
             Bots = 2;
             inter = new Interaction(new Draw());
+            myDeck = new Deck();
         }
-        private void indexIncr()
+        private void GetPlayers()
         {
-            if (index + 1 == deck.Length)
-            {
-                initDeck(416);
-                index = 0;
-            }
-            else
-                index++;
-        }
-        private void initDeck(int count)
-        {
-            Random rnd = new Random();
-            int randFirst = 0, randSec = 0;
-            int eight = 1;
-            int color = 0;
-            int val = 1;
-            deck = new int[count];
-            for (int i = 0; i < count; ++i)
-            {
-                color++;
-                if (color > 4)
-                {
-                    color = 1;
-                    val++;
-                    if (val > 13)
-                    {
-                        val = 2;
-                        eight++;
-                    }
-                }
-                deck[i] = eight * 1000 + color * 100 + val;
-            }
-            for (int i = 0; i < count; ++i)
-            {
-                randFirst = rnd.Next(0, count);
-                randSec = rnd.Next(0, count);
-                int temp = deck[randFirst];
-                deck[randFirst] = deck[randSec];
-                deck[randSec] = temp;
-            }
-            Draw tabel = new Draw();
-            tabel.InitDeck();
-        }
-        private void getPlayers()
-        {
-            initDeck(416);
             gamers = new Gamer[3];
             gamers[0] = new Person(inter);
             gamers[1] = new GamerFirst(20);
@@ -94,36 +48,32 @@ namespace PuntoBanco
 
             PuntoBanco punto = new PuntoBanco();
             PuntoBanco banco = new PuntoBanco();
-            int card1, card2, card3, card4;
-            card1 = deck[index];
-            indexIncr();
-            card2 = deck[index];
-            indexIncr();
-            card3 = deck[index];
-            indexIncr();
-            card4 = deck[index];
-            indexIncr();
+            Card card1, card2, card3, card4;
+            card1 = myDeck.GetCard();
+            card2 = myDeck.GetCard();
+            card3 = myDeck.GetCard();
+            card4 = myDeck.GetCard();
+            
 
-
-            punto.getCard(card1, card3);
-            banco.getCard(card2, card4);
+            punto.GetCard(card1, card3);
+            banco.GetCard(card2, card4);
             table.ShowFirst(bets, card1, card3, card2, card4);
 
-            if ((!punto.isNatural()) && (!banco.isNatural()))
+            if ((!punto.IsNatural()) && (!banco.IsNatural()))
             {
                 if (punto.CanTake())
                 {
-                    punto.getCard(deck[index]);
-                    table.ShowSecond(bets, 0, deck[index]);
-                    indexIncr();
+                    Card puntoCard = myDeck.GetCard(); 
+                    punto.GetCard(puntoCard);
+                    table.ShowSecond(bets, 0, puntoCard);
                 }
                 else
                     table.Enough(0);
                 if (banco.CanTake())
                 {
-                    banco.getCard(deck[index]);
-                    table.ShowSecond(bets, 1, deck[index]);
-                    indexIncr();
+                    Card bancoCard = myDeck.GetCard();
+                    banco.GetCard(bancoCard);
+                    table.ShowSecond(bets, 1, bancoCard);
                 }
                 else
                     table.Enough(1);
@@ -165,9 +115,9 @@ namespace PuntoBanco
 
         }
 
-        public void goGame()
+        public void GoGame()
         {
-            getPlayers();
+            GetPlayers();
             Draw user = new Draw();
             int end = 0;
             do

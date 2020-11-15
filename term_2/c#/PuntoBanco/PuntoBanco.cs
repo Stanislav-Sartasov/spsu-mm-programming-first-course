@@ -4,45 +4,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// punto = 0; banco = 1; tie = 2;
-// person = 0;
-
 namespace PuntoBanco
 {
     class PuntoBanco
     {
-        public int[] cards;
+        public Card[] cards;
         private int score;
         public PuntoBanco()
         {
-            cards = new int[3];
-            score = 0;
-            for (int i = 0; i < cards.Length; ++i)
-                cards[i] = 0;
+            cards = new Card[3];
+            for (int i = 0; i < 3; ++i)
+                cards[i] = null;
         }
-        public void getCard(int first, int second)
+        public void GetCard(Card first, Card second)
         {
             cards[0] = first;
             cards[1] = second;
-            int firstScore = first % 100 < 10 ? first % 100 : 0;
-            int secScore = second % 100 < 10 ? second % 100 : 0;
+            int firstScore = first.cost < 10 ? first.cost : 0;
+            int secScore = second.cost < 10 ? second.cost : 0;
             score = (firstScore + secScore) % 10;
         }
-        public void getCard(int first)
+        public void GetCard(Card first)
         {
             cards[2] = first;
-            int firstScore = first % 100 < 10 ? first % 100 : 0;
+            int firstScore = first.cost < 10 ? first.cost : 0;
             score = (firstScore + score) % 10;
         }
-        public bool isNatural()
+        public bool IsNatural()
         {
-            if (cards[2] == 0)
+            if (cards[2] == null)
                 return score > 7 ? true : false;
             return false;
         }
         public bool CanTake()
         {
-            if (cards[2] == 0)
+            if (cards[2] == null)
                 return score < 6 ? true : false;
             return false;
         }

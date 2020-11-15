@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Card.cs" />
+    <Compile Include="Deck.cs" />
     <Compile Include="Draw.cs" />
     <Compile Include="Gamer.cs" />
     <Compile Include="GamerFirst.cs" />

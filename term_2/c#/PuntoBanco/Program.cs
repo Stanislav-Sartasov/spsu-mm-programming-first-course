@@ -11,7 +11,7 @@ namespace PuntoBanco
         static void Main(string[] args)
         {
             UserInterface userGame = new UserInterface();
-            userGame.goGame();
+            userGame.GoGame();
             Console.ReadKey();
         }
     }

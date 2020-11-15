@@ -54,7 +54,7 @@ namespace UnitTestPuntoBanco
             });
             //
             UserInterface user = new UserInterface(mock.Object);
-            user.goGame();
+            user.GoGame();
         }
 
         [TestMethod]
@@ -102,7 +102,7 @@ namespace UnitTestPuntoBanco
             });
             //
             UserInterface user = new UserInterface(mock.Object);
-            user.goGame();
+            user.GoGame();
 
             Console.WriteLine($"\n end-----\ncalls of Input: {callsInput}\nMade bets: {callsBet}\nRounds: {callsReady - 1}");
         }

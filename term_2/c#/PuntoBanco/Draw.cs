@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,67 +9,8 @@ namespace PuntoBanco
 {
     class Draw : IDraw
     {
-        private int[] puntos;
-        private int[] bancos;
-        public string Color(int card)
-        {
-            string str = "none";
-            card = card % 1000;
-            card = (card - (card % 100)) / 100;
-            switch (card)
-            {
-                case 1:
-                    str = "Cherva";
-                    break;
-                case 2:
-                    str = "Buba";
-                    break;
-                case 3:
-                    str = "Krest";
-                    break;
-                case 4:
-                    str = "Pika";
-                    break;
-
-            }
-            return str;
-        }
-        public string Cost(int card)
-        {
-            string str = "none";
-            card = card % 100;
-            if (card < 10)
-            {
-                if (card == 1)
-                {
-                    str = "A";
-                }
-                else
-                {
-                    str = card.ToString();
-                }
-            }
-            else
-            {
-                switch (card)
-                {
-                    case 10:
-                        str = "10";
-                        break;
-                    case 11:
-                        str = "J";
-                        break;
-                    case 12:
-                        str = "Q";
-                        break;
-                    case 13:
-                        str = "K";
-                        break;
-                }
-            }
-            return str;
-        }
-
+        private Card[] puntos;
+        private Card[] bancos;
         public void PreRound(Gamer[] g)
         {
             int f = 0;
@@ -94,11 +36,25 @@ namespace PuntoBanco
         }
         public void AllBets(SomeBet[] first)
         {
-
+            string tar;
+            string person;
+            foreach (var bet in first)
+            {
+                if (bet.target == 0)
+                    tar = "punto";
+                else
+                    if (bet.target == 1)
+                    tar = "banco";
+                else
+                    tar = "tie";
+                person = bet.man == 0 ? "you" : ("player number " + bet.man.ToString());
+                Console.WriteLine($"{person}, bet on the {tar} {bet.money} $");
+            }
+            Console.WriteLine("////all bets////");
         }
         public void Natural()
         {
-
+            Console.WriteLine("Natural combination");
         }
         public void Enough(int who)
         {
@@ -107,20 +63,20 @@ namespace PuntoBanco
             if (who == 1)
                 Console.WriteLine("Banco is enough");
         }
-        public void ShowFirst(SomeBet[] first, int pf, int ps, int bf, int bs)
+        public void ShowFirst(SomeBet[] first, Card pf, Card ps, Card bf, Card bs)
         {
-            puntos = new int[2] { pf, ps };
-            bancos = new int[2] { bf, bs };
-            Console.WriteLine($"Punto's cards {Color(pf)}{Cost(pf)}-{pf}, {Color(ps)}{Cost(ps)}-{ps}");
-            Console.WriteLine($"Banco's cards {Color(bf)}{Cost(bf)}-{bf}, {Color(bs)}{Cost(bs)}-{bs}");
+            puntos = new Card[2] { pf, ps };
+            bancos = new Card[2] { bf, bs };
+            Console.WriteLine($"Punto's cards {pf.GetCard()}, {ps.GetCard()}");
+            Console.WriteLine($"Banco's cards {bf.GetCard()}, {bs.GetCard()}");
         }
-        public void ShowSecond(SomeBet[] first, int who, int card)
+        public void ShowSecond(SomeBet[] first, int who, Card card)
         {
             if (who == 0)
                 Console.Write("Punto's");
             if (who == 1)
                 Console.Write("Banco's");
-            Console.WriteLine($" next card is {Color(card)}{Cost(card)}-{card}");
+            Console.WriteLine($" next card is {card.GetCard()}");
         }
         public void InitDeck()
         {
@@ -144,7 +100,7 @@ namespace PuntoBanco
         }
         public void IntError()
         {
-            Console.WriteLine("Y have entered not integer default value = 0");
+            Console.WriteLine("You have entered not integer default value = 0");
         }
     }
 }
