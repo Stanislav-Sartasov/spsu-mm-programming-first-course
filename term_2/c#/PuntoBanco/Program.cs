@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace PuntoBanco
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            UserInterface userGame = new UserInterface();
-            userGame.GoGame();
-            Console.ReadKey();
-        }
-    }
+	class Program
+	{
+		static void Main(string[] args)
+		{
+			UserInterface userGame = new UserInterface();
+			userGame.GoGame();
+			Console.ReadKey();
+		}
+	}
 }

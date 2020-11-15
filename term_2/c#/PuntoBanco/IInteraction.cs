@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace PuntoBanco
 {
-    public interface IInteraction
-    {
-        int GetInt();
+	public interface IInteraction
+	{
+		int GetInt();
 
-        bool Ready();
+		bool Ready();
 
-        //void doBet(ref SomeBet betNow, int moneyMoment);
-        SomeBet DoBet(SomeBet betNow, int moneyMoment);
-    }
+		//void doBet(ref SomeBet betNow, int moneyMoment);
+		SomeBet DoBet(SomeBet betNow, int moneyMoment);
+	}
 }
