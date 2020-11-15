@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThirdTask", "ThirdTask.csproj", "{A313BE0B-3E12-48E9-9537-926D22825968}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A313BE0B-3E12-48E9-9537-926D22825968}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A313BE0B-3E12-48E9-9537-926D22825968}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A313BE0B-3E12-48E9-9537-926D22825968}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A313BE0B-3E12-48E9-9537-926D22825968}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DAE4CB9E-C099-4CD0-83C7-74FDAE717EC2}
+	EndGlobalSection
+EndGlobal
