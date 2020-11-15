@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsForms", "WindowsForms\WindowsForms.csproj", "{C20218DB-C9EA-402C-8E5A-0371F486BF7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathCruves", "MathCruves\MathCruves.csproj", "{9E663CBD-0469-4104-AC76-82B4C6319851}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathCurves", "MathCruves\MathCurves.csproj", "{9E663CBD-0469-4104-AC76-82B4C6319851}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wpf", "Wpf\Wpf.csproj", "{666F409D-76A6-4E2F-95B3-82773928D9F7}"
 EndProject

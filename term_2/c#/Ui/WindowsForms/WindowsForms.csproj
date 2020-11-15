@@ -84,9 +84,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MathCruves\MathCruves.csproj">
+    <ProjectReference Include="..\MathCruves\MathCurves.csproj">
       <Project>{9e663cbd-0469-4104-ac76-82b4c6319851}</Project>
-      <Name>MathCruves</Name>
+      <Name>MathCurves</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
