@@ -75,7 +75,7 @@ namespace P2PChat
         }
         public void SystemShow(string str)
         {
-           // Console.WriteLine("<System>" + str + "<System>");
+            //Console.WriteLine("<System>" + str + "<System>");
         }
         public void SystemShow(int code, string str)
         {

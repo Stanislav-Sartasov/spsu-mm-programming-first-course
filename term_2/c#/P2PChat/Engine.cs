@@ -96,6 +96,18 @@ namespace P2PChat
                 }
                 else
                 {
+                    string[] strs = recivedMessage.message.Split('/');
+                    if (strs.Length >= 4)
+                    {
+                        var ipE = new IPEndPoint(IPAddress.Parse(strs[1]), Int32.Parse(strs[2]));
+                        if (ipList.IndexOf(ipE) < 0)
+                        { 
+                            ipList.Add(ipE);
+                            inter.SystemShow(1, "??it was unknown man, now he is in caht_list");
+                            string sendStr = "1/2/" + strs[1] + "/" + strs[2];
+                            PostMessage(sendStr);
+                        }
+                    }
                     inter.ShowSender(recivedMessage);
                     inter.ShowMessage(recivedMessage);
                 }
@@ -218,7 +230,8 @@ namespace P2PChat
                 enteredMessage.Start();
                 return;
             }
-            ipList.Add(sendIp);
+                if (ipList.IndexOf(sendIp) < 0)
+                    ipList.Add(sendIp);
             Socket sendSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             try
             {
@@ -275,7 +288,9 @@ namespace P2PChat
                     socketPost.Send(Encoding.Unicode.GetBytes(sendString));
                     socketPost.Shutdown(SocketShutdown.Both);
                     socketPost.Close();
-                    ipList.Add(new IPEndPoint(IPAddress.Parse(arrStr[2]), Int32.Parse(arrStr[3])));
+                    var ipE = new IPEndPoint(IPAddress.Parse(arrStr[2]), Int32.Parse(arrStr[3]));
+                    if (ipList.IndexOf(ipE) < 0)
+                        ipList.Add(ipE);
                 }
                 catch (Exception)
                 {
@@ -286,18 +301,27 @@ namespace P2PChat
             if (arrStr[1] == "2")
             {
                 inter.SystemShow(1, $"new man here, info from {recived.ip}:{recived.port}, man is <{arrStr[2]}:{arrStr[3]}>");
-                ipList.Add(new IPEndPoint(IPAddress.Parse(arrStr[2]), Int32.Parse(arrStr[3]))); ///
+                var ipE = new IPEndPoint(IPAddress.Parse(arrStr[2]), Int32.Parse(arrStr[3]));
+                if (ipList.IndexOf(ipE) < 0)
+                    ipList.Add(ipE);
             }
             if (arrStr[1] == "3")
             {
-                inter.SystemShow($"input list recived from {recived.ip}:{recived.port}");
+                int index;
+                inter.SystemShow($"input list of {(arrStr.Length - 2) / 2 } new users");
                 for (int i = 2; i < arrStr.Length; ++i)
                 {
                     string ip = arrStr[i];
                     ++i;
                     string port = arrStr[i];
+                    inter.SystemShow($"user {ip}:{port} searching in exist_list");
                     IPEndPoint temp = new IPEndPoint(IPAddress.Parse(ip), Int32.Parse(port));
-                    ipList.Add(temp);
+                    index = ipList.IndexOf(temp);
+                    if (index < 0)
+                    {
+                        inter.SystemShow(1, $"new user {ip}:{port}");
+                        ipList.Add(temp);
+                    }
                 }
             }
             if (arrStr[1] == "4")
