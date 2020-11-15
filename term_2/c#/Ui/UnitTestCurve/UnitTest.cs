@@ -16,7 +16,7 @@ namespace UnitTestCurve
         {
             Application app = Application.Launch("WindowsForms.exe");
 
-            Window window = app.GetWindow("winForm", InitializeOption.NoCache);
+            Window window = app.GetWindow("Curves", InitializeOption.NoCache);
 
             Button button = window.Get<Button>("buttonStart");
             Button buttonPlus = window.Get<Button>("plusSize");
