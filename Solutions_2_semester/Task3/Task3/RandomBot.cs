@@ -56,19 +56,19 @@ namespace Task3
 
         public override bool MakeBet()
         {
-            if (connectedPlayer == null)
+            if (ConnectedPlayer == null)
                 return false;
             if (minBet == -1 || minBetCoeffChanged)
             {
                 minBet = (int)(startBank * minBetCoeff);
                 minBetCoeffChanged = false;
             }
-            int bet = rand.Next((int)(bank * (1 - reserveCoeff)));
+            int bet = rand.Next((int)(Bank * (1 - reserveCoeff)));
             if (bet < minBet)
                 bet = minBet;
-            if (bet > bank)
-                bet = bank;
-            connectedPlayer.MakeBet(bet, (Field)rand.Next(0, 3));
+            if (bet > Bank)
+                bet = Bank;
+            ConnectedPlayer.MakeBet(bet, (Field)rand.Next(0, 3));
             return true;
         }
     }

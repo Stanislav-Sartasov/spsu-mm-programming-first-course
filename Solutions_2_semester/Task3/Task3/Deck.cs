@@ -8,8 +8,8 @@ namespace Task3
         {
             if (count <= 0)
                 count = 1;
-            actualLength = (Card.MaxValue - Card.MinValue + 1) * Card.SuitsCount * count;
-            cards = new Card[actualLength];
+            ActualLength = (Card.MaxValue - Card.MinValue + 1) * Card.SuitsCount * count;
+            cards = new Card[ActualLength];
             int c = 0;
             for (int i = Card.MinValue; i <= Card.MaxValue; i++)
                 for (Card.Suits j = 0; (int)j < Card.SuitsCount; j++)
@@ -18,13 +18,13 @@ namespace Task3
         }
 
         Card[] cards;
-        public int actualLength { get; private set; }
+        public int ActualLength { get; private set; }
         static Random random = new Random();
         public Card Next()
         {
-            int pos = random.Next(actualLength);
+            int pos = random.Next(ActualLength);
             Card outCard = cards[pos];
-            cards[pos] = cards[--actualLength];
+            cards[pos] = cards[--ActualLength];
             return outCard;
         }
     }

@@ -13,9 +13,9 @@ namespace Task3
             else
                 this.startBank = StandardStartBank;
             if (deckCount > 0)
-                this.deckCount = deckCount;
+                this.DeckCount = deckCount;
             else
-                this.deckCount = StandardDeckCount;
+                this.DeckCount = StandardDeckCount;
             if (gameСoefficients == null)
                 this.gameСoefficients = standardGameСoefficients;
             else if (gameСoefficients.Length == 3)
@@ -35,18 +35,18 @@ namespace Task3
         public readonly double[] gameСoefficients;
         int startBank;
         int maxPlayerCount;
-        public int deckCount { get; private set; }
+        public int DeckCount { get; private set; }
         List<PlayerSeat> playerSeats = new List<PlayerSeat>();
         Hashtable playersBase = new Hashtable();
-        public Field lastWinField { get; private set; } = Field.None;
-        public bool sessionStarted { get; private set; } = false;
+        public Field LastWinField { get; private set; } = Field.None;
+        public bool SessionStarted { get; private set; } = false;
         public Player AddPlayer(string playerName)
         {
             return AddPlayer(playerName, startBank);
         }
         internal Player AddPlayer(string playerName, int startBank)
         {
-            if (sessionStarted || playerSeats.Count >= maxPlayerCount || playerName == null || startBank < 0 || playerSeats.FindIndex((x) => { return x.playerName == playerName; }) != -1)
+            if (SessionStarted || playerSeats.Count >= maxPlayerCount || playerName == null || startBank < 0 || playerSeats.FindIndex((x) => { return x.playerName == playerName; }) != -1)
                 return null;
             PlayerSeat newSeat = new PlayerSeat(startBank, this, playerName);
             playerSeats.Add(newSeat);
@@ -59,7 +59,7 @@ namespace Task3
         }
         public bool KickPlayer(PlayerSeat playerSeat)
         {
-            if (playerSeat.QuitGame() || !playerSeat.active)
+            if (playerSeat.QuitGame() || !playerSeat.Active)
             {
                 playerSeats.Remove(playerSeat);
                 playersBase.Remove(playerSeat.player);
@@ -69,7 +69,7 @@ namespace Task3
         }
         public GameLog GetPlayers()
         {
-            if (sessionStarted)
+            if (SessionStarted)
                 return null;
             int count = playerSeats.Count;
             string[] names = new string[count];
@@ -77,32 +77,32 @@ namespace Task3
             for (int i = 0; i < Math.Min(count, playerSeats.Count); i++)
             {
                 names[i] = (string)playerSeats[i].playerName.Clone();
-                banks[i] = playerSeats[i].bank;
+                banks[i] = playerSeats[i].Bank;
             }
 
             return new GameLog(Math.Min(count, playerSeats.Count), names, banks, null, null, null, null, null, -1, -1, -1, -1, Field.None);
         }
         public GameLog ProduceGame()
         {
-            sessionStarted = true;
+            SessionStarted = true;
             
             for (int i = 0; i < playerSeats.Count;)
-                if (!playerSeats[i].active)
+                if (!playerSeats[i].Active)
                     playerSeats.RemoveAt(i);
-                else if (!playerSeats[i].betDone)
+                else if (!playerSeats[i].BetDone)
                 {
-                    sessionStarted = false;
+                    SessionStarted = false;
                     return null;
                 }
                 else i++;
 
             if (playerSeats.Count == 0)
             {
-                sessionStarted = false;
+                SessionStarted = false;
                 return null;
             }
 
-            Dealer dealer = new Dealer(new Deck(deckCount));
+            Dealer dealer = new Dealer(new Deck(DeckCount));
 
             string[] playerName = new string[playerSeats.Count];
             int[] playerBankWas = new int[playerSeats.Count];
@@ -116,11 +116,11 @@ namespace Task3
             for (int i = 0; i < playerSeats.Count; i++)
             {
                 playerName[i] = (string)playerSeats[i].playerName.Clone();
-                playerBankWas[i] = playerSeats[i].bank;
-                playerBetWas[i] = playerSeats[i].bet;
-                playerBetFieldWas[i] = playerSeats[i].betField;                
+                playerBankWas[i] = playerSeats[i].Bank;
+                playerBetWas[i] = playerSeats[i].Bet;
+                playerBetFieldWas[i] = playerSeats[i].BetField;                
 
-                if (playerSeats[i].betField == dealer.winField)
+                if (playerSeats[i].BetField == dealer.winField)
                 {
                     playerSeats[i].PerformResult(gameСoefficients[(int)dealer.winField]);
                     playerWin[i] = true;
@@ -131,16 +131,16 @@ namespace Task3
                     playerWin[i] = false;
                 }
 
-                playerBankBecome[i] = playerSeats[i].bank;
-                if (playerSeats[i].bank == 0 && playerSeats[i].autoKick)
+                playerBankBecome[i] = playerSeats[i].Bank;
+                if (playerSeats[i].Bank == 0 && playerSeats[i].AutoKick)
                 {
                     playersForKick.Add(playerSeats[i]);
                     KickPlayer(playerSeats[i]);
                 }
             }
 
-            lastWinField = dealer.winField;
-            sessionStarted = false;
+            LastWinField = dealer.winField;
+            SessionStarted = false;
 
             while(playersForKick.Count > 0)
             {

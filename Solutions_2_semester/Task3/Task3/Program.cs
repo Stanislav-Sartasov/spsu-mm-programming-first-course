@@ -34,13 +34,13 @@ namespace Task3
             void EndGame()
             {
                 Console.Clear();
-                Console.WriteLine($"You left the game with {player.bank}$ at {counter} iteration");
+                Console.WriteLine($"You left the game with {player.Bank}$ at {counter} iteration");
 
                 if (counter == 0)
                     Console.WriteLine("You made a good choise");
-                else if (player.bank >= startBudget)
+                else if (player.Bank >= startBudget)
                     Console.WriteLine("Well played");
-                else if (player.bank == 0)
+                else if (player.Bank == 0)
                     Console.WriteLine("Congratulations!");
                 else
                     Console.WriteLine("At least not empty - handed");
@@ -120,8 +120,8 @@ namespace Task3
 
                     for (int i = 0; i < 4; i++)
                     {
-                        if (bot[i].bank == 0)
-                            game.KickPlayer(bot[i].connectedPlayer);
+                        if (bot[i].Bank == 0)
+                            game.KickPlayer(bot[i].ConnectedPlayer);
                         else
                         {
                             bot[i].MakeBet();
@@ -149,7 +149,7 @@ namespace Task3
 
                     while (Console.ReadKey().Key != ConsoleKey.Enter) ;
 
-                    if (!player.active)
+                    if (!player.Active)
                     {
                         EndGame();
                         return;

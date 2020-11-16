@@ -46,7 +46,7 @@ namespace Task3Tests
                 deck = new Deck(g);
                 cardList = new List<Card>();
 
-                while (deck.actualLength > 0)
+                while (deck.ActualLength > 0)
                     cardList.Add(deck.Next());
 
                 for (int i = Card.MinValue; i<= Card.MaxValue; i++)
@@ -70,20 +70,20 @@ namespace Task3Tests
 
             Player firstPlayer = game.AddPlayer("firstPlayer");
             Assert.AreNotEqual(null, firstPlayer);
-            Assert.AreEqual("firstPlayer", firstPlayer.playerName);
-            Assert.AreEqual(5000, firstPlayer.bank);
-            Assert.AreEqual(true, firstPlayer.active);
+            Assert.AreEqual("firstPlayer", firstPlayer.PlayerName);
+            Assert.AreEqual(5000, firstPlayer.Bank);
+            Assert.AreEqual(true, firstPlayer.Active);
 
             Player secondPlayer = game.AddPlayer("secondPlayer");
             Assert.AreNotEqual(null, secondPlayer);
-            Assert.AreEqual("secondPlayer", secondPlayer.playerName);
-            Assert.AreEqual(5000, secondPlayer.bank);
-            Assert.AreEqual(true, secondPlayer.active);
+            Assert.AreEqual("secondPlayer", secondPlayer.PlayerName);
+            Assert.AreEqual(5000, secondPlayer.Bank);
+            Assert.AreEqual(true, secondPlayer.Active);
 
             Assert.AreEqual(null, game.AddPlayer("firstPlayer"));
 
             Assert.AreEqual(true, game.KickPlayer(firstPlayer));
-            Assert.AreEqual(false, firstPlayer.active);
+            Assert.AreEqual(false, firstPlayer.Active);
 
             firstPlayer = game.AddPlayer("firstPlayer");
             Assert.AreNotEqual(null, firstPlayer);
@@ -91,8 +91,8 @@ namespace Task3Tests
             secondPlayer.MakeBet(500, Field.Player);
 
             Assert.AreEqual(true, game.KickPlayer(secondPlayer));
-            Assert.AreEqual(5000, secondPlayer.bank);
-            Assert.AreEqual(false, secondPlayer.active);
+            Assert.AreEqual(5000, secondPlayer.Bank);
+            Assert.AreEqual(false, secondPlayer.Active);
         }
 
         [Test]
@@ -101,31 +101,31 @@ namespace Task3Tests
             GameManager game = new GameManager(5000, 0, null, 0);
             Player player = game.AddPlayer("player");
 
-            Assert.AreEqual(5000, player.bank);
+            Assert.AreEqual(5000, player.Bank);
 
             Assert.AreEqual(true, player.MakeBet(1000, Field.Player));
-            Assert.AreEqual(4000, player.bank);
+            Assert.AreEqual(4000, player.Bank);
             Assert.AreEqual(false, player.MakeBet(1000, Field.Player));
-            Assert.AreEqual(4000, player.bank);
+            Assert.AreEqual(4000, player.Bank);
 
             game = new GameManager(GameTestsCount * 10 + 1, 0, null, 0);
             player = game.AddPlayer("player");
 
             for (int i = 0; i < GameTestsCount; i++)
             {
-                int b = player.bank;
+                int b = player.Bank;
                 player.MakeBet(10, (Field)(i % 3));
 
-                Assert.AreEqual(b - 10, player.bank);
+                Assert.AreEqual(b - 10, player.Bank);
 
                 GameLog log = game.ProduceGame();
 
                 Assert.AreEqual(10, log.playerBetWas[0]);
 
                 if ((int)log.winField == i % 3)
-                    Assert.IsTrue(player.bank > b);
+                    Assert.IsTrue(player.Bank > b);
                 else
-                    Assert.IsTrue(player.bank == b - 10);
+                    Assert.IsTrue(player.Bank == b - 10);
 
                 Assert.AreEqual(i % 3, (int)log.playerBetFieldWas[0]);
             }
@@ -171,12 +171,12 @@ namespace Task3Tests
                         break;
                 }                
 
-                Assert.AreEqual(log.winField == Field.Player, firstPlayer.bank > 5000);
-                Assert.AreEqual(log.winField != Field.Player, firstPlayer.bank < 5000);
-                Assert.AreEqual(log.winField == Field.Bank, secondPlayer.bank > 5000);
-                Assert.AreEqual(log.winField != Field.Bank, secondPlayer.bank < 5000);
-                Assert.AreEqual(log.winField == Field.Draw, thirdPlayer.bank > 5000);
-                Assert.AreEqual(log.winField != Field.Draw, thirdPlayer.bank < 5000);
+                Assert.AreEqual(log.winField == Field.Player, firstPlayer.Bank > 5000);
+                Assert.AreEqual(log.winField != Field.Player, firstPlayer.Bank < 5000);
+                Assert.AreEqual(log.winField == Field.Bank, secondPlayer.Bank > 5000);
+                Assert.AreEqual(log.winField != Field.Bank, secondPlayer.Bank < 5000);
+                Assert.AreEqual(log.winField == Field.Draw, thirdPlayer.Bank > 5000);
+                Assert.AreEqual(log.winField != Field.Draw, thirdPlayer.Bank < 5000);
             }
         }
 
@@ -260,27 +260,27 @@ namespace Task3Tests
                     GameManager game = new GameManager(startBudget, 0, null, 0);
                     bot.Connect(game.AddPlayer("Martin"));
 
-                    for (int g = 0; g < 400 && bot.connectedPlayer.active; g++)
+                    for (int g = 0; g < 400 && bot.ConnectedPlayer.Active; g++)
                     {
                         bot.MakeBet();
                         game.ProduceGame();
 
                         if (j % 2 == 0)
                         {
-                            if (peakSC < bot.bank)
-                                peakSC = bot.bank;
+                            if (peakSC < bot.Bank)
+                                peakSC = bot.Bank;
                         }
                         else
                         {
-                            if (peak < bot.bank)
-                                peak = bot.bank;
+                            if (peak < bot.Bank)
+                                peak = bot.Bank;
                         }
                     }
 
                     if (j % 2 == 0)
-                        middleSC += (double)bot.bank / GameTestsCount;
+                        middleSC += (double)bot.Bank / GameTestsCount;
                     else
-                        middle += (double)bot.bank / GameTestsCount;
+                        middle += (double)bot.Bank / GameTestsCount;
                 }
             }
 
@@ -312,27 +312,27 @@ namespace Task3Tests
                     GameManager game = new GameManager(startBudget, 0, null, 0);
                     bot.Connect(game.AddPlayer("Martin"));
 
-                    for (int g = 0; g < 400 && bot.connectedPlayer.active; g++)
+                    for (int g = 0; g < 400 && bot.ConnectedPlayer.Active; g++)
                     {
                         bot.MakeBet();
                         game.ProduceGame();
 
                         if (j % 2 == 0)
                         {
-                            if (peakSC < bot.bank)
-                                peakSC = bot.bank;
+                            if (peakSC < bot.Bank)
+                                peakSC = bot.Bank;
                         }
                         else
                         {
-                            if (peak < bot.bank)
-                                peak = bot.bank;
+                            if (peak < bot.Bank)
+                                peak = bot.Bank;
                         }
                     }
 
                     if (j % 2 == 0)
-                        middleSC += (double)bot.bank / GameTestsCount;
+                        middleSC += (double)bot.Bank / GameTestsCount;
                     else
-                        middle += (double)bot.bank / GameTestsCount;
+                        middle += (double)bot.Bank / GameTestsCount;
                 }
             }
 
@@ -357,16 +357,16 @@ namespace Task3Tests
                 GameManager game = new GameManager(startBudget, 0, null, 0);
                 bot.Connect(game.AddPlayer("Martin"));
 
-                for (int g = 0; g < 400 && bot.connectedPlayer.active; g++)
+                for (int g = 0; g < 400 && bot.ConnectedPlayer.Active; g++)
                 {
                     bot.MakeBet();
                     game.ProduceGame();
 
-                    if (peak < bot.bank)
-                        peak = bot.bank;
+                    if (peak < bot.Bank)
+                        peak = bot.Bank;
                 }
 
-                middle += (double)bot.bank / GameTestsCount;
+                middle += (double)bot.Bank / GameTestsCount;
             }
 
             Console.WriteLine($"{middle}$ left at 400 iteration with start budget {startBudget}$");

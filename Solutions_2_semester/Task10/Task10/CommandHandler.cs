@@ -55,16 +55,14 @@ namespace Task10
 
         public string Process(Command command, out Keys keyOut)
         {
-            if (command.command == "pipe")
+            if (command.Name == "pipe")
             {
                 preCommandOut = oldPreCommandOut;
                 keyOut = Keys.Ok;
                 return null;
             }
-
-            Keys key;
             
-            string argument = command.argument;
+            string argument = command.Argument;
             if (preCommandOut != null)
                 argument += preCommandOut;
 
@@ -97,13 +95,13 @@ namespace Task10
                 argument = argument[0..pos] + (string)value + argument.Substring(pos + variableName.Length + 1);
             }
 
-            ICommand commandExecutor = (ICommand)commandTable[command.command];
+            ICommand commandExecutor = (ICommand)commandTable[command.Name];
             if (commandExecutor == null)
                 commandExecutor = new Unidentified();
 
-            string commandOut = commandExecutor.Process(argument, out key);
+            string commandOut = commandExecutor.Process(argument, out Keys key);
 
-            if (command.argument != "" && key == Keys.Error && preCommandOut != null && command.command == "unidentified")
+            if (command.Argument != "" && key == Keys.Error && preCommandOut != null && command.Name == "unidentified")
                 commandOut = commandExecutor.Process(argument + " " + preCommandOut, out key);
 
             preCommandOut = commandOut;
@@ -119,15 +117,14 @@ namespace Task10
 
             if (commandOut != null && key == Keys.Ok)
                 outString = commandOut;
-
             else if (key == Keys.Error)
             {
-                if (command.command == "$")
-                    outString = "\"" + command.command + command.argument;
-                else if (command.command == "unidentified")
-                    outString = "\"" + command.argument;
+                if (command.Name == "$")
+                    outString = "\"" + command.Name + command.Argument;
+                else if (command.Name == "unidentified")
+                    outString = "\"" + command.Argument;
                 else
-                    outString = "\"" + command.command + " " + command.argument;
+                    outString = "\"" + command.Name + " " + command.Argument;
 
                 outString += "\" command can not process";
                 if (commandOut != null)

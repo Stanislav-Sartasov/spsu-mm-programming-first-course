@@ -9,7 +9,7 @@ namespace Task10
             if (!File.Exists(input))
             {
                 key = CommandHandler.Keys.Error;
-                return "File \"" + input + "\" does not exist";
+                return input != null && input != "" ? "File \"" + input + "\" does not exist" : "File name missing";
             }
 
             try

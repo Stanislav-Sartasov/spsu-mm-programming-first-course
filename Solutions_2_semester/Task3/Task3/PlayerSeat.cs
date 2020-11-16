@@ -6,95 +6,95 @@ namespace Task3
         public PlayerSeat(int startBank, GameManager creator, string playerName)
         {
             if (startBank > 0)
-                bank = startBank;
+                Bank = startBank;
             else
-                bank = StandardStartBank;
+                Bank = StandardStartBank;
             currentGameSession = creator;
             if (playerName == null)
                 this.playerName = "?";
             else
                 this.playerName = playerName;
-            active = true;
+            Active = true;
             player = new Player(this);
         }
 
         const int StandardStartBank = 10000;
-        internal int bank { get; private set; }
-        internal int bet { get; private set; } = 0;
-        internal Field betField { get; private set; }
-        internal bool betDone { get; private set; } = false;
-        internal double[] gameСoefficients
+        internal int Bank { get; private set; }
+        internal int Bet { get; private set; } = 0;
+        internal Field BetField { get; private set; }
+        internal bool BetDone { get; private set; } = false;
+        internal double[] GameСoefficients
         {
             get
             {
                 return currentGameSession.gameСoefficients;
             }
         }
-        internal Field lastWinField
+        internal Field LastWinField
         {
             get
             {
-                return currentGameSession.lastWinField;
+                return currentGameSession.LastWinField;
             }
         }
         internal readonly Player player;
         internal readonly string playerName;
-        internal bool autoKick { get; set; } = true;
-        internal bool active { get; private set; }
+        internal bool AutoKick { get; set; } = true;
+        internal bool Active { get; private set; }
 
         GameManager currentGameSession;
         internal bool MakeBet(int count, Field field)
         {
-            if (!active || betDone)
+            if (!Active || BetDone)
                 return false;
             if ((int)field < -1 || (int)field > 2 || (count <= 0 && field != Field.None))
                 return false;
 
-            if (field == Field.None || bank == 0)
+            if (field == Field.None || Bank == 0)
             {
-                bet = 0;
-                betField = Field.None;
-                betDone = true;
+                Bet = 0;
+                BetField = Field.None;
+                BetDone = true;
                 return true;
             }
 
-            if (count <= bank)
+            if (count <= Bank)
             {
-                bet = count;
-                bank -= count;
+                Bet = count;
+                Bank -= count;
             }
-            else if (count > bank)
+            else if (count > Bank)
             {
-                bet = bank;
-                bank = 0;
+                Bet = Bank;
+                Bank = 0;
             }
 
-            betField = field;
-            betDone = true;
+            BetField = field;
+            BetDone = true;
             return true;
         }
         internal bool QuitGame()
         {
-            if (currentGameSession.sessionStarted || !active)
+            if (currentGameSession.SessionStarted || !Active)
                 return false;
-            if (betDone)
+            if (BetDone)
             {
-                int betWas = bet;
-                bet = 0;
-                bank += betWas;
-                betField = Field.None;
-                betDone = false;
+                int betWas = Bet;
+                Bet = 0;
+                Bank += betWas;
+                BetField = Field.None;
+                BetDone = false;
             }
             currentGameSession = null;
-            active = false;
+            Active = false;
             return true;
         }
         internal void PerformResult(double coefficient)
         {
-            bank += (int)(bet * coefficient);
-            bet = 0;
-            betField = Field.None;
-            betDone = false;
+            Bank += (int)(Bet * coefficient);
+            Bet = 0;
+            BetField = Field.None;
+            BetDone = false;
         }
     }
 }

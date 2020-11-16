@@ -9,71 +9,71 @@ namespace Task3
         }
 
         PlayerSeat seat;
-        public int bank
+        public int Bank
         {
             get
             {
-                return seat.bank;
+                return seat.Bank;
             }
         }
-        public int bet
+        public int Bet
         {
             get
             {
-                return seat.bet;
+                return seat.Bet;
             }
         }
-        public Field betField
+        public Field BetField
         {
             get
             {
-                return seat.betField;
+                return seat.BetField;
             }
         }
-        public bool betDone
+        public bool BetDone
         {
             get
             {
-                return seat.betDone;
+                return seat.BetDone;
             }
         }
-        public string playerName
+        public string PlayerName
         {
             get
             {
                 return seat.playerName;
             }
         }
-        public double[] gameСoefficients
+        public double[] GameСoefficients
         {
             get
             {
-                return seat.gameСoefficients;
+                return seat.GameСoefficients;
             }
         }
-        public Field lastWinField
+        public Field LastWinField
         {
             get
             {
-                return seat.lastWinField;
+                return seat.LastWinField;
             }
         }
-        public bool autoKick
+        public bool AutoKick
         {
             get
             {
-                return seat.autoKick;
+                return seat.AutoKick;
             }
             set
             {
-                seat.autoKick = value;
+                seat.AutoKick = value;
             }
         }
-        public bool active
+        public bool Active
         {
             get
             {
-                return seat.active;
+                return seat.Active;
             }
         }
         public bool MakeBet(int count, Field field)

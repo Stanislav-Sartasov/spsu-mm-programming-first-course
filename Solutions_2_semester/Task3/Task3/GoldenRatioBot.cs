@@ -31,18 +31,18 @@ namespace Task3
         }
         public bool CanBeSettingsChanged()
         {
-            if (connectedPlayer != null)
-                if (!(count == bateNumber || connectedPlayer.lastWinField == actType || bate == null))
+            if (ConnectedPlayer != null)
+                if (!(count == bateNumber || ConnectedPlayer.LastWinField == actType || bate == null))
                     return false;
             return true;
         }
         public override bool MakeBet()
         {
-            if (connectedPlayer != null)
+            if (ConnectedPlayer != null)
             {
-                if (connectedPlayer.betDone)
+                if (ConnectedPlayer.BetDone)
                     return false;
-                if (count == bateNumber || connectedPlayer.lastWinField == actType || settingChanged)
+                if (count == bateNumber || ConnectedPlayer.LastWinField == actType || settingChanged)
                     bate = null;
                 if (bate == null)
                 {
@@ -56,12 +56,12 @@ namespace Task3
                         bankWin = 0;
                         actType = 0;
                         startBank = -1;
-                        connectedPlayer.QuitGame();
+                        ConnectedPlayer.QuitGame();
                         return false;
                     }
 
                     int[] newBate = new int[count];
-                    newBate[0] = (int)Math.Floor(GoldenBig(bank));
+                    newBate[0] = (int)Math.Floor(GoldenBig(Bank));
                     for (int i = 1; i < count; i++)
                     {
                         newBate[i] = (int)Math.Floor(GoldenBig(newBate[i - 1]));
@@ -76,9 +76,9 @@ namespace Task3
                     bateNumber = 0;
                 }
 
-                if (connectedPlayer.lastWinField != Field.None)
+                if (ConnectedPlayer.LastWinField != Field.None)
                 {
-                    switch (connectedPlayer.lastWinField)
+                    switch (ConnectedPlayer.LastWinField)
                     {
                         case Field.Player:
                             playWin++;
@@ -143,10 +143,10 @@ namespace Task3
                 if (bate[bateNumber] <= 0)
                 {
                     bateNumber++;
-                    connectedPlayer.MakeBet(1, actType);
+                    ConnectedPlayer.MakeBet(1, actType);
                 }
                 else
-                    connectedPlayer.MakeBet(bate[bateNumber++], actType);
+                    ConnectedPlayer.MakeBet(bate[bateNumber++], actType);
 
                 return true;
             }

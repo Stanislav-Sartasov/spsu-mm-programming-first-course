@@ -154,11 +154,11 @@ namespace Task10
             List<Command> output = new List<Command>();
             for (int i = 0; i < parsed.Count; i += 2)
             {
-                output.Add(new Command() { command = parsed[i] });
+                output.Add(new Command() { Name = parsed[i] });
                 if (i + 1 < parsed.Count && parsed[i + 1] != "")
-                    output[^1].argument = parsed[i + 1][0..^1];
+                    output[^1].Argument = parsed[i + 1][0..^1];
                 else
-                    output[^1].argument = "";
+                    output[^1].Argument = "";
             }
 
             return output;

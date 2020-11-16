@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Task3
 {
@@ -9,35 +7,35 @@ namespace Task3
         protected static Random rand = new Random();
         double leaveBankCoeffUp = 5;
         double leaveBankCoeffDown = 0.01;
-        bool autoLeaving 
+        bool AutoLeaving 
         {
             get
             {
-                return connectedPlayer.autoKick;
+                return ConnectedPlayer.AutoKick;
             }
             set
             {
-                connectedPlayer.autoKick = value;
+                ConnectedPlayer.AutoKick = value;
             } 
         }
         protected int startBank = -1;
-        public Player connectedPlayer { get; protected set; }
-        public int bank
+        public Player ConnectedPlayer { get; protected set; }
+        public int Bank
         {
             get
             {
-                return connectedPlayer.bank;
+                return ConnectedPlayer.Bank;
             }
         }
 
         public void Connect(Player player)
         {
-            connectedPlayer = player;
+            ConnectedPlayer = player;
             ResetStartBank();
         }
         public void Disconnect()
         {
-            connectedPlayer = null;
+            ConnectedPlayer = null;
         }
 
         public double LeaveBankCoeffUp
@@ -48,7 +46,7 @@ namespace Task3
             }
             set
             {
-                if (connectedPlayer == null && value >= 1)
+                if (ConnectedPlayer == null && value >= 1)
                     leaveBankCoeffUp = value;
             }
         }
@@ -60,17 +58,17 @@ namespace Task3
             }
             set
             {
-                if (connectedPlayer == null && value >= 0 && value <= 1)
+                if (ConnectedPlayer == null && value >= 0 && value <= 1)
                     leaveBankCoeffDown = value;
             }
         }
         public void ResetStartBank()
         {
-            startBank = bank;
+            startBank = Bank;
         }
         protected bool NeedToLeave()
         {
-            return (autoLeaving && (bank > startBank * leaveBankCoeffUp || bank < startBank * leaveBankCoeffDown)) || bank <= 0;
+            return (AutoLeaving && (Bank > startBank * leaveBankCoeffUp || Bank < startBank * leaveBankCoeffDown)) || Bank <= 0;
         }
         public abstract bool MakeBet();
     }
