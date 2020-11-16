@@ -8,11 +8,10 @@ namespace Bash
 {
     public class Vari : Message
     {
-        public readonly string vari;
         internal Vari(string start, Status myStatus)
         {
             interup = Interup.Queue;
-            vari = start;
+            Cmd = start;
             st = myStatus;
         }
     }

@@ -10,5 +10,18 @@ namespace Bash
     {
         internal Status st;
         internal Interup interup;
+        private string data;
+
+        public string Cmd
+        {
+            get
+            {
+                return data;
+            }
+            protected set
+            {
+                data = value;
+            }
+        }
     }
 }

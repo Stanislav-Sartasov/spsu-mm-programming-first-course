@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security;
@@ -28,7 +29,7 @@ namespace Bash
         }
         private void CmdSolver(Command cmd, ref int i)
         {
-            if (cmd.cmd == "pwd")
+            if (cmd.Cmd == "pwd")
             {
                 cmd.interup = Interup.InProcess;
                 try
@@ -40,8 +41,9 @@ namespace Bash
                 {
                     Console.WriteLine("The process failed: {0}", e.ToString());
                 }
+                return;
             }
-            if (cmd.cmd == "cat")
+            if (cmd.Cmd == "cat")
             {
                 cmd.interup = Interup.InProcess;
                 string path;
@@ -54,6 +56,7 @@ namespace Bash
                 }
                 try
                 {
+                    lastResult = "";
                     StreamReader sr = new StreamReader(path);
                     //Console.WriteLine(sr.ReadToEnd());
                     lastResult = sr.ReadToEnd();
@@ -63,8 +66,9 @@ namespace Bash
                 {
                     Console.WriteLine("The process failed: {0}", e.ToString());
                 }
+                return;
             }
-            if (cmd.cmd == "wc")
+            if (cmd.Cmd == "wc")
             {
                 cmd.interup = Interup.InProcess;
                 string path;
@@ -77,6 +81,7 @@ namespace Bash
                 }
                 try
                 {
+                    lastResult = "";
                     long words = 0, lines = 0, bytes = 0;
                     StreamReader sr = new StreamReader(path);
                     while (sr.EndOfStream == false)
@@ -95,8 +100,9 @@ namespace Bash
                 {
                     Console.WriteLine("The process failed: {0}", e.ToString());
                 }
+                return;
             }
-            if (cmd.cmd == "echo")
+            if (cmd.Cmd == "echo")
             {
                 
                 cmd.interup = Interup.InProcess;
@@ -110,28 +116,55 @@ namespace Bash
                 }
                 //Console.WriteLine(args);
                 lastResult = args;
+                return;
             }
-            if (cmd.cmd == "exit")
+            if (cmd.Cmd == "exit")
             {
                 if (cmd.interup == Interup.Failed)
                 {
                     lastResult = "Failed Command";
+                    list.Clear();
+                    i = len + 1;
                     return;
                 }
                 Console.WriteLine("End of Session");
                 lastResult = "End of Session";
                 varies.Clear();
                 stop = true;
+                return;
+            }
+
+        }
+        private void NonCmd(Message cmd, ref int i)
+        {
+            try
+            {
+                Process process = new Process();
+                process.StartInfo.FileName = cmd.Cmd;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.Start();
+                lastResult = "";
+                while (!process.StandardOutput.EndOfStream)
+                {
+                    string line = process.StandardOutput.ReadLine();
+                    Console.WriteLine(line);
+                    lastResult += line;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"{cmd.Cmd} does not exist in Path");
             }
         }
         private string ArgSolver(Message preArg, ref int i)
         {
             string result;
             if ((i + 1 > len) && (i - 1 >= 0) && (list[i - 1].st == Status.Cmd))
-                if (((Command)list[i - 1]).cmd == "|")
+                if (((Command)list[i - 1]).Cmd == "|")
                     return lastResult;
             if ((i - 2 >= 0) && (list[i - 2].st == Status.Cmd))
-                if (((Command)list[i - 2]).cmd == "|")
+                if (((Command)list[i - 2]).Cmd == "|")
                     return lastResult;
             if (preArg.st == Status.Cmd)
             {
@@ -141,7 +174,7 @@ namespace Bash
             if (preArg.st == Status.Arg)
             {
                 Arg arg = (Arg)preArg;
-                result = arg.arg;
+                result = arg.Cmd;
              //   Console.WriteLine("////" + result + "////");
             }
             else
@@ -159,7 +192,7 @@ namespace Bash
         private string VariSolver(Vari vari, ref int i)
         {
             VariStruct tmp = new VariStruct();
-            tmp.name = vari.vari;
+            tmp.name = vari.Cmd;
             tmp.value = "";
             int index = -1;
             foreach (var temp in varies)
@@ -179,7 +212,7 @@ namespace Bash
             if ((i + 1 <= len) && (list[i + 1].st == Status.Value))
             {
                 ++i;
-                varies[index].value = ((Vari)list[i]).vari;
+                varies[index].value = ((Vari)list[i]).Cmd;
             }
             return varies[index].value;
 
@@ -200,6 +233,10 @@ namespace Bash
                     {
                     VariSolver((Vari)cmd, ref i);
                     }
+                if (cmd.st == Status.Arg)
+                {
+                    NonCmd(cmd, ref i);
+                }
                 if (stop)
                 {
                     varies.Clear();

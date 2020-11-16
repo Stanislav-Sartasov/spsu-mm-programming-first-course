@@ -41,7 +41,7 @@ namespace Bash
                         {
                             list.Clear();
                             list.Add(new Command("exit", Interup.Failed));
-                            break;
+                            //break;
                         }
                         continue;
                     case "echo":
@@ -55,7 +55,7 @@ namespace Bash
                         {
                             list.Clear();
                             list.Add(new Command("exit", Interup.Failed));
-                            break;
+                            //break;
                         }
                         continue;
                     case "pwd":
@@ -68,7 +68,7 @@ namespace Bash
                         {
                             list.Clear();
                             list.Add(new Command("exit", Interup.Failed));
-                            break;
+                            //break;
                         }
                         continue;
                     case "cat":
@@ -82,7 +82,7 @@ namespace Bash
                         {
                             list.Clear();
                             list.Add(new Command("exit", Interup.Failed));
-                            break;
+                            //break;
                         }
                         continue;
                     case "wc":
@@ -96,11 +96,11 @@ namespace Bash
                         {
                             list.Clear();
                             list.Add(new Command("exit", Interup.Failed));
-                            break;
+                            //break;
                         }
                         continue;
                     case "|":
-                        if (needStick)
+                        if ((needStick) || (flag == Status.Undef))
                         {
                             list.Add(new Command("|"));
                             flag = Status.Cmd;
@@ -110,7 +110,7 @@ namespace Bash
                         {
                             list.Clear();
                             list.Add(new Command("exit", Interup.Failed));
-                            break;
+                            //break;
                         }
                         continue;
                 }
