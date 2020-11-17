@@ -123,7 +123,7 @@ namespace PuntoBanco
 			do
 			{
 				user.RedyToGo();
-				if (inter.Ready() == true)
+				if (inter.Ready())
 				{
 					Round();
 				}

@@ -192,12 +192,12 @@ namespace Bash
         private string VariSolver(Vari vari, ref int i)
         {
             VariStruct tmp = new VariStruct();
-            tmp.name = vari.Cmd;
-            tmp.value = "";
+            tmp.Name = vari.Cmd;
+            tmp.Value = "";
             int index = -1;
             foreach (var temp in varies)
             {
-                if (temp.name == tmp.name)
+                if (temp.Name == tmp.Name)
                 {
                     index = varies.IndexOf(temp);
                     break;
@@ -212,9 +212,9 @@ namespace Bash
             if ((i + 1 <= len) && (list[i + 1].st == Status.Value))
             {
                 ++i;
-                varies[index].value = ((Vari)list[i]).Cmd;
+                varies[index].Value = ((Vari)list[i]).Cmd;
             }
-            return varies[index].value;
+            return varies[index].Value;
 
         }
         public bool StartCommand()

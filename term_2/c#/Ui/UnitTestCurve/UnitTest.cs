@@ -53,7 +53,7 @@ namespace UnitTestCurve
         public void TestWpf()
         {
             Application app = Application.Launch("Wpf.exe");
-            Window window = app.GetWindow("Show_Curve", InitializeOption.NoCache);
+            Window window = app.GetWindow("Curves", InitializeOption.NoCache);
 
             Button button = window.Get<Button>("buttonStart");
             Button buttonPlus = window.Get<Button>("buttonPlus");

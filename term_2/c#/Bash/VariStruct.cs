@@ -8,7 +8,7 @@ namespace Bash
 {
     internal class VariStruct
     {
-        public string name;
-        public string value;
+        public string Name;
+        public string Value;
     }
 }
