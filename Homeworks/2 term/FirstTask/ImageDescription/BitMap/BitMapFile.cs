@@ -39,7 +39,7 @@ namespace FirstTask.ImageDescription
 		
 		public long Height { get; private set; }
 		public long Width { get; private set; }
-		private long SizeOfImage { get; set; } 
+		public long SizeOfImage { get; set; } 
 
 		public void FileRead(string path)
 		{

@@ -5,18 +5,10 @@ using FirstTask.FiltersDescription;
 
 namespace FirstTask
 {
-	class Program
+	public class Program
 	{
 		private static void Main(string[] args)
 		{
-			//
-			args = new string[4];
-			args[0] = @"C:\Users\о\source\repos\Programming Practice\2 term\FirstTask\bin\Debug\netcoreapp3.1\test.bmp";
-			args[1] = "median";
-			args[2] = @"C:\Users\о\source\repos\Programming Practice\2 term\FirstTask\bin\Debug\netcoreapp3.1\test1.bmp"; ;
-			//args[3] = "test1.bmp";
-			//
-
 			InputCheck(args);
 			var image = new BitMapFile();
 
@@ -57,7 +49,7 @@ namespace FirstTask
 						fl = 1;
 					}
 
-					string bmp = ".bmp"; // внутрь??
+					string bmp = ".bmp";
 					for (int i = 1; i < 5; i++)
 					{
 						if (args[0][args[0].Length - i] != bmp[4 - i]
@@ -78,7 +70,7 @@ namespace FirstTask
 			}
 		}
 
-		private static void FilterSelect(BitMapFile image, string filterName)
+		public static void FilterSelect(BitMapFile image, string filterName)
 		{
 			switch (filterName)
 			{
