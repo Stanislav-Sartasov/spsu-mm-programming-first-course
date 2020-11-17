@@ -14,131 +14,144 @@ namespace Bash
 
         private List<Message> list;
         private string lastResult;
+        private bool nonCmdOnly;
         private int len;
         private bool stop;
         private List<VariStruct> varies;
+        private delegate void OperationDelegate(Command cmd, ref int i);
+        private Dictionary<string, OperationDelegate> commands;
         public Engine ()
         {
             varies = new List<VariStruct>();
             varies.Clear();
+            commands = new Dictionary<string, OperationDelegate>()
+            {
+                {"pwd", this.pwd},
+                {"cat", this.cat},
+                {"wc", this.wc},
+                {"echo", this.echo},
+                {"exit", this.exit},
+            };
+            nonCmdOnly = false;
+        }
+        private void pwd (Command cmd, ref int i)
+        {
+            lastResult = "";
+            try
+            {
+                lastResult = Directory.GetCurrentDirectory();
+                //Console.WriteLine(Directory.GetCurrentDirectory());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("The process failed: {0}", e.ToString());
+            }
+            return;
+        }
+        private void cat (Command cmd, ref int i)
+        {
+            string path;
+            if (i + 1 > len)
+                path = ArgSolver(list[i], ref i);
+            else
+            {
+                ++i;
+                path = ArgSolver(list[i], ref i);
+            }
+            try
+            {
+                lastResult = "";
+                StreamReader sr = new StreamReader(path);
+                //Console.WriteLine(sr.ReadToEnd());
+                lastResult = sr.ReadToEnd();
+                sr.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("The process failed: {0}", e.ToString());
+            }
+            return;
+        }
+        private void wc (Command cmd, ref int i)
+        {
+            string path;
+            if (i + 1 > len)
+                path = ArgSolver(list[i], ref i);
+            else
+            {
+                ++i;
+                path = ArgSolver(list[i], ref i);
+            }
+            try
+            {
+                lastResult = "";
+                long words = 0, lines = 0, bytes = 0;
+                StreamReader sr = new StreamReader(path);
+                while (sr.EndOfStream == false)
+                {
+                    string temp = sr.ReadLine();
+                    ++lines;
+                    words += temp.Split(' ').Length;
+                }
+                bytes = (long)(new FileInfo(path).Length);
+
+                lastResult = "Bytes: " + bytes + ", words: " + words + ", lines: " + lines;
+                //Console.WriteLine("Bytes: {0}, words: {1}, lines: {2}", bytes, words, lines);
+                sr.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("The process failed: {0}", e.ToString());
+            }
+            return;
+        }
+        private void echo (Command cmd, ref int i)
+        {
+            string args;
+            if (i + 1 > len)
+                args = ArgSolver(list[i], ref i);
+            else
+            {
+                ++i;
+                args = ArgSolver(list[i], ref i);
+            }
+            //Console.WriteLine(args);
+            lastResult = args;
+            return;
+        }
+        private void exit (Command cmd, ref int i)
+        {
+            if (cmd.interup == Interup.Failed)
+            {
+                lastResult = "Failed Command";
+                list.Clear();
+                i = len + 1;
+                return;
+            }
+            Console.WriteLine("End of Session");
+            lastResult = "End of Session";
+            varies.Clear();
+            stop = true;
+            return;
         }
         public void InitInput (List<Message> start)
         {
             list = start;
             len = list.Count - 1;
         }
-        private void CmdSolver(Command cmd, ref int i)
+        private void ExecuteCmd(Command cmd, ref int i)
         {
-            if (cmd.Cmd == "pwd")
-            {
-                cmd.interup = Interup.InProcess;
-                try
-                {
-                    lastResult = Directory.GetCurrentDirectory();
-                    //Console.WriteLine(Directory.GetCurrentDirectory());
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("The process failed: {0}", e.ToString());
-                }
-                return;
-            }
-            if (cmd.Cmd == "cat")
-            {
-                cmd.interup = Interup.InProcess;
-                string path;
-                if (i + 1 > len)
-                    path = ArgSolver(list[i], ref i);
-                else
-                {
-                    ++i;
-                    path = ArgSolver(list[i], ref i);
-                }
-                try
-                {
-                    lastResult = "";
-                    StreamReader sr = new StreamReader(path);
-                    //Console.WriteLine(sr.ReadToEnd());
-                    lastResult = sr.ReadToEnd();
-                    sr.Close();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("The process failed: {0}", e.ToString());
-                }
-                return;
-            }
-            if (cmd.Cmd == "wc")
-            {
-                cmd.interup = Interup.InProcess;
-                string path;
-                if (i + 1 > len)
-                    path = ArgSolver(list[i], ref i);
-                else
-                {
-                    ++i;
-                    path = ArgSolver(list[i], ref i);
-                }
-                try
-                {
-                    lastResult = "";
-                    long words = 0, lines = 0, bytes = 0;
-                    StreamReader sr = new StreamReader(path);
-                    while (sr.EndOfStream == false)
-                    {
-                        string temp = sr.ReadLine();
-                        ++lines;
-                        words += temp.Split(' ').Length;
-                    }
-                    bytes = (long)(new FileInfo(path).Length);
-
-                    lastResult = "Bytes: " + bytes + ", words: " + words + ", lines: " + lines;
-                    //Console.WriteLine("Bytes: {0}, words: {1}, lines: {2}", bytes, words, lines);
-                    sr.Close();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("The process failed: {0}", e.ToString());
-                }
-                return;
-            }
-            if (cmd.Cmd == "echo")
-            {
-                
-                cmd.interup = Interup.InProcess;
-                string args;
-                if (i + 1 > len)
-                    args = ArgSolver(list[i], ref i);
-                else
-                {
-                    ++i;
-                    args = ArgSolver(list[i], ref i);
-                }
-                //Console.WriteLine(args);
-                lastResult = args;
-                return;
-            }
-            if (cmd.Cmd == "exit")
-            {
-                if (cmd.interup == Interup.Failed)
-                {
-                    lastResult = "Failed Command";
-                    list.Clear();
-                    i = len + 1;
-                    return;
-                }
-                Console.WriteLine("End of Session");
-                lastResult = "End of Session";
-                varies.Clear();
-                stop = true;
-                return;
-            }
+            cmd.interup = Interup.InProcess;
+            if (commands.ContainsKey(cmd.Cmd))
+                commands[cmd.Cmd](cmd, ref i);
+            nonCmdOnly = false;
 
         }
         private void NonCmd(Message cmd, ref int i)
         {
             try
             {
+                nonCmdOnly = true;
                 Process process = new Process();
                 process.StartInfo.FileName = cmd.Cmd;
                 process.StartInfo.UseShellExecute = false;
@@ -226,7 +239,7 @@ namespace Bash
                 //Console.WriteLine(cmd);
                 if (cmd.st == Status.Cmd)
                 {
-                    CmdSolver((Command)cmd, ref i);
+                    ExecuteCmd((Command)cmd, ref i);
                 }
                 else
                     if (cmd.st == Status.Vari)
@@ -243,7 +256,8 @@ namespace Bash
                     return true;
                 }
             }
-            Console.WriteLine(lastResult);
+            if (!nonCmdOnly)
+                Console.WriteLine(lastResult);
             lastResult = "";
             return false;
         }
