@@ -33,83 +33,83 @@ namespace Bash
                     case "exit" :
                         if ((!needStick) && ((flag == Status.Cmd) || (flag == Status.Undef)))
                         {
-                            list.Add(new Command("exit"));
+                            list.Add(new Command("exit", false));
                             flag = Status.Arg;
                             needStick = true;
                         }
                         else
                         {
                             list.Clear();
-                            list.Add(new Command("exit", Interup.Failed));
+                            list.Add(new Command("exit", Interup.Failed, false));
                             //break;
                         }
                         continue;
                     case "echo":
                         if ((!needStick) && ((flag == Status.Cmd) || (flag == Status.Undef)))
                         {
-                            list.Add(new Command("echo"));
+                            list.Add(new Command("echo", true));
                             flag = Status.Arg;
                             needStick = true;
                         }
                         else
                         {
                             list.Clear();
-                            list.Add(new Command("exit", Interup.Failed));
+                            list.Add(new Command("exit", Interup.Failed, false));
                             //break;
                         }
                         continue;
                     case "pwd":
                         if ((!needStick) && ((flag == Status.Cmd) || (flag == Status.Undef)))
                         {
-                            list.Add(new Command("pwd"));
+                            list.Add(new Command("pwd", false));
                             needStick = true;
                         }
                         else
                         {
                             list.Clear();
-                            list.Add(new Command("exit", Interup.Failed));
+                            list.Add(new Command("exit", Interup.Failed, false));
                             //break;
                         }
                         continue;
                     case "cat":
                         if ((!needStick) && ((flag == Status.Cmd) || (flag == Status.Undef)))
                         {
-                            list.Add(new Command("cat"));
+                            list.Add(new Command("cat", true));
                             flag = Status.Arg;
                             needStick = true;
                         }
                         else
                         {
                             list.Clear();
-                            list.Add(new Command("exit", Interup.Failed));
+                            list.Add(new Command("exit", Interup.Failed, false));
                             //break;
                         }
                         continue;
                     case "wc":
                         if ((!needStick) && ((flag == Status.Cmd) || (flag == Status.Undef)))
                         {
-                            list.Add(new Command("wc"));
+                            list.Add(new Command("wc", true));
                             flag = Status.Arg;
                             needStick = true;
                         }
                         else
                         {
                             list.Clear();
-                            list.Add(new Command("exit", Interup.Failed));
+                            list.Add(new Command("exit", Interup.Failed, false));
                             //break;
                         }
                         continue;
                     case "|":
                         if ((needStick) || (flag == Status.Undef))
                         {
-                            list.Add(new Command("|"));
+                            list.Add(new Command("|", false));
                             flag = Status.Cmd;
                             needStick = false;
                         }
                         else
                         {
                             list.Clear();
-                            list.Add(new Command("exit", Interup.Failed));
+                            list.Add(new Command("exit", Interup.Failed, false));
                             //break;
                         }
                         continue;
@@ -128,7 +128,7 @@ namespace Bash
                             else
                             {
                                 list.Clear();
-                                list.Add(new Command("exit", Interup.Failed));
+                                list.Add(new Command("exit", Interup.Failed, false));
                                 break;
                             }
                             list.Add(new Vari(dataTokens[i], Status.Value));

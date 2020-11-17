@@ -8,14 +8,17 @@ namespace Bash
 {
     public class Command : Message
     {
-        public Command(string start)
+        public bool NeedArg;
+        public Command(string start, bool myNeedArg)
         {
+            NeedArg = myNeedArg;
             interup = Interup.Queue;
             Cmd = start;
             st = Status.Cmd;
         }
-        internal Command(string start, Interup myInterup)
+        internal Command(string start, Interup myInterup, bool myNeedArg)
         {
+            NeedArg = myNeedArg;
             interup = myInterup;
             Cmd = start;
             st = Status.Cmd;

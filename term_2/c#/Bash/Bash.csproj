@@ -44,8 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arg.cs" />
+    <Compile Include="Cat.cs" />
     <Compile Include="Command.cs" />
+    <Compile Include="Echo.cs" />
     <Compile Include="Engine.cs" />
+    <Compile Include="Function.cs" />
     <Compile Include="IEngine.cs" />
     <Compile Include="IInput.cs" />
     <Compile Include="IInteraction.cs" />
@@ -56,9 +59,11 @@
     <Compile Include="MyBash.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Pwd.cs" />
     <Compile Include="Status.cs" />
     <Compile Include="Vari.cs" />
     <Compile Include="VariStruct.cs" />
+    <Compile Include="Wc.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
