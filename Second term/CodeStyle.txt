@@ -1,0 +1,71 @@
+1) Пространства имён всегда начинаются с большой буквы.
+2) Файлы, классы, переменные, поля, методы, свойства, события с порядковыми номерами в конце (вроде Form1, UnitTest1) категорически запрещены.
+3) Отступ - одна табуляция (отображаетс¤ по умолчанию как 4 пробела).
+4) Тесты оформляются отдельным проектом рядом с тестируемым. Название этого проекта совпадает с названием исходного + ".Tests", как производное пространство имён. Допустимо иное название, отражающее конкретный вид тестирования, например "UnitTests", "PerformanceTests" и т.д.
+
+namespace WarSpot.Project.Logical.Folder
+{
+	class SomeClass
+	{
+		protected enum States
+		{
+			First,
+			Second = 2,
+			Third,
+			Over9000 = 100500
+		}
+
+		const int SomeConstant = 42;
+
+		private string _privateVar;
+		// public string publicVar; // deprecated
+
+		#region some properties
+		public bool SimpleProperty {get;set;}
+		public int MoreComplicatedPropetry
+		{
+			get
+			{
+				return _privateVar;
+			}
+			set
+			{
+				if(value < SomeConstant)
+				{
+					_privateVar = value;
+				}
+			}
+		}
+
+		protected State {get;set;}
+		#endregion
+
+		#region functions
+		/// <summary>
+		/// Small description of the function
+		/// </summary>
+		/// <param name="paramName">Parameter description</param>
+		/// <returns>return value</returns>
+		public ReturnType FunctionForMakingSomethinsUsefull(int paramName)
+		{
+			if(paramName < someConstant)
+			{
+				// need {} in every if-else and cycles, especialy if it contains only one operation
+			}
+			// foreach() for collections
+			switch(State)
+			{
+			case States.First:
+			case States.Second:
+				doSomething();
+			break;
+			case States.Third:
+				doAnotherthing();
+			default:
+				// panic!
+			break;
+			}
+		}
+		#endregion
+	}
+}
