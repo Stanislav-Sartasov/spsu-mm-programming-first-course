@@ -11,6 +11,7 @@ namespace ThreadPool.Library
         private Queue<Action> tasks;
         private List<Thread> threads;
         private volatile bool continueCalc;
+        private volatile int countThreads;
 
         public void Start()
         {
@@ -24,8 +25,10 @@ namespace ThreadPool.Library
             tasks = new Queue<Action>();
             threads = new List<Thread>(numberOfThreads);
             continueCalc = true;
+            countThreads = 0;
             for (int i = 0; i < numberOfThreads; i++)
             {
+                countThreads++;
                 Thread thread = new Thread(Run);
                 thread.Name = $"My thread {i}";
                 threads.Add(thread);
@@ -38,7 +41,7 @@ namespace ThreadPool.Library
 
             tasks.Enqueue(action);
 
-            //Monitor.PulseAll(tasks);
+            Monitor.PulseAll(tasks);
             Monitor.Exit(tasks);
         }
 
@@ -47,21 +50,27 @@ namespace ThreadPool.Library
             while(continueCalc)
             {
                 Monitor.Enter(tasks);
-                if (tasks.Count != 0)
+                while (tasks.Count == 0)
                 {
-                    Action action = tasks.Dequeue();
-                    Console.WriteLine($"{Thread.CurrentThread.Name} works");
-                    action();
-                }
+                    Monitor.Wait(tasks);
+                    if (!continueCalc)
+                    {
+                        Monitor.Exit(tasks);
+                        return;
+                    }
+                }   
+                Action action = tasks.Dequeue();
+                Console.WriteLine($"{Thread.CurrentThread.Name} works");
+                action();
                 Monitor.Exit(tasks);
             }
         }
         public void Stop()
         {
             continueCalc = false;
-            for (int i = 0; i < numberOfThreads; i++)
-                if (threads[i].IsAlive)
-                    threads[i].Join();
+            Monitor.Enter(tasks);
+            Monitor.PulseAll(tasks);
+            Monitor.Exit(tasks);
         }
 
         public void Continue()
@@ -79,11 +88,15 @@ namespace ThreadPool.Library
 
         public Queue<Action> GetTasks()
         {
-            return tasks;
+            Monitor.Enter(tasks);
+            var temp = new Queue<Action>(tasks);
+            Monitor.PulseAll(tasks);
+            Monitor.Exit(tasks);
+            return temp;
         }
-        public List<Thread> GetThreads()
+        public int GetNumOfThreads()
         {
-            return threads;
+            return countThreads;
         }
 
         public void Dispose()

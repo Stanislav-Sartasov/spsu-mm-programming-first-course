@@ -47,8 +47,8 @@ namespace ThreadPool.Test
             threadPool.Start();
             int expected = 5;
             
-            var actualThreads = threadPool.GetThreads();
-            Assert.AreEqual(expected, actualThreads.Count);
+            var actualThreads = threadPool.GetNumOfThreads();
+            Assert.AreEqual(expected, actualThreads);
             threadPool.Dispose();
         }
 
