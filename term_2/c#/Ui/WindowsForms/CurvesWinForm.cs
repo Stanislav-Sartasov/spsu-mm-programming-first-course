@@ -11,7 +11,7 @@ using MathCruves;
 
 namespace WindowsForms
 {
-    public partial class Curves : Form
+    public partial class CurvesWinForm : Form
     {
         private Graphics graphics;
         private float size;
@@ -131,7 +131,7 @@ namespace WindowsForms
             }
         }
         /// </summary>
-        public Curves()
+        public CurvesWinForm()
         {
             InitializeComponent();
             size = 1;
