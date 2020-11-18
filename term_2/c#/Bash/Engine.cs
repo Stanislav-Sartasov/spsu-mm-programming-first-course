@@ -32,7 +32,7 @@ namespace Bash
             };
             nonCmdOnly = false;
         }
-        private void exit (Command cmd, ref int i)
+        private void Exit (Command cmd, ref int i)
         {
             if (cmd.interup == Interup.Failed)
             {
@@ -52,7 +52,7 @@ namespace Bash
             list = start;
             len = list.Count - 1;
         }
-        private void ExecuteCmd(Command cmd, ref int i)
+        private void ExecuteCmd (Command cmd, ref int i)
         {
             string arg = "";
             if (cmd.NeedArg)
@@ -74,7 +74,7 @@ namespace Bash
                 exit(cmd, ref i);
 
         }
-        private void NonCmd(Message cmd, ref int i)
+        private void NonCmd (Message cmd, ref int i)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace Bash
                 Console.WriteLine($"{cmd.Cmd} does not exist in Path");
             }
         }
-        private string ArgSolver(Message preArg, ref int i)
+        private string ArgSolver (Message preArg, ref int i)
         {
             string result;
             if ((i + 1 > len) && (i - 1 >= 0) && (list[i - 1].st == Status.Cmd))
@@ -129,7 +129,7 @@ namespace Bash
             }
             return result;
         }
-        private string VariSolver(Vari vari, ref int i)
+        private string VariSolver (Vari vari, ref int i)
         {
             VariStruct tmp = new VariStruct();
             tmp.Name = vari.Cmd;
@@ -157,7 +157,7 @@ namespace Bash
             return varies[index].Value;
 
         }
-        public bool StartCommand()
+        public bool StartCommand ()
         {
             stop = false;
             for (int i = 0; i <= len; ++i)
