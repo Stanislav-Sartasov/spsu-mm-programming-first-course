@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WRMyHashtableClass", "WRMyH
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WRMyHashtable.Tests", "WRMyHashtable.Tests\WRMyHashtable.Tests.csproj", "{1EE5308B-C106-4423-8C47-29610EAEC63D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Item", "Item\Item.csproj", "{4DF9D7AC-81EB-4CCE-A738-FCA15A826698}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{1EE5308B-C106-4423-8C47-29610EAEC63D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EE5308B-C106-4423-8C47-29610EAEC63D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EE5308B-C106-4423-8C47-29610EAEC63D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DF9D7AC-81EB-4CCE-A738-FCA15A826698}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DF9D7AC-81EB-4CCE-A738-FCA15A826698}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DF9D7AC-81EB-4CCE-A738-FCA15A826698}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DF9D7AC-81EB-4CCE-A738-FCA15A826698}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
