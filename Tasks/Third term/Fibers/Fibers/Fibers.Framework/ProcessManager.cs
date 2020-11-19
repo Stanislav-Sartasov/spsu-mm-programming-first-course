@@ -13,6 +13,8 @@ namespace Fibers.Framework
         private static bool isPriority;
         private static List<uint> tempFibers;
         private static int count;
+        private static Random random;
+        private static List<int> priorities;
 
         public static bool Initialize(List<Process> processes, bool priority)
         {
@@ -24,12 +26,18 @@ namespace Fibers.Framework
                 tempFibers = new List<uint>();
                 delList = new List<uint>();
                 count = processes.Count;
+                random = new Random();
+                priorities = new List<int>(10);
 
                 foreach (var process in processes)
                 {
                     Fiber fiber = new Fiber(process.Run);
                     tasks[fiber.Id] = process;
                     currentFiber = fiber.Id;
+                    if (!priorities.Contains(process.Priority + 1))
+                    {
+                        priorities.Add(process.Priority + 1); // 0 is bad
+                    }
                 }
                 success = true;
             }
@@ -47,6 +55,7 @@ namespace Fibers.Framework
         {
             Switch(false);
         }
+
         internal static void Switch(bool fiberFinished)
         {
             if (fiberFinished)
@@ -72,38 +81,30 @@ namespace Fibers.Framework
                 id = Fiber.PrimaryId;
             else if (isPriority)
             {
-                if (tempFibers.Count == 0)
-                    tempFibers = GetNextPriorityFibers();
-                id = tempFibers[0];
-                tempFibers.RemoveAt(0);
+                id = GetPriorityFiber();
             }
             else
             {
                 var keys = tasks.Keys;
-                Random random = new Random();
                 id = keys.ElementAt<uint>(random.Next(keys.Count));
             }
             return id;
         }
 
-        private static List<uint> GetNextPriorityFibers()
+        private static uint GetPriorityFiber()
         {
-            int currentPriority = tasks[currentFiber].Priority;
-            List<uint> result;
-            int nextPriority = -1;
-            int maxPriority = 0;
-            foreach (var process in tasks.Values)
-            {
-                if (process.Priority > maxPriority)
-                    maxPriority = process.Priority;
-                if (nextPriority < process.Priority && process.Priority < currentPriority)
-                    nextPriority = process.Priority;
-            }
-            if (nextPriority != -1)
-                result = GetFibersWithDefinitePriority(nextPriority);
-            else
-                result = GetFibersWithDefinitePriority(maxPriority);
-            return result;
+            uint ans = 0;
+
+
+            var temp = MyMath.ListOfLcm(priorities);
+            int a = random.Next(temp[temp.Count - 1]);
+            int i = 0;
+            while (i < temp.Count && temp[i] <= a)
+                i++;
+            var currentPriorities = GetFibersWithDefinitePriority(priorities[Math.Min(i, priorities.Count - 1)] - 1); // compensation 39 line
+            ans = currentPriorities[random.Next(currentPriorities.Count)];
+
+            return ans;
         }
 
         private static List<uint> GetFibersWithDefinitePriority(int priority)
@@ -128,6 +129,8 @@ namespace Fibers.Framework
             tempFibers = null;
             delList = null;
             count = default;
+            priorities = null;
+            random = null;
         }
 
         // for tests
