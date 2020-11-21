@@ -41,7 +41,11 @@ namespace ThreadPool
                     task?.Invoke();
                 }
                 else
+                {
+                    Monitor.Wait(taskQueue);
                     Monitor.Exit(taskQueue);
+                }
+                
             }
         }
 
