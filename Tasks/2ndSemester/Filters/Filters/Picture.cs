@@ -178,21 +178,13 @@ namespace Filter
             for (int i = 0; i < height; i++)
                 for (int j = 0; j < width; j++)
                 {
-                    int[] result = { 0, 0, 0 };
-                    int divisor = 0;
+                    int[] result;
 
-                    for (int step = 0; step < 9; step++)
-                        if (i + steps[step, 0] >= 0 && i + steps[step, 0] < height && j + steps[step, 1] >= 0 && j + steps[step, 1] < width)
-                        {
-                            result[0] += bitMapImage[i + steps[step, 0], j + steps[step, 1], 0] * matrix[steps[step, 0] + 1, steps[step, 1] + 1];
-                            result[1] += bitMapImage[i + steps[step, 0], j + steps[step, 1], 1] * matrix[steps[step, 0] + 1, steps[step, 1] + 1];
-                            result[2] += bitMapImage[i + steps[step, 0], j + steps[step, 1], 2] * matrix[steps[step, 0] + 1, steps[step, 1] + 1];
-                            divisor += matrix[steps[step, 0] + 1, steps[step, 1] + 1];
-                        }
+                    result = Convolution(steps, i, j, bitMapImage, height, width, matrix);
 
-                    bitMapImageCopy[i, j, 0] = (byte)(result[0] / divisor);
-                    bitMapImageCopy[i, j, 1] = (byte)(result[1] / divisor);
-                    bitMapImageCopy[i, j, 2] = (byte)(result[2] / divisor);
+                    bitMapImageCopy[i, j, 0] = (byte)(result[0] / result[3]);
+                    bitMapImageCopy[i, j, 1] = (byte)(result[1] / result[3]);
+                    bitMapImageCopy[i, j, 2] = (byte)(result[2] / result[3]);
                 }
 
             for (int i = 0; i < height; i++)
@@ -216,17 +208,9 @@ namespace Filter
             for (int i = 0; i < height; i++)
                 for (int j = 0; j < width; j++)
                 {
-                    int[] result = new int[3] { 0, 0, 0 };
-                    int divisor = 0;
+                    int[] result;
 
-                    for (int step = 0; step < 9; step++)
-                        if (i + steps[step, 0] >= 0 && i + steps[step, 0] < height && j + steps[step, 1] >= 0 && j + steps[step, 1] < width)
-                        {
-                            result[0] += bitMapImage[i + steps[step, 0], j + steps[step, 1], 0] * matrix[steps[step, 0] + 1, steps[step, 1] + 1];
-                            result[1] += bitMapImage[i + steps[step, 0], j + steps[step, 1], 1] * matrix[steps[step, 0] + 1, steps[step, 1] + 1];
-                            result[2] += bitMapImage[i + steps[step, 0], j + steps[step, 1], 2] * matrix[steps[step, 0] + 1, steps[step, 1] + 1];
-                            divisor += matrix[steps[step, 0] + 1, steps[step, 1] + 1];
-                        }
+                    result = Convolution(steps, i, j, bitMapImage, height, width, matrix);
 
                     bitMapImageCopy[i, j, 0] = (byte)((Math.Abs(result[0]) + Math.Abs(result[1]) + Math.Abs(result[2])) / 3);
                     bitMapImageCopy[i, j, 1] = (byte)((Math.Abs(result[0]) + Math.Abs(result[1]) + Math.Abs(result[2])) / 3);
@@ -237,6 +221,22 @@ namespace Filter
                 for (int j = 0; j < width; j++)
                     for (int k = 0; k < 3; k++)
                         bitMapImage[i, j, k] = bitMapImageCopy[i, j, k] > 128 ? (byte)255 : (byte)0;
+        }
+
+        private static int[] Convolution(int[,] steps, int i, int j, byte[,,] bitMapImage, uint height, uint width, int[,] matrix)
+        {
+            int[] result = new int[4] { 0, 0, 0, 0};
+
+            for (int step = 0; step < 9; step++)
+                if (i + steps[step, 0] >= 0 && i + steps[step, 0] < height && j + steps[step, 1] >= 0 && j + steps[step, 1] < width)
+                {
+                    result[0] += bitMapImage[i + steps[step, 0], j + steps[step, 1], 0] * matrix[steps[step, 0] + 1, steps[step, 1] + 1];
+                    result[1] += bitMapImage[i + steps[step, 0], j + steps[step, 1], 1] * matrix[steps[step, 0] + 1, steps[step, 1] + 1];
+                    result[2] += bitMapImage[i + steps[step, 0], j + steps[step, 1], 2] * matrix[steps[step, 0] + 1, steps[step, 1] + 1];
+                    result[3] += matrix[steps[step, 0] + 1, steps[step, 1] + 1];
+                }
+
+            return result;
         }
 
         public static int PictureComparsion(Picture firstPicture, Picture secondPicture) // 0 - not equal, 1 - equal
