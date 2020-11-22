@@ -11,7 +11,7 @@ namespace Generics
             Tree<int> tree = new Tree<int>();
 
             for (int i = 0; i < 100; i++)
-                root = tree.Insert(root, i * i, i);
+                root = tree.Insert(root, i * i);
 
             Node<int> search = tree.Search(root, 0);
             if (search != null)

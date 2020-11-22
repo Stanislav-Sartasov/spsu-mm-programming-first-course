@@ -11,7 +11,7 @@ namespace Generics.BST
     }
     public class Tree<T>
     {
-        public Node<T> Insert(Node<T> root, T value, int key)
+        private Node<T> _Insert(Node<T> root, T value, int key)
         {
             if (root == null)
             {
@@ -23,14 +23,20 @@ namespace Generics.BST
             }
             else if (key < root.key)
             {
-                root.left = Insert(root.left, value, key);
+                root.left = _Insert(root.left, value, key);
             }
             else
             {
-                root.right = Insert(root.right, value, key);
+                root.right = _Insert(root.right, value, key);
             }
 
             return root;
+        }
+
+        public Node<T> Insert(Node<T> root, T value)
+        {
+            int key = value.GetHashCode();
+            return _Insert(root, value, key);
         }
 
         public Node<T> Delete(Node<T> root, int key)
@@ -69,7 +75,7 @@ namespace Generics.BST
             return root;
         }
 
-        public Node<T> Search(Node<T> root, int key)
+        private Node<T> _Search(Node<T> root, T value, int key)
         {
             if (root == null || key == root.key)
             {
@@ -77,12 +83,18 @@ namespace Generics.BST
             }
             if (key < root.key)
             {
-                return Search(root.left, key);
+                return _Search(root.left, value, key);
             }
             else
             {
-                return Search(root.right, key);
+                return _Search(root.right, value, key);
             }
+        }
+
+        public Node<T> Search(Node<T> root, T value)
+        {
+            int key = value.GetHashCode();
+            return _Search(root, value, key);
         }
 
         public Node<T> Minimum(Node<T> root)
