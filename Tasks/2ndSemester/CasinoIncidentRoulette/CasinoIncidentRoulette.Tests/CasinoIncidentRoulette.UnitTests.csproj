@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CasinoIncidentRoulette.Bots\CasinoIncidentRoulette.Bots.csproj" />
+    <ProjectReference Include="..\CasinoIncidentRoulette.Player\CasinoIncidentRoulette.Player.csproj" />
     <ProjectReference Include="..\CasinoIncidentRoulette.Roulette\CasinoIncidentRoulette.Roulette.csproj" />
   </ItemGroup>
 

@@ -1,6 +1,7 @@
 using System;
 using CasinoIncidentRoulette.Roulette;
 using CasinoIncidentRoulette.Bots;
+using CasinoIncidentRoulette.Player;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CasinoIncidentRoulette.UnitTests
@@ -11,23 +12,24 @@ namespace CasinoIncidentRoulette.UnitTests
         [TestMethod]
         public void CasinoIncidentRouletteTest()
         {
-            Table.CreateTable();
+            Table table1 = new Table();
+            table1.CreateTable();
             Cell exodus;
 
             MartingaleBot martingaleBot = new MartingaleBot();
-            Tuple<Cell, int, int> martingaleBet = martingaleBot.Bet();
+            Tuple<Cell, int, AbstractPlayer.TypeBet> martingaleBet = martingaleBot.Bet(table1);
 
             MakarovBot makarovBot = new MakarovBot();
-            Tuple<Cell, int, int> makarovBet = makarovBot.Bet();
+            Tuple<Cell, int, AbstractPlayer.TypeBet> makarovBet = makarovBot.Bet(table1);
 
             for (int i = 0; i < 400; i++)
             {
                 if (martingaleBot.CanIBet())
-                    martingaleBet = martingaleBot.Bet();
+                    martingaleBet = martingaleBot.Bet(table1);
                 if (makarovBot.CanIBet())
-                    makarovBet = makarovBot.Bet();
+                    makarovBet = makarovBot.Bet(table1);
 
-                exodus = Table.Roll();
+                exodus = table1.Roll();
 
                 if (martingaleBot.CanIBet())
                     martingaleBot.CheckResult(martingaleBet, exodus);

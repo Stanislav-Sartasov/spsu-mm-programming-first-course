@@ -2,38 +2,59 @@
 
 namespace CasinoIncidentRoulette.Roulette
 {
+    public enum Color
+    {
+        Green,
+        Red,
+        Black
+    }
+
+    public enum Parity
+    {
+        Even,
+        Odd
+    }
+
+    public enum Dozen
+    {
+        Green,
+        FirstDozen,
+        SecondDozen,
+        ThirdDozen
+    }
+
     public struct Cell
     {
         public int Number;
-        public int Color; //0 - green, 1 - red, 2 - black
-        public bool Parity; //false - odd, true - even
-        public int Dozen; //0 - for green, 1 - 1st dozen, 2 - 2nd dozen, 3 - 3rd dozen
+        public Color Color;
+        public Parity Parity;
+        public Dozen Dozen;
     }
 
-    public static class Table
+    public class Table
     {
 
-        private static Random rnd = new Random();
-        private static Cell[] roulette = new Cell[37];
+        private Random rnd = new Random();
+        private Cell[] roulette = new Cell[37];
 
-        public static void CreateTable()
+        public void CreateTable()
         {
-            roulette[0].Number = 0; roulette[0].Color = 0; roulette[0].Parity = true; roulette[0].Dozen = 0;
+            roulette[0].Number = 0; roulette[0].Color = Color.Green; roulette[0].Parity = Parity.Even; roulette[0].Dozen = Dozen.Green;
             for (int i = 1; i < 37; i++)
             {
                 roulette[i].Number = i;
-                roulette[i].Color = i % 2 + 1;
-                roulette[i].Parity = i % 2 == 0;
-                roulette[i].Dozen = (i - 1) % 12 + 1;
+                roulette[i].Color = (Color)(i % 2 + 1);
+                roulette[i].Parity = (Parity)(i % 2);
+                roulette[i].Dozen = (Dozen)((i - 1) / 12 + 1);
             }
         }
 
-        public static Cell Roll()
+        public Cell Roll()
         {
             return roulette[rnd.Next(0, 37)];
         }
 
-        public static Cell GetCell(int indexCell)
+        public Cell GetCell(int indexCell)
         {
             return roulette[indexCell];
         }
