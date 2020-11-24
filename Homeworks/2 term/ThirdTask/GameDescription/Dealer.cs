@@ -4,38 +4,8 @@ using System.Text;
 
 namespace ThirdTask.GameDescription
 {
-	public class Dealer : Player
+	public class Dealer : Person
 	{
-		public int[] cards = new int[12] { 0, 0, 32, 32, 32, 32, 32, 32, 32, 32, 128, 32 };
-		public void Turn(Player player)
-		{
-			int playerCard = player.Turn();
-			while (cards[playerCard] == 0) // если пустая колода
-			{
-				playerCard = player.Turn();
-			}
-
-			if (player.FirstCard == 0)
-			{
-				player.FirstCard = playerCard;
-			}
-			else if (player.SecondCard == 0)
-			{
-				player.SecondCard = playerCard;
-			}
-			else
-			{
-				if (playerCard == 11)
-				{
-					player.NumOfAces++;
-				}
-				else
-				{
-					player.OtherCards += playerCard;
-				}
-			}
-			cards[playerCard]--;
-		}
 		public override void ChangeStatus()
 		{
 			if (FirstCard + SecondCard == 21) // блэкджек (выиграл)
@@ -54,6 +24,30 @@ namespace ThirdTask.GameDescription
 			{
 				GameStatus = 2;
 			}
+		}
+		public override void Action(Pad pad)
+		{
+			for (int i = 0; i < 2; i++)
+			{
+				GetCard(pad);
+			}
+			ChangeStatus();
+
+			while (GameStatus == 3)
+			{
+				GetCard(pad);
+				ChangeStatus();
+			}
+		}
+
+		public Dealer()
+		{
+			Cash = 10000;
+			GameStatus = 0;
+			FirstCard = 0;
+			SecondCard = 0;
+			OtherCards = 0;
+			NumOfAces = 0;
 		}
 	}
 }

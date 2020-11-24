@@ -6,77 +6,55 @@ using System.Text;
 namespace ThirdTask.GameDescription
 {
 	//словарь??
-	public abstract class Player
+	public class Player : Person
 	{
-		public int Cash { get; set; }
 		public int Bet { get; set; }
-		public int GameStatus { get; set; }
-		public int FirstCard { get; set; }
-		public int SecondCard { get; set; }
-		public int OtherCards { get; set; }
-		public int NumOfAces { get; set; }
-		public int Turn()
+		public virtual void MakeBet() { }
+
+		public override void Action(Pad pad) // номер хода??
 		{
-			var rnd = new Random();
-			return rnd.Next(2, 11);
+
 		}
-		public abstract void ChangeStatus();
-		public int SumOfAllCards()
+		public override void ChangeStatus() // проверка суммы
 		{
-			int result = OtherCards;
-			if (FirstCard != 11)
+			if (FirstCard + SecondCard == 21) // блэкджек
 			{
-				result += FirstCard;
+				GameStatus = 1;
 			}
-			if (SecondCard != 11)
+			else if (SumOfAllCards() > 21) // выбыл
 			{
-				result += SecondCard;
+				GameStatus = 0;
+			}
+			else // в игре
+			{
+				GameStatus = 2;
 			}
 
-			if (FirstCard == 11)
-			{
-				if (result + 11 <= 21)
-				{
-					result += 11;
-				}
-				else
-				{
-					result += 1;
-				}
-			}
-			if (SecondCard == 11)
-			{
-				if (result + 11 <= 21)
-				{
-					result += 11;
-				}
-				else
-				{
-					result += 1;
-				}
-			}
-
-			for (int i = 0; i < NumOfAces; i++)
-			{
-				if (result + 11 <= 21)
-				{
-					result += 11;
-				}
-				else if (result + 1 <= 21)
-				{
-					result += 1;
-				}
-				else if (i > 0) // туз при переборе
-				{
-					result -= 9;
-				}
-				else // перебор без туза
-				{
-					result += 1;
-				}				
-			}
-			return result;
 		}
+
+		public override void ApplyTurn(string turn, Pad pad)
+		{
+			base.ApplyTurn(turn, pad);
+			switch (turn)
+			{
+				case "Split":
+
+					break;
+				case "Double":
+
+					break;
+				case "Surrender":
+
+					break;
+			}
+		}
+
+		public override void Clear()
+		{
+			base.Clear();
+			Bet = 0;
+		}
+
 		public Player()
 		{
 			Cash = 500;
