@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeakReference", "WeakRefere
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeakReference.WeakBinaryTree", "WeakReference.WeakBST\WeakReference.WeakBinaryTree.csproj", "{547851D5-CE79-479A-852E-35432A23BA45}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeakReference.Tests", "WeakReference.Tests\WeakReference.Tests.csproj", "{667BCBBC-8E5E-4435-B583-35A8071EF335}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{547851D5-CE79-479A-852E-35432A23BA45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{547851D5-CE79-479A-852E-35432A23BA45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{547851D5-CE79-479A-852E-35432A23BA45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{667BCBBC-8E5E-4435-B583-35A8071EF335}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{667BCBBC-8E5E-4435-B583-35A8071EF335}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{667BCBBC-8E5E-4435-B583-35A8071EF335}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{667BCBBC-8E5E-4435-B583-35A8071EF335}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,9 +10,9 @@ namespace WeakReference
         static WeakBinaryTree<string> weakBinaryTree = new WeakBinaryTree<string>(5000);
         static void TestWeakBinaryTree()
         {
-            var obj1 = new WeakReference<String>("1");
-            var obj2 = new WeakReference<String>("4");
-            var obj3 = new WeakReference<String>("9");
+            var obj1 = new String("1");
+            var obj2 = new String("2");
+            var obj3 = new String("3");
 
             weakBinaryTree.Add(obj1);
             weakBinaryTree.Add(obj2);

@@ -22,12 +22,12 @@ namespace WeakReference.WeakBinaryTree
             LifeTime = lifeTime;
         }
 
-        public void Add(WeakReference<T> value)
+        public void Add(T value)
         {
             _Add(value, value.GetHashCode());
         }
 
-        private async void _Add(WeakReference<T> value, int key)
+        private async void _Add(T value, int key)
         {
             Node<T> before = null, after = this.Root;
 
@@ -41,7 +41,7 @@ namespace WeakReference.WeakBinaryTree
             }
 
             Node<T> newNode = new Node<T>();
-            newNode.Data = value;
+            newNode.Data = new WeakReference<T>(value);
             newNode.Key = key;
 
             if (this.Root == null)
@@ -57,13 +57,7 @@ namespace WeakReference.WeakBinaryTree
             await Task.Delay(LifeTime);
         }
 
-
-        public Node<T> Find(WeakReference<T> value)
-        {
-            return this.Find(value.GetHashCode(), this.Root);
-        }
-
-        public void Remove(WeakReference<T> value)
+        public void Remove(T value)
         {
             this.Root = Remove(this.Root, value.GetHashCode());
         }
@@ -107,11 +101,26 @@ namespace WeakReference.WeakBinaryTree
                 return Node;
         }
 
+        public Node<T> Find(T value)
+        {
+            return this.Find(value.GetHashCode(), this.Root);
+        }
+
         private Node<T> Find(int key, Node<T> parent)
         {
+            T o;
+
             if (parent != null)
             {
-                if (key == parent.Key) return parent;
+                if (key == parent.Key)
+                    if (parent.Data != null)
+                        if (parent.Data.TryGetTarget(out o))
+                            return parent;
+                        else
+                            return null;
+                    else
+                        return null;
+                        
                 if (key < parent.Key)
                     return Find(key, parent.LeftNode);
                 else
@@ -139,6 +148,21 @@ namespace WeakReference.WeakBinaryTree
                     Console.WriteLine("Deleted");
                 Traverse(parent.RightNode);
             }
+        }
+
+        public T GetValue(Node<T> Node)
+        {
+            T o;
+            if (Node != null)
+                if (Node.Data != null)
+                    if (Node.Data.TryGetTarget(out o))
+                        return o;
+                    else
+                        return null;
+                else
+                    return null;
+            else
+                return null;
         }
     }
 }
