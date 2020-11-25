@@ -21,15 +21,27 @@ namespace ThirdTask.GameDescription
 
 				player.MakeBet(); // Bet
 
-				player.FirstCardsInitialization(pad);
-				Console.WriteLine($"First two cards: {player.FirstCard}, {player.SecondCard}");
-				////
+				player.FirstCardsInitialization(pad); // внести в конструктор дилера и игрока
+				Console.WriteLine($"Your first two cards: {player.FirstCard}, {player.SecondCard}"); // открыть карту дилера - инциализировать его раньше при необходимости
 
-				while (player.GameStatus == 2)
+				if (player.GameStatus == 1)
 				{
-					player.Action(pad);
-					Console.WriteLine($"First two cards: {player.FirstCard}, {player.SecondCard}\nOther cards sum: {player.OtherCards}");
+					//blackjack у игрока
+				}
+				else
+				{
+					while (player.GameStatus == 2)
+					{
+						player.Action(pad); // зацикливается при Stand
 
+						//Console.WriteLine(player.GameStatus);
+
+						if (player.GameStatus != 3)
+						{
+							Console.WriteLine($"Your first two cards: {player.FirstCard}, {player.SecondCard}; your other cards sum: {player.OtherCards}");
+						}
+
+					}
 				}
 
 				if (player.GameStatus != 0)
@@ -39,8 +51,10 @@ namespace ThirdTask.GameDescription
 					while (dealer.GameStatus == 2)
 					{
 						dealer.Action(pad);
+						//Console.WriteLine(dealer.GameStatus);
 					}
-					Console.WriteLine($"Dealer:\nFirst two cards: {dealer.FirstCard}, {dealer.SecondCard}; other cards sum: {dealer.OtherCards}");
+
+					Console.WriteLine($"Dealer's first two cards: {dealer.FirstCard}, {dealer.SecondCard}; dealer's other cards sum: {dealer.OtherCards}");
 				}
 
 				CheckWinner(player, dealer);
@@ -50,21 +64,22 @@ namespace ThirdTask.GameDescription
 
 		public void CheckWinner(Player player, Dealer dealer)
 		{
-			if (player.BlackJack == 1 || dealer.BlackJack == 1) // Blackjack
+			if (player.GameStatus == 1 || dealer.GameStatus == 1) // Blackjack
 			{
 				// переписать if для перебора blackjack
 			}
 			else
 			{
 				if (player.SumOfAllCards() == dealer.SumOfAllCards() || (player.SumOfAllCards() > 21 && dealer.SumOfAllCards() > 21))
-					// рассмотреть случай перебора у обоих
+					// рассмотреть случай перебора у обоих, изменить проигрыш дилера при проигрыше игрока
 				{
 					Console.WriteLine("Draw");
+					player.Cash += player.Bet;
 				}
 				else if ((player.SumOfAllCards() > dealer.SumOfAllCards() || dealer.SumOfAllCards() > 21) && (player.SumOfAllCards() < 22))
 				{
 					Console.WriteLine("Player wins!");
-					player.Cash += player.Bet;
+					player.Cash += 2 * player.Bet; // уточнить выигрыш
 					dealer.Cash -= player.Bet;
 				}
 				else // if (dealer.SumOfAllCards() < 22) // учесть surrender
@@ -72,7 +87,7 @@ namespace ThirdTask.GameDescription
 					Console.WriteLine("Dealer wins!");
 					dealer.Cash += player.Bet;
 				}
-				//исправить - сумма у игрока 21, но он проиграл
+				//исправить - сумма у игрока 21, но он проиграл/не реагирует
 			}
 
 			Console.WriteLine($"Your cash: {player.Cash}");

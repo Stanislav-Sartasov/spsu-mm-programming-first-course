@@ -17,7 +17,14 @@ namespace ThirdTask.GameDescription
 		{
 			if (true)
 			{
+				//apply strategy для каждой из колод
+				while (1 < 2)
+				{
+					if (1 != null)
+					{
 
+					}
+				}
 			}
 			//Hit
 			//Stand

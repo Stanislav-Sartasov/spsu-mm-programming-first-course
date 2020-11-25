@@ -11,8 +11,7 @@ namespace ThirdTask.GameDescription
 		public int FirstCard { get; set; }
 		public int SecondCard { get; set; }
 		public int OtherCards { get; set; }
-		public int BlackJack { get; set; } // BJ flag
-		public int NumOfAces { get; set; } // Aces; need in sum-function
+		public int NumOfAces { get; set; } // Aces in not main cards; need in sum-function
 
 		private static int RandomCard()
 		{
@@ -48,7 +47,7 @@ namespace ThirdTask.GameDescription
 			}
 			pad.cards[playerCard]--;
 		}
-		public int SumOfAllCards()
+		public int SumOfAllCards() // static??
 		{
 			int result = OtherCards;
 			if (FirstCard != 11)
@@ -111,42 +110,37 @@ namespace ThirdTask.GameDescription
 			{
 				GetCard(pad);
 			}
-			ChangeStatus(-1);
+			ChangeStatus();
 		}
 
 		protected virtual string InputForAction { get; set; }
 		public virtual void Action(Pad pad)
 		{
+			//Console.WriteLine(InputForAction);
+
 			switch (InputForAction)
 			{
 				case "Hit":
 					GetCard(pad);
-					ChangeStatus(2);
 					break;
 				case "Stand":
 					ChangeStatus(3);
 					break;
-				default:
-					return;
 			}
-			ChangeStatus(-1);
+			ChangeStatus();
 		}
-		public virtual void ChangeStatus(int prm) // PersonStatus // заменить int флаги на строки
+		public virtual void ChangeStatus(int prm = -1) // PersonStatus // заменить int флаги на строки
 		{
-			if (prm != -1)
-			{
-				GameStatus = prm;
-			}
+			GameStatus = prm;
 		}
 
 		public virtual void Clear()
 		{
-			GameStatus = 0;
+			GameStatus = 2; // 0
 			FirstCard = 0;
 			SecondCard = 0;
 			OtherCards = 0;
 			NumOfAces = 0;
-			BlackJack = 0;
 		}
 	}
 }
