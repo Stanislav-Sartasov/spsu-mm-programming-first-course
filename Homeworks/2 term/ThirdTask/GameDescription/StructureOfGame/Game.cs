@@ -8,96 +8,142 @@ namespace ThirdTask.GameDescription
 	public class Game
 	{
 		private string GameIsGoing { get; set; } = "first_game"; // Start position
-		public void Start() // игрок / бот // число игр
+		public void Start() // игрок / бот // число игр (учесть в выборе функций - подсчет внутри бота + информация)
 		{
 			var player = new UserPlayer(); // Player
 			var dealer = new Dealer();
 			
-			Console.WriteLine($"Welcome to blackjack!\nYour cash: {player.Cash}"); //сюда же правила и оговорки
-
-			while (Continue(player, dealer) == "game_is_on")
+			//player.StartMenu();
+			Console.WriteLine($"Welcome to blackjack!\nYour cash: {player.Cash}.\nDo you want to play? (\"Yes\" / \"No\")"); //сюда же правила и оговорки
+			Continue(player, dealer); // переписать внутрь класса
+			while (GameIsGoing == "game_is_on")
 			{
 				var pad = new Pad();
 
 				player.MakeBet(); // Bet
 
-				player.FirstCardsInitialization(pad); // внести в конструктор дилера и игрока
-				Console.WriteLine($"Your first two cards: {player.FirstCard}, {player.SecondCard}"); // открыть карту дилера - инциализировать его раньше при необходимости
+				#region CardsInitialization // внести в конструктор дилера и игрока
 
-				if (player.GameStatus == 1)
+				dealer.FirstCardsInitialization(pad);
+				Console.WriteLine($"Dealer's opened card: {dealer.SecondCard}");
+
+				player.FirstCardsInitialization(pad); 
+				Console.WriteLine($"Your first two cards: {player.FirstCard}, {player.SecondCard}");
+
+				#endregion
+
+				#region GameProcess // для удобства написать вывод суммы
+
+				if (player.PersonStatus == "blackjack" && dealer.SecondCard < 10)
 				{
-					//blackjack у игрока
+					CheckWinner(player, dealer); // BlackJack
 				}
 				else
 				{
-					while (player.GameStatus == 2)
+					while (player.PersonStatus == "in_game")
 					{
-						player.Action(pad); // зацикливается при Stand
+						player.Action(pad);
 
-						//Console.WriteLine(player.GameStatus);
-
-						if (player.GameStatus != 3)
+						if (player.PersonStatus != "stand" && player.PersonStatus != "surrender" && player.PersonStatus != "blackjack")
 						{
 							Console.WriteLine($"Your first two cards: {player.FirstCard}, {player.SecondCard}; your other cards sum: {player.OtherCards}");
 						}
-
 					}
-				}
 
-				if (player.GameStatus != 0)
-				{
-					dealer.FirstCardsInitialization(pad);
-
-					while (dealer.GameStatus == 2)
+					if (player.PersonStatus != "lose" && player.PersonStatus != "surrender")
 					{
-						dealer.Action(pad);
-						//Console.WriteLine(dealer.GameStatus);
+						while (dealer.PersonStatus == "in_game")
+						{
+							dealer.Action(pad);
+						}
+
+						Console.WriteLine($"Dealer's first two cards: {dealer.FirstCard}, {dealer.SecondCard}; dealer's other cards sum: {dealer.OtherCards}");
 					}
 
-					Console.WriteLine($"Dealer's first two cards: {dealer.FirstCard}, {dealer.SecondCard}; dealer's other cards sum: {dealer.OtherCards}");
+					CheckWinner(player, dealer);
 				}
 
-				CheckWinner(player, dealer);
+				#endregion
+
 				Cleaner(player, dealer);
+				Continue(player, dealer);
 			}
 		}
 
-		public void CheckWinner(Player player, Dealer dealer)
+		private void CheckWinner(Player player, Dealer dealer)
 		{
-			if (player.GameStatus == 1 || dealer.GameStatus == 1) // Blackjack
+			if (player.PersonStatus == "blackjack") // Blackjack
 			{
-				// переписать if для перебора blackjack
+				if (dealer.PersonStatus == "blackjack")
+				{
+					FindWinner(player, dealer, 0);
+				}
+				else
+				{
+					FindWinner(player, dealer, 2);
+				}
+			}
+			else if (player.PersonStatus == "lose" || player.PersonStatus == "surrender")
+			{
+				FindWinner(player, dealer, 1);
 			}
 			else
 			{
-				if (player.SumOfAllCards() == dealer.SumOfAllCards() || (player.SumOfAllCards() > 21 && dealer.SumOfAllCards() > 21))
-					// рассмотреть случай перебора у обоих, изменить проигрыш дилера при проигрыше игрока
+				if (dealer.PersonStatus == "lose" || (player.SumOfAllCards() > dealer.SumOfAllCards()))
 				{
-					Console.WriteLine("Draw");
-					player.Cash += player.Bet;
+					FindWinner(player, dealer, 2);
 				}
-				else if ((player.SumOfAllCards() > dealer.SumOfAllCards() || dealer.SumOfAllCards() > 21) && (player.SumOfAllCards() < 22))
+				else if (player.SumOfAllCards() == dealer.SumOfAllCards())
 				{
-					Console.WriteLine("Player wins!");
-					player.Cash += 2 * player.Bet; // уточнить выигрыш
-					dealer.Cash -= player.Bet;
+					FindWinner(player, dealer, 0);
 				}
-				else // if (dealer.SumOfAllCards() < 22) // учесть surrender
+				else
 				{
-					Console.WriteLine("Dealer wins!");
-					dealer.Cash += player.Bet;
+					FindWinner(player, dealer, 1);
 				}
-				//исправить - сумма у игрока 21, но он проиграл/не реагирует
 			}
 
 			Console.WriteLine($"Your cash: {player.Cash}");
 		}
 
-		public string Continue(Player player, Dealer dealer)
+		private void FindWinner(Player player, Dealer dealer, int prm)
+		{
+			switch (prm)
+			{
+				case 1:
+					Console.WriteLine("Dealer wins!");
+					dealer.Cash += player.Bet; ;
+					break;
+				case 2:
+					Console.WriteLine("Player wins!");
+					player.Cash += (int)(2.2 * player.Bet); // выигрыш 6:5
+					dealer.Cash -= player.Bet;
+					break;
+				default:
+					Console.WriteLine("Draw");
+					player.Cash += player.Bet;
+					break;
+			}
+		} // внутрь через флаг??
+
+		private void Continue(Player player, Dealer dealer) // внести внутрь игрока (поскольку у бота другой метод)
 		{
 			if (GameIsGoing == "first_game")
 			{
-				GameIsGoing = "game_is_on";
+				while (true)
+				{
+					var input = Console.ReadLine();
+					if (input == "Yes")
+					{
+						GameIsGoing = "game_is_on";
+						break;
+					}
+					if (input == "No")
+					{
+						GameIsGoing = "stop_game";
+						break;
+					}
+				}
 			}
 			else
 			{
@@ -115,7 +161,7 @@ namespace ThirdTask.GameDescription
 				}
 				else
 				{
-					Console.WriteLine("Continue playing ? (\"Yes\" / \"No\")");
+					Console.WriteLine("Continue playing? (\"Yes\" / \"No\")");
 					while (true)
 					{
 						var input = Console.ReadLine();
@@ -132,15 +178,12 @@ namespace ThirdTask.GameDescription
 					}
 				}
 			}
-			return GameIsGoing;
 		}
 
-		public void Cleaner(Player player, Dealer dealer)
+		private void Cleaner(Player player, Dealer dealer)
 		{
 			player.Clear();
 			dealer.Clear();
 		}
 	}
 }
-
-//

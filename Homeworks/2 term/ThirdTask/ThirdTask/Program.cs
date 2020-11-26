@@ -7,6 +7,7 @@ namespace ThirdTask
         {
                 static void Main()
                 {
+                        //создание игрока/бота (дилер внутри - у него своя стратегия?)
                         var game = new Game();
                         game.Start();
                 }
