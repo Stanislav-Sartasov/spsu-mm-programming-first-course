@@ -1,0 +1,45 @@
+﻿<Window x:Class="UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UI"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="800">
+    <Grid x:Name="mainWindow">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150" />
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0*" />
+        </Grid.ColumnDefinitions>
+
+        <DockPanel x:Name="Panel" Background="#EAEAEA" Grid.Column="0" Opacity="1">
+            <Button Content="Build" Click="BuildButton_Click" DockPanel.Dock="Bottom"/>
+
+            <ComboBox x:Name="ChooseCurve"  DockPanel.Dock="Top">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Path=Name}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <StackPanel Orientation="Horizontal" Background="#EAEAEA" Opacity="1" DockPanel.Dock="Top">
+                <TextBlock Text=" a = "/>
+                <TextBox x:Name="coeffA" MaxLength="9" MinWidth="20"/>
+                <TextBlock Text=" b = "/>
+                <TextBox x:Name="coeffB" MaxLength="9" MinWidth="20"/>
+                <TextBlock Text=" p = "/>
+                <TextBox x:Name="coeffP" MaxLength="9" MinWidth="20"/>
+            </StackPanel>
+            <TextBlock x:Name="textScaling" Text="Scaling = 1.0" DockPanel.Dock="Bottom"/>
+            <Slider x:Name="scaleSlider" DockPanel.Dock="Bottom" Minimum="10" Maximum="50" SmallChange="1" 
+                LargeChange="10" Value="10" ValueChanged="ScaleSliderValueChanged" Width="150" Height="25"/>
+            <TextBlock Text="" DockPanel.Dock="Bottom"/>
+        </DockPanel>
+
+        <Canvas x:Name="DrawingCanvas" Background ="#FFFFFF"  Grid.Column="1">
+        </Canvas>
+    </Grid>
+</Window>
