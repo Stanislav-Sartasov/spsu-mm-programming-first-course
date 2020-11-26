@@ -36,6 +36,7 @@ namespace CasinoIncidentRoulette.Roulette
 
         private Random rnd = new Random();
         private Cell[] roulette = new Cell[37];
+        public Cell LastExodus { get; set; }
 
         public Table()
         {
@@ -51,13 +52,13 @@ namespace CasinoIncidentRoulette.Roulette
 
         public Cell Roll()
         {
-            return roulette[rnd.Next(0, 37)];
+            LastExodus = roulette[rnd.Next(0, 37)];
+            return LastExodus;
         }
 
         public Cell GetCell(int indexCell)
         {
             return roulette[indexCell];
         }
-
     }
 }

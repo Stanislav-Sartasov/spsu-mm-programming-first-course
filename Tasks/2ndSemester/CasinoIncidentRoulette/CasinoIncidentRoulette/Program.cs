@@ -10,7 +10,6 @@ namespace CasinoIncidentRoulette
         static void Main(string[] args)
         {
             Table table = new Table();
-            Cell exodus;
 
             MartingaleBot martingaleBot = new MartingaleBot();
             MakarovBot makarovBot = new MakarovBot();
@@ -22,12 +21,12 @@ namespace CasinoIncidentRoulette
                 if (makarovBot.CanIBet())
                     makarovBot.PlayerBet = makarovBot.Bet(table);
 
-                exodus = table.Roll();
+                table.Roll();
 
                 if (martingaleBot.CanIBet())
-                    martingaleBot.CheckResult(martingaleBot.PlayerBet, exodus);
+                    martingaleBot.CheckResult(martingaleBot.PlayerBet, table.LastExodus);
                 if (makarovBot.CanIBet())
-                    makarovBot.CheckResult(makarovBot.PlayerBet, exodus);
+                    makarovBot.CheckResult(makarovBot.PlayerBet, table.LastExodus);
             }
 
             if (martingaleBot.CanIBet())
