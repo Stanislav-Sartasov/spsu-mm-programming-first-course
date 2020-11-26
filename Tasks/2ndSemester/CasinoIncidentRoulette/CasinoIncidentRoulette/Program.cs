@@ -40,9 +40,9 @@ namespace CasinoIncidentRoulette
                 Console.WriteLine($"Martingale bot lost. Money: {martingaleBot.GetMoney()}");
 
             if (makarovBot.CanIBet())
-                Console.WriteLine($"Martingale bot didn't lost. Money: {makarovBot.GetMoney()}");
+                Console.WriteLine($"Makarov bot didn't lost. Money: {makarovBot.GetMoney()}");
             else
-                Console.WriteLine($"Martingale bot lost. Money: {makarovBot.GetMoney()}");
+                Console.WriteLine($"Makarov bot lost. Money: {makarovBot.GetMoney()}");
         }
     }
 }
