@@ -23,10 +23,8 @@ namespace CasinoIncidentRoulette
 
                 table.Roll();
 
-                if (martingaleBot.CanIBet())
-                    martingaleBot.CheckResult(martingaleBot.PlayerBet, table.LastExodus);
-                if (makarovBot.CanIBet())
-                    makarovBot.CheckResult(makarovBot.PlayerBet, table.LastExodus);
+                martingaleBot.CheckResult(martingaleBot.PlayerBet, table.LastExodus);
+                makarovBot.CheckResult(makarovBot.PlayerBet, table.LastExodus);
             }
 
             if (martingaleBot.CanIBet())
