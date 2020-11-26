@@ -14,24 +14,21 @@ namespace CasinoIncidentRoulette
             Cell exodus;
 
             MartingaleBot martingaleBot = new MartingaleBot();
-            Tuple<Cell, int, AbstractPlayer.TypeBet> martingaleBet = martingaleBot.Bet(table1);
-
             MakarovBot makarovBot = new MakarovBot();
-            Tuple<Cell, int, AbstractPlayer.TypeBet> makarovBet = makarovBot.Bet(table1);
 
             for (int i = 0; i < 400; i++)
             {
                 if (martingaleBot.CanIBet())
-                    martingaleBet = martingaleBot.Bet(table1);
+                    martingaleBot.PlayerBet = martingaleBot.Bet(table1);
                 if (makarovBot.CanIBet())
-                    makarovBet = makarovBot.Bet(table1);
+                    makarovBot.PlayerBet = makarovBot.Bet(table1);
 
                 exodus = table1.Roll();
 
                 if (martingaleBot.CanIBet())
-                    martingaleBot.CheckResult(martingaleBet, exodus);
+                    martingaleBot.CheckResult(martingaleBot.PlayerBet, exodus);
                 if (makarovBot.CanIBet())
-                    makarovBot.CheckResult(makarovBet, exodus);
+                    makarovBot.CheckResult(makarovBot.PlayerBet, exodus);
             }
 
             if (martingaleBot.CanIBet())

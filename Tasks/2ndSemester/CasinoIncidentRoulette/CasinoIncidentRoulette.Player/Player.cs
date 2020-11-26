@@ -15,6 +15,7 @@ namespace CasinoIncidentRoulette.Player
         }
         public int Money { get; protected set; }
         public List<Cell> History { get; protected set; }
+        public Tuple<Cell, int, TypeBet> PlayerBet { get; set; }
         public abstract Tuple<Cell, int, TypeBet> Bet(Table Table);
         public abstract void CheckResult(Tuple<Cell, int, TypeBet> cellBet, Cell exodus);
         public int GetMoney()
