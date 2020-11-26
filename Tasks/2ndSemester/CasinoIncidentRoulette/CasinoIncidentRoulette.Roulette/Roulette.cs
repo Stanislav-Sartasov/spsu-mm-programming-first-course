@@ -37,7 +37,7 @@ namespace CasinoIncidentRoulette.Roulette
         private Random rnd = new Random();
         private Cell[] roulette = new Cell[37];
 
-        public void CreateTable()
+        public Table()
         {
             roulette[0].Number = 0; roulette[0].Color = Color.Green; roulette[0].Parity = Parity.Even; roulette[0].Dozen = Dozen.Green;
             for (int i = 1; i < 37; i++)

@@ -12,8 +12,7 @@ namespace CasinoIncidentRoulette.UnitTests
         [TestMethod]
         public void CasinoIncidentRouletteTest()
         {
-            Table table1 = new Table();
-            table1.CreateTable();
+            Table table = new Table();
             Cell exodus;
 
             MartingaleBot martingaleBot = new MartingaleBot();
@@ -22,11 +21,11 @@ namespace CasinoIncidentRoulette.UnitTests
             for (int i = 0; i < 400; i++)
             {
                 if (martingaleBot.CanIBet())
-                    martingaleBot.PlayerBet = martingaleBot.Bet(table1);
+                    martingaleBot.PlayerBet = martingaleBot.Bet(table);
                 if (makarovBot.CanIBet())
-                    makarovBot.PlayerBet = makarovBot.Bet(table1);
+                    makarovBot.PlayerBet = makarovBot.Bet(table);
 
-                exodus = table1.Roll();
+                exodus = table.Roll();
 
                 if (martingaleBot.CanIBet())
                     martingaleBot.CheckResult(martingaleBot.PlayerBet, exodus);
