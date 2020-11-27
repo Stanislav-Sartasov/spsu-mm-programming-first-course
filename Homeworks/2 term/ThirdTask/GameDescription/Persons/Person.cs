@@ -47,7 +47,7 @@ namespace ThirdTask.GameDescription
 			}
 			pad.cards[playerCard]--;
 		}
-		public int SumOfAllCards() // переписать как свойство/статический метод
+		public int SumOfAllCards()
 		{
 			int result = OtherCards;
 			if (FirstCard != 11)
@@ -96,7 +96,7 @@ namespace ThirdTask.GameDescription
 				{
 					result -= 9;
 				}
-				else // перебор без туза
+				else // Ovetshoot without aces
 				{
 					result += 1;
 				}

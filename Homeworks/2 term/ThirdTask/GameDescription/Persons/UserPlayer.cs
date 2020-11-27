@@ -56,9 +56,9 @@ namespace ThirdTask.GameDescription
 				}
 
 				string action;
-				switch (chs) // учесть 2 колоды
+				switch (chs)
 				{
-					case 1: // readstring с допустимыми действиями??
+					case 1:
 						Console.WriteLine("Actions: \"Hit\", \"Stand\", \"Double\".\nChoose your action.");
 						while (true)
 						{
@@ -98,6 +98,17 @@ namespace ThirdTask.GameDescription
 			}
 
 			base.Action(pad);
+		}
+
+		public override string IsContinue()
+		{
+			string input = "";
+			while (input != "Yes" && input != "No")
+			{
+				input = Console.ReadLine();
+			}
+
+			return input;
 		}
 	}
 }

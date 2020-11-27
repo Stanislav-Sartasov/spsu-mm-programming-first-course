@@ -8,7 +8,7 @@ namespace ThirdTask.GameDescription
 	{
 		public override void Action(Pad pad)
 		{
-			#region Dealer strategy: while it can - hit.
+			#region Dealer strategy: while he can - he hits.
 
 			if (SumOfAllCards() >= 17)
 			{

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ThirdTask.GameDescription
 {
-	public class SecondBotStrategy : Player
+	public class SecondBotPlayer : Player
 	{
 		public override void MakeBet()
 		{
@@ -14,9 +14,8 @@ namespace ThirdTask.GameDescription
 
 		public override void Action(Pad pad)
 		{
-			#region Clever bot strategy.
-
-			//apply strategy для каждой из колод - впихнуть split
+			#region Less stupid bot strategy.
+			
 			if (SumOfAllCards() < 8 || (SumOfAllCards() < 17 && SumOfAllCards() > 11))
 			{
 				InputForAction = "Hit";
@@ -39,9 +38,12 @@ namespace ThirdTask.GameDescription
 
 			base.Action(pad);
 
-			#endregion
+			#endregion	
+		}
 
-			
+		public override string IsContinue()
+		{
+			return "Yes";
 		}
 	}
 }

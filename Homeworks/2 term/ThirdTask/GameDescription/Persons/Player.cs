@@ -8,8 +8,8 @@ namespace ThirdTask.GameDescription
 	public abstract class Player : Person
 	{
 		protected Player SecondHand { get; set; }
-		protected int SplitAndSurrenderIsAllowed { get; set; } // сдаться и разделить можно только на 1 ходу
-		protected int DoubleIsAllowed { get; set; } // удвоил - не можешь сдаться
+		protected int SplitAndSurrenderIsAllowed { get; set; } // обрезать
+		protected int DoubleIsAllowed { get; set; }
 		public int Bet { get; set; }
 		public abstract void MakeBet();
 
@@ -26,11 +26,11 @@ namespace ThirdTask.GameDescription
 					base.Action(pad);
 
 					SplitAndSurrenderIsAllowed = 0;
-					DoubleIsAllowed = 0; // взял - не можешь сдаться
+					DoubleIsAllowed = 0;
 				}
 				else
 				{
-					if (SplitAndSurrenderIsAllowed != 0 && (InputForAction == "Split" || InputForAction == "Surrender"))
+					if (SplitAndSurrenderIsAllowed != 0 && (/*InputForAction == "Split" ||*/ InputForAction == "Surrender"))
 					{
 						if (InputForAction == "Surrender")
 						{
@@ -40,6 +40,7 @@ namespace ThirdTask.GameDescription
 
 							ChangeStatus("surrender");
 						}
+						/*
 						if (InputForAction == "Split")
 						{
 							//разделение колоды новым конструктором
@@ -49,6 +50,7 @@ namespace ThirdTask.GameDescription
 							SecondHand.ChangeStatus("in_game");
 							// колоду для вывода надо обработать как вторую;  в идеале - черз массив (структур) в Action
 						}
+						*/
 
 						SplitAndSurrenderIsAllowed = 0;
 					}
@@ -62,7 +64,6 @@ namespace ThirdTask.GameDescription
 
 						ChangeStatus("stand"); // больше игрок не ходит
 
-						// деление только первым ходом, дальше - нельзя
 						DoubleIsAllowed = 0;
 						SplitAndSurrenderIsAllowed = 0;
 					}
@@ -95,6 +96,9 @@ namespace ThirdTask.GameDescription
 			DoubleIsAllowed = 1;
 		}
 
+		public abstract string IsContinue();
+
+		/*
 		protected void SecondHandHandler(string prm) // обработчик второй руки
 		{
 			switch (prm)
@@ -107,11 +111,6 @@ namespace ThirdTask.GameDescription
 					break;
 			}
 		}
+		*/
 	}
 }
-
-//Hit
-//Stand
-//Double (может быть после split)
-//Split (новый конструктор, только 1 ход)
-//Surrender(только 1 ход)

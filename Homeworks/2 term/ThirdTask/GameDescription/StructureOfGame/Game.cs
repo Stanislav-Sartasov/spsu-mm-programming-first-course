@@ -7,32 +7,48 @@ namespace ThirdTask.GameDescription
 {
 	public class Game
 	{
+		#region Rules
+		/* 
+		Surrender is available only after distribution of the first two cards. 
+		Double can be also available after surrender. 
+		All pictures and 10 are equal. 
+		*/
+		#endregion
 		private string GameIsGoing { get; set; } = "first_game"; // Start position
-		public void Start() // игрок / бот // число игр (учесть в выборе функций - подсчет внутри бота + информация)
+		private int GamesLeft { get; set; } = -1; // Negative if player is user
+		public void Start(Player player, int numOfGames = 0)
 		{
-			var player = new UserPlayer(); // Player
 			var dealer = new Dealer();
-			
-			//player.StartMenu();
-			Console.WriteLine($"Welcome to blackjack!\nYour cash: {player.Cash}.\nDo you want to play? (\"Yes\" / \"No\")"); //сюда же правила и оговорки
-			Continue(player, dealer); // переписать внутрь класса
+
+			if (numOfGames != 0)
+			{
+				GamesLeft = numOfGames;
+			}
+
+			if (GamesLeft == -1)
+			{
+				Console.WriteLine($"Welcome to blackjack!\nYour cash: {player.Cash}.\nDo you want to play? (\"Yes\" / \"No\")");
+			}
+			ContinueGame(player, dealer);
+
 			while (GameIsGoing == "game_is_on")
 			{
 				var pad = new Pad();
 
 				player.MakeBet(); // Bet
 
-				#region CardsInitialization // внести в конструктор дилера и игрока
+				#region CardsInitialization
 
 				dealer.FirstCardsInitialization(pad);
-				Console.WriteLine($"Dealer's opened card: {dealer.SecondCard}");
-
-				player.FirstCardsInitialization(pad); 
-				Console.WriteLine($"Your first two cards: {player.FirstCard}, {player.SecondCard}");
+				player.FirstCardsInitialization(pad);
+				if (GamesLeft == -1)
+				{
+					Console.WriteLine($"Dealer's opened card: {dealer.SecondCard}.\nYour first two cards: {player.FirstCard}, {player.SecondCard}.");
+				}
 
 				#endregion
 
-				#region GameProcess // для удобства написать вывод суммы
+				#region GameProcess
 
 				if (player.PersonStatus == "blackjack" && dealer.SecondCard < 10)
 				{
@@ -44,7 +60,7 @@ namespace ThirdTask.GameDescription
 					{
 						player.Action(pad);
 
-						if (player.PersonStatus != "stand" && player.PersonStatus != "surrender" && player.PersonStatus != "blackjack")
+						if (player.PersonStatus != "stand" && player.PersonStatus != "surrender" && player.PersonStatus != "blackjack" && GamesLeft == -1)
 						{
 							Console.WriteLine($"Your first two cards: {player.FirstCard}, {player.SecondCard}; your other cards sum: {player.OtherCards}");
 						}
@@ -57,7 +73,10 @@ namespace ThirdTask.GameDescription
 							dealer.Action(pad);
 						}
 
-						Console.WriteLine($"Dealer's first two cards: {dealer.FirstCard}, {dealer.SecondCard}; dealer's other cards sum: {dealer.OtherCards}");
+						if (GamesLeft == -1)
+						{
+							Console.WriteLine($"Dealer's first two cards: {dealer.FirstCard}, {dealer.SecondCard}; dealer's other cards sum: {dealer.OtherCards}");
+						}
 					}
 
 					CheckWinner(player, dealer);
@@ -66,7 +85,7 @@ namespace ThirdTask.GameDescription
 				#endregion
 
 				Cleaner(player, dealer);
-				Continue(player, dealer);
+				ContinueGame(player, dealer);
 			}
 		}
 
@@ -103,7 +122,10 @@ namespace ThirdTask.GameDescription
 				}
 			}
 
-			Console.WriteLine($"Your cash: {player.Cash}");
+			if (GamesLeft == -1)
+			{
+				Console.WriteLine($"Your cash: {player.Cash}");
+			}
 		}
 
 		private void FindWinner(Player player, Dealer dealer, int prm)
@@ -111,72 +133,99 @@ namespace ThirdTask.GameDescription
 			switch (prm)
 			{
 				case 1:
-					Console.WriteLine("Dealer wins!");
-					dealer.Cash += player.Bet; ;
+					dealer.Cash += player.Bet;
 					break;
 				case 2:
-					Console.WriteLine("Player wins!");
 					player.Cash += (int)(2.2 * player.Bet); // выигрыш 6:5
 					dealer.Cash -= player.Bet;
 					break;
 				default:
-					Console.WriteLine("Draw");
 					player.Cash += player.Bet;
 					break;
 			}
-		} // внутрь через флаг??
-
-		private void Continue(Player player, Dealer dealer) // внести внутрь игрока (поскольку у бота другой метод)
-		{
-			if (GameIsGoing == "first_game")
+			if (GamesLeft == -1)
 			{
-				while (true)
+				switch (prm)
 				{
-					var input = Console.ReadLine();
-					if (input == "Yes")
+					case 1:
+						Console.WriteLine("Dealer wins!");
+						break;
+					case 2:
+						Console.WriteLine("Player wins!");
+						break;
+					default:
+						Console.WriteLine("Draw");
+						break;
+				}
+			}
+		}
+
+		private void ContinueGame(Player player, Dealer dealer)
+		{
+			if (GamesLeft == -1 || GamesLeft > 0)
+			{
+				if (GameIsGoing == "first_game")
+				{
+					if (player.IsContinue() == "Yes")
 					{
 						GameIsGoing = "game_is_on";
-						break;
+						if (GamesLeft != -1)
+						{
+							GamesLeft--;
+						}
 					}
-					if (input == "No")
+					else
 					{
 						GameIsGoing = "stop_game";
-						break;
+					}
+				}
+				else
+				{
+					if (player.Cash <= 0)
+					{
+						if (GamesLeft == -1)
+						{
+							Console.WriteLine("Your cash is empty, seems you got twisted up in this scene.\n" +
+								"From where you're kneeling it must seem like an 18-carat run of bad luck.\n" +
+								"Truth is... the game was rigged from the start.");
+						}
+
+						GameIsGoing = "stop_game";
+					}
+					else if (dealer.Cash < 0)
+					{
+						if (GamesLeft == -1)
+						{
+							Console.WriteLine("How? Casino never loses, doesn't it?\n");
+						}
+
+						GameIsGoing = "stop_game";
+					}
+					else
+					{
+						if (GamesLeft == -1)
+						{
+							Console.WriteLine("Continue playing? (\"Yes\" / \"No\")");
+						}
+
+						if (player.IsContinue() == "Yes")
+						{
+							GameIsGoing = "game_is_on";
+							if (GamesLeft != -1)
+							{
+								GamesLeft--;
+							}
+						}
+						else
+						{
+							GameIsGoing = "stop_game";
+						}
 					}
 				}
 			}
 			else
 			{
-				if (player.Cash <= 0)
-				{
-					Console.WriteLine("Your cash is empty, seems you got twisted up in this scene.\n" +
-						"From where you're kneeling it must seem like an 18-carat run of bad luck.\n" +
-						"Truth is... the game was rigged from the start.");
-					GameIsGoing = "stop_game";
-				}
-				else if (dealer.Cash < 0)
-				{
-					Console.WriteLine("How? Casino never loses, doesn't it?\n");
-					GameIsGoing = "stop_game";
-				}
-				else
-				{
-					Console.WriteLine("Continue playing? (\"Yes\" / \"No\")");
-					while (true)
-					{
-						var input = Console.ReadLine();
-						if (input == "Yes")
-						{
-							GameIsGoing = "game_is_on";
-							break;
-						}
-						if (input == "No")
-						{
-							GameIsGoing = "stop_game";
-							break;
-						}
-					}
-				}
+				GameIsGoing = "stop_game";
 			}
 		}
 

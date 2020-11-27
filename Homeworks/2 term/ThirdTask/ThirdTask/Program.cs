@@ -7,12 +7,10 @@ namespace ThirdTask
         {
                 static void Main()
                 {
-                        //создание игрока/бота (дилер внутри - у него своя стратегия?)
+                        var player = new UserPlayer();
                         var game = new Game();
-                        game.Start();
+
+                        game.Start(player);
                 }
         }
 }
-
-//заметки на русском для себя - удалю их в финальной версии программы
-//https://casino-reiting.online/блэкджек-правила-и-стратегия-игры/#2_Frank_Casino - правила для себя

@@ -17,7 +17,6 @@ namespace ThirdTask.GameDescription
 		{
 			#region Stupid bot strategy.
 
-			//apply strategy для каждой из колод - впихнуть split
 			if (SumOfAllCards() < 20)
 			{
 				if (DoubleIsAllowed == 1)
@@ -37,6 +36,11 @@ namespace ThirdTask.GameDescription
 			base.Action(pad);
 
 			#endregion
+		}
+
+		public override string IsContinue()
+		{
+			return "Yes";
 		}
 	}
 }
