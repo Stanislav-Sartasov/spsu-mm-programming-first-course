@@ -16,7 +16,7 @@ using System.Drawing;
 using MathLibrary;
 using static System.Math;
 
-namespace UI
+namespace UI.WPF
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -66,7 +66,7 @@ namespace UI
         {
             curve.A = float.TryParse(coeffA.Text, out float A) ? A : 1;
             curve.B = float.TryParse(coeffB.Text, out float B) ? B : 1;
-            curve.P = float.TryParse(coeffP.Text, out float P) ? P : 1;
+            curve.P = float.TryParse(coeffP.Text, out float P) ? Math.Abs(P) : 1;
 
             List<PointF> points = curve.GetPoints(DrawingCanvas.ActualHeight, DrawingCanvas.ActualWidth + 150, scale);
             for (int point = 1; point < points.Count; point++)
@@ -74,7 +74,7 @@ namespace UI
                     BuildLine(points[point - 1].X + DrawingCanvas.ActualWidth / 2, points[point - 1].Y + DrawingCanvas.ActualHeight / 2, points[point].X + DrawingCanvas.ActualWidth / 2, points[point].Y + DrawingCanvas.ActualHeight / 2, 1);
         }
 
-        private void PaintCoordinateSystem()                                         //TODO
+        private void PaintCoordinateSystem()
         {
             double width = DrawingCanvas.ActualWidth;
             double height = DrawingCanvas.ActualHeight;
@@ -89,7 +89,7 @@ namespace UI
                     TextBlock unitPlus = new TextBlock
                     {
                         Text = ((int)Math.Round(i / pixelsPerUnit)).ToString(),
-                        FontSize = 10,
+                        FontSize = 9,
                         Margin = new Thickness(width / 2 + i, height / 2, width - width / 2 - i, height / 2)
                     };
                     DrawingCanvas.Children.Add(unitPlus);
@@ -97,7 +97,7 @@ namespace UI
                     TextBlock unitMinus = new TextBlock
                     {
                         Text = ((int)Math.Round(-i / pixelsPerUnit)).ToString(),
-                        FontSize = 10,
+                        FontSize = 9,
                         Margin = new Thickness(width / 2 - i, height / 2, width / 2 + i, height / 2)
                     };
                     DrawingCanvas.Children.Add(unitMinus);

@@ -21,7 +21,7 @@ namespace MathLibrary
 
         public override PointF GetPoint(double x)
         {
-            return new PointF(-B * (float)Math.Sqrt(1 + x * x / A / A), (float)x);
+            return new PointF(-Math.Abs(B) * (float)Math.Sqrt(1 + x * x / A / A), (float)x);
         }
 
         public override List<PointF> GetPoints(double height, double width, double pixelsPerUnit)
@@ -29,7 +29,7 @@ namespace MathLibrary
             List<PointF> positivePoints = new List<PointF>();
             List<PointF> negativePoints = new List<PointF>();
 
-            for (double x = -2 * A; x <= 2 * A; x += 1 / pixelsPerUnit)
+            for (double x = -2 * Math.Abs(A); x <= 2 * Math.Abs(A); x += 1 / pixelsPerUnit)
             {
                 PointF pointF = GetPoint(x);
                 pointF.X *= (float)pixelsPerUnit;
