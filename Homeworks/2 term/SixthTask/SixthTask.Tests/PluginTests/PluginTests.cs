@@ -18,7 +18,7 @@ namespace SixthTask.Tests
 		[TestMethod]
 		public void CorrectInputTest()
 		{
-			Path = String.Concat(AppDomain.CurrentDomain.BaseDirectory, "..", @"\..", @"\..\", "TestSources"); // default .dll directory
+			Path = String.Concat(AppDomain.CurrentDomain.BaseDirectory, "..", @"\..", @"\..\", "TestSources"); // Default .dll directory
 
 			SearchByPath(Path);
 
@@ -34,7 +34,7 @@ namespace SixthTask.Tests
 
 			SearchByPath(Path);
 
-			Assert.AreEqual(null, Test); // caught an expression, test array was not initialized
+			Assert.AreEqual(null, Test); // Caught an expression, test array was not initialized
 		}
 
 		private void SearchByPath(string Path)
@@ -46,21 +46,28 @@ namespace SixthTask.Tests
 
 				for (int i = 0; i < dir.Length; i++)
 				{
-					var pluginTypes = new List<Type>();
-					var types = Assembly.LoadFile(dir[i].FullName).GetTypes();
-
-					foreach (var searchType in types)
+					try
 					{
-						if (searchType.GetInterfaces().Contains(typeof(IPlugin)))
+						var pluginTypes = new List<Type>();
+						var types = Assembly.LoadFile(dir[i].FullName).GetTypes();
+
+						foreach (var searchType in types)
 						{
-							pluginTypes.Add(searchType);
+							if (searchType.GetInterfaces().Contains(typeof(IPlugin)))
+							{
+								pluginTypes.Add(searchType);
+							}
+						}
+
+						foreach (var type in types)
+						{
+							var plugin = Activator.CreateInstance(type) as IPlugin;
+							plugins.Add(plugin);
 						}
 					}
-
-					foreach (var type in types)
+					catch (System.BadImageFormatException) // Not C# dll
 					{
-						var plugin = Activator.CreateInstance(type) as IPlugin;
-						plugins.Add(plugin);
+						Debug.WriteLine("Invalid format of dll! Please, use only C# dlls.");
 					}
 				}
 
@@ -80,9 +87,10 @@ namespace SixthTask.Tests
 					Debug.WriteLine("Plugins not found!");
 				}
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
-				throw new Exception(e.Message);
+				Debug.WriteLine("An unexpected error has occured! Please, try again.");
+				//throw new Exception(e.Message);
 			}
 		}
 	}
