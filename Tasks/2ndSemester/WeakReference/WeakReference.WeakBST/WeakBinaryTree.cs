@@ -24,10 +24,10 @@ namespace WeakReference.WeakBinaryTree
 
         public void Add(T value)
         {
-            _Add(value, value.GetHashCode());
+            Add(value, value.GetHashCode());
         }
 
-        private async void _Add(T value, int key)
+        private async void Add(T value, int key)
         {
             Node<T> before = null, after = this.Root;
 
@@ -40,9 +40,11 @@ namespace WeakReference.WeakBinaryTree
                     after = after.RightNode;
             }
 
-            Node<T> newNode = new Node<T>();
-            newNode.Data = new WeakReference<T>(value);
-            newNode.Key = key;
+            Node<T> newNode = new Node<T>
+            {
+                Data = new WeakReference<T>(value),
+                Key = key
+            };
 
             if (this.Root == null)
                 this.Root = newNode;
@@ -108,19 +110,18 @@ namespace WeakReference.WeakBinaryTree
 
         private Node<T> Find(int key, Node<T> parent)
         {
-            T o;
 
             if (parent != null)
             {
                 if (key == parent.Key)
                     if (parent.Data != null)
-                        if (parent.Data.TryGetTarget(out o))
+                        if (parent.Data.TryGetTarget(out _))
                             return parent;
                         else
                             return null;
                     else
                         return null;
-                        
+
                 if (key < parent.Key)
                     return Find(key, parent.LeftNode);
                 else
@@ -132,16 +133,15 @@ namespace WeakReference.WeakBinaryTree
 
         public void Traverse(Node<T> parent)
         {
-            T o;
             if (parent != null)
             {
                 Traverse(parent.LeftNode);
                 if (parent.Data != null)
-                    if (parent.Data.TryGetTarget(out o))
+                    if (parent.Data.TryGetTarget(out T o))
                         Console.WriteLine(o.ToString());
                     else
                     {
-                        parent.Data = default(WeakReference<T>);
+                        parent.Data = default;
                         Console.WriteLine("Deleted");
                     }
                 else
@@ -152,10 +152,9 @@ namespace WeakReference.WeakBinaryTree
 
         public T GetValue(Node<T> Node)
         {
-            T o;
             if (Node != null)
                 if (Node.Data != null)
-                    if (Node.Data.TryGetTarget(out o))
+                    if (Node.Data.TryGetTarget(out T o))
                         return o;
                     else
                         return null;
