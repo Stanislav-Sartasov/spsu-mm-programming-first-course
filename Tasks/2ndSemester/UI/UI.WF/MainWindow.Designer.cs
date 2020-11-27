@@ -1,4 +1,6 @@
-﻿namespace UI.WF
+﻿using System.Drawing;
+
+namespace UI.WF
 {
     partial class MainWindow
     {
@@ -141,6 +143,7 @@
             // 
             // ChooseCurve
             // 
+            this.ChooseCurve.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ChooseCurve.FormattingEnabled = true;
             this.ChooseCurve.Location = new System.Drawing.Point(0, 0);
             this.ChooseCurve.Name = "ChooseCurve";
@@ -152,14 +155,17 @@
             this.DrawingCanvas.Location = new System.Drawing.Point(208, 12);
             this.DrawingCanvas.Name = "DrawingCanvas";
             this.DrawingCanvas.Size = new System.Drawing.Size(580, 426);
+            this.DrawingCanvas.TabIndex = 0;
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(804, 441);
             this.Controls.Add(this.DrawingCanvas);
             this.Controls.Add(this.panel1);
+            this.MaximumSize = new System.Drawing.Size(820, 480);
+            this.MinimumSize = new System.Drawing.Size(820, 480);
             this.Name = "MainWindow";
             this.Text = "Form1";
             this.panel1.ResumeLayout(false);
