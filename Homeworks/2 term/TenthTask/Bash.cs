@@ -250,7 +250,7 @@ namespace TenthTask.BashDescription
 						}
 						else
 						{
-							Console.WriteLine("error syntax");
+							Console.WriteLine("Error syntax.");
 						}
 
 						return resStr;
@@ -344,7 +344,7 @@ namespace TenthTask.BashDescription
 					}
 					else
 					{
-						Console.WriteLine("Wrong Syntax");
+						Console.WriteLine("Wrong syntax");
 					}	
 				}
 			}
@@ -390,7 +390,3 @@ namespace TenthTask.BashDescription
 		}
 	}
 }
-
-//на русском пишу для себя
-//дописать системный вызов, разделить команды и парсер на классы
-//покрасивее оформить строки (через автосвойства)
