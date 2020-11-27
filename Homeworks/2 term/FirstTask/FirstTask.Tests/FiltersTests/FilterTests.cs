@@ -56,7 +56,7 @@ namespace FirstTask.Tests
 
 			realPicture.FileRead(String.Concat(path, "test.bmp"));
 			Program.FilterSelect(realPicture, filter);
-			//realPicture.FileWrite(String.Concat(path, "image_is_saved_correctly.bmp")); // The program is not crashing when recording a new image.
+			//realPicture.FileWrite(String.Concat(path, "image_is_saved_correctly.bmp")); // The program is not crashing when recording a new image
 
 			expectedPicture.FileRead(String.Concat(path, "test_", filter, ".bmp"));
 
