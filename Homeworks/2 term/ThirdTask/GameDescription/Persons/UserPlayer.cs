@@ -45,7 +45,7 @@ namespace ThirdTask.GameDescription
 			else
 			{
 				int chs = 0;
-				if (SplitAndSurrenderIsAllowed != 0)
+				if (SurrenderIsAllowed != 0)
 				{
 					DoubleIsAllowed = 1;
 					chs = 2;
@@ -71,11 +71,11 @@ namespace ThirdTask.GameDescription
 						}
 						break;
 					case 2:
-						Console.WriteLine("Actions: \"Hit\", \"Stand\", \"Double\", \"Split\", \"Surrender\".\nChoose your action.");
+						Console.WriteLine("Actions: \"Hit\", \"Stand\", \"Double\", \"Surrender\".\nChoose your action.");
 						while (true)
 						{
 							action = Console.ReadLine();
-							if (action == "Hit" || action == "Stand" || action == "Surrender" || action == "Double" || action == "Split")
+							if (action == "Hit" || action == "Stand" || action == "Surrender" || action == "Double")
 							{
 								InputForAction = action;
 								break;

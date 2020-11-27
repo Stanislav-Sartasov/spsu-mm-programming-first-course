@@ -8,7 +8,7 @@ namespace ThirdTask.GameDescription
 	public abstract class Player : Person
 	{
 		protected Player SecondHand { get; set; }
-		protected int SplitAndSurrenderIsAllowed { get; set; } // обрезать
+		protected int SurrenderIsAllowed { get; set; }
 		protected int DoubleIsAllowed { get; set; }
 		public int Bet { get; set; }
 		public abstract void MakeBet();
@@ -25,12 +25,12 @@ namespace ThirdTask.GameDescription
 				{
 					base.Action(pad);
 
-					SplitAndSurrenderIsAllowed = 0;
+					SurrenderIsAllowed = 0;
 					DoubleIsAllowed = 0;
 				}
 				else
 				{
-					if (SplitAndSurrenderIsAllowed != 0 && (/*InputForAction == "Split" ||*/ InputForAction == "Surrender"))
+					if (SurrenderIsAllowed != 0)
 					{
 						if (InputForAction == "Surrender")
 						{
@@ -40,19 +40,8 @@ namespace ThirdTask.GameDescription
 
 							ChangeStatus("surrender");
 						}
-						/*
-						if (InputForAction == "Split")
-						{
-							//разделение колоды новым конструктором
-							SecondHandHandler("create");
 
-							ChangeStatus("in_game");
-							SecondHand.ChangeStatus("in_game");
-							// колоду для вывода надо обработать как вторую;  в идеале - черз массив (структур) в Action
-						}
-						*/
-
-						SplitAndSurrenderIsAllowed = 0;
+						SurrenderIsAllowed = 0;
 					}
 					else if (DoubleIsAllowed != 0 && InputForAction == "Double")
 					{
@@ -62,10 +51,10 @@ namespace ThirdTask.GameDescription
 
 						GetCard(pad);
 
-						ChangeStatus("stand"); // больше игрок не ходит
+						ChangeStatus("stand");
 
 						DoubleIsAllowed = 0;
-						SplitAndSurrenderIsAllowed = 0;
+						SurrenderIsAllowed = 0;
 					}
 
 					if (PersonStatus != "surrender")
@@ -81,7 +70,7 @@ namespace ThirdTask.GameDescription
 			base.Clear();
 			Bet = 0;
 
-			SplitAndSurrenderIsAllowed = 1;
+			SurrenderIsAllowed = 1;
 			DoubleIsAllowed = 1;
 		}
 
@@ -92,25 +81,10 @@ namespace ThirdTask.GameDescription
 
 			SecondHand = null;
 
-			SplitAndSurrenderIsAllowed = 1;
+			SurrenderIsAllowed = 1;
 			DoubleIsAllowed = 1;
 		}
 
 		public abstract string IsContinue();
-
-		/*
-		protected void SecondHandHandler(string prm) // обработчик второй руки
-		{
-			switch (prm)
-			{
-				case "create":
-
-					break;
-				case "destroy":
-
-					break;
-			}
-		}
-		*/
 	}
 }
