@@ -6,9 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="GameDescription\**" />
     <Compile Remove="ThirdTask.Tests\**" />
+    <EmbeddedResource Remove="GameDescription\**" />
     <EmbeddedResource Remove="ThirdTask.Tests\**" />
+    <None Remove="GameDescription\**" />
     <None Remove="ThirdTask.Tests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="GameDescription\GameDescription.csproj" />
   </ItemGroup>
 
 </Project>

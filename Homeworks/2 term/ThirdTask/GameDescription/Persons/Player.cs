@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace ThirdTask.GameDescription
+namespace GameDescription
 {
 	public abstract class Player : Person
 	{
@@ -47,7 +47,6 @@ namespace ThirdTask.GameDescription
 					{
 						Cash -= Bet;
 						Bet *= 2;
-						Console.WriteLine();
 
 						GetCard(pad);
 

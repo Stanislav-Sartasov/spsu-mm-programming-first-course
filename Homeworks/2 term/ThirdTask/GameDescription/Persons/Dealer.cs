@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ThirdTask.GameDescription
+namespace GameDescription
 {
 	public class Dealer : Person
 	{
