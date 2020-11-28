@@ -7,7 +7,7 @@ namespace Task3
 		protected static Random rand = new Random();
 		double leaveBankCoeffUp = 5;
 		double leaveBankCoeffDown = 0.01;
-		bool AutoLeaving 
+		public bool AutoLeaving 
 		{
 			get
 			{

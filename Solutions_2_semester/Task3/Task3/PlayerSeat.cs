@@ -27,14 +27,18 @@ namespace Task3
 		{
 			get
 			{
-				return currentGameSession.gameСoefficients;
+				if (currentGameSession != null)
+					return currentGameSession.gameСoefficients;
+				return default;
 			}
 		}
 		internal Field LastWinField
 		{
 			get
 			{
-				return currentGameSession.LastWinField;
+				if (currentGameSession != null)
+					return currentGameSession.LastWinField;
+				return default;
 			}
 		}
 		internal readonly Player player;
@@ -75,6 +79,8 @@ namespace Task3
 		}
 		internal bool QuitGame()
 		{
+			if (currentGameSession == null)
+				return true;
 			if (currentGameSession.SessionStarted || !Active)
 				return false;
 			if (BetDone)
