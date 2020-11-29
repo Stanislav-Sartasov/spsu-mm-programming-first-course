@@ -22,6 +22,7 @@ namespace WpfCurves
 	public partial class MainWindow : Window
 	{
 		const double StartOneSize = 15;
+		double actualOneSize = StartOneSize;
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -69,9 +70,18 @@ namespace WpfCurves
 			}
 			catch { }
 
-			var points = ((ICurveBuilder)CurveComboBox.SelectedItem).Build(0.1 / (CurveSize.Value + 1), CurveArea.ActualWidth / 2 / (CurveSize.Value + 1), a, b);
+			double newOneSize;
+
+			if (CurveComboBox.SelectedIndex == 2)
+				newOneSize = Math.Min(CurveArea.ActualWidth, CurveArea.ActualHeight) / Math.Max(Math.Abs(a), Math.Abs(b)) / StartOneSize;
+			else
+				newOneSize = Math.Min(CurveArea.ActualWidth, CurveArea.ActualHeight) / Math.Abs(a) / StartOneSize;
+
+			var points = ((ICurveBuilder)CurveComboBox.SelectedItem).Build(0.1 / (CurveSize.Value + 1) / newOneSize, CurveArea.ActualWidth / 2 / (CurveSize.Value + 1) / newOneSize, a, b);
 			if (points == null)
 				return;
+
+			actualOneSize = newOneSize;
 
 			DrawCoordinate(a, b, CurveComboBox.SelectedIndex);
 
@@ -86,8 +96,8 @@ namespace WpfCurves
 			result.Stroke = Brushes.Black;
 			foreach (var point in points)
 			{
-				double x = point[0] * StartOneSize * (CurveSize.Value + 1) + CurveArea.ActualWidth / 2;
-				double y = point[1] * StartOneSize * (CurveSize.Value + 1) + CurveArea.ActualHeight / 2;
+				double x = point[0] * actualOneSize * (CurveSize.Value + 1) + CurveArea.ActualWidth / 2;
+				double y = point[1] * actualOneSize * (CurveSize.Value + 1) + CurveArea.ActualHeight / 2;
 				result.Points.Add(new Point(x, y));
 			}
 			return result;
@@ -112,7 +122,7 @@ namespace WpfCurves
 			double y2;
 			if (direct == 0)
 			{
-				x1 = width / 2 + StartOneSize * (CurveSize.Value + 1) * value;
+				x1 = width / 2 + actualOneSize * (CurveSize.Value + 1) * value;
 				x2 = x1;
 				y1 = height / 2 - 3;
 				y2 = y1 + 6;
@@ -121,7 +131,7 @@ namespace WpfCurves
 			{
 				x1 = width / 2 - 3;
 				x2 = x1 + 6;
-				y1 = height / 2 - StartOneSize * (CurveSize.Value + 1) * value;
+				y1 = height / 2 - actualOneSize * (CurveSize.Value + 1) * value;
 				y2 = y1;
 			}
 			DrawLine(x1, y1, x2, y2);
@@ -135,9 +145,12 @@ namespace WpfCurves
 			DrawLine(0, height / 2, width, height / 2);
 			DrawLine(width / 2, 0, width / 2, height);
 
+			int param;
+			for (param = 1; param * actualOneSize * (CurveSize.Value + 1) < StartOneSize; param *= 10) ;
+
 			AddMark(width, height, 0, 0, "0");
-			AddMark(width, height, 1, 0, "1");
-			AddMark(width, height, 1, 1, "1");
+			AddMark(width, height, param, 0, param.ToString());
+			AddMark(width, height, param, 1, param.ToString());
 
 			switch (type)
 			{
@@ -149,10 +162,16 @@ namespace WpfCurves
 					AddMark(width, height, -a, 0, Math.Round(-a, 3).ToString());
 					break;
 				case 2:
-					AddMark(width, height, a, 0, Math.Round(a, 3).ToString());
-					AddMark(width, height, -a, 0, Math.Round(-a, 3).ToString());
-					AddMark(width, height, b, 1, Math.Round(b, 3).ToString());
-					AddMark(width, height, -b, 1, Math.Round(-b, 3).ToString());
+					if (Math.Abs(a) * actualOneSize * (CurveSize.Value + 1) > StartOneSize)
+					{
+						AddMark(width, height, a, 0, Math.Round(a, 3).ToString());
+						AddMark(width, height, -a, 0, Math.Round(-a, 3).ToString());
+					}
+					if (Math.Abs(b) * actualOneSize * (CurveSize.Value + 1) > StartOneSize)
+					{
+						AddMark(width, height, b, 1, Math.Round(b, 3).ToString());
+						AddMark(width, height, -b, 1, Math.Round(-b, 3).ToString());
+					}
 					break;
 			}
 

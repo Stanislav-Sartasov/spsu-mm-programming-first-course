@@ -28,6 +28,7 @@ namespace WinFormsCurves
 		};
 
 		const double StartOneSize = 15;
+		double actualOneSize = StartOneSize;
 		public SimpleCurves()
 		{
 			InitializeComponent();
@@ -68,6 +69,7 @@ namespace WinFormsCurves
 			int index = curves.IndexOf(CurveComboBox.Text);
 			if (index < 0)
 			{
+				actualOneSize = StartOneSize;
 				DrawCoordinate(0, 0, -1);
 				return;
 			}
@@ -100,13 +102,23 @@ namespace WinFormsCurves
 			}
 			catch { }
 
-			points = curveBuilders[index].Build(0.1 / (CurveSize.Value + 1), CurveArea.Size.Width / 2 / (CurveSize.Value + 1), a, b);
+			double newOneSize;
+
+			if (index == 2)
+				newOneSize = Math.Min(CurveArea.Size.Width, CurveArea.Size.Height) / Math.Min(Math.Abs(a), Math.Abs(b)) / StartOneSize;
+			else
+				newOneSize = Math.Min(CurveArea.Size.Width, CurveArea.Size.Height) / Math.Abs(a) / StartOneSize;
+
+			points = curveBuilders[index].Build(0.1 / (CurveSize.Value + 1) / newOneSize, CurveArea.Size.Width / 2 / (CurveSize.Value + 1) / newOneSize, a, b);
 
 			if (points == null)
 			{
+				actualOneSize = StartOneSize;
 				DrawCoordinate(0, 0, -1);
 				return;
 			}
+
+			actualOneSize = newOneSize;
 
 			try
 			{
@@ -121,8 +133,8 @@ namespace WinFormsCurves
 			List<PointF> result = new List<PointF>();
 			foreach (var point in points)
 			{
-				float x = (float)(point[0] * StartOneSize * (CurveSize.Value + 1) + CurveArea.Size.Width / 2);
-				float y = (float)(point[1] * StartOneSize * (CurveSize.Value + 1) + CurveArea.Size.Height / 2);
+				float x = (float)(point[0] * actualOneSize * (CurveSize.Value + 1) + CurveArea.Size.Width / 2);
+				float y = (float)(point[1] * actualOneSize * (CurveSize.Value + 1) + CurveArea.Size.Height / 2);
 				result.Add(new PointF(x, y));
 			}
 			return result.ToArray();
@@ -139,7 +151,7 @@ namespace WinFormsCurves
 			double y2;
 			if (direct == 0)
 			{
-				x1 = width / 2 + StartOneSize * (CurveSize.Value + 1) * value;
+				x1 = width / 2 + actualOneSize * (CurveSize.Value + 1) * value;
 				x2 = x1;
 				y1 = height / 2 - 3;
 				y2 = y1 + 6;
@@ -148,7 +160,7 @@ namespace WinFormsCurves
 			{
 				x1 = width / 2 - 3;
 				x2 = x1 + 6;
-				y1 = height / 2 - StartOneSize * (CurveSize.Value + 1) * value;
+				y1 = height / 2 - actualOneSize * (CurveSize.Value + 1) * value;
 				y2 = y1;
 			}
 			DrawLine(x1, y1, x2, y2);
@@ -162,9 +174,12 @@ namespace WinFormsCurves
 			DrawLine(0, height / 2, width, height / 2);
 			DrawLine(width / 2, 0, width / 2, height);
 
+			int param;
+			for (param = 1; param * actualOneSize * (CurveSize.Value + 1) < StartOneSize; param *= 10) ;
+
 			AddMark(width, height, 0, 0, "0");
-			AddMark(width, height, 1, 0, "1");
-			AddMark(width, height, 1, 1, "1");
+			AddMark(width, height, param, 0, param.ToString());
+			AddMark(width, height, param, 1, param.ToString());
 
 			switch (type)
 			{
@@ -176,10 +191,16 @@ namespace WinFormsCurves
 					AddMark(width, height, -a, 0, Math.Round(-a, 3).ToString());
 					break;
 				case 2:
-					AddMark(width, height, a, 0, Math.Round(a, 3).ToString());
-					AddMark(width, height, -a, 0, Math.Round(-a, 3).ToString());
-					AddMark(width, height, b, 1, Math.Round(b, 3).ToString());
-					AddMark(width, height, -b, 1, Math.Round(-b, 3).ToString());
+					if (Math.Abs(a) * actualOneSize * (CurveSize.Value + 1) > StartOneSize)
+					{
+						AddMark(width, height, a, 0, Math.Round(a, 3).ToString());
+						AddMark(width, height, -a, 0, Math.Round(-a, 3).ToString());
+					}
+					if (Math.Abs(b) * actualOneSize * (CurveSize.Value + 1) > StartOneSize)
+					{
+						AddMark(width, height, b, 1, Math.Round(b, 3).ToString());
+						AddMark(width, height, -b, 1, Math.Round(-b, 3).ToString());
+					}
 					break;
 			}
 
