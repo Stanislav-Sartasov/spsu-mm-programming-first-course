@@ -105,7 +105,7 @@ namespace WinFormsCurves
 			double newOneSize;
 
 			if (index == 2)
-				newOneSize = Math.Min(CurveArea.Size.Width, CurveArea.Size.Height) / Math.Min(Math.Abs(a), Math.Abs(b)) / StartOneSize;
+				newOneSize = Math.Min(CurveArea.Size.Width, CurveArea.Size.Height) / Math.Max(Math.Abs(a), Math.Abs(b)) / StartOneSize;
 			else
 				newOneSize = Math.Min(CurveArea.Size.Width, CurveArea.Size.Height) / Math.Abs(a) / StartOneSize;
 
