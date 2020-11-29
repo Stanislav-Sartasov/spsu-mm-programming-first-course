@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace BashLibrary
 {
@@ -9,18 +10,16 @@ namespace BashLibrary
         {
             try
             {
-                Process process = new Process
-                {
-                    StartInfo = new ProcessStartInfo(input)
-                    {
-                        UseShellExecute = true
-                    }
-                };
-                process.Start();
+                string[] command = input.Split(' ');
+                if (command.Length == 1)
+                    Process.Start(input);
+                else
+                    Process.Start(command[0], string.Join(null, command, 1, command.Length - 1));
                 return "Try to Execute...\n";
             }
-            catch
+            catch(Exception e)
             {
+                Console.WriteLine(e.Message);
                 return "Unknown command or invalid input. Try again.\n";
             }
         }

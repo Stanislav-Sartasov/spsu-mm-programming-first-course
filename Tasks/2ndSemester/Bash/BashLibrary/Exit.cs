@@ -4,15 +4,16 @@
     {
         public string Execute(string args)
         {
-            try
-            {
-                System.Environment.Exit(0);
-            }
-            catch
-            {
-                return "Error. Try again.\n";
-            }
-            return null;
+            if (args == "")
+                try
+                {
+                    System.Environment.Exit(0);
+                }
+                catch
+                {
+                    return "Error. Try again.\n";
+                }
+            return "Error. Invalid input.\n";
         }
     }
 }

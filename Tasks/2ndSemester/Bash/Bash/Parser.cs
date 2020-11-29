@@ -29,7 +29,7 @@ namespace Bash
                 "pwd" => new Tuple<ICommand, string>(new Pwd(), arg),
                 "cat" => new Tuple<ICommand, string>(new Cat(), arg),
                 "wc" => new Tuple<ICommand, string>(new Wc(), arg),
-                _ => new Tuple<ICommand, string>(new AnotherCommand(), arg),
+                _ => new Tuple<ICommand, string>(new AnotherCommand(), input),
             };
         }
 

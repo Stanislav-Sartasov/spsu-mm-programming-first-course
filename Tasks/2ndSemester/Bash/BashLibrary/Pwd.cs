@@ -4,7 +4,9 @@
     {
         public string Execute(string input)
         {
-            return string.Join("\n", System.IO.Directory.GetFiles(System.IO.Directory.GetCurrentDirectory())) + "\n";
+            if (input == "")
+                return string.Join("\n", System.IO.Directory.GetFiles(System.IO.Directory.GetCurrentDirectory())) + "\n";
+            return "Error. Invalid input.\n";
         }
     }
 }
