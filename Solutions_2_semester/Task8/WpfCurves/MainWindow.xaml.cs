@@ -145,8 +145,8 @@ namespace WpfCurves
 			DrawLine(0, height / 2, width, height / 2);
 			DrawLine(width / 2, 0, width / 2, height);
 
-			int param;
-			for (param = 1; param * actualOneSize * (CurveSize.Value + 1) < StartOneSize; param *= 10) ;
+			double param;
+			for (param = 0.001; param * actualOneSize * (CurveSize.Value + 1) < StartOneSize; param *= 10);
 
 			AddMark(width, height, 0, 0, "0");
 			AddMark(width, height, param, 0, param.ToString());
