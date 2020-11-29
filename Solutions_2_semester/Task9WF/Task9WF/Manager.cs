@@ -98,10 +98,6 @@ namespace Task9WF
 		{
 			listener.Stop();
 			connectionManager.Stop();
-			/*
-			Task.Run(() => taskManagerStop());
-			Thread.Sleep(5000);
-			*/
 			taskManagerStop();
 			Active = false;
 		}
