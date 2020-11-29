@@ -6,100 +6,101 @@ using Task9WF.Interfaces;
 
 namespace Task9WF
 {
-    public class Manager
-    { 
-        IDataConsumer dataConsumer;
-        IListener listener;
-        IConnectionManager connectionManager;
-        IMessager messager;
-        Task dataConsumerTask;
-        TaskManager taskManager;
-        TaskManager.StopDelegate taskManagerStop;
+	public class Manager
+	{ 
+		IDataConsumer dataConsumer;
+		IListener listener;
+		IConnectionManager connectionManager;
+		IMessager messager;
+		TaskManager taskManager;
+		TaskManager.StopDelegate taskManagerStop;
 
-        public bool Active { get; private set; }
+		public bool Active { get; private set; }
 
-        const string SystemMessagePrefix = "#";
-        void SystemMessage(object sender, string message)
-        {
-            dataConsumer.AddMessage(this, SystemMessagePrefix + " " + message);
-        }
-        public void Start(IDataConsumer dataConsumerObj, IListener listenerObj, IConnectionManager connectionManagerObj, IMessager messagerObj)
-        {
-            taskManager = new TaskManager(out taskManagerStop);
-            dataConsumer = dataConsumerObj;
-            listener = listenerObj;
-            connectionManager = connectionManagerObj;
-            messager = messagerObj;
+		const string SystemMessagePrefix = "#";
+		void SystemMessage(object sender, string message)
+		{
+			dataConsumer.AddMessage(this, SystemMessagePrefix + " " + message);
+		}
+		public Guid Start(IDataConsumer dataConsumerObj, IListener listenerObj, IConnectionManager connectionManagerObj, IMessager messagerObj)
+		{
+			taskManager = new TaskManager(out taskManagerStop);
+			dataConsumer = dataConsumerObj;
+			listener = listenerObj;
+			connectionManager = connectionManagerObj;
+			messager = messagerObj;
 
-            dataConsumer.TaskManager = taskManager;
-            dataConsumer.NewInput += NewInput;
-            dataConsumer.Stopped += Stop;
+			dataConsumer.TaskManager = taskManager;
+			dataConsumer.NewInput += NewInput;
+			dataConsumer.Stopped += Stop;
 
-            dataConsumerTask = Task.Run(() => dataConsumerObj.Start());
+			Task.Run(() => dataConsumerObj.Start());
 
-            while (!dataConsumerObj.Started)
-                Thread.Sleep(500);
+			while (!dataConsumerObj.Started)
+				Thread.Sleep(500);
 
-            connectionManager.TaskManager = taskManager;
-            connectionManager.NewMessage += dataConsumer.AddMessage;
-            connectionManager.ChangeConnection += dataConsumer.ChangeConnection;
-            connectionManager.SystemMessage += SystemMessage;
-            connectionManager.Messager = messager;
+			connectionManager.TaskManager = taskManager;
+			connectionManager.NewMessage += dataConsumer.AddMessage;
+			connectionManager.ChangeConnection += dataConsumer.ChangeConnection;
+			connectionManager.SystemMessage += SystemMessage;
+			connectionManager.Messager = messager;
 
-            listener.TaskManager = taskManager;
-            listener.NewConnection += connectionManager.AddConnection;
-            listener.Messager = messager;
+			listener.TaskManager = taskManager;
+			listener.NewConnection += connectionManager.AddConnection;
+			listener.Messager = messager;
 
-            while (!listener.Init(dataConsumerObj.RequestStartPort())) ;
-            listener.Start(1024);
+			while (!listener.Init(dataConsumerObj.RequestStartPort())) ;
+			listener.Start(1024);
 
-            connectionManager.TaskManager = taskManager;
-            connectionManager.LocalAddress = listener.LocalAddress;
-            connectionManager.Start();
+			connectionManager.TaskManager = taskManager;
+			connectionManager.MyInfo = listener.MyInfo;
+			connectionManager.Start();
 
-            SystemMessage(this, "Server started at: " + listener.LocalAddress.ToString());
-            Active = true;
-        }
+			SystemMessage(this, "Server started at port: " + listener.MyInfo.Port.ToString());
+			dataConsumer.Port = listener.MyInfo.Port;
+			Active = true;
 
-        void NewInput(object sender, Message input)
-        {
-            switch (input.Type)
-            {
-                case MessageType.Message:
-                    connectionManager.SendToAll(MessageType.Message, input.Text);
-                    SystemMessage(this, "Message send: " + input.Text);
-                    break;
-                case MessageType.Name:
-                    connectionManager.Name = input.Text;
-                    SystemMessage(this, "Name set: " + connectionManager.Name);
-                    break;
-                case MessageType.Socket:
-                    EndPoint endPoint;
+			return listener.MyInfo.Guid;
+		}
 
-                    SystemMessage(this, "Trying connect to: " + input.Text);
-                    endPoint = input.GetAddress();
+		void NewInput(object sender, Message input)
+		{
+			switch (input.Type)
+			{
+				case (byte)MessageType.Message:
+					connectionManager.SendToAll(MessageType.Message, input.Text);
+					SystemMessage(this, "Message send: " + input.Text);
+					break;
+				case (byte)MessageType.Name:
+					connectionManager.Name = input.Text;
+					SystemMessage(this, "Name set: " + connectionManager.Name);
+					break;
+				case (byte)MessageType.Socket:
+					EndPoint endPoint;
 
-                    if (endPoint == null)
-                    {
-                        SystemMessage(this, "Can't connect to: " + input.Text + " - Wrong address");
-                        break;
-                    }
+					SystemMessage(this, "Trying connect to: " + input.Text);
+					endPoint = input.GetAddress();
 
-                    string error = connectionManager.TryConnect(endPoint);
-                    if (error != null)
-                        SystemMessage(this, "Can't connect to: " + input.Text + " - " + error);
-                    break;
-                default:
-                    SystemMessage(this, input.Text);
-                    break;
-            }
-        }
-        void Stop(object sender, EventArgs args)
-        {
-            listener.Stop();
-            connectionManager.Stop();
-            taskManagerStop();
-            Active = false;
-        }
-    }
+					if (endPoint == null)
+					{
+						SystemMessage(this, "Can't connect to: " + input.Text + " - Wrong address");
+						break;
+					}
+
+					connectionManager.TryConnect(endPoint);
+					break;
+				default:
+					SystemMessage(this, input.Text);
+					break;
+			}
+		}
+		void Stop(object sender, EventArgs args)
+		{
+			listener.Stop();
+			connectionManager.Stop();
+			Task.Run(() => taskManagerStop());
+			Thread.Sleep(5000);
+			Active = false;
+		}
+	}
 }

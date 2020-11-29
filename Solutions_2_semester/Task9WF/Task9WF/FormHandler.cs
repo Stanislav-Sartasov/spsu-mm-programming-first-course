@@ -5,68 +5,79 @@ using Task9WF.Interfaces;
 
 namespace Task9WF
 {
-    class FormHandler : IDataConsumer
-    {
-        TaskManager tasks = null;
-        object constDataLocker = new object();
-        MainForm form = null;
-        bool started = false;
-        public bool Started
-        {
-            get
-            {
-                if (form == null || tasks == null)
-                    return false;
-                return form.FormShown;
-            }
-        }
+	class FormHandler : IDataConsumer
+	{
+		TaskManager tasks = null;
+		object constDataLocker = new object();
+		MainForm form = null;
+		bool started = false;
+		public bool Started
+		{
+			get
+			{
+				if (form == null || tasks == null)
+					return false;
+				return form.FormShown;
+			}
+		}
 
-        public TaskManager TaskManager
-        {
-            set
-            {
-                lock (constDataLocker)
-                {
-                    if (tasks == null)
-                        tasks = value;
-                }
-            }
-        }
-        public event EventHandler<Message> NewInput;
-        public event EventHandler Stopped;
+		public int Port
+		{
+			get
+			{
+				return form.Port;
+			}
+			set
+			{
+				form.Port = value;
+			}
+		}
 
-        public int RequestStartPort()
-        {
-            if (form == null)
-                return -1;
-            return form.RequestStartPort();
-        }
+		public TaskManager TaskManager
+		{
+			set
+			{
+				lock (constDataLocker)
+				{
+					if (tasks == null)
+						tasks = value;
+				}
+			}
+		}
+		public event EventHandler<Message> NewInput;
+		public event EventHandler Stopped;
 
-        public void AddMessage(object sender, string message)
-        {
-            if (form == null)
-                return;
-            form.AddMessage(sender, message);
-        }
+		public int RequestStartPort()
+		{
+			if (form == null)
+				return -1;
+			return form.RequestStartPort();
+		}
 
-        public void ChangeConnection(object endPoint, string name)
-        {
-            if (form == null)
-                return;
-            if (endPoint.GetType().Name == "IPEndPoint")
-                form.ChangeConnection((EndPoint)endPoint, name);
-        }
+		public void AddMessage(object sender, string message)
+		{
+			if (form == null)
+				return;
+			form.AddMessage(sender, message);
+		}
 
-        public void Start()
-        {
-            if (started || tasks == null)
-                return;
-            else
-                started = true;
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            form = new MainForm(NewInput, Stopped, tasks);
-            Application.Run(form);
-        }
-    }
+		public void ChangeConnection(object guid, string name)
+		{
+			if (form == null)
+				return;
+			form.ChangeConnection(guid, name);
+		}
+
+		public void Start()
+		{
+			if (started || tasks == null)
+				return;
+			else
+				started = true;
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(false);
+			form = new MainForm(NewInput, Stopped, tasks);
+			Application.Run(form);
+		}
+	}
 }
