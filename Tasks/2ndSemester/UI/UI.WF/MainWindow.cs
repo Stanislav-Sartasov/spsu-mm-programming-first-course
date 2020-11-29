@@ -60,7 +60,7 @@ namespace UI.WF
         {
             float width = DrawingCanvas.Width;
             float height = DrawingCanvas.Height;
-            float pixelsPerUnit = 2 * scaleSlider.Value;
+            float pixelsPerUnit = scaleSlider.Value;
             BuildLine(0, height / 2, width, height / 2, 0.2);
             BuildLine(width / 2, 0, width / 2, height, 0.2);
 

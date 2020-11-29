@@ -29,7 +29,7 @@ namespace MathLibrary
             List<PointF> positivePoints = new List<PointF>();
             List<PointF> negativePoints = new List<PointF>();
 
-            for (double x = -Math.Abs(A); x <= Math.Abs(A); x += 1 / pixelsPerUnit / 4)
+            for (double x = -Math.Abs(A); x <= Math.Abs(A); x += 1 / pixelsPerUnit)
             {
                 PointF pointF = GetPoint(x);
                 pointF.X *= (float)pixelsPerUnit;

@@ -78,7 +78,7 @@ namespace UI.WPF
         {
             double width = DrawingCanvas.ActualWidth;
             double height = DrawingCanvas.ActualHeight;
-            double pixelsPerUnit = width / 200 * scale;
+            double pixelsPerUnit = scale;
             BuildLine(0, height / 2, width, height / 2, 0.2);
             BuildLine(width / 2, 0, width / 2, height, 0.2);
 
