@@ -69,7 +69,7 @@ namespace WpfCurves
 			}
 			catch { }
 
-			var points = ((ICurveBuilder)CurveComboBox.SelectedItem).Build(0.2 / (CurveSize.Value + 1), CurveArea.ActualWidth / 2, a, b);
+			var points = ((ICurveBuilder)CurveComboBox.SelectedItem).Build(0.1 / (CurveSize.Value + 1), CurveArea.ActualWidth / 2 / (CurveSize.Value + 1), a, b);
 			if (points == null)
 				return;
 
