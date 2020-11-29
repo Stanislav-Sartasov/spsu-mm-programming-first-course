@@ -124,6 +124,7 @@
 			this.BTextBox.Name = "BTextBox";
 			this.BTextBox.Size = new System.Drawing.Size(143, 22);
 			this.BTextBox.TabIndex = 2;
+			this.BTextBox.TextChanged += new System.EventHandler(this.DrawCurve);
 			this.BTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.BTextBoxKeyDown);
 			this.BTextBox.Leave += new System.EventHandler(this.DrawCurve);
 			// 
@@ -136,6 +137,7 @@
 			this.ATextBox.Name = "ATextBox";
 			this.ATextBox.Size = new System.Drawing.Size(143, 22);
 			this.ATextBox.TabIndex = 1;
+			this.ATextBox.TextChanged += new System.EventHandler(this.DrawCurve);
 			this.ATextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ATextBoxKeyDown);
 			this.ATextBox.Leave += new System.EventHandler(this.DrawCurve);
 			// 
@@ -144,6 +146,7 @@
 			this.CurveComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.CurveComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.CurveComboBox.Location = new System.Drawing.Point(3, 3);
 			this.CurveComboBox.Name = "CurveComboBox";
 			this.CurveComboBox.Size = new System.Drawing.Size(165, 24);

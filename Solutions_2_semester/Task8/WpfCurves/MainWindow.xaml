@@ -22,9 +22,9 @@
 			</ComboBox.ItemTemplate>
 		</ComboBox>
 		<Label x:Name="ALable" Content="a" Grid.Column="1" Margin="0.6,30,0,0" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="16"/>
-		<TextBox x:Name="ATextBox" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Margin="22,34,0.8,0" KeyDown="ATextBoxKeyDown" LostFocus="DrawCurve"/>
+		<TextBox x:Name="ATextBox" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Margin="22,34,0.8,0" KeyDown="ATextBoxKeyDown" LostFocus="DrawCurve" TextChanged="DrawCurve"/>
 		<Label x:Name="BLabel" Content="b" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="0.4,60,0,0" Width="16"/>
-		<TextBox x:Name="BTextBox" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Margin="21.4,64,0.4,0" LostFocus="DrawCurve" KeyDown="BTextBoxKeyDown"/>
+		<TextBox x:Name="BTextBox" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1" Margin="21.4,64,0.4,0" LostFocus="DrawCurve" KeyDown="BTextBoxKeyDown" TextChanged="DrawCurve"/>
 		<GroupBox x:Name="FormulaBox" Header="Formula" Grid.Column="1" Margin="0,92,0.8,29.2"/>
 		<Grid.Resources>
 			<Style TargetType="TextBox">
