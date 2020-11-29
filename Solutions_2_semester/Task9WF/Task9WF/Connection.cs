@@ -60,7 +60,10 @@ namespace Task9WF
 						addr = Socket.RemoteEndPoint.ToString();
 					}
 					catch { }
-					return addr + ": " + (name == null || name == "" ? "???" : name);
+					if (addr == "")
+						return name == null || name == "" ? "???" : name;
+					else
+						return addr + (name == null || name == "" ? "" : ": " + name);
 				}
 			}
 			set
