@@ -5,7 +5,7 @@ using Task3;
 using System.Collections.Generic;
 using System;
 
-namespace LoC
+namespace IoC
 {
 	public class Tests
 	{
