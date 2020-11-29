@@ -25,6 +25,13 @@ namespace Task9WF.Multithreaded
 		bool stopped = false;
 		object constDataLocker = new object();
 
+		enum AddConnectionKodes
+		{
+			Success,
+			Fail,
+			Reconnect
+		}
+
 		const int WaitTime = 25000;
 
 		public TaskManager TaskManager
@@ -112,10 +119,10 @@ namespace Task9WF.Multithreaded
 
 		public void AddConnection(object sender, Socket socket)
 		{
-			AddConnectionBool(sender, socket);
+			AddConnectionAdvanced(sender, socket);
 		}
 
-		bool AddConnectionBool(object sender, Socket socket)
+		AddConnectionKodes AddConnectionAdvanced(object sender, Socket socket)
 		{
 			IPEndPoint remoteEndPoint = (IPEndPoint)socket.RemoteEndPoint;
 			Info newConnectionInfo = null;
@@ -127,7 +134,7 @@ namespace Task9WF.Multithreaded
 				lock (constDataLocker)
 				{
 					if (stopped)
-						return false;
+						return AddConnectionKodes.Fail;
 					if (started)
 						break;
 				}
@@ -154,13 +161,16 @@ namespace Task9WF.Multithreaded
 						if (sender == this)
 						{
 							if (larger)
-								throw new Exception();
+							{
+								StopSocket(socket);
+								return AddConnectionKodes.Reconnect;
+							}
 						}
 						else if (!larger)
 						{
 							StopSocket(socket);
 							tasks.Run(() => TryConnect(newConnectionInfo));
-							return false;
+							return AddConnectionKodes.Reconnect;
 						}
 
 						if (connections.ContainsKey(newConnectionInfo.Guid))
@@ -185,7 +195,7 @@ namespace Task9WF.Multithreaded
 					catch
 					{
 						StopSocket(socket);
-						return false;
+						return AddConnectionKodes.Fail;
 					}
 
 					SendToAll(MessageType.Socket, newConnectionInfo.ToString());
@@ -199,7 +209,7 @@ namespace Task9WF.Multithreaded
 			}
 			else
 				ChangeConnection(oldConnection.Info.Guid, oldConnection.Name);
-			return true;
+			return AddConnectionKodes.Success;
 		}
 
 		bool Larger(byte[] a, byte[] b)
@@ -229,6 +239,7 @@ namespace Task9WF.Multithreaded
 
 		void SocketHandling(Connection connection, bool reconnect)
 		{
+			bool connectionAccepted = false;
 			while (true)
 			{
 				messager.SendMessage(connection.Socket, MessageType.Name, Name);
@@ -283,8 +294,6 @@ namespace Task9WF.Multithreaded
 					return;
 				}
 
-				SystemMessage(this, connection.Name + " connected");
-
 				Message message;
 				while (!stopped && connection.Connected && !connection.Closed)
 				{
@@ -305,9 +314,16 @@ namespace Task9WF.Multithreaded
 							tasks.Run(() => TryConnect(Info.Parse(message.Text)));
 							break;
 					}
+
+					if (!connectionAccepted)
+					{
+						SystemMessage(this, connection.Name + " connected");
+						connectionAccepted = true;
+					}
 				}
 
 				SystemMessage(this, connection.Name + " lost connection");
+				connectionAccepted = false;
 				ChangeConnection(connection.Info.Guid, null);
 			}
 		}
@@ -370,8 +386,8 @@ namespace Task9WF.Multithreaded
 			{
 				return "Fail connection";
 			}
-			if (!AddConnectionBool(this, socket))
-				return "Fail connection";
+			if (AddConnectionAdvanced(this, socket) == AddConnectionKodes.Fail)
+				return "fail connection";
 			return null;
 		}
 
