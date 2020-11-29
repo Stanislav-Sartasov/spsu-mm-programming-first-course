@@ -7,7 +7,7 @@ namespace Task3
 	{
 		static char[,] CreateCard(Card card)
 		{
-			if (card == null || card.value == 0)
+			if (card == null || card.Value == 0)
 				return CreateCard();
 
 			char[,] heartsTMask = new char[7, 6]
@@ -145,19 +145,19 @@ namespace Task3
 					else
 						outCard[i, j] = ' ';
 
-			var sym = card.suit switch
+			var sym = card.Suit switch
 			{
 				Card.Suits.Hearts => 'v',
 				Card.Suits.Diamonds => 'o',
 				Card.Suits.Clubs => '&',
 				Card.Suits.Spades => '^',
-				_ => '?',
+				_ => '?'
 			};
 
-			switch (card.value)
+			switch (card.Value)
 			{
 				case 1:
-					switch (card.suit)
+					switch (card.Suit)
 					{
 						case Card.Suits.Hearts:
 							return (char[,])heartsTMask.Clone();
@@ -186,13 +186,13 @@ namespace Task3
 					outCard[4, 1] = sym;
 					break;
 				default:
-					outCard[1, 1] = (char)(card.value + '0');
+					outCard[1, 1] = (char)(card.Value + '0');
 					break;
 			}
-			if (card.value != 10)
+			if (card.Value != 10)
 				outCard[5, 5] = outCard[1, 1];
 
-			switch (card.value)
+			switch (card.Value)
 			{
 				case 11:
 					outCard = overlay(outCard, jack);
@@ -204,40 +204,40 @@ namespace Task3
 					outCard = overlay(outCard, king);
 					break;
 				default:
-					if (card.value == 2 || card.value == 3 || card.value == 8 || card.value == 9 || card.value == 10)
+					if (card.Value == 2 || card.Value == 3 || card.Value == 8 || card.Value == 9 || card.Value == 10)
 					{
-						if (card.value != 3)
+						if (card.Value != 3)
 							outCard[3, 2] = sym;
 						outCard[3, 4] = sym;
 					}
 
-					if (card.value >= 3 && card.value <= 7)
+					if (card.Value >= 3 && card.Value <= 7)
 					{
 						outCard[2, 2] = sym;
 						outCard[4, 2] = sym;
-						if (card.value != 3)
+						if (card.Value != 3)
 						{
 							outCard[2, 4] = sym;
 							outCard[4, 4] = sym;
 						}
 					}
 
-					if (card.value == 5 || card.value == 7 || card.value == 9 || card.value == 10)
+					if (card.Value == 5 || card.Value == 7 || card.Value == 9 || card.Value == 10)
 						outCard[3, 3] = sym;
 
-					if (card.value == 6 || card.value == 8)
+					if (card.Value == 6 || card.Value == 8)
 					{
 						outCard[2, 3] = sym;
 						outCard[4, 3] = sym;
 					}
 
-					if (card.value == 7 || card.value == 9 || card.value == 10)
+					if (card.Value == 7 || card.Value == 9 || card.Value == 10)
 					{
 						outCard[1, 3] = sym;
 						outCard[5, 3] = sym;
 					}
 
-					if (card.value >= 8 && card.value <= 10)
+					if (card.Value >= 8 && card.Value <= 10)
 					{
 						outCard[1, 2] = sym;
 						outCard[5, 2] = sym;
@@ -247,8 +247,8 @@ namespace Task3
 					break;
 			}
 
-			if (card.value > 10)
-				switch (card.suit)
+			if (card.Value > 10)
+				switch (card.Suit)
 				{
 					case Card.Suits.Hearts:
 						outCard = overlay(outCard, heartsMod);
@@ -386,8 +386,8 @@ namespace Task3
 				Console.Write('|');
 			}
 
-			for (int i = 0; i < Math.Min(5, players.count); i++)
-				DrawPlayerPos(i, players.playerName[i], players.playerBankWas[i]);
+			for (int i = 0; i < Math.Min(5, players.Count); i++)
+				DrawPlayerPos(i, players.PlayerName[i], players.PlayerBankWas[i]);
 
 			for (int i = 0; i < 5; i++)
 				if (i != 2)
@@ -408,13 +408,13 @@ namespace Task3
 
 			int[] typePoses = new int[3] { 0, 0, 0 };
 
-			for (int i = 0; i < Math.Min(5, log.count); i++)
+			for (int i = 0; i < Math.Min(5, log.Count); i++)
 			{
 				Thread.Sleep(250);
-				if (log.playerBetFieldWas[i] == Field.None)
+				if (log.PlayerBetFieldWas[i] == Field.None)
 					continue;
-				DrawBet(log.playerBetFieldWas[i], typePoses[(int)log.playerBetFieldWas[i]]++, log.playerName[i], log.playerBetWas[i]);
-				DrawPlayerPos(i, log.playerName[i], log.playerBankWas[i]);
+				DrawBet(log.PlayerBetFieldWas[i], typePoses[(int)log.PlayerBetFieldWas[i]]++, log.PlayerName[i], log.PlayerBetWas[i]);
+				DrawPlayerPos(i, log.PlayerName[i], log.PlayerBankWas[i]);
 			}
 
 			Thread.Sleep(250);
@@ -422,46 +422,46 @@ namespace Task3
 			for (int i = 0; i < 2; i++)
 			{
 				Thread.Sleep(750);
-				DrawCardPos(i, log.cardPull[i]);
+				DrawCardPos(i, log.CardPull[i]);
 			}
 
-			DrawScorePos(0, log.playerScoreBeforeExtraCard);
+			DrawScorePos(0, log.PlayerScoreBeforeExtraCard);
 
 			Thread.Sleep(250);
 
 			for (int i = 3; i < 5; i++)
 			{
 				Thread.Sleep(1000);
-				DrawCardPos(i, log.cardPull[i]);
+				DrawCardPos(i, log.CardPull[i]);
 			}
 
-			DrawScorePos(1, log.bankScoreBeforeExtraCard);
+			DrawScorePos(1, log.BankScoreBeforeExtraCard);
 
 			Thread.Sleep(500);
 
-			if (log.cardPull[2] != null)
+			if (log.CardPull[2] != null)
 			{
 				Console.SetCursorPosition(80 / 2 - 5, 1);
 				Console.Write('+');
 
 				Thread.Sleep(1000);
-				DrawCardPos(2, log.cardPull[2]);
+				DrawCardPos(2, log.CardPull[2]);
 
-				DrawScorePos(0, log.playerScore);
+				DrawScorePos(0, log.PlayerScore);
 
 				Console.SetCursorPosition(80 / 2 - 5, 1);
 				Console.Write(' ');
 			}
 
-			if (log.cardPull[5] != null)
+			if (log.CardPull[5] != null)
 			{
 				Console.SetCursorPosition(80 - 5, 1);
 				Console.Write('+');
 
 				Thread.Sleep(1000);
-				DrawCardPos(5, log.cardPull[5]);
+				DrawCardPos(5, log.CardPull[5]);
 
-				DrawScorePos(1, log.bankScore);
+				DrawScorePos(1, log.BankScore);
 
 				Console.SetCursorPosition(80 - 5, 1);
 				Console.Write(' ');
@@ -472,14 +472,14 @@ namespace Task3
 			for (int i = 0; i < 6; i++)
 				FreeCardPos(i);
 
-			if (log.winField == Field.Player)
+			if (log.WinField == Field.Player)
 			{
 				Console.SetCursorPosition((80 / 2 - "WIN".Length) / 2, 5);
 				Console.Write("WIN");
 				Console.SetCursorPosition((80 / 2 - "LOOSE".Length + 80) / 2, 5);
 				Console.Write("LOOSE");
 			}
-			else if (log.winField == Field.Bank)
+			else if (log.WinField == Field.Bank)
 			{
 				Console.SetCursorPosition((80 / 2 - "WIN".Length + 80) / 2, 5);
 				Console.Write("WIN");
@@ -511,15 +511,15 @@ namespace Task3
 
 			Thread.Sleep(1000);
 
-			for (int i = 0; i < Math.Min(5, log.count); i++)
+			for (int i = 0; i < Math.Min(5, log.Count); i++)
 			{
-				Console.SetCursorPosition((80 / 5 - (1 + Math.Abs(log.playerBankBecome[i] - log.playerBankWas[i] - log.playerBetWas[i]).ToString().Length)) / 2 + 80 * i / 5, 16);
-				if (log.playerWin[i])
+				Console.SetCursorPosition((80 / 5 - (1 + Math.Abs(log.PlayerBankBecome[i] - log.PlayerBankWas[i] - log.PlayerBetWas[i]).ToString().Length)) / 2 + 80 * i / 5, 16);
+				if (log.PlayerWin[i])
 					Console.Write('+');
-				else if (log.playerBetWas[i] != 0)
+				else if (log.PlayerBetWas[i] != 0)
 					Console.Write('-');
-				Console.Write(Math.Abs(log.playerBankBecome[i] - log.playerBankWas[i] - log.playerBetWas[i]));
-				DrawPlayerPos(i, log.playerName[i], log.playerBankBecome[i]);
+				Console.Write(Math.Abs(log.PlayerBankBecome[i] - log.PlayerBankWas[i] - log.PlayerBetWas[i]));
+				DrawPlayerPos(i, log.PlayerName[i], log.PlayerBankBecome[i]);
 			}
 
 			Console.SetCursorPosition(0, 21);

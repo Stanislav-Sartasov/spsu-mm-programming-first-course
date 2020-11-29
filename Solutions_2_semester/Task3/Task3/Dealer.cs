@@ -13,56 +13,63 @@ namespace Task3
 				else
 					cardPull[i] = deck.Next();
 
-			playerScore = (cardPull[0].cost + cardPull[1].cost) % 10;
-			bankScore = (cardPull[3].cost + cardPull[4].cost) % 10;
-			playerScoreBeforeExtraCard = playerScore;
-			bankScoreBeforeExtraCard = bankScore;
+			PlayerScore = (cardPull[0].Cost + cardPull[1].Cost) % 10;
+			BankScore = (cardPull[3].Cost + cardPull[4].Cost) % 10;
+			PlayerScoreBeforeExtraCard = PlayerScore;
+			BankScoreBeforeExtraCard = BankScore;
 
-			if (playerScore < 8 && bankScore < 8)
-				if (playerScore < 6)
+			if (PlayerScore < 8 && BankScore < 8)
+				if (PlayerScore < 6)
 				{
 					cardPull[2] = deck.Next();
-					playerScore = (playerScore + cardPull[2].cost) % 10;
-					if (bankScore <= 2)
+					PlayerScore = (PlayerScore + cardPull[2].Cost) % 10;
+					if (BankScore <= 2)
 						cardPull[5] = deck.Next();
-					else if (bankScore == 3)
+					else if (BankScore == 3)
 					{
-						if (cardPull[2].value != 8)
+						if (cardPull[2].Value != 8)
 							cardPull[5] = deck.Next();
 					}
-					else if (bankScore == 4)
+					else if (BankScore == 4)
 					{
-						if (cardPull[2].value >= 2 && cardPull[2].value <= 7)
+						if (cardPull[2].Value >= 2 && cardPull[2].Value <= 7)
 							cardPull[5] = deck.Next();
 					}
-					else if (bankScore == 5)
+					else if (BankScore == 5)
 					{
-						if (cardPull[2].value >= 4 && cardPull[2].value <= 7)
+						if (cardPull[2].Value >= 4 && cardPull[2].Value <= 7)
 							cardPull[5] = deck.Next();
 					}
-					else if (bankScore == 6)
-						if (cardPull[2].value == 6 || cardPull[2].value == 7)
+					else if (BankScore == 6)
+						if (cardPull[2].Value == 6 || cardPull[2].Value == 7)
 							cardPull[5] = deck.Next();
 				}
-				else if (bankScore < 6)
+				else if (BankScore < 6)
 					cardPull[5] = deck.Next();
 
 			if (cardPull[5] != null)
-				bankScore = (bankScore + cardPull[5].cost) % 10;
+				BankScore = (BankScore + cardPull[5].Cost) % 10;
 
-			if (playerScore > bankScore)
-				winField = Field.Player;
-			else if (bankScore > playerScore)
-				winField = Field.Bank;
+			if (PlayerScore > BankScore)
+				WinField = Field.Player;
+			else if (BankScore > PlayerScore)
+				WinField = Field.Bank;
 			else
-				winField = Field.Draw;
+				WinField = Field.Draw;
 		}
 
-		public readonly Card[] cardPull;
-		public readonly int playerScoreBeforeExtraCard;
-		public readonly int playerScore;
-		public readonly int bankScoreBeforeExtraCard;
-		public readonly int bankScore;
-		public readonly Field winField;
+		Card[] cardPull;
+		public Card[] CardPull
+		{ 
+			get
+			{
+				return (Card[])cardPull.Clone();
+			}
+		}
+		public int PlayerScoreBeforeExtraCard { get; private set; }
+		public int PlayerScore { get; private set; }
+		public int BankScoreBeforeExtraCard { get; private set; }
+		public int BankScore { get; private set; }
+		public Field WinField { get; private set; }
 	}
 }

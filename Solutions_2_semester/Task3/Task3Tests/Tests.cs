@@ -14,25 +14,25 @@ namespace Task3Tests
 		public void CardTest()
 		{
 			Card card = new Card(Card.MinValue - 1, Card.Suits.Clubs);
-			Assert.AreEqual(0, card.value);
-			Assert.AreEqual(Card.Suits.Clubs, card.suit);
-			Assert.AreEqual(0, card.cost);
+			Assert.AreEqual(0, card.Value);
+			Assert.AreEqual(Card.Suits.Clubs, card.Suit);
+			Assert.AreEqual(0, card.Cost);
 
 			card = new Card(Card.MaxValue + 1, Card.Suits.Clubs);
-			Assert.AreEqual(0, card.value);
-			Assert.AreEqual(Card.Suits.Clubs, card.suit);
-			Assert.AreEqual(0, card.cost);
+			Assert.AreEqual(0, card.Value);
+			Assert.AreEqual(Card.Suits.Clubs, card.Suit);
+			Assert.AreEqual(0, card.Cost);
 
 			for (int i = Card.MinValue; i <= Card.MaxValue; i++)
 				for (int j = 0; j < Card.SuitsCount; j++)
 				{
 					card = new Card(i, (Card.Suits)j);
-					Assert.AreEqual(i, card.value);
+					Assert.AreEqual(i, card.Value);
 					if (i < 10)
-						Assert.AreEqual(i, card.cost);
+						Assert.AreEqual(i, card.Cost);
 					else
-						Assert.AreEqual(0, card.cost);
-					Assert.AreEqual(j, (int)card.suit);
+						Assert.AreEqual(0, card.Cost);
+					Assert.AreEqual(j, (int)card.Suit);
 				}
 		}
 		[Test]
@@ -53,7 +53,7 @@ namespace Task3Tests
 					for (int j = 0; j < Card.SuitsCount; j++)
 						for (int c = 0; c < Math.Max(g, 1); c++)
 						{
-							int index = cardList.FindIndex((x) => { return x.value == i && x.suit == (Card.Suits)j; });
+							int index = cardList.FindIndex((x) => { return x.Value == i && x.Suit == (Card.Suits)j; });
 							Assert.AreNotEqual(-1, index);
 							if (index > -1)
 								cardList.RemoveAt(index);
@@ -120,14 +120,14 @@ namespace Task3Tests
 
 				GameLog log = game.ProduceGame();
 
-				Assert.AreEqual(10, log.playerBetWas[0]);
+				Assert.AreEqual(10, log.PlayerBetWas[0]);
 
-				if ((int)log.winField == i % 3)
+				if ((int)log.WinField == i % 3)
 					Assert.IsTrue(player.Bank > b);
 				else
 					Assert.IsTrue(player.Bank == b - 10);
 
-				Assert.AreEqual(i % 3, (int)log.playerBetFieldWas[0]);
+				Assert.AreEqual(i % 3, (int)log.PlayerBetFieldWas[0]);
 			}
 		}
 
@@ -151,32 +151,32 @@ namespace Task3Tests
 
 				GameLog log = game.ProduceGame();
 
-				Assert.AreEqual(3, log.count);
+				Assert.AreEqual(3, log.Count);
 
-				switch (log.winField)
+				switch (log.WinField)
 				{
 					case Field.Player:
-						Assert.IsTrue(log.bankScore < log.playerScore);
+						Assert.IsTrue(log.BankScore < log.PlayerScore);
 						player = true;
 						break;
 
 					case Field.Bank:
-						Assert.IsTrue(log.bankScore > log.playerScore);
+						Assert.IsTrue(log.BankScore > log.PlayerScore);
 						bank = true;
 						break;
 
 					case Field.Draw:
-						Assert.IsTrue(log.bankScore == log.playerScore);
+						Assert.IsTrue(log.BankScore == log.PlayerScore);
 						draw = true;
 						break;
 				}				
 
-				Assert.AreEqual(log.winField == Field.Player, firstPlayer.Bank > 5000);
-				Assert.AreEqual(log.winField != Field.Player, firstPlayer.Bank < 5000);
-				Assert.AreEqual(log.winField == Field.Bank, secondPlayer.Bank > 5000);
-				Assert.AreEqual(log.winField != Field.Bank, secondPlayer.Bank < 5000);
-				Assert.AreEqual(log.winField == Field.Draw, thirdPlayer.Bank > 5000);
-				Assert.AreEqual(log.winField != Field.Draw, thirdPlayer.Bank < 5000);
+				Assert.AreEqual(log.WinField == Field.Player, firstPlayer.Bank > 5000);
+				Assert.AreEqual(log.WinField != Field.Player, firstPlayer.Bank < 5000);
+				Assert.AreEqual(log.WinField == Field.Bank, secondPlayer.Bank > 5000);
+				Assert.AreEqual(log.WinField != Field.Bank, secondPlayer.Bank < 5000);
+				Assert.AreEqual(log.WinField == Field.Draw, thirdPlayer.Bank > 5000);
+				Assert.AreEqual(log.WinField != Field.Draw, thirdPlayer.Bank < 5000);
 			}
 		}
 
@@ -215,13 +215,13 @@ namespace Task3Tests
 					golden.MakeBet();
 					GameLog log = game.ProduceGame();
 
-					if (log.winField == log.playerBetFieldWas[0])
+					if (log.WinField == log.PlayerBetFieldWas[0])
 					{
 						martinFinish = true;
 						Assert.IsTrue(martin.CanBeSettingsChanged(), "5");
 					}
 
-					if (log.winField == log.playerBetFieldWas[1])
+					if (log.WinField == log.PlayerBetFieldWas[1])
 					{
 						goldenFinish = true;
 						Assert.IsTrue(golden.CanBeSettingsChanged(), "6");

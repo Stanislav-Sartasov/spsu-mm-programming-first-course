@@ -11,11 +11,11 @@ namespace Task3
 				Bank = StandardStartBank;
 			currentGameSession = creator;
 			if (playerName == null)
-				this.playerName = "?";
+				PlayerName = "?";
 			else
-				this.playerName = playerName;
+				PlayerName = playerName;
 			Active = true;
-			player = new Player(this);
+			Player = new Player(this);
 		}
 
 		const int StandardStartBank = 10000;
@@ -28,7 +28,7 @@ namespace Task3
 			get
 			{
 				if (currentGameSession != null)
-					return currentGameSession.gameСoefficients;
+					return currentGameSession.GameСoefficients;
 				return default;
 			}
 		}
@@ -41,8 +41,8 @@ namespace Task3
 				return default;
 			}
 		}
-		internal readonly Player player;
-		internal readonly string playerName;
+		internal Player Player { get; private set; }
+		internal string PlayerName { get; private set; }
 		internal bool AutoKick { get; set; } = true;
 		internal bool Active { get; private set; }
 

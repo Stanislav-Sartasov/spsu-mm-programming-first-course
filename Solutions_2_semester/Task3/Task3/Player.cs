@@ -41,7 +41,7 @@ namespace Task3
 		{
 			get
 			{
-				return seat.playerName;
+				return seat.PlayerName;
 			}
 		}
 		public double[] GameСoefficients
