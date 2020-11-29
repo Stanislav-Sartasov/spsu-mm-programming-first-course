@@ -49,7 +49,7 @@
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel1.Location = new System.Drawing.Point(0, 0);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(428, 286);
+			this.panel1.Size = new System.Drawing.Size(427, 173);
 			this.panel1.TabIndex = 0;
 			// 
 			// mainPanel
@@ -64,7 +64,7 @@
 			this.mainPanel.RowCount = 2;
 			this.mainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.mainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.mainPanel.Size = new System.Drawing.Size(428, 286);
+			this.mainPanel.Size = new System.Drawing.Size(427, 173);
 			this.mainPanel.TabIndex = 4;
 			// 
 			// topPanell
@@ -74,7 +74,7 @@
 			this.topPanell.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.topPanell.Location = new System.Drawing.Point(3, 3);
 			this.topPanell.Name = "topPanell";
-			this.topPanell.Size = new System.Drawing.Size(422, 137);
+			this.topPanell.Size = new System.Drawing.Size(421, 80);
 			this.topPanell.TabIndex = 1;
 			// 
 			// addressLabel
@@ -82,7 +82,7 @@
 			this.addressLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.addressLabel.AutoSize = true;
-			this.addressLabel.Location = new System.Drawing.Point(3, 115);
+			this.addressLabel.Location = new System.Drawing.Point(3, 58);
 			this.addressLabel.Name = "addressLabel";
 			this.addressLabel.Size = new System.Drawing.Size(78, 17);
 			this.addressLabel.TabIndex = 0;
@@ -92,9 +92,9 @@
 			// 
 			this.addressTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.addressTextBox.Location = new System.Drawing.Point(87, 112);
+			this.addressTextBox.Location = new System.Drawing.Point(87, 55);
 			this.addressTextBox.Name = "addressTextBox";
-			this.addressTextBox.Size = new System.Drawing.Size(332, 22);
+			this.addressTextBox.Size = new System.Drawing.Size(331, 22);
 			this.addressTextBox.TabIndex = 1;
 			this.addressTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddressTextBoxKeyDown);
 			// 
@@ -104,16 +104,16 @@
 			this.bottomPanel.Controls.Add(this.portLabel);
 			this.bottomPanel.Controls.Add(this.portTextBox);
 			this.bottomPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.bottomPanel.Location = new System.Drawing.Point(3, 146);
+			this.bottomPanel.Location = new System.Drawing.Point(3, 89);
 			this.bottomPanel.Name = "bottomPanel";
-			this.bottomPanel.Size = new System.Drawing.Size(422, 137);
+			this.bottomPanel.Size = new System.Drawing.Size(421, 81);
 			this.bottomPanel.TabIndex = 2;
 			// 
 			// tryConnectButton
 			// 
 			this.tryConnectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.tryConnectButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.tryConnectButton.Location = new System.Drawing.Point(279, 31);
+			this.tryConnectButton.Location = new System.Drawing.Point(278, 31);
 			this.tryConnectButton.MaximumSize = new System.Drawing.Size(140, 25);
 			this.tryConnectButton.MinimumSize = new System.Drawing.Size(140, 25);
 			this.tryConnectButton.Name = "tryConnectButton";
@@ -140,7 +140,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.portTextBox.Location = new System.Drawing.Point(87, 3);
 			this.portTextBox.Name = "portTextBox";
-			this.portTextBox.Size = new System.Drawing.Size(332, 22);
+			this.portTextBox.Size = new System.Drawing.Size(331, 22);
 			this.portTextBox.TabIndex = 3;
 			this.portTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PortTextBoxKeyDown);
 			// 
@@ -148,10 +148,10 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(428, 286);
+			this.ClientSize = new System.Drawing.Size(427, 173);
 			this.Controls.Add(this.panel1);
-			this.MaximumSize = new System.Drawing.Size(446, 333);
-			this.MinimumSize = new System.Drawing.Size(446, 333);
+			this.MaximumSize = new System.Drawing.Size(445, 220);
+			this.MinimumSize = new System.Drawing.Size(445, 220);
 			this.Name = "NewConnectionForm";
 			this.Text = "NewConnection";
 			this.panel1.ResumeLayout(false);

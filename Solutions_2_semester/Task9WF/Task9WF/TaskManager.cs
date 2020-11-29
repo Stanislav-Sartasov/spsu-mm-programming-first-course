@@ -17,13 +17,6 @@ namespace Task9WF
 		List<Task> taskList = new List<Task>();
 		bool stopped = false;
 		object locker = new object();
-		public void Add(Task task)
-		{
-			lock (locker)
-			{
-				taskList.Add(task);
-			}
-		}
 		public Task Run(Action action)
 		{
 			Task task = Task.Run(action);

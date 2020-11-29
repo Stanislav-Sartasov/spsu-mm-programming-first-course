@@ -50,7 +50,7 @@ namespace Task9WF
 			listener.Messager = messager;
 
 			while (!listener.Init(dataConsumerObj.RequestStartPort())) ;
-			listener.Start(1024);
+			listener.Start(256);
 
 			connectionManager.TaskManager = taskManager;
 			connectionManager.MyInfo = listener.MyInfo;
@@ -98,8 +98,11 @@ namespace Task9WF
 		{
 			listener.Stop();
 			connectionManager.Stop();
+			/*
 			Task.Run(() => taskManagerStop());
 			Thread.Sleep(5000);
+			*/
+			taskManagerStop();
 			Active = false;
 		}
 	}
