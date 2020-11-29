@@ -52,7 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="FirstTask\App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="FiltersDescription\FiltersDescription.csproj">
