@@ -6,13 +6,26 @@ namespace Bash
 {
     public static class Parser
     {
+        static string argToNext = null;
+
         public static List<Tuple<ICommand, string> > Parse(string input)
         {
             List<Tuple<ICommand, string>> commands = new List<Tuple<ICommand, string>>();
-
+            argToNext = null;
             foreach (string command in input.Split('|'))
                 if (!AddLocalVariable(command.Trim()))
-                    commands.Add(ParseCommand(command.Trim()));
+                    if (argToNext != null)
+                    {
+                        commands.Add(ParseCommand(command.Trim() + " " + argToNext));
+                    }
+                    else
+                    {
+                        commands.Add(ParseCommand(command.Trim()));
+                    }
+                else
+                {
+                    argToNext = null;
+                }
             return commands;
         }
 
@@ -21,7 +34,14 @@ namespace Bash
             string[] inputSplit = input.Split(' ');
             string arg = string.Join(' ', inputSplit, 1, inputSplit.Length - 1);
             if (inputSplit[0] == "echo")
+            {
                 arg = ChangeArg(arg);
+                argToNext = arg;
+            }
+            else
+            {
+                argToNext = null;
+            }
             return (inputSplit[0]) switch
             {
                 "echo" => new Tuple<ICommand, string>(new Echo(), arg),
@@ -53,7 +73,9 @@ namespace Bash
                                 return Bash.AddLocalVariable(splittedPart[0], Bash.GetLocalVariable(splittedPart[1]));
                         }
                         else
+                        {
                             return Bash.AddLocalVariable(splittedPart[0], splittedPart[1]);
+                        }
                     }
                 }
             return false;
@@ -63,9 +85,9 @@ namespace Bash
         {
             string[] args = command.Split(" ");
             string result = "";
-
             foreach (string arg in args)
-                result += arg[0] == '$' && Bash.GetLocalVariable(arg.Remove(0, 1)) != null ? Bash.GetLocalVariable(arg.Remove(0, 1)).ToString() + " " : arg.ToString() + " ";
+                if (arg != "")
+                    result += arg[0] == '$' && Bash.GetLocalVariable(arg.Remove(0, 1)) != null ? Bash.GetLocalVariable(arg.Remove(0, 1)).ToString() + " " : arg.ToString() + " ";
 
             return result;
          }
