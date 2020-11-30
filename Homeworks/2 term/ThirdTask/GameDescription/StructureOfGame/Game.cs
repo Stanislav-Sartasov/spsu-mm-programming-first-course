@@ -160,7 +160,7 @@ namespace GameDescription
 			}
 		}
 
-		private void ContinueGame(Player player, Dealer dealer)
+		private void ContinueGame(Player player, Dealer dealer) // к игроку
 		{
 			if (GamesLeft == -1 || GamesLeft > 0)
 			{
