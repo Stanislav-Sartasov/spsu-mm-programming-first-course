@@ -92,7 +92,7 @@ namespace Task10
 
 					preCommandOut = newCommandOut;
 					keyOut = Keys.Ok;
-					return OutStringParse(new Command(), Keys.Ok, newCommandOut);
+					return OutStringParse(null, Keys.Ok, newCommandOut);
 				}
 
 				argument += preCommandOut;
