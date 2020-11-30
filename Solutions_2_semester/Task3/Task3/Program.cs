@@ -103,14 +103,14 @@ namespace Task3
 								continue;
 						}
 
-						int bate = 0;
+						int bet = 0;
 						if (type != Field.None)
 						{
 							Console.Write("Your bate: ");
-							bate = int.Parse(Console.ReadLine());
+							bet = int.Parse(Console.ReadLine());
 							Console.CursorVisible = false;
 						}
-						if (!player.MakeBet(bate, type))
+						if (!player.MakeBet(bet, type))
 							continue;
 					}
 					catch

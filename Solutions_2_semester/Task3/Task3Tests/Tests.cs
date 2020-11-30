@@ -96,7 +96,7 @@ namespace Task3Tests
 		}
 
 		[Test]
-		public void MakeBateTest()
+		public void MakeBetTest()
 		{
 			GameManager game = new GameManager(5000, 0, null, 0);
 			Player player = game.AddPlayer("player");
