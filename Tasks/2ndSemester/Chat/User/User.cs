@@ -24,6 +24,8 @@ namespace Users
 
         public void Start()
         {
+            socket.IOControl(-1744830452, new byte[] { 0 }, new byte[] { 0 });
+
             Thread clientThread = new Thread(new ThreadStart(StartClientPart));
             Initialize(1);
 
