@@ -109,6 +109,7 @@ namespace Task9WF.Multithreaded
 							if (iPAddress.AddressFamily == AddressFamily.InterNetwork)
 								interNetworkAddresses.Add(iPAddress);
 						interNetworkAddresses.Add(IPAddress.Parse("127.0.0.1"));
+						interNetworkAddresses.Reverse();
 						myInfo.IPAddresses = interNetworkAddresses.ToArray();
 
 						break;

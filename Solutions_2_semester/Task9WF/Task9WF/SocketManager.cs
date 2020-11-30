@@ -392,6 +392,7 @@ namespace Task9WF.Multithreaded
 		{
 			IPEndPoint endPoint = (IPEndPoint)remoteEndPoint;
 			Socket socket;
+
 			lock (constDataLocker)
 			{
 				if (stopped)
@@ -400,20 +401,32 @@ namespace Task9WF.Multithreaded
 				foreach (var localAddress in myInfo.IPAddresses)
 					if (localAddress.Equals(endPoint))
 						return "Already connected";
+			}
 
-				socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-				try
+			socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+			try
+			{
+				var task = tasks.Run(() =>
 				{
-					socket.Connect(remoteEndPoint);
-				}
-				catch
+					try
+					{
+						socket.Connect(remoteEndPoint);
+					}
+					catch { }
+				});
+				if (!task.Wait(TimeSpan.FromMilliseconds(2000)))
 				{
-					return "Fail connection";
+					socket.Close();
+					throw new Exception();
 				}
+			}
+			catch
+			{
+				return "Fail connection";
 			}
 
 			if (AddConnectionAdvanced(this, socket) == AddConnectionKodes.Fail)
-				return "fail connection";
+				return "Fail connection";
 
 			return null;
 		}
