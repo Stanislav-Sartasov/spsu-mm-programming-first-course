@@ -7,7 +7,8 @@ namespace NinthTask
 	{
 		static void Main(string[] args)
 		{
-			var chat = new Chat();
+			//Instruction
+			var chat = new ChatManager();
 			chat.Start(args);
 		}
 	}
