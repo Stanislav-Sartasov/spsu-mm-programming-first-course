@@ -15,7 +15,12 @@ namespace Plugins
 
             foreach (string file in pluginFiles)
             {
-                Assembly assembly = Assembly.LoadFile(file);
+                Assembly assembly = null;
+                try
+                {
+                    assembly = Assembly.LoadFile(file);
+                }
+                catch { }
                 if (assembly != null)
                     foreach (Type type in assembly.GetTypes())
                         if (type.GetInterfaces().Contains(typeof(IPlugin)))
@@ -23,7 +28,7 @@ namespace Plugins
                             var plugin = Activator.CreateInstance(type) as IPlugin;
                             plugins.Add(plugin);
                         }
-            }
+                }
 
             return plugins;
         }

@@ -17,7 +17,6 @@ namespace Plugins
             {
                 Console.WriteLine(games[i].GetMetacriticRating());
             }
-            Console.ReadKey();
         }
     }
 }
