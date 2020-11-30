@@ -8,7 +8,7 @@ namespace TenthTask.BashDescription
 {
 	public class Values
 	{
-		internal List<string> ValuesUsed { get; set; }
-		internal List<string> ValuesMean { get; set; }
+		internal List<string> ValuesUsed { get; set; } = new List<string>();
+		internal List<string> ValuesMean { get; set; } = new List<string>();
 	}
 }

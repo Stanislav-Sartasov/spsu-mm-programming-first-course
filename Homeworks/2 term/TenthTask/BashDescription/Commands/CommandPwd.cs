@@ -23,7 +23,7 @@ namespace TenthTask.BashDescription
 				return false;
 			}
 		}
-		public override string RunCommand(string name, string str)
+		public override string RunCommand(string name, string str, Bash forValues = null)
 		{
 			var resStr = "";
 			if (str.Replace(" ", "") == "pwd")

@@ -4,15 +4,20 @@ using TenthTask.BashDescription;
 
 namespace TenthTask.Tests
 {
-	[TestClass]
-	public class BashTests
-	{
-		Bash bash = new Bash();
-		[TestMethod]
-		public void EchoTest()
-		{
-			string input = "echo fdddf";
-			bash.Parser.Parse(input);
-		}
-	}
+        [TestClass]
+        public class BashTests
+        {
+                Bash bash = new Bash();
+                [TestMethod]
+                public void ParserTestEcho()
+                {
+                        var input = "echo ffff";
+                        bash.Parser.Parse(input, bash);
+                        //Assert.IsNotNull();
+
+                        input = "exit 3";
+                        bash.Parser.Parse(input, bash);
+ 
+                }
+        }
 }

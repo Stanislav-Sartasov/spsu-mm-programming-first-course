@@ -32,7 +32,7 @@ namespace TenthTask.BashDescription
 			}
 		}
 		
-		public override string RunCommand(string name, string str)
+		public override string RunCommand(string name, string str, Bash forValues)
 		{
 			var resStr = "";
 			string[] vars = str.Substring(str.IndexOf(name) + name.Length).Split(' ');
@@ -44,10 +44,10 @@ namespace TenthTask.BashDescription
 				{
 					continue;
 				}
-				if (Parser.Values.ValuesUsed.Contains(varStr.Replace(" ", "")))
+				if (forValues.Values.ValuesUsed.Contains(varStr.Replace(" ", "")))
 				{
-					resStr = Parser.Values.ValuesMean[Parser.Values.ValuesUsed.IndexOf(varStr.Replace(" ", ""))].Replace("\"", "") + " ";
-					Console.WriteLine(Parser.Values.ValuesMean[Parser.Values.ValuesUsed.IndexOf(varStr.Replace(" ", ""))].Replace("\"", "") + " ");
+					resStr = forValues.Values.ValuesMean[forValues.Values.ValuesUsed.IndexOf(varStr.Replace(" ", ""))].Replace("\"", "") + " ";
+					Console.WriteLine(forValues.Values.ValuesMean[forValues.Values.ValuesUsed.IndexOf(varStr.Replace(" ", ""))].Replace("\"", "") + " ");
 				}
 				else
 				{

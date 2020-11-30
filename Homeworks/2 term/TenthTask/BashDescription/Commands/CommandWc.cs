@@ -32,7 +32,7 @@ namespace TenthTask.BashDescription
 				return true;
 			}
 		}
-		public override string RunCommand(string name, string str)
+		public override string RunCommand(string name, string str, Bash forValues = null)
 		{
 			var resStr = "";
 			var path = str.Substring(str.IndexOf(name) + name.Length + 1);
