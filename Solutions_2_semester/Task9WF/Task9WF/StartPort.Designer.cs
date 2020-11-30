@@ -68,11 +68,11 @@
 			// 
 			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(209, 9);
+			this.label1.Location = new System.Drawing.Point(180, 9);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(111, 17);
+			this.label1.Size = new System.Drawing.Size(140, 17);
 			this.label1.TabIndex = 3;
-			this.label1.Text = "Close for default";
+			this.label1.Text = "Close for default port";
 			// 
 			// StartPort
 			// 
