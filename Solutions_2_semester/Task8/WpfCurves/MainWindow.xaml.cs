@@ -126,6 +126,7 @@ namespace WpfCurves
 				x2 = x1;
 				y1 = height / 2 - 3;
 				y2 = y1 + 6;
+				CurveArea.Children.Add(new TextBlock() { Text = text, FontSize = 7, Margin = new Thickness(x1 + 3, y1 + 3, x1 - 3, y1 - 3) });
 			}
 			else
 			{
@@ -133,9 +134,9 @@ namespace WpfCurves
 				x2 = x1 + 6;
 				y1 = height / 2 - actualOneSize * (CurveSize.Value + 1) * value;
 				y2 = y1;
+				CurveArea.Children.Add(new TextBlock() { Text = text, FontSize = 7, Margin = new Thickness(x1 + 6, y1 + 3, x1, y1 - 3) });
 			}
 			DrawLine(x1, y1, x2, y2);
-			CurveArea.Children.Add(new TextBlock() { Text = text, FontSize = 7, Margin = new Thickness(x1 + 3, y1 + 3, x1 - 3, y1 - 3) });
 		}
 		void DrawCoordinate(double a, double b, int type)
 		{
@@ -174,7 +175,6 @@ namespace WpfCurves
 					}
 					break;
 			}
-
 		}
 
 		private void CurveComboBoxKeyDown(object sender, KeyEventArgs e)
