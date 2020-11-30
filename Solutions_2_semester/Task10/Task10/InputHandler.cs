@@ -135,11 +135,14 @@ namespace Task10
 
 			input = input.TrimStart();
 
-			if (input[0..2] == "| ")
+			if (input.Length >= 2)
 			{
-				parsed.Add("pipe");
-				parsed.Add("");
-				input = input[2..];
+				if (input[0..2] == "| ")
+				{
+					parsed.Add("pipe");
+					parsed.Add("");
+					input = input[2..];
+				}
 			}
 
 			foreach (string s in input.Split(' '))

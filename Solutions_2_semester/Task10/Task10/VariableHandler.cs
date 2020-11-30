@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 
 namespace Task10
@@ -16,18 +17,17 @@ namespace Task10
 		{
 			string variableName;
 			string value;
+			key = CommandHandler.Keys.Error;
+
+			if (input == "" || input == null)
+				return "The variable call should be $varName";
 
 			if (input[0] == ' ')
-			{
-				key = CommandHandler.Keys.Error;
 				return "The variable call should be $varName";
-			}
 
 			if (input.Count((x) => x == '=') > 1)
-			{
-				key = CommandHandler.Keys.Error;
 				return "Incorrect operations";
-			}
+
 			else if (input.Count((x) => x == '=') == 0)
 			{
 				variableName = input;
@@ -36,18 +36,12 @@ namespace Task10
 
 				foreach (char c in variableName)
 					if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && (c < '0' || c > '9') && c != '_')
-					{
-						key = CommandHandler.Keys.Error;
 						return "Invalid variable name \"" + variableName + "\": a..z, A..Z, 0..9, _ should be used";
-					}
 
 				value = (string)variables[variableName];
 
 				if (value == null)
-				{
-					key = CommandHandler.Keys.Error;
 					return "Variable \"" + variableName + "\" is not defined";
-				}
 				else
 				{
 					key = CommandHandler.Keys.Ok;
@@ -59,7 +53,7 @@ namespace Task10
 			while (variableName[^1] == ' ')
 				variableName = variableName[0..^1];
 
-			foreach(char c in variableName)
+			foreach (char c in variableName)
 				if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && (c < '0' || c > '9') && c != '_')
 				{
 					key = CommandHandler.Keys.Error;
