@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Task10
@@ -14,6 +15,12 @@ namespace Task10
 			commandTable["wc"] = new Wc();
 			commandTable["$"] = new VariableHandler(variables);
 		}
+
+		List<string> multilinearCommands = new List<string>()
+		{
+			"cat",
+			"wc"
+		};
 
 		public enum Keys
 		{
@@ -64,7 +71,32 @@ namespace Task10
 			
 			string argument = command.Argument;
 			if (preCommandOut != null)
+			{
+				if (preCommandOut.Contains('\n') && multilinearCommands.Contains(command.Name))
+				{
+					string[] commands = preCommandOut.Split("\n", System.StringSplitOptions.RemoveEmptyEntries);
+					string newCommandOut = "";
+
+					for (int i = 0; i < commands.Length; i++)
+					{
+						string s = commands[i];
+						if (s[0] == '\r')
+							s = s[1..];
+						if (s[^1] == '\r')
+							s = s[0..^1];
+						preCommandOut = null;
+						newCommandOut += Process(new Command() { Name = command.Name, Argument = s }, out _);
+						if (i != commands.Length - 1)
+							newCommandOut += "\n";
+					}
+
+					preCommandOut = newCommandOut;
+					keyOut = Keys.Ok;
+					return OutStringParse(new Command(), Keys.Ok, newCommandOut);
+				}
+
 				argument += preCommandOut;
+			}
 
 			while (argument.Contains('$'))
 			{
