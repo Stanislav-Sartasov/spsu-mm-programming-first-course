@@ -31,6 +31,7 @@
 			this.startPortLabel = new System.Windows.Forms.Label();
 			this.portTextBox = new System.Windows.Forms.TextBox();
 			this.startButton = new System.Windows.Forms.Button();
+			this.label1 = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// startPortLabel
@@ -63,11 +64,22 @@
 			this.startButton.Text = "Start";
 			this.startButton.UseVisualStyleBackColor = true;
 			// 
+			// label1
+			// 
+			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(209, 9);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(111, 17);
+			this.label1.TabIndex = 3;
+			this.label1.Text = "Close for default";
+			// 
 			// StartPort
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(332, 113);
+			this.Controls.Add(this.label1);
 			this.Controls.Add(this.startButton);
 			this.Controls.Add(this.portTextBox);
 			this.Controls.Add(this.startPortLabel);
@@ -85,5 +97,6 @@
 		private System.Windows.Forms.Label startPortLabel;
 		private System.Windows.Forms.TextBox portTextBox;
 		private System.Windows.Forms.Button startButton;
+		private System.Windows.Forms.Label label1;
 	}
 }
