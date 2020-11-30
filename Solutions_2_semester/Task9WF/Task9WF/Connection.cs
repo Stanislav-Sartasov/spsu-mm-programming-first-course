@@ -57,7 +57,7 @@ namespace Task9WF
 					string addr = "";
 					try
 					{
-						addr = Socket.RemoteEndPoint.ToString();
+						addr = ((IPEndPoint)Socket.RemoteEndPoint).Address.ToString() + ":" + Info.Port.ToString();
 					}
 					catch { }
 					if (addr == "")
