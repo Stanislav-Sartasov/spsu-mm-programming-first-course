@@ -57,25 +57,25 @@ namespace IoC
 				for (int i = 0; i < 20; i++)
 					Console.Write("_");
 				Console.Write("\nactive players: ");
-				for (int i = 0; i < log.count; i++)
-					Console.Write($"{log.playerName[i]} ");
+				for (int i = 0; i < log.Count; i++)
+					Console.Write($"{log.PlayerName[i]} ");
 				Console.WriteLine();
-				for (int i = 0; i < log.count; i++)
+				for (int i = 0; i < log.Count; i++)
 				{
-					Console.WriteLine($"{log.playerName[i]} bank: {log.playerBankWas[i] + log.playerBetWas[i]}");
-					Console.WriteLine($"{log.playerName[i]} bet:  {log.playerBetWas[i]} on {log.playerBetFieldWas[i]}");
+					Console.WriteLine($"{log.PlayerName[i]} bank: {log.PlayerBankWas[i] + log.PlayerBetWas[i]}");
+					Console.WriteLine($"{log.PlayerName[i]} bet:  {log.PlayerBetWas[i]} on {log.PlayerBetFieldWas[i]}");
 				}
 				Console.Write("card pull: Player< ");
 				for (int i = 0; i < 3; i++)
-					if (log.cardPull[i] != default)
-						Console.Write($"{log.cardPull[i].suit}_{log.cardPull[i].value} ");
+					if (log.CardPull[i] != default)
+						Console.Write($"{log.CardPull[i].Suit}_{log.CardPull[i].Value} ");
 				Console.Write("> Bank< ");
 				for (int i = 3; i < 6; i++)
-					if (log.cardPull[i] != default)
-						Console.Write($"{log.cardPull[i].suit}_{log.cardPull[i].value} ");
-				Console.WriteLine($">\nwin field: {log.winField}");
-				for (int i = 0; i < log.count; i++)
-					Console.WriteLine($"{log.playerName[i]} bank become: {log.playerBankBecome[i]}");
+					if (log.CardPull[i] != default)
+						Console.Write($"{log.CardPull[i].Suit}_{log.CardPull[i].Value} ");
+				Console.WriteLine($">\nwin field: {log.WinField}");
+				for (int i = 0; i < log.Count; i++)
+					Console.WriteLine($"{log.PlayerName[i]} bank become: {log.PlayerBankBecome[i]}");
 				Console.Write("\n\n\n");
 			}
 			Assert.Pass();

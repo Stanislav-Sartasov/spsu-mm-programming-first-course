@@ -6,16 +6,16 @@ namespace Task3
 		public Card(int value, Suits suit)
 		{
 			if (value >= MinValue && value <= MaxValue)
-				this.value = value;
+				Value = value;
 			else
-				this.value = 0;
+				Value = 0;
 
-			this.suit = suit;
+			Suit = suit;
 
 			if (value < MinValue || value >= 10)
-				cost = 0;
+				Cost = 0;
 			else
-				cost = value;
+				Cost = value;
 		}
 		public enum Suits
 		{
@@ -28,8 +28,8 @@ namespace Task3
 		public const int MinValue = 1;
 		public const int MaxValue = 13;
 
-		public readonly int value;
-		public readonly Suits suit;
-		public readonly int cost;
+		public int Value { get; private set; }
+		public Suits Suit { get; private set; }
+		public int Cost { get; private set; }
 	}
 }

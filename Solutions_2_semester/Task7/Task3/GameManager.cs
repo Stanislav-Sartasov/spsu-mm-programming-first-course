@@ -32,7 +32,14 @@ namespace Task3
 		const int StandardDeckCount = 4;
 		const int StandardMaxPlayerCount = 5;
 		static double[] standardGameСoefficients = new double[] { 2, 1.95, 10 };			/// <summary>
-		public readonly double[] gameСoefficients;
+		double[] gameСoefficients;
+		public double[] GameСoefficients
+		{
+			get
+			{
+				return (double[])gameСoefficients.Clone();
+			}
+		}
 		int startBank;
 		int maxPlayerCount;
 		public int DeckCount { get; private set; }
@@ -46,12 +53,12 @@ namespace Task3
 		}
 		internal Player AddPlayer(string playerName, int startBank)
 		{
-			if (SessionStarted || playerSeats.Count >= maxPlayerCount || playerName == null || startBank < 0 || playerSeats.FindIndex((x) => { return x.playerName == playerName; }) != -1)
+			if (SessionStarted || playerSeats.Count >= maxPlayerCount || playerName == null || startBank < 0 || playerSeats.FindIndex((x) => { return x.PlayerName == playerName; }) != -1)
 				return null;
 			PlayerSeat newSeat = new PlayerSeat(startBank, this, playerName);
 			playerSeats.Add(newSeat);
-			playersBase[newSeat.player] = newSeat;
-			return newSeat.player;
+			playersBase[newSeat.Player] = newSeat;
+			return newSeat.Player;
 		}
 		public bool KickPlayer(Player player)
 		{
@@ -62,7 +69,7 @@ namespace Task3
 			if (playerSeat.QuitGame() || !playerSeat.Active)
 			{
 				playerSeats.Remove(playerSeat);
-				playersBase.Remove(playerSeat.player);
+				playersBase.Remove(playerSeat.Player);
 				return true;
 			}
 			return false;
@@ -76,7 +83,7 @@ namespace Task3
 			int[] banks = new int[count];
 			for (int i = 0; i < Math.Min(count, playerSeats.Count); i++)
 			{
-				names[i] = (string)playerSeats[i].playerName.Clone();
+				names[i] = (string)playerSeats[i].PlayerName.Clone();
 				banks[i] = playerSeats[i].Bank;
 			}
 
@@ -115,14 +122,14 @@ namespace Task3
 
 			for (int i = 0; i < playerSeats.Count; i++)
 			{
-				playerName[i] = (string)playerSeats[i].playerName.Clone();
+				playerName[i] = (string)playerSeats[i].PlayerName.Clone();
 				playerBankWas[i] = playerSeats[i].Bank;
 				playerBetWas[i] = playerSeats[i].Bet;
 				playerBetFieldWas[i] = playerSeats[i].BetField;				
 
-				if (playerSeats[i].BetField == dealer.winField)
+				if (playerSeats[i].BetField == dealer.WinField)
 				{
-					playerSeats[i].PerformResult(gameСoefficients[(int)dealer.winField]);
+					playerSeats[i].PerformResult(gameСoefficients[(int)dealer.WinField]);
 					playerWin[i] = true;
 				}
 				else
@@ -139,7 +146,7 @@ namespace Task3
 				}
 			}
 
-			LastWinField = dealer.winField;
+			LastWinField = dealer.WinField;
 			SessionStarted = false;
 
 			while(playersForKick.Count > 0)
@@ -156,12 +163,12 @@ namespace Task3
 				playerBetFieldWas,
 				playerWin,
 				playerBankBecome,
-				dealer.cardPull,
-				dealer.playerScoreBeforeExtraCard,
-				dealer.playerScore,
-				dealer.bankScoreBeforeExtraCard,
-				dealer.bankScore,
-				dealer.winField
+				dealer.CardPull,
+				dealer.PlayerScoreBeforeExtraCard,
+				dealer.PlayerScore,
+				dealer.BankScoreBeforeExtraCard,
+				dealer.BankScore,
+				dealer.WinField
 				);
 		}
 	}
