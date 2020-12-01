@@ -80,6 +80,7 @@ namespace Users
             Console.WriteLine("Your IP: " + myEndPoint.ToString());
             Console.WriteLine("Enter Nickname:");
             Name = Console.ReadLine();
+            Console.WriteLine("Enter \\help to see a list of available commands.");
         }
 
         public void SendMessage(string message)
@@ -153,6 +154,14 @@ namespace Users
         public void WriteMessage(string message)
         {
             Console.WriteLine(message);
+        }
+
+        public void Help()
+        {
+            Console.WriteLine("Available commands:");
+            Console.WriteLine("\\connect ip:port - IP connection.");
+            Console.WriteLine("\\disconnect - disconnect from the current information space.");
+            Console.WriteLine("\\exit - correct exit from the chat.");
         }
     }
 }

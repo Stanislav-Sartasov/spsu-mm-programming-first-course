@@ -23,6 +23,7 @@ namespace UserLibrary
                     break;
                 case "\\disconnect": user.Disconnect(); break;
                 case "\\exit": user.Exit(); break;
+                case "\\help": user.Help(); break;
                 default: user.SendMessage(input); break;
             }
         }
