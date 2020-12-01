@@ -13,7 +13,7 @@ namespace CasinoIncidentRoulette.Bots
             History = new List<Cell>();
         }
 
-        public bool CanIBet()
+        public override bool CanIBet()
         {
             return Money >= 1;
         }

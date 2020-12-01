@@ -14,8 +14,8 @@ namespace CasinoIncidentRoulette.UnitTests
         {
             Table table = new Table();
 
-            MartingaleBot martingaleBot = new MartingaleBot();
-            MakarovBot makarovBot = new MakarovBot();
+            AbstractPlayer martingaleBot = new MartingaleBot();
+            AbstractPlayer makarovBot = new MakarovBot();
 
             for (int i = 0; i < 400; i++)
             {

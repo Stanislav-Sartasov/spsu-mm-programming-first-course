@@ -7,7 +7,6 @@ namespace CasinoIncidentRoulette.Bots
 {
     public class MartingaleBot : AbstractPlayer
     {
-        public int LoseStreak { get; protected set; }
         public MartingaleBot()
         {
             Money = 1000;
@@ -15,7 +14,7 @@ namespace CasinoIncidentRoulette.Bots
             LoseStreak = 0;
         }
 
-        public bool CanIBet()
+        public override bool CanIBet()
         {
             return Money >= 1 << LoseStreak;
         }
