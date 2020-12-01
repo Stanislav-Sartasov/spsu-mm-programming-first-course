@@ -11,37 +11,41 @@ namespace TenthTask.BashDescription
 	{
 		//public string Str { get; set; }
 
-		public override bool CheckCommand(string name, string str)
+		public override string RunCommand(string str, Values values = null)
 		{
-			Str = str;
-			if (Str.Replace(" ", "") == "pwd")
+			try
 			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		public override string RunCommand(string name, string str, Bash forValues = null)
-		{
-			var resStr = "";
-			if (str.Replace(" ", "") == "pwd")
-			{
-
-				Console.WriteLine(Directory.GetCurrentDirectory());
-				foreach (string dirStr in Directory.EnumerateFiles(Directory.GetCurrentDirectory()))
+				string name = "pwd";
+				Str = str;
+				if (Str.Replace(" ", "") == name)
 				{
-					resStr = dirStr;
-					Console.WriteLine("\t" + dirStr);
+					var resStr = "";
+					if (str.Replace(" ", "") == name)
+					{
+
+						Console.WriteLine(Directory.GetCurrentDirectory());
+						foreach (string dirStr in Directory.EnumerateFiles(Directory.GetCurrentDirectory()))
+						{
+							resStr = dirStr;
+							Console.WriteLine("\t" + dirStr);
+						}
+					}
+					else
+					{
+						Console.WriteLine("Error syntax");
+					}
+
+					return resStr;
+				}
+				else
+				{
+					throw new Exception();
 				}
 			}
-			else
+			catch (Exception e)
 			{
-				Console.WriteLine("Error syntax");
+				throw e;
 			}
-
-			return resStr;
 		}
 	}
 }

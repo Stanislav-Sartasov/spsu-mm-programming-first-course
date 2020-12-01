@@ -9,51 +9,57 @@ namespace TenthTask.BashDescription
 {
 	class CommandCat : Command
 	{
-		public override bool CheckCommand(string name, string str)
+		//public string Str { get; set; }
+		public override string RunCommand(string str, Values values = null)
 		{
-			Str = str;
-			if (Str.Substring(0, Str.IndexOf(name)).Replace(" ", "") != "")
+			try
 			{
-				return false;
-			}
-			else
-			{
-				try
+				string name = "cat";
+				Str = str;
+
+				if (Str.Substring(0, Str.IndexOf(name)).Replace(" ", "") != "")
 				{
-					var val = Str.Substring(Str.IndexOf(name) + name.Length + 1).Split(' ');
+					throw new Exception();
 				}
-				catch
+				else
 				{
-					return false;
+					try
+					{
+						var val = Str.Substring(Str.IndexOf(name) + name.Length + 1).Split(' ');
+					}
+					catch
+					{
+						throw new Exception();
+					}
+
+					var resStr = "";
+					var path = str.Substring(str.IndexOf(name) + name.Length + 1);
+					path.Replace("\n", "");
+
+					if (System.IO.File.Exists(path))
+					{
+						var file = new StreamReader(path.Replace("\n", ""));
+						while (!file.EndOfStream)
+						{
+
+							var line = file.ReadLine();
+							resStr += line;
+							resStr += "\n";
+							Console.WriteLine(line);
+						}
+					}
+					else
+					{
+						throw new Exception("Error! No such file.");
+					}
+
+					return resStr;
 				}
-
-				return true;
 			}
-		}
-		public override string RunCommand(string name, string str, Bash forValues = null)
-		{
-			var resStr = "";
-			var path = str.Substring(str.IndexOf(name) + name.Length + 1);
-			path.Replace("\n", "");
-
-			if (System.IO.File.Exists(path))
+			catch(Exception e)
 			{
-				var file = new StreamReader(path.Replace("\n", ""));
-				while (!file.EndOfStream)
-				{
-
-					var line = file.ReadLine();
-					resStr += line;
-					resStr += "\n";
-					Console.WriteLine(line);
-				}
+				throw e;
 			}
-			else
-			{
-				Console.WriteLine("Error! No such file.");
-			}
-
-			return resStr;
 		}
 	}
 }

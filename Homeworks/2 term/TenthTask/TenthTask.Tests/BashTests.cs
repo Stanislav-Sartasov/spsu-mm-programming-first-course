@@ -12,11 +12,11 @@ namespace TenthTask.Tests
                 public void ParserTestEcho()
                 {
                         var input = "echo ffff";
-                        bash.Parser.Parse(input, bash);
+                        bash.Parser.Parse(input, Bash.Values);
                         //Assert.IsNotNull();
 
                         input = "exit 3";
-                        bash.Parser.Parse(input, bash);
+                        bash.Parser.Parse(input, Bash.Values);
  
                 }
         }

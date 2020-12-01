@@ -11,44 +11,48 @@ namespace TenthTask.BashDescription
 	{
 		//public string Str { get; set; }
 
-		public override bool CheckCommand(string name, string str)
+		public override string RunCommand(string str, Values values = null)
 		{
-			Str = str;
-			if (Str.Substring(0, Str.IndexOf(name)).Replace(" ", "") != "")
+			try
 			{
-				return false;
-			}
-			else
-			{
-				try
+				string name = "wc";
+				Str = str;
+				if (Str.Substring(0, Str.IndexOf(name)).Replace(" ", "") != "")
 				{
-					var val = Str.Substring(Str.IndexOf(name) + name.Length + 1).Split(' ');
+					throw new Exception();
 				}
-				catch
+				else
 				{
-					return false;
+					try
+					{
+						var val = Str.Substring(Str.IndexOf(name) + name.Length + 1).Split(' ');
+					}
+					catch
+					{
+						throw new Exception();
+					}
+
+					var resStr = "";
+					var path = str.Substring(str.IndexOf(name) + name.Length + 1);
+					path.Replace("\n", "");
+
+					if (System.IO.File.Exists(path))
+					{
+						resStr = String.Concat(File.ReadAllBytes(path).Length, " bytes ", File.ReadAllLines(path).Length, " strings");
+						Console.WriteLine(String.Concat(File.ReadAllBytes(path).Length, " bytes"));
+						Console.WriteLine(String.Concat(File.ReadAllLines(path).Length, " strings"));
+					}
+					else
+					{
+						Console.WriteLine("Error! No such file.");
+					}
+					return resStr;
 				}
-
-				return true;
 			}
-		}
-		public override string RunCommand(string name, string str, Bash forValues = null)
-		{
-			var resStr = "";
-			var path = str.Substring(str.IndexOf(name) + name.Length + 1);
-			path.Replace("\n", "");
-
-			if (System.IO.File.Exists(path))
+			catch (Exception e)
 			{
-				resStr = String.Concat(File.ReadAllBytes(path).Length, " bytes ", File.ReadAllLines(path).Length, " strings");
-				Console.WriteLine(String.Concat(File.ReadAllBytes(path).Length, " bytes"));
-				Console.WriteLine(String.Concat(File.ReadAllLines(path).Length, " strings"));
+				throw e;
 			}
-			else
-			{
-				Console.WriteLine("Error! No such file.");
-			}
-			return resStr;
 		}
 	}
 }

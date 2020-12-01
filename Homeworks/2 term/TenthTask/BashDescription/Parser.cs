@@ -15,7 +15,7 @@ namespace TenthTask.BashDescription
 		//3 cat
 		//4 wc
 
-		public void Parse(string str, Bash forValues)
+		public void Parse(string str, Values values)
 		{
 			var commandFlag = false;
 
@@ -30,14 +30,14 @@ namespace TenthTask.BashDescription
 
 						if (pos >= 0)
 						{
-							if (forValues.CheckCommand(commandNum, str))
+							try
 							{
-								forValues.RunCommand(commandNum, str);
+								Bash.RunCommand(commandNum, str);
 
 							}
-							else
+							catch
 							{
-								Console.WriteLine("No such command");
+								Console.WriteLine("Error, probably no such command.");
 							}
 
 							commandFlag = true;
@@ -51,7 +51,7 @@ namespace TenthTask.BashDescription
 				{
 					if (str.Contains("$"))
 					{
-						forValues.AddValueMethod(str);
+						AddValueMethod(str, values);
 					}
 					else
 					{
@@ -62,8 +62,6 @@ namespace TenthTask.BashDescription
 			else
 			{
 				string[] partsOfStr = str.Split('|');
-				string resStr = "";
-
 				foreach (string part in partsOfStr)
 				{
 					for (int i = 0; i < Bash.commands.Length; i++)
@@ -74,16 +72,17 @@ namespace TenthTask.BashDescription
 							int commandNum = i;
 							if (pos >= 0)
 							{
+								string resStr = "";
 								var checkStr = String.Concat(part, " ", resStr);
 
-								if (forValues.CheckCommand(commandNum, checkStr))
+								try
 								{
-									resStr = forValues.RunCommand(commandNum, checkStr);
+									resStr = Bash.RunCommand(commandNum, checkStr);
 
 								}
-								else
+								catch
 								{
-									Console.WriteLine("No such command.");
+									Console.WriteLine("Error, probably no such command.");
 								}
 
 								break;
@@ -93,8 +92,68 @@ namespace TenthTask.BashDescription
 						}
 						else if (str.Contains("$"))
 						{
-							forValues.AddValueMethod(str);
+							AddValueMethod(str, values);
 						}
+					}
+				}
+			}
+		}
+
+		public void AddValueMethod(string str, Values values)
+		{
+			if (str.IndexOf("$") < 0)
+			{
+				return;
+			}
+
+			var val = str.Split(',');
+			foreach (string resStr in val)
+			{
+				int pos = resStr.IndexOf("=");
+				if (pos < 0)
+				{
+					if (values.ValuesUsed.Contains(str.Substring(resStr.IndexOf("$") + 1).Replace(" ", "")))
+					{
+						values.ValuesUsed.Clear();
+						values.ValuesMean.Clear();
+						Console.WriteLine("Error! Redefinition.");
+					}
+					else
+					{
+						values.ValuesUsed.Add(resStr.Substring(resStr.IndexOf("$")).Replace(" ", ""));
+						values.ValuesMean.Add("");
+					}
+				}
+				else
+				{
+					if (!resStr.Substring(pos + 1).Contains("$"))
+					{
+						if (!values.ValuesUsed.Contains(resStr.Substring(resStr.IndexOf("$"), pos - resStr.IndexOf("$"))
+						    .Replace(" ", "")))
+						{
+							values.ValuesUsed.Add(resStr.Substring(resStr.IndexOf("$"), pos - resStr.IndexOf("$"))
+							    .Replace(" ", ""));
+
+							values.ValuesMean.Add(resStr.Substring(resStr.IndexOf("=") + 1));
+						}
+						else
+						{
+							values.ValuesMean[values.ValuesUsed.IndexOf(resStr.Substring(resStr.IndexOf("$"), pos - resStr.IndexOf("$"))
+								.Replace(" ", ""))] =
+							    resStr.Substring(resStr.IndexOf("=") + 1);
+						}
+
+					}
+					else if (values.ValuesUsed.Contains(resStr.Substring(pos + 1).Replace(" ", "")))
+					{
+						values.ValuesMean[values.ValuesUsed.IndexOf(resStr.Substring(resStr.IndexOf("$"), pos - resStr.IndexOf("$"))
+						    .Replace(" ", ""))] = values.ValuesMean[values.ValuesUsed.IndexOf(resStr.Substring(pos + 1).Replace(" ", ""))];
+					}
+					else
+					{
+						values.ValuesUsed.Clear();
+						values.ValuesMean.Clear();
+						Console.WriteLine("Error! Values are used.");
 					}
 				}
 			}

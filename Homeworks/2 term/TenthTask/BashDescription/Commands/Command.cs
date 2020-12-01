@@ -10,7 +10,6 @@ namespace TenthTask.BashDescription
 	{
 		public string Str { get; set; } // Input string
 
-		public abstract bool CheckCommand(string name, string str);
-		public abstract string RunCommand(string name, string str, Bash forValues = null);
+		public abstract string RunCommand(string str, Values values = null);
 	}
 }

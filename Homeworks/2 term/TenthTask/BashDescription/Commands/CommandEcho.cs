@@ -10,53 +10,58 @@ namespace TenthTask.BashDescription
 	{
 		//public string Str { get; set; }
 
-		public override bool CheckCommand(string name, string str)
+		public override string RunCommand(string str, Values values)
 		{
-			Str = str;
-			if (Str.Substring(0, Str.IndexOf(name)).Replace(" ", "") != "")
+			try
 			{
-				return false;
-			}
-			else
-			{
-				try
+				string name = "echo";
+				Str = str;
+				if (Str.Substring(0, Str.IndexOf(name)).Replace(" ", "") != "")
 				{
-					string[] val = Str.Substring(Str.IndexOf(name) + name.Length + 1).Split(' ');
-				}
-				catch
-				{
-					return false;
-				}
-
-				return true;
-			}
-		}
-		
-		public override string RunCommand(string name, string str, Bash forValues)
-		{
-			var resStr = "";
-			string[] vars = str.Substring(str.IndexOf(name) + name.Length).Split(' ');
-
-			foreach (string varStr in vars)
-			{
-
-				if (varStr == "")
-				{
-					continue;
-				}
-				if (forValues.Values.ValuesUsed.Contains(varStr.Replace(" ", "")))
-				{
-					resStr = forValues.Values.ValuesMean[forValues.Values.ValuesUsed.IndexOf(varStr.Replace(" ", ""))].Replace("\"", "") + " ";
-					Console.WriteLine(forValues.Values.ValuesMean[forValues.Values.ValuesUsed.IndexOf(varStr.Replace(" ", ""))].Replace("\"", "") + " ");
+					throw new Exception();
 				}
 				else
 				{
-					resStr += varStr;
-					Console.WriteLine(varStr + " ");
-				}
+					try
+					{
+						string[] val = Str.Substring(Str.IndexOf(name) + name.Length + 1).Split(' ');
+					}
+					catch
+					{
+						throw new Exception();
+					}
 
+
+					var resStr = "";
+					string[] vars = str.Substring(str.IndexOf(name) + name.Length).Split(' ');
+
+					foreach (string varStr in vars)
+					{
+
+						if (varStr == "")
+						{
+							continue;
+						}
+						if (values.ValuesUsed.Contains(varStr.Replace(" ", "")))
+						{
+							resStr = values.ValuesMean[values.ValuesUsed.IndexOf(varStr.Replace(" ", ""))].Replace("\"", "") + " ";
+							Console.WriteLine(values.ValuesMean[values.ValuesUsed.IndexOf(varStr.Replace(" ", ""))].Replace("\"", "") + " ");
+						}
+						else
+						{
+							resStr += varStr;
+							Console.WriteLine(varStr + " ");
+						}
+
+					}
+					return resStr;
+
+				}
 			}
-			return resStr;
+			catch (Exception e)
+			{
+				throw e;
+			}
 		}
 	}
 }

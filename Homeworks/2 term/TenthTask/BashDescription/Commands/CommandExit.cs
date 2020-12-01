@@ -10,43 +10,48 @@ namespace TenthTask.BashDescription
 	{
 		//public string Str { get; set; }
 
-		public override bool CheckCommand(string name, string str)
+		public override string RunCommand(string str, Values values = null)
 		{
-			Str = str;
+			try
 			{
-				if (Str.Substring(0, Str.IndexOf(name)).Replace(" ", "") != "")
+				string name = "exit";
+				Str = str;
 				{
-					return false;
-				}
-				else
-				{
-					try
+					if (Str.Substring(0, Str.IndexOf(name)).Replace(" ", "") != "")
 					{
-						int checker = Convert.ToInt32(Str.Substring(Str.IndexOf(name) + name.Length + 1));
-						return true;
+						throw new Exception();
 					}
-					catch
+					else
 					{
-						return false;
+						try
+						{
+							int checker = Convert.ToInt32(Str.Substring(Str.IndexOf(name) + name.Length + 1));
+
+							var resStr = "";
+							var vars = str.Substring(str.IndexOf(name) + name.Length + 1);
+
+							if (int.TryParse(vars, out int y))
+							{
+								Environment.Exit(0);
+							}
+							else
+							{
+								throw new Exception("Error, the correct format is \"echo <int>\".");
+							}
+
+							return resStr;
+						}
+						catch
+						{
+							throw new Exception();
+						}
 					}
 				}
 			}
-		}
-		public override string RunCommand(string name, string str, Bash forValues = null)
-		{
-			var resStr = "";
-			var vars = str.Substring(str.IndexOf(name) + name.Length + 1);
-
-			if (int.TryParse(vars, out int y))
+			catch (Exception e)
 			{
-				Environment.Exit(0);
+				throw e;
 			}
-			else
-			{
-				Console.WriteLine("Error.");
-			}
-
-			return resStr;
 		}
 	}
 }
