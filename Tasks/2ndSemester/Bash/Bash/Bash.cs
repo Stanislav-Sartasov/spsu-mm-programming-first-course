@@ -6,12 +6,13 @@ namespace Bash
 {
     public static class Bash
     {
-        private static readonly Dictionary<string, string> localVariables = new Dictionary<string, string>();
+        private static Dictionary<string, string> localVariables = new Dictionary<string, string>();
 
         public static void Start()
         {
-            while(true)
+            while (true)
             {
+                Console.Write("> ");
                 string input = Console.ReadLine().Trim();
                 if (input == "")
                 {
@@ -19,13 +20,19 @@ namespace Bash
                     continue;
                 }
 
-                List<Tuple<ICommand, string> > commands = Parser.Parse(input);
+                List<Tuple<ICommand, string>> commands = Parser.Parse(input);
 
-                foreach (Tuple<ICommand, string> command in commands)
+                string result = "";
+                for (int i = 0; i < commands.Count - 1; i++)
                 {
-                    Console.Write(command.Item1.Execute(command.Item2));
+                    result = commands[i].Item1.Execute(commands[i].Item2);
+                    commands[i + 1] = new Tuple<ICommand, string>(commands[i + 1].Item1, commands[i + 1].Item2 + result);
+                    Console.WriteLine(result);
                 }
-
+                if (commands.Count > 0)
+                {
+                    Console.WriteLine(commands[commands.Count - 1].Item1.Execute(commands[commands.Count - 1].Item2));
+                }
             }
         }
 

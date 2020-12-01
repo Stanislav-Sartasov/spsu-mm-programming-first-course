@@ -14,13 +14,13 @@ namespace BashLibrary
                 if (command.Length == 1)
                     Process.Start(input);
                 else
-                    Process.Start(command[0], string.Join(null, command, 1, command.Length - 1));
-                return "Try to Execute...\n";
+                    Process.Start(command[0], string.Join(" ", command, 1, command.Length - 1));
+                return "Try to Execute...";
             }
             catch(Exception e)
             {
                 Console.WriteLine(e.Message);
-                return "Unknown command or invalid input. Try again.\n";
+                return "Unknown command or invalid input. Try again.";
             }
         }
     }

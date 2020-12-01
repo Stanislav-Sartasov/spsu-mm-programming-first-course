@@ -6,11 +6,11 @@
         {
             try
             {
-                return System.IO.File.ReadAllText(input) + '\n';
+                return System.IO.File.ReadAllText(input);
             }
             catch
             {
-                return "Error. Try again.\n";
+                return "Error. Try again.";
             }
         }
     }

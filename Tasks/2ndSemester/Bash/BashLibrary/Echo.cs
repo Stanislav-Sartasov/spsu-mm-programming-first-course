@@ -4,7 +4,7 @@
     {
         public string Execute(string input)
         {
-            return input + "\n";
+            return input;
         }
     }
 }

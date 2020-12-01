@@ -9,11 +9,11 @@ namespace BashLibrary
         {
             try
             {
-                return $"{File.ReadLines(input).Count()} lines, {File.ReadAllText(input).Split(new char[] { ' ', '\n' }).Count()} words, {File.ReadAllBytes(input).Count()} bytes.\n";
+                return $"{File.ReadLines(input).Count()} lines, {File.ReadAllText(input).Split(new char[] { ' ', '\n' }).Count()} words, {File.ReadAllBytes(input).Count()} bytes.";
             }
             catch
             {
-                return "Error. Try again.\n";
+                return "Error. Try again.";
             }
         }
     }

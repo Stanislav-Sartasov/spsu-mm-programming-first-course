@@ -11,9 +11,9 @@
                 }
                 catch
                 {
-                    return "Error. Try again.\n";
+                    return "Error. Try again.";
                 }
-            return "Error. Invalid input.\n";
+            return "Error. Invalid input.";
         }
     }
 }
