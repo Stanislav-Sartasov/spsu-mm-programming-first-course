@@ -110,7 +110,7 @@ namespace Task9Tests
 			{
 				TestFront front = new TestFront();
 				Manager manager = new Manager();
-				guidTable.Add(manager.Start(front, new TCPListener(), new SocketManager(), new Messager()));
+				guidTable.Add(manager.Start(front, new TCPListener(), new SocketManager() { TimeOut = 50000 }, new Messager()));
 				testFronts.Add(front);
 				managers.Add(manager);
 			}
@@ -157,8 +157,21 @@ namespace Task9Tests
 					break;
 			}
 
+			int counter;
+
 			if (!flag)
+			{
+				counter = 0;
+				foreach (TestFront front in testFronts)
+				{
+					Console.WriteLine(counter);
+					foreach (string s in front.MessageList)
+						Console.WriteLine(s);
+					Console.WriteLine();
+					counter++;
+				}
 				Assert.Fail();
+			}
 
 			foreach (TestFront front in testFronts)
 			{
@@ -167,7 +180,7 @@ namespace Task9Tests
 					Assert.IsTrue(guidTable.Contains(connection));
 			}
 
-			int counter = 0;
+			counter = 0;
 			foreach (TestFront front in testFronts)
 			{
 				front.NewMessage(new Message() { Type = (byte)MessageType.Name, Text = counter.ToString() });

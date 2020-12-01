@@ -36,7 +36,21 @@ namespace Task9WF.Multithreaded
 			Reconnect
 		}
 
-		const int WaitTime = 25000;
+		const int StandartTimeOut = 25000;
+		int timeOut = -1;
+		public int TimeOut 
+		{ 
+			get
+			{
+				if (timeOut < 0)
+					return StandartTimeOut;
+				return timeOut;
+			}
+			set
+			{
+				timeOut = value;
+			}
+		}
 
 		public TaskManager TaskManager
 		{
@@ -288,7 +302,7 @@ namespace Task9WF.Multithreaded
 				if (!connection.Connected && reconnect)
 					TryConnect(connection.Info);
 
-				for (int i = 0; !connection.Connected && i < WaitTime / 250; i++)
+				for (int i = 0; !connection.Connected && i < TimeOut / 250; i++)
 				{
 					if (stopped)
 					{
@@ -414,7 +428,7 @@ namespace Task9WF.Multithreaded
 					}
 					catch { }
 				});
-				if (!task.Wait(TimeSpan.FromMilliseconds(2000)))
+				if (!task.Wait(TimeSpan.FromMilliseconds(TimeOut)))
 				{
 					socket.Close();
 					throw new Exception();
