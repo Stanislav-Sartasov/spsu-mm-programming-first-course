@@ -5,4 +5,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="NinthTask.Tests\**" />
+    <EmbeddedResource Remove="NinthTask.Tests\**" />
+    <None Remove="NinthTask.Tests\**" />
+  </ItemGroup>
+
 </Project>

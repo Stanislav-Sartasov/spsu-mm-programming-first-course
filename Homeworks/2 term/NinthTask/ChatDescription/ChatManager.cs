@@ -18,7 +18,7 @@ namespace NinthTask.ChatDescription
 		public static Mutex MutexSocketList; // мьютекс на доступ к словарю
 		public static Mutex MutexSocketServer; // мьютекс на доступ к сокету сервера
 		
-		public static void SendOnlyUsers(string name, string message)
+		public static void SendOthers(string name, string message, int onlyUsers)
 		{
 			var bytes = new byte[1024];
 
@@ -27,20 +27,52 @@ namespace NinthTask.ChatDescription
 			BitConverter.GetBytes(sMessage.Length).CopyTo(bytes, 4);
 			Encoding.ASCII.GetBytes(sMessage).CopyTo(bytes, 8);
 
-			int sizeOFBytes = 8 + sMessage.Length;
+			int sizeOfBytes = 8 + sMessage.Length;
 
-			foreach (var i in SocketList)
+			if (onlyUsers == 1)
 			{
-				try
+				foreach (var i in SocketList)
 				{
-					i.Value.Send(bytes, sizeOFBytes, SocketFlags.None);
-				}
-				catch (Exception e)
-				{
-					throw new Exception(e.Message);
+				
+					try
+					{
+						i.Value.Send(bytes, sizeOfBytes, SocketFlags.None);
+					}
+					catch (Exception e)
+					{
+						throw new Exception(e.Message);
+					}
 				}
 			}
+			else
+			{
+				foreach (var i in SocketList)
+				{
+					if (i.Key != name)
+					{
+						try
+						{
+							i.Value.Send(bytes, sizeOfBytes, SocketFlags.None);
+						}
+						catch (Exception e)
+						{
+							throw new Exception(e.Message);
+						}
+					}
+				}
+
+				MutexSocketServer.WaitOne();
+
+				if (SocketServer != null && SocketServer.Connected == true)
+				{
+					SocketServer.Send(bytes, sizeOfBytes, SocketFlags.None);
+				}
+
+				MutexSocketServer.ReleaseMutex();
+			}
 		}
+
+		/*
 		public static void SendOthers(string name, string message)
 		{
 			byte[] bytes = new byte[1024];
@@ -76,20 +108,49 @@ namespace NinthTask.ChatDescription
 
 			MutexSocketServer.ReleaseMutex();
 		}
-		public static void ForwardOnlyUsers(byte[] bytes, int sizeOfBytes)
+		*/
+		public static void ForwardOther(byte[] bytes, int sizeOfBytes, string name = null, int onlyUsers = 0)
 		{
-			foreach (var i in SocketList)
+			if (onlyUsers == 1)
 			{
-				try
+				foreach (var i in SocketList)
 				{
-					i.Value.Send(bytes, sizeOfBytes, SocketFlags.None);
-				}
-				catch (Exception e)
-				{
-					throw new Exception(e.Message);
+					try
+					{
+						i.Value.Send(bytes, sizeOfBytes, SocketFlags.None);
+					}
+					catch (Exception e)
+					{
+						throw new Exception(e.Message);
+					}
 				}
 			}
+			else
+			{
+				foreach (var i in SocketList)
+				{
+					if (i.Key != name)
+					{
+						try
+						{
+							i.Value.Send(bytes, sizeOfBytes, SocketFlags.None);
+						}
+						catch (Exception e)
+						{
+							throw new Exception(e.Message);
+						}
+					}
+				}
+				MutexSocketServer.WaitOne();
+				if (SocketServer != null && SocketServer.Connected == true)
+				{
+					SocketServer.Send(bytes, sizeOfBytes, SocketFlags.None);
+				}
+				MutexSocketServer.ReleaseMutex();
+			}
 		}
+
+		/*
 		public static void ForwardOther(string name, byte[] bytes, int sizeOfBytes)
 		{
 			foreach (var i in SocketList)
@@ -113,6 +174,7 @@ namespace NinthTask.ChatDescription
 			}
 			MutexSocketServer.ReleaseMutex();
 		}
+		*/
 
 		public ChatManager()
 		{
@@ -189,13 +251,39 @@ namespace NinthTask.ChatDescription
 				//
 
 				//sending
-				server.SendClient(messages, 8 + s.Length);
+				//server.SendClient(messages, 8 + s.Length);
+				MutexSocketList.WaitOne();
+				foreach (var i in SocketList)
+				{
+					try
+					{
+						i.Value.Send(messages, 8 + s.Length, SocketFlags.None);
+					}
+					catch (Exception e)
+					{
+						Console.WriteLine(e.ToString());
+					}
+				}
+				MutexSocketList.ReleaseMutex();
+
 				if (client != null)
 				{
-					client.SendServer(messages, 8 + s.Length);
+					//client.SendServer(messages, 8 + s.Length);
+					MutexSocketServer.WaitOne(); // Sending message to server (if it exists) and all users
+					if (SocketServer != null && SocketServer.Connected == true)
+					{
+						try
+						{
+							SocketServer.Send(messages, 8 + s.Length, SocketFlags.None);
+						}
+						catch (Exception e)
+						{
+							Console.WriteLine(e.Message);
+						}
+					}
+					MutexSocketServer.ReleaseMutex();
 				}
 			}
 		}
 	}
 }
-//для себя - лучше разделить по функциям, добавить тесты, переписать пару методов
