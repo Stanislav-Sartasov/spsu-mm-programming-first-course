@@ -3,14 +3,14 @@ using GameDescription;
 
 namespace ThirdTask
 {
-        class Program
-        {
-                static void Main()
-                {
-                        var player = new UserPlayer();
-                        var game = new Game();
+	class Program
+	{
+		static void Main()
+		{
+			var player = new UserPlayer();
+			var game = new Game();
 
-                        game.Start(player);
-                }
-        }
+			game.Start(player);
+		}
+	}
 }

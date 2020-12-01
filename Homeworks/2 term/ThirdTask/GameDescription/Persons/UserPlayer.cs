@@ -38,9 +38,9 @@ namespace GameDescription
 
 		public override void Action(Pad pad)
 		{
-			if (SumOfAllCards() == 21)
+			if (SumOfAllCards == 21)
 			{
-				Console.WriteLine($"Sum of all cards is {SumOfAllCards()}");
+				Console.WriteLine($"Sum of all cards is {SumOfAllCards}");
 			}
 			else
 			{
@@ -100,15 +100,37 @@ namespace GameDescription
 			base.Action(pad);
 		}
 
-		public override string IsContinue()
+		public override bool IsContinue(int gamesLeft = -1)
 		{
 			string input = "";
 			while (input != "Yes" && input != "No")
 			{
 				input = Console.ReadLine();
+				break;
 			}
 
-			return input;
+			if (Cash <= 0)
+			{
+				if (gamesLeft == -1)
+				{
+					Console.WriteLine("Your cash is empty, seems you got twisted up in this scene.\n" +
+						"From where you're kneeling it must seem like an 18-carat run of bad luck.\n" +
+						"Truth is... the game was rigged from the start.");
+				}
+
+				return false;
+			}
+			else
+			{
+				if (input == "Yes")
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
 		}
 	}
 }

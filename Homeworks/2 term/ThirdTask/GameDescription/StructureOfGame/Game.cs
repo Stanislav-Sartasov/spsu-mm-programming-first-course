@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -14,8 +15,7 @@ namespace GameDescription
 		All pictures and 10 are equal. 
 		*/
 		#endregion
-		private string GameIsGoing { get; set; } = "first_game"; // Start position
-		private int GamesLeft { get; set; } = -1; // Negative if player is user
+		private int GamesLeft { get; set; } = -1; // Negative if player is user (using for output)
 		public void Start(Player player, int numOfGames = 0)
 		{
 			var dealer = new Dealer();
@@ -29,9 +29,27 @@ namespace GameDescription
 			{
 				Console.WriteLine($"Welcome to blackjack!\nYour cash: {player.Cash}.\nDo you want to play? (\"Yes\" / \"No\")");
 			}
-			ContinueGame(player, dealer);
 
-			while (GameIsGoing == "game_is_on")
+			if (GamesLeft == -1 || GamesLeft > 0)
+			{
+				if (player.IsContinue(GamesLeft) == true && dealer.Cash > 0)
+				{
+					if (GamesLeft != -1)
+					{
+						GamesLeft--;
+					}
+				}
+				else
+				{
+					if (dealer.Cash <= 0 && GamesLeft == -1)
+					{
+						Console.WriteLine("How? Casino never loses, doesn't it?\n");
+					}
+					Environment.Exit(0);
+				}
+			}
+
+			while(true)
 			{
 				var pad = new Pad();
 
@@ -50,25 +68,25 @@ namespace GameDescription
 
 				#region GameProcess
 
-				if (player.PersonStatus == "blackjack" && dealer.SecondCard < 10)
+				if (player.SumOfAllCards == 21 && dealer.SecondCard < 10)
 				{
 					CheckWinner(player, dealer); // BlackJack
 				}
 				else
 				{
-					while (player.PersonStatus == "in_game")
+					while (player.SumOfAllCards < 21 && player.StandFlag != 1 && player.SumOfAllCards != 50)
 					{
 						player.Action(pad);
 
-						if (player.PersonStatus != "stand" && player.PersonStatus != "surrender" && player.PersonStatus != "blackjack" && GamesLeft == -1)
+						if (player.StandFlag != 1 && player.SumOfAllCards != 50 && player.SumOfAllCards < 21 && GamesLeft == -1)
 						{
 							Console.WriteLine($"Your first two cards: {player.FirstCard}, {player.SecondCard}; your other cards sum: {player.OtherCards}");
 						}
 					}
 
-					if (player.PersonStatus != "lose" && player.PersonStatus != "surrender")
-					{
-						while (dealer.PersonStatus == "in_game")
+					if (player.SumOfAllCards <= 21 && player.SumOfAllCards != 50)
+					{;
+						while (dealer.SumOfAllCards < 21 && dealer.StandFlag != 1)
 						{
 							dealer.Action(pad);
 						}
@@ -84,16 +102,47 @@ namespace GameDescription
 
 				#endregion
 
-				Cleaner(player, dealer);
-				ContinueGame(player, dealer);
+				player.Clear();
+				dealer.Clear();
+
+				if (GamesLeft == -1 || GamesLeft > 0)
+				{
+					if (GamesLeft == -1)
+					{
+						Console.WriteLine("Continue playing? (\"Yes\" / \"No\")");
+					}
+
+					if (player.IsContinue(GamesLeft) == true && dealer.Cash > 0)
+					{
+						if (GamesLeft != -1)
+						{
+							if (GamesLeft > 0)
+							{
+								GamesLeft--;
+								if (GamesLeft == 0)
+								{
+									break;
+								}
+							}
+						}
+					}
+					else
+					{
+						if (dealer.Cash <= 0 && GamesLeft == -1)
+						{
+							Console.WriteLine("How? Casino never loses, doesn't it?\n");
+						}
+						break;
+					}
+				}
 			}
 		}
 
 		private void CheckWinner(Player player, Dealer dealer)
 		{
-			if (player.PersonStatus == "blackjack") // Blackjack
+			if (player.SumOfAllCards == 21) // Blackjack
 			{
-				if (dealer.PersonStatus == "blackjack")
+				if (dealer.SumOfAllCards == 21)
 				{
 					FindWinner(player, dealer, 0);
 				}
@@ -102,17 +151,17 @@ namespace GameDescription
 					FindWinner(player, dealer, 2);
 				}
 			}
-			else if (player.PersonStatus == "lose" || player.PersonStatus == "surrender")
+			else if (player.SumOfAllCards > 21 || player.SumOfAllCards == 50)
 			{
 				FindWinner(player, dealer, 1);
 			}
 			else
 			{
-				if (dealer.PersonStatus == "lose" || (player.SumOfAllCards() > dealer.SumOfAllCards()))
+				if (dealer.SumOfAllCards > 21 || (player.SumOfAllCards > dealer.SumOfAllCards))
 				{
 					FindWinner(player, dealer, 2);
 				}
-				else if (player.SumOfAllCards() == dealer.SumOfAllCards())
+				else if (player.SumOfAllCards == dealer.SumOfAllCards)
 				{
 					FindWinner(player, dealer, 0);
 				}
@@ -136,7 +185,7 @@ namespace GameDescription
 					dealer.Cash += player.Bet;
 					break;
 				case 2:
-					player.Cash += (int)(2.2 * player.Bet); // выигрыш 6:5
+					player.Cash += (int)(2.2 * player.Bet); // 6:5
 					dealer.Cash -= player.Bet;
 					break;
 				default:
@@ -158,81 +207,6 @@ namespace GameDescription
 						break;
 				}
 			}
-		}
-
-		private void ContinueGame(Player player, Dealer dealer) // к игроку
-		{
-			if (GamesLeft == -1 || GamesLeft > 0)
-			{
-				if (GameIsGoing == "first_game")
-				{
-					if (player.IsContinue() == "Yes")
-					{
-						GameIsGoing = "game_is_on";
-						if (GamesLeft != -1)
-						{
-							GamesLeft--;
-						}
-					}
-					else
-					{
-						GameIsGoing = "stop_game";
-					}
-				}
-				else
-				{
-					if (player.Cash <= 0)
-					{
-						if (GamesLeft == -1)
-						{
-							Console.WriteLine("Your cash is empty, seems you got twisted up in this scene.\n" +
-								"From where you're kneeling it must seem like an 18-carat run of bad luck.\n" +
-								"Truth is... the game was rigged from the start.");
-						}
-
-						GameIsGoing = "stop_game";
-					}
-					else if (dealer.Cash < 0)
-					{
-						if (GamesLeft == -1)
-						{
-							Console.WriteLine("How? Casino never loses, doesn't it?\n");
-						}
-
-						GameIsGoing = "stop_game";
-					}
-					else
-					{
-						if (GamesLeft == -1)
-						{
-							Console.WriteLine("Continue playing? (\"Yes\" / \"No\")");
-						}
-
-						if (player.IsContinue() == "Yes")
-						{
-							GameIsGoing = "game_is_on";
-							if (GamesLeft != -1)
-							{
-								GamesLeft--;
-							}
-						}
-						else
-						{
-							GameIsGoing = "stop_game";
-						}
-					}
-				}
-			}
-			else
-			{
-				GameIsGoing = "stop_game";
-			}
-		}
-
-		private void Cleaner(Player player, Dealer dealer)
-		{
-			player.Clear();
-			dealer.Clear();
 		}
 	}
 }

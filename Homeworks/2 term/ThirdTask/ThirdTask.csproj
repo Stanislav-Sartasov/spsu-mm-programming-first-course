@@ -15,6 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="11.html" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="GameDescription\GameDescription.csproj" />
   </ItemGroup>
 

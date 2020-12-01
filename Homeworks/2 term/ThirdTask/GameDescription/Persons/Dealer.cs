@@ -10,7 +10,7 @@ namespace GameDescription
 		{
 			#region Dealer strategy: while he can - he hits.
 
-			if (SumOfAllCards() >= 17)
+			if (SumOfAllCards >= 17)
 			{
 				InputForAction = "Stand";
 			}
@@ -18,6 +18,7 @@ namespace GameDescription
 			{
 				InputForAction = "Hit";
 			}
+
 			base.Action(pad);
 
 			#endregion

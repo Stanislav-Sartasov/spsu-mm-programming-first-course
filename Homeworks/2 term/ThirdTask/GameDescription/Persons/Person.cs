@@ -7,23 +7,21 @@ namespace GameDescription
 	public abstract class Person // Abstract player.
 	{
 		public int Cash { get; set; }
-		public string PersonStatus { get; set; } // Status of player/dealer
 		public int FirstCard { get; set; }
 		public int SecondCard { get; set; }
 		public int OtherCards { get; set; }
 		protected int NumOfAces { get; set; } // Aces in not main cards; need in sum-function
+		protected virtual string InputForAction { get; set; }
 
-		private static int RandomCard()
-		{
-			var random = new Random();
-			return random.Next(2, 11);
-		}
+		public int StandFlag {get; set;}
+
 		protected void GetCard(Pad pad)
 		{
-			int playerCard = RandomCard();
+			var random = new Random();
+			int playerCard = random.Next(2, 11);
 			while (pad.cards[playerCard] == 0) // Empty card in pad
 			{
-				playerCard = RandomCard();
+				playerCard = random.Next(2, 11);
 			}
 
 			if (FirstCard == 0)
@@ -47,62 +45,79 @@ namespace GameDescription
 			}
 			pad.cards[playerCard]--;
 		}
-		public int SumOfAllCards()
-		{
-			int result = OtherCards;
-			if (FirstCard != 11)
-			{
-				result += FirstCard;
-			}
-			if (SecondCard != 11)
-			{
-				result += SecondCard;
-			}
 
-			if (FirstCard == 11)
+		private int sumOfAllCards; // Using for surrender
+		public int SumOfAllCards
+		{
+			get
 			{
-				if (result + 11 <= 21) // Big Ace
+				if (sumOfAllCards == 50)
 				{
-					result += 11;
-				}
-				else // Little Ace
-				{
-					result += 1;
-				}
-			}
-			if (SecondCard == 11)
-			{
-				if (result + 11 <= 21)
-				{
-					result += 11;
+					return sumOfAllCards;
 				}
 				else
 				{
-					result += 1;
-				}
-			}
+					int result = OtherCards;
+					if (FirstCard != 11)
+					{
+						result += FirstCard;
+					}
+					if (SecondCard != 11)
+					{
+						result += SecondCard;
+					}
 
-			for (int i = 0; i < NumOfAces; i++)
-			{
-				if (result + 11 <= 21)
-				{
-					result += 11;
-				}
-				else if (result + 1 <= 21)
-				{
-					result += 1;
-				}
-				else if (i > 0) // Overshoot
-				{
-					result -= 9;
-				}
-				else // Ovetshoot without aces
-				{
-					result += 1;
+					if (FirstCard == 11)
+					{
+						if (result + 11 <= 21) // Big Ace
+						{
+							result += 11;
+						}
+						else // Little Ace
+						{
+							result += 1;
+						}
+					}
+					if (SecondCard == 11)
+					{
+						if (result + 11 <= 21)
+						{
+							result += 11;
+						}
+						else
+						{
+							result += 1;
+						}
+					}
+
+					for (int i = 0; i < NumOfAces; i++)
+					{
+						if (result + 11 <= 21)
+						{
+							result += 11;
+						}
+						else if (result + 1 <= 21)
+						{
+							result += 1;
+						}
+						else if (i > 0) // Overshoot
+						{
+							result -= 9;
+						}
+						else // Ovetshoot without aces
+						{
+							result += 1;
+						}
+					}
+					return result;
 				}
 			}
-			return result;
+		set
+			{
+				sumOfAllCards = value;
+			}
 		}
+
 
 		public void FirstCardsInitialization(Pad pad)
 		{
@@ -110,10 +125,8 @@ namespace GameDescription
 			{
 				GetCard(pad);
 			}
-			ChangeStatus();
 		}
 
-		protected virtual string InputForAction { get; set; }
 		public virtual void Action(Pad pad)
 		{
 			switch (InputForAction)
@@ -122,42 +135,19 @@ namespace GameDescription
 					GetCard(pad);
 					break;
 				case "Stand":
-					ChangeStatus("stand");
+					StandFlag = 1;
 					break;
-			}
-			ChangeStatus();
-		}
-
-		public void ChangeStatus(string sts = "no_status")
-		{
-			if (sts != "no_status")
-			{
-				PersonStatus = sts; // Stand (17-21 for dealer)/Surrender/BJ with OtherCards
-			}
-			else
-			{
-				if (FirstCard + SecondCard == 21)
-				{
-					PersonStatus = "blackjack"; // BlackJack
-				}
-				else if (SumOfAllCards() > 21)
-				{
-					PersonStatus = "lose"; // Lose (>21)
-				}
-				else if (PersonStatus != "stand")
-				{
-					PersonStatus = "in_game"; // In game (<17 for dealer)
-				}
 			}
 		}
 
 		public virtual void Clear()
 		{
-			PersonStatus = "in_game";
 			FirstCard = 0;
 			SecondCard = 0;
 			OtherCards = 0;
 			NumOfAces = 0;
+			StandFlag = 0;
+			sumOfAllCards = 0;
 		}
 	}
 }

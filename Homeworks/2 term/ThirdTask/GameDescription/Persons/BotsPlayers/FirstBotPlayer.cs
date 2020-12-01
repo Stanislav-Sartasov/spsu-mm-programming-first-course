@@ -17,7 +17,7 @@ namespace GameDescription
 		{
 			#region Stupid bot strategy.
 
-			if (SumOfAllCards() < 20)
+			if (SumOfAllCards < 20)
 			{
 				if (DoubleIsAllowed == 1)
 				{
@@ -38,9 +38,23 @@ namespace GameDescription
 			#endregion
 		}
 
-		public override string IsContinue()
+		public override bool IsContinue(int gamesLeft)
 		{
-			return "Yes";
+			if (gamesLeft > 0)
+			{
+				if (Cash <= 0)
+				{
+					return false;
+				}
+				else
+				{
+					return true;
+				}
+			}
+			else
+			{
+				return false;
+			}
 		}
 	}
 }

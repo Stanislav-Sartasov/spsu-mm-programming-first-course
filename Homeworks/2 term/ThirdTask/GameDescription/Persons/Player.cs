@@ -11,13 +11,15 @@ namespace GameDescription
 		protected int SurrenderIsAllowed { get; set; }
 		protected int DoubleIsAllowed { get; set; }
 		public int Bet { get; set; }
+		public abstract bool IsContinue(int gamesLeft);
+
 		public abstract void MakeBet();
 
 		public override void Action(Pad pad) 
 		{
-			if (SumOfAllCards() == 21)
+			if (SumOfAllCards == 21)
 			{
-				ChangeStatus("blackjack");
+				return;
 			}
 			else
 			{
@@ -38,7 +40,18 @@ namespace GameDescription
 							Cash += sum;
 							Bet -= sum;
 
-							ChangeStatus("surrender");
+							SumOfAllCards = 50;
+						}
+						else if (DoubleIsAllowed != 0 && InputForAction == "Double")
+						{
+							Cash -= Bet;
+							Bet *= 2;
+
+							GetCard(pad);
+
+							StandFlag = 2;
+
+							DoubleIsAllowed = 0;
 						}
 
 						SurrenderIsAllowed = 0;
@@ -50,19 +63,14 @@ namespace GameDescription
 
 						GetCard(pad);
 
-						ChangeStatus("stand");
+						StandFlag = 1;
 
 						DoubleIsAllowed = 0;
 						SurrenderIsAllowed = 0;
 					}
-
-					if (PersonStatus != "surrender")
-					{
-						ChangeStatus();
-					}
 				}
 			}
-		}
+		} 
 
 		public override void Clear()
 		{
@@ -84,6 +92,5 @@ namespace GameDescription
 			DoubleIsAllowed = 1;
 		}
 
-		public abstract string IsContinue();
 	}
 }

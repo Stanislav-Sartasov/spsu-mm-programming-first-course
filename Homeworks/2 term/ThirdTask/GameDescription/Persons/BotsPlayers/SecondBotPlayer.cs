@@ -15,12 +15,12 @@ namespace GameDescription
 		public override void Action(Pad pad)
 		{
 			#region Less stupid bot strategy.
-			
-			if (SumOfAllCards() < 8 || (SumOfAllCards() < 17 && SumOfAllCards() > 11))
+
+			if (SumOfAllCards < 8 || (SumOfAllCards < 17 && SumOfAllCards > 11))
 			{
 				InputForAction = "Hit";
 			}
-			else if (SumOfAllCards() < 12 && SumOfAllCards() > 8) 
+			else if (SumOfAllCards < 12 && SumOfAllCards > 8)
 			{
 				if (DoubleIsAllowed == 1)
 				{
@@ -38,12 +38,26 @@ namespace GameDescription
 
 			base.Action(pad);
 
-			#endregion	
+			#endregion
 		}
 
-		public override string IsContinue()
+		public override bool IsContinue(int gamesLeft)
 		{
-			return "Yes";
+			if (gamesLeft > 0)
+			{
+				if (Cash <= 0)
+				{
+					return false;
+				}
+				else
+				{
+					return true;
+				}
+			}
+			else
+			{
+				return false;
+			}
 		}
 	}
 }
