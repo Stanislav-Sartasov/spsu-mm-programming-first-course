@@ -5,12 +5,13 @@ using System.Threading;
 
 namespace Deanery.System
 {
-    public class DefaultExamSystem : IExamSystem
+    public class DefaultExamSystem : IExamSystem, IHashTable
     {
         private volatile List<(long, long)>[] table;
-        private const int size = 9999;
-        public DefaultExamSystem()
+        private readonly int size;
+        public DefaultExamSystem(int size)
         {
+            this.size = size;
             table = new List<(long, long)>[size];
             for (int i = 0; i < size; i++)
                 table[i] = new List<(long, long)>();
@@ -18,6 +19,10 @@ namespace Deanery.System
         public int GetSizeOfHashTable()
         {
             return size;
+        }
+        public object GetTable()
+        {
+            return table;
         }
 
         private long GetHash(long id)

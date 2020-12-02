@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Deanery.TestEnvironment
@@ -11,22 +12,27 @@ namespace Deanery.TestEnvironment
     public class TestSystem
     {
         IExamSystem systemUnderTest;
+        Random random;
         public const double ConfidenseLevel = 0.95;
         const double confidenseCofficient = 1.96;
 
         public void Initialize(IExamSystem system)
         {
             systemUnderTest = system;
+            random = new Random();
         }
         public void Dispose()
         {
             systemUnderTest = null;
+            random = null;
         }
 
-        private void WarmUp()
+        private void WarmUp(int count)
         {
-            int[] resultsOfRandom = Init(1_000);
-            Task[] users = InitUsers(resultsOfRandom, 1_000);
+            int[] resultsOfRandom = Init(count);
+            (int, int)[] data;
+            data = FillData(count);
+            Task[] users = InitUsers(resultsOfRandom, count, data);
             LaunchTasks(users);
         }
         public List<(int, int, int)> Testing(int iterations)
@@ -36,22 +42,30 @@ namespace Deanery.TestEnvironment
 
             List<(int, int, int)> result = new List<(int, int, int)>();
             int[] amountOfRequests = new int[] { 1_000, 1_000_0, 1_000_00, 1_000_000, 2_000_000 };
+            //int[] amountOfRequests = new int[] { 1_0 };
+            List<(int, int)[]> data = new List<(int, int)[]>();
+            for (int i = 0; i < amountOfRequests.Length; i++)
+            {
+                data.Add(FillData(amountOfRequests[i]));
+            }
 
+            WarmUp(100);
 
-            WarmUp();
-
+            Stopwatch timer = new Stopwatch();
             for (int i = 0; i < amountOfRequests.Length; i++)
             {
                 int amountOfTasks = amountOfRequests[i];
-                Stopwatch timer;
+                
                 List<int> resultsOfLaunches = new List<int>();
-
                 for (int j = 0; j < iterations; j++)
                 {
                     int[] resultsOfRandom = Init(amountOfTasks);
-                    Task[] users = InitUsers(resultsOfRandom, amountOfTasks);
-                    timer = new Stopwatch();
-                    timer.Start();
+                    Task[] users = InitUsers(resultsOfRandom, amountOfTasks, data[i]);
+
+                    GC.Collect();
+                    Thread.Sleep(100);
+
+                    timer.Restart();
                     LaunchTasks(users);
                     timer.Stop();
                     resultsOfLaunches.Add((int)timer.ElapsedMilliseconds);
@@ -63,6 +77,16 @@ namespace Deanery.TestEnvironment
                 result.Add((amountOfTasks, average, marginOfError));
             }
 
+            return result;
+        }
+
+        private (int, int)[] FillData(int amountOfTasks)
+        {
+            (int, int)[] result = new (int, int)[amountOfTasks];
+            for (int i = 0; i < amountOfTasks; i++)
+            {
+                result[i] = (random.Next(), random.Next());
+            }
             return result;
         }
 
@@ -80,24 +104,27 @@ namespace Deanery.TestEnvironment
             return (int)Math.Round(Math.Sqrt(result));
         }
 
-        private Task[] InitUsers(int[] resultsOfRandom, int users)
+        private Task[] InitUsers(int[] resultsOfRandom, int count, (int, int)[] data)
         {
-            Task[] result = new Task[users];
-            Random random = new Random();
-            for (int i = 0; i < users; i++)
-            {
-                int x = resultsOfRandom[i];
-                if (x == 0)
-                    result[i] = new Task(() => {
-                        systemUnderTest.Remove(random.Next(), random.Next());
+            Task[] result = new Task[count];
+            for (int i = 0; i < count; i++)
+            { 
+                int a = data[i].Item1;
+                int b = data[i].Item2;
+                if (resultsOfRandom[i] == 0)
+                    result[i] = new Task(() =>
+                    {
+                        systemUnderTest.Remove(a, b);
                     });
-                else if (x <= 10)
-                    result[i] = new Task(() => {
-                        systemUnderTest.Add(random.Next(), random.Next());
+                else if (resultsOfRandom[i] <= 10)
+                    result[i] = new Task(() =>
+                    {
+                        systemUnderTest.Add(a, b);
                     });
                 else
-                    result[i] = new Task(() => {
-                        systemUnderTest.Contains(random.Next(), random.Next());
+                    result[i] = new Task(() =>
+                    {
+                        systemUnderTest.Contains(a, b);
                     });
             }
             return result;
@@ -106,7 +133,6 @@ namespace Deanery.TestEnvironment
         private int[] Init(int users)
         {
             int[] result = new int[users];
-            Random random = new Random();
             for (int i = 0; i < users; i++)
                 result[i] = random.Next(100);
             return result;

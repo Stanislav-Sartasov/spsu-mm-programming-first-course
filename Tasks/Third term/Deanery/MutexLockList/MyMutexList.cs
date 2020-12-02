@@ -7,7 +7,7 @@ namespace MutexLockList
     public class MyMutexList<T>
     {
         private volatile List<T> data = null;
-        private Mutex mutex;
+        private volatile Mutex mutex;
 
         public MyMutexList()
         {
@@ -18,7 +18,7 @@ namespace MutexLockList
         public void Add(T value)
         {
             mutex.WaitOne();
-
+            
             data.Add(value);
 
             mutex.ReleaseMutex();
@@ -38,6 +38,10 @@ namespace MutexLockList
             int res = data.IndexOf(value);
 
             return res;
+        }
+        public Mutex GetMutex()
+        {
+            return mutex;
         }
     }
 }

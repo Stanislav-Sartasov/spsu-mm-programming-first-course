@@ -5,15 +5,16 @@ using SpinLockList;
 
 namespace Deanery.System
 {
-    public class ListExamSystem : IExamSystem
+    public class ListExamSystem : IExamSystem, IHashTable
     {
         private volatile MySpinLockList<(long, long)>[] table;
-        private const int size = 9999;
-        public ListExamSystem()
+        private readonly int size;
+        public ListExamSystem(int size)
         {
+            this.size = size;
             table = new MySpinLockList<(long, long)>[size + 1];
             for (int i = 1; i < size + 1; i++)
-                table[i] = new MySpinLockList<(long, long)>();
+                table[i] = new MySpinLockList<(long, long)>((i - 1, i - 1));
         }
         public int GetSizeOfHashTable()
         {
@@ -32,15 +33,17 @@ namespace Deanery.System
 
         public bool Contains(long studentId, long courseId)
         {
-            var a = table[GetHash(studentId)].Find((studentId, courseId));
-            if (a != -1)
-                return true;
-            return false;
+            return table[GetHash(studentId)].Contains((studentId, courseId));
         }
 
         public void Remove(long studentId, long courseId)
         {
             table[GetHash(studentId)].Remove((studentId, courseId));
+        }
+
+        public object GetTable()
+        {
+            return table;
         }
     }
 }

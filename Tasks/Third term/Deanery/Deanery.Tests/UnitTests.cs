@@ -9,12 +9,38 @@ using SpinLockList;
 namespace Deanery.Tests
 {
     [TestClass]
-    public class SystemTest
+    public class UnitTests
     {
+        // I suspect that only one mutex is being created for all lists
+
+        // Result:
+        // Idk how, but it looks like the truth, naming each mutex solved the speed problem
+        [TestMethod]
+        public void TestMutexs()
+        {
+            MyMutexList<int>[] table = new MyMutexList<int>[2] { new MyMutexList<int>(), new MyMutexList<int>() };
+
+            Assert.AreNotEqual(table[0].GetMutex(), table[1].GetMutex());
+        }
+
+        // too long test, cause of size is 9999
+        //[TestMethod]
+        //public void TestMutexTable()
+        //{
+        //    IHashTable mySystem = new MutexExamSystem();
+        //    MyMutexList<(long, long)>[] table = (MyMutexList<(long, long)>[])mySystem.GetTable();
+
+        //    for (int i = 0; i < table.Length; i++)
+        //    {
+        //        for (int j = i + 1; j < table.Length; j++)
+        //            Assert.AreNotEqual(table[i].GetMutex(), table[j].GetMutex());
+        //    }
+        //}
+
         [TestMethod]
         public void TestMySpinLockList()
         {
-            MySpinLockList<int> myList = new MySpinLockList<int>();
+            MySpinLockList<int> myList = new MySpinLockList<int>(-1);
             myList.Add(1);
             myList.Add(2);
             myList.Add(3);
@@ -69,7 +95,7 @@ namespace Deanery.Tests
         [TestMethod]
         public void TestListExamSystem()
         {
-            IExamSystem mySystem = new ListExamSystem();
+            IExamSystem mySystem = new ListExamSystem(9999);
             mySystem.Add(1, 1);
             mySystem.Add(2, 2);
             mySystem.Add(3, 1);
@@ -104,7 +130,7 @@ namespace Deanery.Tests
         [TestMethod]
         public void TestMutexExamSystem()
         {
-            IExamSystem mySystem = new MutexExamSystem();
+            IExamSystem mySystem = new MutexExamSystem(9999);
             mySystem.Add(1, 1);
             mySystem.Add(2, 2);
             mySystem.Add(3, 1);

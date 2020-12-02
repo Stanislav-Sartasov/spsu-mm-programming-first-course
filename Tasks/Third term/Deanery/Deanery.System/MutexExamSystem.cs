@@ -6,12 +6,13 @@ using System.Text;
 
 namespace Deanery.System
 {
-    public class MutexExamSystem : IExamSystem
+    public class MutexExamSystem : IExamSystem, IHashTable
     {
         private volatile MyMutexList<(long, long)>[] table;
-        private const int size = 9999;
-        public MutexExamSystem()
+        private readonly int size;
+        public MutexExamSystem(int size)
         {
+            this.size = size;
             table = new MyMutexList<(long, long)>[size];
             for (int i = 0; i < size; i++)
                 table[i] = new MyMutexList<(long, long)>();
@@ -19,6 +20,10 @@ namespace Deanery.System
         public int GetSizeOfHashTable()
         {
             return size;
+        }
+        public object GetTable()
+        {
+            return table;
         }
 
         private long GetHash(long id)

@@ -15,35 +15,36 @@ namespace Deanery
         static void Main(string[] args)
         {
             IExamSystem system;
+            int size = 9999;
             TestSystem tsys = new TestSystem();
-            List<(int, int, int)> results = new List<(int, int, int)>();
-            int iterations = 100;
+            List<(int, int, int)> results;
+            int iterations = 10;
             Console.WriteLine($"Testing system at {iterations} iterations");
 
-            system = new ListExamSystem();
+            system = new ListExamSystem(size);
             tsys.Initialize(system);
             results = tsys.Testing(iterations);
-            Console.WriteLine($"List exam system size of table - {system.GetSizeOfHashTable()}:");
+            Console.WriteLine($"List exam system (size of table - {size}):");
             for (int i = 0; i < results.Count; i++)
                 Print(results[i].Item1, results[i].Item2, results[i].Item3);
             tsys.Dispose();
 
             Console.WriteLine("***************");
 
-            system = new DefaultExamSystem();
+            system = new DefaultExamSystem(size);
             tsys.Initialize(system);
             results = tsys.Testing(iterations);
-            Console.WriteLine($"Default exam system size of table - {system.GetSizeOfHashTable()}:");
+            Console.WriteLine($"Default exam system (size of table - {size}):");
             for (int i = 0; i < results.Count; i++)
                 Print(results[i].Item1, results[i].Item2, results[i].Item3);
             tsys.Dispose();
 
             Console.WriteLine("***************");
 
-            system = new MutexExamSystem();
+            system = new MutexExamSystem(size);
             tsys.Initialize(system);
             results = tsys.Testing(iterations);
-            Console.WriteLine($"Mutex exam system size of table - {system.GetSizeOfHashTable()}:");
+            Console.WriteLine($"Mutex exam system (size of table - {size}):");
             for (int i = 0; i < results.Count; i++)
                 Print(results[i].Item1, results[i].Item2, results[i].Item3);
             tsys.Dispose();
