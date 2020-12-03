@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using ArrayGeneration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TaskMPI_Qsort.Tests
@@ -18,6 +19,7 @@ namespace TaskMPI_Qsort.Tests
         static string input = "input.dat";
         public void Initialize(int proc)
         {
+            Creation.Generate(appPath);
             Process cmd = new Process();
             cmd.StartInfo.FileName = "cmd.exe";
             cmd.StartInfo.RedirectStandardInput = true;
