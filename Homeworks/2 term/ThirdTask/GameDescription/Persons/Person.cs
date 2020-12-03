@@ -12,39 +12,7 @@ namespace GameDescription
 		public int OtherCards { get; set; }
 		protected int NumOfAces { get; set; } // Aces in not main cards; need in sum-function
 		protected virtual string InputForAction { get; set; }
-
 		public int StandFlag {get; set;}
-
-		protected void GetCard(Pad pad)
-		{
-			var random = new Random();
-			int playerCard = random.Next(2, 11);
-			while (pad.cards[playerCard] == 0) // Empty card in pad
-			{
-				playerCard = random.Next(2, 11);
-			}
-
-			if (FirstCard == 0)
-			{
-				FirstCard = playerCard;
-			}
-			else if (SecondCard == 0)
-			{
-				SecondCard = playerCard;
-			}
-			else
-			{
-				if (playerCard == 11)
-				{
-					NumOfAces++;
-				}
-				else
-				{
-					OtherCards += playerCard;
-				}
-			}
-			pad.cards[playerCard]--;
-		}
 
 		private int sumOfAllCards; // Using for surrender
 		public int SumOfAllCards
@@ -118,7 +86,56 @@ namespace GameDescription
 			}
 		}
 
+		protected void GetCard(Pad pad)
+		{
+			var random = new Random();
+			int playerCard = random.Next(2, 14);
+			while (pad.Cards[playerCard] == 0) // Empty card in pad
+			{
+				playerCard = random.Next(2, 14);
+			}
 
+			if (FirstCard == 0)
+			{
+				if (playerCard > 11) // J/Q/K
+				{
+					FirstCard = 10;
+				}
+				else
+				{
+					FirstCard = playerCard;
+				}
+			}
+			else if (SecondCard == 0)
+			{
+				if (playerCard > 11)
+				{
+					SecondCard = 10;
+				}
+				else
+				{
+					SecondCard = playerCard;
+				}
+			}
+			else
+			{
+				if (playerCard > 11)
+				{
+					OtherCards += 10;
+				}
+				else if (playerCard == 11)
+				{
+					NumOfAces++;
+				}
+				else
+				{
+					OtherCards += playerCard;
+				}
+			}
+
+			pad.Cards[playerCard]--;
+			pad.Update(); // Checking if too few cards left; can happen during any card distribution 
+		}
 		public void FirstCardsInitialization(Pad pad)
 		{
 			for (int i = 0; i < 2; i++)

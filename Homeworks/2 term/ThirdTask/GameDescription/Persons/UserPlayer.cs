@@ -38,11 +38,7 @@ namespace GameDescription
 
 		public override void Action(Pad pad)
 		{
-			if (SumOfAllCards == 21)
-			{
-				Console.WriteLine($"Sum of all cards is {SumOfAllCards}");
-			}
-			else
+			if (SumOfAllCards != 21)
 			{
 				int chs = 0;
 				if (SurrenderIsAllowed != 0)
@@ -106,7 +102,11 @@ namespace GameDescription
 			while (input != "Yes" && input != "No")
 			{
 				input = Console.ReadLine();
-				break;
+
+				if (input == "Yes" || input == "No")
+				{
+					break;
+				}
 			}
 
 			if (Cash <= 0)

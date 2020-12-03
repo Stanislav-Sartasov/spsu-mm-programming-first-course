@@ -18,8 +18,6 @@ namespace GameDescription
 		private int GamesLeft { get; set; } = -1; // Negative if player is user (using for output)
 		public void Start(Player player, int numOfGames = 0)
 		{
-			var dealer = new Dealer();
-
 			if (numOfGames != 0)
 			{
 				GamesLeft = numOfGames;
@@ -29,6 +27,9 @@ namespace GameDescription
 			{
 				Console.WriteLine($"Welcome to blackjack!\nYour cash: {player.Cash}.\nDo you want to play? (\"Yes\" / \"No\")");
 			}
+
+			var dealer = new Dealer();
+			var pad = new Pad();
 
 			if (GamesLeft == -1 || GamesLeft > 0)
 			{
@@ -51,8 +52,6 @@ namespace GameDescription
 
 			while(true)
 			{
-				var pad = new Pad();
-
 				player.MakeBet(); // Bet
 
 				#region CardsInitialization
@@ -68,9 +67,15 @@ namespace GameDescription
 
 				#region GameProcess
 
+				if (player.SumOfAllCards == 21 && GamesLeft == -1) // Player's blackjack on cards distribution
+				{
+					Console.WriteLine($"Sum of all your cards is {player.SumOfAllCards}!");
+				}
+
 				if (player.SumOfAllCards == 21 && dealer.SecondCard < 10)
 				{
-					CheckWinner(player, dealer); // BlackJack
+					
+					CheckWinner(player, dealer); // Player's win
 				}
 				else
 				{
@@ -78,9 +83,19 @@ namespace GameDescription
 					{
 						player.Action(pad);
 
-						if (player.StandFlag != 1 && player.SumOfAllCards != 50 && player.SumOfAllCards < 21 && GamesLeft == -1)
+						if (GamesLeft == -1 && player.StandFlag != 1 && player.SumOfAllCards != 50)
 						{
-							Console.WriteLine($"Your first two cards: {player.FirstCard}, {player.SecondCard}; your other cards sum: {player.OtherCards}");
+							Console.WriteLine($"Your first two cards: {player.FirstCard}, {player.SecondCard}; your other cards sum: {player.OtherCards}.");
+
+							if (player.SumOfAllCards > 21)
+							{
+								Console.WriteLine("Overshoot!");
+							}
+							
+							if (player.SumOfAllCards == 21)
+							{
+								Console.WriteLine($"Sum of all your cards is {player.SumOfAllCards}!");
+							}
 						}
 					}
 

@@ -11,9 +11,9 @@ namespace GameDescription
 		protected int SurrenderIsAllowed { get; set; }
 		protected int DoubleIsAllowed { get; set; }
 		public int Bet { get; set; }
-		public abstract bool IsContinue(int gamesLeft);
-
+		
 		public abstract void MakeBet();
+		public abstract bool IsContinue(int gamesLeft);
 
 		public override void Action(Pad pad) 
 		{
