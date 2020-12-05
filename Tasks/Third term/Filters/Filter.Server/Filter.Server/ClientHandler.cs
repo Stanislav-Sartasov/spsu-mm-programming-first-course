@@ -1,5 +1,5 @@
 ﻿using Filter.Filtering;
-using Filter.MagicConst;
+using Filter.AdditionLib;
 
 using System;
 using System.Collections.Generic;
@@ -79,15 +79,21 @@ namespace Filter.Server
             }
             catch (Exception ex)
             {
-                Console.Write(name + " said: " + ex.Message);
+                //Console.Write(name + " said at listen: " + ex.Message);
             }
             finally
             {
-                Console.WriteLine("Disconnection " + name);
+                Console.WriteLine("Finally: disconnection " + name);
                 if (stream != null)
+                { 
                     stream.Close();
+                    stream.Dispose();
+                }
                 if (client != null)
+                {
                     client.Close();
+                    client.Dispose();
+                }
             }
         }
 
@@ -126,10 +132,11 @@ namespace Filter.Server
 
         private void SendResult(byte[] result)
         {
+            NetworkStream stream = null;
             try
             {
-                NetworkStream stream = null;
-                stream = client.GetStream();
+                if (client != null)
+                    stream = client.GetStream();
                 byte[] buffer = new byte[1 + result.Length];
                 buffer[0] = (byte)Protocol.Image;
                 for (int i = 0; i < result.Length; i++)
@@ -139,30 +146,43 @@ namespace Filter.Server
                 List<byte> sendBytes = new List<byte>();
                 sendBytes.AddRange(BitConverter.GetBytes(len));
                 sendBytes.AddRange(buffer);
-                stream.Write(sendBytes.ToArray(), 0, len);
+                if (stream != null && client != null)
+                    stream.Write(sendBytes.ToArray(), 0, len);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(name + " said: " + ex.Message);
+                //Console.WriteLine(name + " said at send result: " + ex.Message);
+                //Console.WriteLine("SendResult: disconnection " + name);
+                //if (stream != null)
+                //    stream.Close();
+                //if (client != null)
+                //    client.Close();
             }
         }
 
         private void SendProgress(int v)
         {
+            NetworkStream stream = null;
             try
             {
-                NetworkStream stream = null;
-                stream = client.GetStream();
+                if (client != null)
+                    stream = client.GetStream();
                 byte[] buffer = new byte[2] { (byte)Protocol.Progress, (byte)v }; // 0 <= progress <= 100
                 int len = 4 + buffer.Length;
                 List<byte> sendBytes = new List<byte>();
                 sendBytes.AddRange(BitConverter.GetBytes(len));
                 sendBytes.AddRange(buffer);
-                stream.Write(sendBytes.ToArray(), 0, len);
+                if (stream != null && client != null)
+                    stream.Write(sendBytes.ToArray(), 0, len);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(name + " said: " + ex.Message);
+                //Console.WriteLine(name + " said at send progress: " + ex.Message);
+                //Console.WriteLine("Send progress: disconnection " + name);
+                //if (stream != null)
+                //    stream.Close();
+                //if (client != null)
+                //    client.Close();
             }
         }
 

@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filter.Server", "Filter.Ser
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filter.Filtering", "Filter.Filtering\Filter.Filtering.csproj", "{9C9FF450-E3D5-4C4C-9767-E7DF4FAE8230}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filter.MagicConst", "..\Filter.MagicConst\Filter.MagicConst.csproj", "{61E9653C-1407-4E2C-99D3-D5BEF69CE769}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filter.AdditionLib", "..\Filter.AdditionLib\Filter.AdditionLib.csproj", "{01513DC0-1CEC-4363-B45A-7D8E4AF85DB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{9C9FF450-E3D5-4C4C-9767-E7DF4FAE8230}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C9FF450-E3D5-4C4C-9767-E7DF4FAE8230}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C9FF450-E3D5-4C4C-9767-E7DF4FAE8230}.Release|Any CPU.Build.0 = Release|Any CPU
-		{61E9653C-1407-4E2C-99D3-D5BEF69CE769}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{61E9653C-1407-4E2C-99D3-D5BEF69CE769}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{61E9653C-1407-4E2C-99D3-D5BEF69CE769}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{61E9653C-1407-4E2C-99D3-D5BEF69CE769}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01513DC0-1CEC-4363-B45A-7D8E4AF85DB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01513DC0-1CEC-4363-B45A-7D8E4AF85DB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01513DC0-1CEC-4363-B45A-7D8E4AF85DB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01513DC0-1CEC-4363-B45A-7D8E4AF85DB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

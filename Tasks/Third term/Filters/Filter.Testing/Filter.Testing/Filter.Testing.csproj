@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Filter.AdditionLib\Filter.AdditionLib.csproj" />
-    <ProjectReference Include="..\Filter.Filtering\Filter.Filtering.csproj" />
   </ItemGroup>
 
 </Project>

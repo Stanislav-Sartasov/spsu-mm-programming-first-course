@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Filter.MagicConst
+namespace Filter.AdditionLib
 {
     // в начале каждого сообщения первые 4 байта - длина сообщения, включая первые 4 байта
 

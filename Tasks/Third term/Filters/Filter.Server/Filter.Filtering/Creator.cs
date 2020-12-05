@@ -29,14 +29,15 @@ namespace Filter.Filtering
                 {
                     line = line.Trim();
                     if (line[0] != '/')
-                        filters.Add(line);
+                        if (allFilters.Contains(line))
+                            filters.Add(line);
                     line = file.ReadLine();
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("***");
-                Console.WriteLine(ex);
+                Console.WriteLine("File does not exist or could not be opened");
                 Console.WriteLine("Applying standard filters");
                 Console.WriteLine("***");
                 filters.AddRange(allFilters);
