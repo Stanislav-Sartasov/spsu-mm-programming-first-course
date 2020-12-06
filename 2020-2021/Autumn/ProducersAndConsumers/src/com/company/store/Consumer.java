@@ -1,20 +1,18 @@
 package com.company.store;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class Consumer<E> extends Thread {
     private final Store<E> store;
-    private final AtomicBoolean running = new AtomicBoolean(false);
+    private Boolean running = false;
 
     public Consumer(Store<E> s) {
         store = s;
     }
 
     public void run() {
-        running.set(true);
-        while (running.get()) {
+        running = true;
+        while (running) {
             boolean fl = true;
-            while (fl && running.get()) {
+            while (fl && running) {
                 fl = store.get();
                 try {
                     sleep(10);
@@ -31,6 +29,6 @@ public class Consumer<E> extends Thread {
     }
 
     public void stopConsumer() {
-        running.set(false);
+        running = false;
     }
 }

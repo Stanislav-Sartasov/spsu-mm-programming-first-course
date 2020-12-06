@@ -1,6 +1,5 @@
 package com.company.store;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +11,9 @@ public class Store<E> {
     private final List<E> objects;
 
     public List<E> getObjects() {
-        return objects;
+        synchronized (objects) {
+            return objects;
+        }
     }
 
     public Store() {
