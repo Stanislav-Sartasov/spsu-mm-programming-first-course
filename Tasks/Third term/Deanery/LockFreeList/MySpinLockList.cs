@@ -8,7 +8,6 @@ namespace SpinLockList
     public class MySpinLockList<T>
     {
         private volatile MySpinLockListNode<T> first = null;
-        private const int timeToSleep = 0;
 
         public MySpinLockList(T value)
         {
@@ -19,12 +18,11 @@ namespace SpinLockList
         {
             MySpinLockListNode<T> temp = new MySpinLockListNode<T>(value);
 
-            while (Interlocked.CompareExchange(ref first.IsUsing, 1, 0) == 1)
-            { Thread.Sleep(timeToSleep); }
+            first.Lock();
 
             temp.Next = first.Next;
             first.Next = temp;
-            Interlocked.Exchange(ref first.IsUsing, 0);
+            first.Unlock();
         }
 
         public int Find(T value)
@@ -70,20 +68,18 @@ namespace SpinLockList
                 return;
 
             MySpinLockListNode<T> secondToRemove;
-            while (Interlocked.CompareExchange(ref firstToRemove.IsUsing, 1, 0) == 1)
-            { Thread.Sleep(timeToSleep); }
+            firstToRemove.Lock();
 
             secondToRemove = firstToRemove;
-
-            while (Interlocked.CompareExchange(ref secondToRemove.Next.IsUsing, 1, 0) == 1)
-            { Thread.Sleep(timeToSleep); }
-
             firstToRemove = secondToRemove.Next;
+
+            firstToRemove.Lock();
+
             if (firstToRemove.Value.Equals(value))
             {
                 secondToRemove.Next = firstToRemove.Next;
                 firstToRemove.Dispose();
-                secondToRemove.IsUsing = 0;
+                secondToRemove.Unlock();
             }
         }
     }
