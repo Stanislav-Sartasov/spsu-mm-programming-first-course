@@ -6,16 +6,16 @@ namespace GameDescription
 {
 	public abstract class Person // Abstract player.
 	{
-		public int Cash { get; set; }
-		public int FirstCard { get; set; }
-		public int SecondCard { get; set; }
-		public int OtherCards { get; set; }
-		protected int NumOfAces { get; set; } // Aces in not main cards; need in sum-function
-		protected virtual string InputForAction { get; set; }
-		public int StandFlag {get; set;}
+		public int Cash { get; internal set; } // Using in unit tests
+		internal int FirstCard { get; set; }
+		internal int SecondCard { get; set; }
+		internal int OtherCards { get; set; }
+		private int NumOfAces { get; set; } // Aces in not main cards; need in sum-function
+		protected string InputForAction { get; set; }
+		internal int StandFlag {get; set;}
 
 		private int sumOfAllCards; // Using for surrender
-		public int SumOfAllCards
+		internal int SumOfAllCards
 		{
 			get
 			{
@@ -136,7 +136,7 @@ namespace GameDescription
 			pad.Cards[playerCard]--;
 			pad.Update(); // Checking if too few cards left; can happen during any card distribution 
 		}
-		public void FirstCardsInitialization(Pad pad)
+		internal void FirstCardsInitialization(Pad pad)
 		{
 			for (int i = 0; i < 2; i++)
 			{
@@ -144,7 +144,7 @@ namespace GameDescription
 			}
 		}
 
-		public virtual void Action(Pad pad)
+		internal virtual void Action(Pad pad)
 		{
 			switch (InputForAction)
 			{
@@ -157,7 +157,7 @@ namespace GameDescription
 			}
 		}
 
-		public virtual void Clear()
+		internal virtual void Clear()
 		{
 			FirstCard = 0;
 			SecondCard = 0;

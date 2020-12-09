@@ -6,7 +6,7 @@ namespace GameDescription
 {
 	public class Dealer : Person
 	{
-		public override void Action(Pad pad)
+		internal override void Action(Pad pad)
 		{
 			#region Dealer strategy: while he can - he hits.
 
@@ -24,7 +24,7 @@ namespace GameDescription
 			#endregion
 		}
 		
-		public Dealer() : base()
+		internal Dealer() : base()
 		{
 			Cash = 10000;
 		}

@@ -6,7 +6,7 @@ namespace GameDescription
 {
 	public class UserPlayer : Player
 	{
-		public override void MakeBet()
+		internal override void MakeBet()
 		{
 			Console.WriteLine("Make your bet.");
 			while (Bet <= 0)
@@ -36,7 +36,7 @@ namespace GameDescription
 			}
 		}
 
-		public override void Action(Pad pad)
+		internal override void Action(Pad pad)
 		{
 			if (SumOfAllCards != 21)
 			{
@@ -96,7 +96,7 @@ namespace GameDescription
 			base.Action(pad);
 		}
 
-		public override bool IsContinue(int gamesLeft = -1)
+		internal override bool IsContinue(int gamesLeft = -1)
 		{
 			string input = "";
 			while (input != "Yes" && input != "No")

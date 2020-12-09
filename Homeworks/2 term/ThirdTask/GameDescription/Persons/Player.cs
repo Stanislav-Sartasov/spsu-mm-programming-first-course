@@ -7,15 +7,14 @@ namespace GameDescription
 {
 	public abstract class Player : Person
 	{
-		protected Player SecondHand { get; set; }
 		protected int SurrenderIsAllowed { get; set; }
 		protected int DoubleIsAllowed { get; set; }
-		public int Bet { get; set; }
+		internal int Bet { get; set; }
 		
-		public abstract void MakeBet();
-		public abstract bool IsContinue(int gamesLeft);
+		internal abstract void MakeBet();
+		internal abstract bool IsContinue(int gamesLeft);
 
-		public override void Action(Pad pad) 
+		internal override void Action(Pad pad) 
 		{
 			if (SumOfAllCards == 21)
 			{
@@ -70,9 +69,9 @@ namespace GameDescription
 					}
 				}
 			}
-		} 
+		}
 
-		public override void Clear()
+		internal override void Clear()
 		{
 			base.Clear();
 			Bet = 0;
@@ -81,12 +80,10 @@ namespace GameDescription
 			DoubleIsAllowed = 1;
 		}
 
-		public Player() : base()
+		protected Player() : base()
 		{
 			Cash = 500;
 			Bet = 0;
-
-			SecondHand = null;
 
 			SurrenderIsAllowed = 1;
 			DoubleIsAllowed = 1;

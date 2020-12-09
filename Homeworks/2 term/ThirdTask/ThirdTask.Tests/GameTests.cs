@@ -14,8 +14,9 @@ namespace ThirdTask.Tests
 			var bot = new FirstBotPlayer();
 			var game = new Game();
 
-			game.Start(bot, 400);
+			ShowCash(bot);
 
+			game.Start(bot, 400);
 			ShowCash(bot);
 		}
 
@@ -25,12 +26,13 @@ namespace ThirdTask.Tests
 			var bot = new SecondBotPlayer();
 			var game = new Game();
 
-			game.Start(bot, 400);
+			ShowCash(bot);
 
+			game.Start(bot, 400);
 			ShowCash(bot);
 		}
 
-		public static void ShowCash(Player player)
+		private static void ShowCash(Player player)
 		{
 			Assert.IsNotNull(player.Cash);
 			if (player.Cash > 0)

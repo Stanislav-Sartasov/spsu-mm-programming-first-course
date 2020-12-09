@@ -6,9 +6,9 @@ namespace GameDescription
 {
 	public class Pad
 	{
-		public int[] Cards { get; private set; } // Last three cards are Jack, Queen and King; their values are 10; the order doesn't matter; ace is signed as 11
+		internal int[] Cards { get; set; } // Last three cards are Jack, Queen and King; their values are 10; the order doesn't matter; ace is signed as 11
 
-		public void Update()
+		internal void Update()
 		{
 			int i = 2;
 			while (i < 15)
@@ -30,7 +30,7 @@ namespace GameDescription
 			}
 		}
 
-		public Pad()
+		internal Pad()
 		{
 			Cards = new int[15] { 0, 0, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32 }; // Creating pad for the first time
 		}

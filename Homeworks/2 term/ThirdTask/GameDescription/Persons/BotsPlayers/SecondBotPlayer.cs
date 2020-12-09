@@ -6,13 +6,13 @@ namespace GameDescription
 {
 	public class SecondBotPlayer : Player
 	{
-		public override void MakeBet()
+		internal override void MakeBet()
 		{
 			Bet = 25;
 			Cash -= Bet;
 		}
 
-		public override void Action(Pad pad)
+		internal override void Action(Pad pad)
 		{
 			#region Less stupid bot strategy.
 
@@ -41,7 +41,7 @@ namespace GameDescription
 			#endregion
 		}
 
-		public override bool IsContinue(int gamesLeft)
+		internal override bool IsContinue(int gamesLeft)
 		{
 			if (gamesLeft > 0)
 			{
