@@ -2,24 +2,16 @@ package com.company.store;
 
 public class Consumer<E> extends Thread {
     private final Store<E> store;
-    private Boolean running = false;
+    private volatile boolean running;
 
     public Consumer(Store<E> s) {
         store = s;
+        running = true;
     }
 
     public void run() {
-        running = true;
         while (running) {
-            boolean fl = true;
-            while (fl && running) {
-                fl = store.get();
-                try {
-                    sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+            store.get();
             try {
                 sleep(1000);
             } catch (InterruptedException e) {

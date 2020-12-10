@@ -3,7 +3,7 @@ package com.company.store;
 public class Producer<E> extends Thread {
     private final Store<E> store;
     private final E object;
-    private boolean running;
+    private volatile boolean running;
 
     public Producer(Store<E> s, E obj) {
         store = s;

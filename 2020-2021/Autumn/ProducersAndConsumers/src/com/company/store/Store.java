@@ -9,6 +9,7 @@ public class Store<E> {
     Producer<E>[] producers;
     Consumer<E>[] consumers;
     private final List<E> objects;
+    private volatile boolean running;
 
     public List<E> getObjects() {
         synchronized (objects) {
@@ -17,22 +18,32 @@ public class Store<E> {
     }
 
     public Store() {
+        producers = new Producer[0];
+        consumers = new Consumer[0];
         objects = new ArrayList<>();
+        running = true;
     }
 
-    public boolean get() {
+    public void get() {
         synchronized (objects) {
-            if (objects.isEmpty())
-                return true;
-            System.out.printf("[ %s ] - Get an object %s.%n", currentThread().getName(), objects.get(0));
-            objects.remove(0);
-            return false;
+            while (objects.isEmpty() && running) {
+                try {
+                    objects.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (running) {
+                System.out.printf("[ %s ] - Get an object %s.%n", currentThread().getName(), objects.get(0));
+                objects.remove(0);
+            }
         }
     }
 
     public void put(E obj) {
         synchronized (objects) {
             objects.add(obj);
+            objects.notify();
             System.out.printf("[ %s ] + Put an object %s.%n", currentThread().getName(), obj);
         }
     }
@@ -47,6 +58,10 @@ public class Store<E> {
     }
 
     public void stop() {
+        synchronized (objects) {
+            running = false;
+            objects.notifyAll();
+        }
         for (Producer<E> p: producers)
             p.stopProducer();
         for (Consumer<E> c: consumers)

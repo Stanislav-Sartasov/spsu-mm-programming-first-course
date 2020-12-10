@@ -29,14 +29,36 @@ class StoreTest {
     void getExisting() {
         store.put(5);
         expected.add(5);
-        assertFalse(store.get());
 
+        store.get();
         expected.remove(0);
         assertEquals(expected, store.getObjects());
     }
 
     @Test
+    void testTwoThreads() {
+        Thread getThread = new Thread(() -> store.get());
+        getThread.start();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            assertTrue(false);
+        }
+        Thread putThread = new Thread(() -> store.put(1));
+        putThread.start();
+        assertEquals(expected, store.getObjects());
+    }
+
+    @Test
     void getNonExisting() {
-        assertTrue(store.get());
+        Thread getThread = new Thread(() -> store.get());
+        getThread.start();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            assertTrue(false);
+        }
+        store.stop();
+        assertEquals(expected, store.getObjects());
     }
 }
