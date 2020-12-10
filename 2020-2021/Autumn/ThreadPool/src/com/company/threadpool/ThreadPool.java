@@ -1,12 +1,12 @@
 package com.company.threadpool;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ThreadPool implements AutoCloseable {
-    private final Queue<Runnable> workQueue = new ConcurrentLinkedQueue<>();
+    private final Queue<Runnable> workQueue = new ArrayDeque<>();
     private final List<Thread> threads;
     private volatile boolean finished = false;
 
@@ -28,14 +28,20 @@ public class ThreadPool implements AutoCloseable {
     }
 
     public void enqueue(Runnable command) {
-        if (!finished) {
-            workQueue.offer(command);
+        synchronized (workQueue) {
+            if (!finished) {
+                workQueue.offer(command);
+                workQueue.notify();
+            }
         }
     }
 
     @Override
     public void close() {
         finished = true;
+        synchronized (workQueue) {
+            workQueue.notifyAll();
+        }
         for (Thread thread : threads) {
             try {
                 thread.join();
@@ -50,11 +56,22 @@ public class ThreadPool implements AutoCloseable {
         @Override
         public void run() {
             while (true) {
-                Runnable nextTask = workQueue.poll();
+                Runnable nextTask;
+                synchronized (workQueue) {
+                    nextTask= workQueue.poll();
+                }
                 if (nextTask != null) {
                     nextTask.run();
                 } else if (finished) {
                     return;
+                } else {
+                    synchronized (workQueue) {
+                        try {
+                            workQueue.wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
         }
