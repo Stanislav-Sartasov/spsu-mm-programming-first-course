@@ -50,6 +50,76 @@ namespace LocksContinued.Skiplists
             }
         }
 
+        bool Find(T x, Node<T>[] preds, Node<T>[] succs)
+        {
+            int key = x.GetHashCode();
+            bool marked = false;
+            bool snip;
+            Node<T> pred = null, curr = null, succ = null;
+        retry:
+            while (true)
+            {
+                pred = head;
+                for (int level = MAX_LEVEL; level >= 0; level--)
+                {
+                    curr = pred.Next[level].GetReference();
+                    while (true)
+                    {
+                        succ = curr.Next[level].Get(out marked);
+                        while (marked)
+                        {
+                            snip = pred.Next[level].CompareAndSet(curr, succ, false, false);
+                            if (!snip) goto retry;
+                            curr = pred.Next[level].GetReference();
+                            succ = curr.Next[level].Get(out marked);
+                        }
+                        if (curr.Key < key)
+                        {
+                            pred = curr; curr = succ;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    preds[level] = pred;
+                    succs[level] = curr;
+                }
+                return (curr.Key == key);
+            }
+        }
+
+        public bool Contains(T x)
+        {
+            int v = x.GetHashCode();
+            bool marked = false;
+            Node<T> pred = head, curr = null, succ = null;
+            for (int level = MAX_LEVEL; level >= 0; level--)
+            {
+                curr = pred.Next[level].GetReference();
+                while (true)
+                {
+                    succ = curr.Next[level].Get(out marked);
+                    while (marked)
+                    {
+                        //curr = pred.Next[level].GetReference();
+                        succ = curr.Next[level].Get(out marked);
+
+                    }
+                    if (curr.Key < v)
+                    {
+                        pred = curr;
+                        curr = succ;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            return (curr.Key == v);
+        }
+
         public bool Add(T x)
         {
             int topLevel = new Random().Next(0, MAX_LEVEL);
@@ -137,74 +207,6 @@ namespace LocksContinued.Skiplists
             }
         }
 
-        bool Find(T x, Node<T>[] preds, Node<T>[] succs)
-        {
-            int key = x.GetHashCode();
-            bool marked = false;
-            bool snip;
-            Node<T> pred = null, curr = null, succ = null;
-            retry:
-            while (true)
-            {
-                pred = head;
-                for (int level = MAX_LEVEL; level >= 0; level--)
-                {
-                    curr = pred.Next[level].GetReference();
-                    while (true)
-                    {
-                        succ = curr.Next[level].Get(out marked);
-                        while (marked)
-                        {
-                            snip = pred.Next[level].CompareAndSet(curr, succ, false, false);
-                            if (!snip) goto retry;
-                            curr = pred.Next[level].GetReference();
-                            succ = curr.Next[level].Get(out marked);
-                        }
-                        if (curr.Key < key)
-                        {
-                            pred = curr; curr = succ;
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                    preds[level] = pred;
-                    succs[level] = curr;
-                }
-                return (curr.Key == key);
-            }
-        }
-
-        public bool Contains(T x)
-        {
-            int v = x.GetHashCode();
-            bool marked = false;
-            Node<T> pred = head, curr = null, succ = null;
-            for (int level = MAX_LEVEL; level >= 0; level--)
-            {
-                curr = pred.Next[level].GetReference();
-                while (true)
-                {
-                    succ = curr.Next[level].Get(out marked);
-                    while (marked)
-                    {
-                        curr = pred.Next[level].GetReference();
-                        succ = curr.Next[level].Get(out marked);
-
-                    }
-                    if (curr.Key < v)
-                    {
-                        pred = curr;
-                        curr = succ;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-            }
-            return (curr.Key == v);
-        }
+        
     }
 }

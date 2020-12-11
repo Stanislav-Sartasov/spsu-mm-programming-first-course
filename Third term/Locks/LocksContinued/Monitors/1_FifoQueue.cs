@@ -22,7 +22,7 @@ namespace LocksContinued.Monitors
             Monitor.Enter(sync);
             try
             {
-                while (count == items.Length)
+                while (count == items.Length) // condition variable
                     Monitor.Wait(sync);
                 items[tail] = x;
                 if (++tail == items.Length)

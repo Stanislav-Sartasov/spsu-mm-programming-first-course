@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LocksContinued.Locks
 {
-    public class TOLock:IMaybeLock
+    public class TOLock : IMaybeLock
     {
         static QNode AVAILABLE = new QNode();
 

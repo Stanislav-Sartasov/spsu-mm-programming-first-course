@@ -27,8 +27,11 @@ namespace LocksContinued.Stacks
                         T otherValue = eliminationArray.Visit(value, Timeout);
                         if (otherValue.Equals(default(T)))
                         {
-                            // some timeout policy actions
                             return; // exchanged with pop
+                        }
+                        else
+                        {
+                            // some timeout policy actions
                         }
                     }
                     catch (TimeoutException ex)
@@ -53,8 +56,11 @@ namespace LocksContinued.Stacks
                         T otherValue = eliminationArray.Visit(default(T), Timeout);
                         if (otherValue != null)
                         {
-                            // some timeout policy actions
                             return otherValue;
+                        }
+                        else
+                        {
+                            // some timeout policy actions
                         }
                     }
                     catch (TimeoutException ex)

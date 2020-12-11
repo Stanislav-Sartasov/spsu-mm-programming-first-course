@@ -6,7 +6,7 @@
         public int Key;
         public Node<T> Next;
         public ILock Lock = new SimpleLock();
-        public bool Marked = false;
+        public volatile bool Marked = false;
 
         public Node(int key)
         {

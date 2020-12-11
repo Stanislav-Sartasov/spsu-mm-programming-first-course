@@ -31,8 +31,7 @@ namespace LocksContinued.WorkStealing
 
         public CircularArray Resize(int bottom, int top)
         {
-            CircularArray newTasks =
-            new CircularArray(logCapacity + 1);
+            CircularArray newTasks = new CircularArray(logCapacity + 1);
             for (int i = top; i < bottom; i++)
             {
                 newTasks.Put(i, Get(i));
@@ -55,9 +54,7 @@ namespace LocksContinued.WorkStealing
         }
         public bool IsEmpty()
         {
-            int localTop = top;
-            int localBottom = bottom;
-            return (localBottom <= localTop);
+            return (bottom <= top);
         }
 
         public void PushBottom(Task t)

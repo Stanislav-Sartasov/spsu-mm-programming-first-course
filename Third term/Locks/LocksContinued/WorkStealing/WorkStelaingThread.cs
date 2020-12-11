@@ -24,7 +24,9 @@ namespace LocksContinued.WorkStealing
             {
                 while (task != null)
                 {
+                    // In fact we should run the workload here, Task.Start and Task.Wait are here for brevity
                     task.Start();
+                    task.Wait();
                     task = queue[me].PopBottom();
                 }
                 while (task == null)

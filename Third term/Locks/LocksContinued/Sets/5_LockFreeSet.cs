@@ -1,4 +1,6 @@
-﻿namespace LocksContinued
+﻿using System;
+
+namespace LocksContinued
 {
     public class LockFreeSet<T>
     {
@@ -15,6 +17,7 @@
             int key = item.GetHashCode();
             while (true)
             {
+                //Tuple<AtomicNode<T>, AtomicNode<T>>
                 Window<T> window = Find(_head, key);
                 AtomicNode<T> pred = window.Pred, curr = window.Curr;
                 if (curr.Key == key)

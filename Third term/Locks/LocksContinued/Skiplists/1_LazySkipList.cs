@@ -9,6 +9,39 @@ namespace LocksContinued.Skiplists
 {
     public class LazySkipList<T>
     {
+        private class Node<T>
+        {
+            Mutex _lock = new Mutex();
+            public T item;
+            public int Key;
+            public Node<T>[] Next;
+            public volatile bool Marked = false;
+            public volatile bool FullyLinked = false;
+            public int TopLevel;
+            public Node(int key)
+            { // sentinel node constructor
+                this.item = default(T);
+                this.Key = key;
+                Next = new Node<T>[MAX_LEVEL + 1];
+                TopLevel = MAX_LEVEL;
+            }
+            public Node(T x, int height)
+            {
+                item = x;
+                Key = x.GetHashCode();
+                Next = new Node<T>[height + 1];
+                TopLevel = height;
+            }
+            public void Lock()
+            {
+                _lock.WaitOne();
+            }
+            public void Unlock()
+            {
+                _lock.ReleaseMutex();
+            }
+        }
+
         Random r = new Random();
 
         const int MAX_LEVEL = 42;
@@ -20,6 +53,16 @@ namespace LocksContinued.Skiplists
             {
                 head.Next[i] = tail;
             }
+        }
+
+        public bool Contains(T x)
+        {
+            Node<T>[] preds = new Node<T>[MAX_LEVEL + 1];
+            Node<T>[] succs = new Node<T>[MAX_LEVEL + 1];
+            int lFound = Find(x, preds, succs);
+            return (lFound != -1
+                && succs[lFound].FullyLinked
+                && !succs[lFound].Marked);
         }
 
         int Find(T x, Node<T>[] preds, Node<T>[] succs)
@@ -93,7 +136,7 @@ namespace LocksContinued.Skiplists
             }
         }
 
-        bool Remove(T x)
+        public bool Remove(T x)
         {
             Node<T> victim = null; bool isMarked = false; int topLevel = -1;
             Node<T>[] preds = new Node<T>[MAX_LEVEL + 1];
@@ -148,48 +191,6 @@ namespace LocksContinued.Skiplists
                     }
                 }
                 else return false;
-            }
-        }
-
-        public bool Contains(T x)
-        {
-            Node<T>[] preds = new Node<T>[MAX_LEVEL + 1];
-            Node<T>[] succs = new Node<T>[MAX_LEVEL + 1];
-            int lFound = Find(x, preds, succs);
-            return (lFound != -1
-                && succs[lFound].FullyLinked
-                && !succs[lFound].Marked);
-        }
-
-        private class Node<T>
-        {
-            Mutex _lock = new Mutex();
-            public T item;
-            public int Key;
-            public Node<T>[] Next;
-            public volatile bool Marked = false;
-            public volatile bool FullyLinked = false;
-            public int TopLevel;
-            public Node(int key)
-            { // sentinel node constructor
-                this.item = default(T);
-                this.Key = key;
-                Next = new Node<T>[MAX_LEVEL + 1];
-                TopLevel = MAX_LEVEL;
-            }
-            public Node(T x, int height)
-            {
-                item = x;
-                Key = x.GetHashCode();
-                Next = new Node<T>[height + 1];
-                TopLevel = height;
-            }
-            public void Lock() {
-                _lock.WaitOne();
-            }
-            public void Unlock()
-            {
-                _lock.ReleaseMutex();
             }
         }
     }

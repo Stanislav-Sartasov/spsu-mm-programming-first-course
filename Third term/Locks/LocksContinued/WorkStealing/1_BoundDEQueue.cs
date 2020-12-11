@@ -27,17 +27,16 @@ namespace LocksContinued.WorkStealing
         // called by thieves to determine whether to try to steal
         public bool IsEmpty()
         {
-            int localTop = top.GetReference();
-            int localBottom = bottom;
-            return localBottom <= localTop;
+            int oldTop = top.GetReference();
+            return bottom <= oldTop;
         }
 
         // for thief
         public Task PopTop() 
         {
-            int stamp = 0;
-            int oldTop = top.Get(out stamp), newTop = oldTop + 1;
-            int oldStamp = stamp, newStamp = oldStamp + 1;
+            int oldStamp;
+            int oldTop = top.Get(out oldStamp), newTop = oldTop + 1;
+            int newStamp = oldStamp + 1;
             if (bottom <= oldTop)
                 return null;
             Task t = tasks[oldTop];
@@ -53,19 +52,19 @@ namespace LocksContinued.WorkStealing
                 return null;
             Interlocked.Decrement(ref bottom);
             Task t = tasks[bottom];
-            int stamp;
-            int oldTop = top.Get(out stamp);
-            int newTop = 0;
-            int oldStamp = stamp, newStamp = oldStamp + 1;
+            int oldStamp;
+            int oldTop = top.Get(out oldStamp);
+
+            int newStamp = oldStamp + 1;
             if (bottom > oldTop)
                 return t;
             if (bottom == oldTop)
             {
                 bottom = 0;
-                if (top.CompareAndSet(oldTop, newTop, oldStamp, newStamp))
+                if (top.CompareAndSet(oldTop, 0, oldStamp, newStamp))
                     return t;
             }
-            top.Set(newTop, newStamp);
+            top.Set(0, newStamp);
             return null;
         }
     }

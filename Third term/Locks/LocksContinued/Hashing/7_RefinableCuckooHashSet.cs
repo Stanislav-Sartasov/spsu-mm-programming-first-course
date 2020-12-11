@@ -69,6 +69,7 @@ namespace LocksContinued.Hashing
                     for (int i = 0; i < locks.GetLength(1); i++)
                     {
                         locks[0, i].WaitOne();
+                        locks[0, i].ReleaseMutex();
                     }
                     capacity = 2 * capacity;
                     List<T>[,] oldTable = table;
