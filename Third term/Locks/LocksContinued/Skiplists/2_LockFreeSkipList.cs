@@ -102,7 +102,7 @@ namespace LocksContinued.Skiplists
                     succ = curr.Next[level].Get(out marked);
                     while (marked)
                     {
-                        //curr = pred.Next[level].GetReference();
+                        curr = curr.Next[level].GetReference();
                         succ = curr.Next[level].Get(out marked);
 
                     }
