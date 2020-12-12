@@ -50,19 +50,19 @@ namespace ThreadPool
 
             while (isWorking)
             {
-                lock (taskQueue)
+                Monitor.Enter(taskQueue);
+                if (taskQueue.Count > 0)
                 {
-                    if (taskQueue.Count > 0)
-                    {
-                        Console.WriteLine($"Thread {Thread.CurrentThread.Name} took task.");
-                        task = taskQueue.Dequeue();
-                        Monitor.PulseAll(taskQueue);
-                        task?.Invoke();
-                    }
-                    else
-                    {
-                        Monitor.Wait(taskQueue);
-                    }
+                    Console.WriteLine($"Thread {Thread.CurrentThread.Name} took task.");
+                    task = taskQueue.Dequeue();
+                    Monitor.PulseAll(taskQueue);
+                    Monitor.Exit(taskQueue);
+                    task?.Invoke();
+                }
+                else
+                {
+                    Monitor.Wait(taskQueue);
+                    Monitor.Exit(taskQueue);
                 }
             }
         }
