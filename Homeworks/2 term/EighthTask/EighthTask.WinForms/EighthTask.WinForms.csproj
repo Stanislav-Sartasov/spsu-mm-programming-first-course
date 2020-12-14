@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EightTask.MathCurve\EighthTask.MathCurves.csproj" />
+    <ProjectReference Include="..\EighthTask.MathCurve\EighthTask.MathCurves.csproj" />
   </ItemGroup>
 
 </Project>

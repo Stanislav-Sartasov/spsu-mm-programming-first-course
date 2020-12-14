@@ -14,9 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EighthTask.MathCurve\EighthTask.MathCurves.csproj" />
     <ProjectReference Include="..\EighthTask.WinForms\EighthTask.WinForms.csproj" />
     <ProjectReference Include="..\EighthTask.WPF\EighthTask.WPF.csproj" />
-    <ProjectReference Include="..\EightTask.MathCurve\EighthTask.MathCurves.csproj" />
   </ItemGroup>
 
 </Project>
