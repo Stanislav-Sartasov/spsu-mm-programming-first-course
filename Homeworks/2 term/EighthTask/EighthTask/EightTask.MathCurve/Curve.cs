@@ -7,16 +7,16 @@ namespace EighthTask.MathCurves
 {
 	public abstract class Curve
 	{
-		public string CurveName { get; set; }
+		public string CurveName { get; protected set; }
 		public override string ToString()
 		{
 			return CurveName;
 		}
 
-		public List<PointF> Points = new List<PointF>();
+		public List<PointF> Points { get; protected set; } = new List<PointF>();
 		public void SetPoints(float size)
 		{
-			int absMax = 35; // 10/20
+			int absMax = 35;
 			Points.Clear();
 			for (float x = -absMax / size; x <= absMax / size; x += 0.01f)
 			{

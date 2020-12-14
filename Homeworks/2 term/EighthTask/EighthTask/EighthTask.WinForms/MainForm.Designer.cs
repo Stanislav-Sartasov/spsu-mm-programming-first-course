@@ -31,9 +31,9 @@ namespace EighthTask.WinForms
 		{
 			this.PictureBox = new System.Windows.Forms.PictureBox();
 			this.Button = new System.Windows.Forms.Button();
-			this.Label = new System.Windows.Forms.Label();
 			this.TrackBar = new System.Windows.Forms.TrackBar();
 			this.ComboBox = new System.Windows.Forms.ComboBox();
+			this.Label = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.PictureBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.TrackBar)).BeginInit();
 			this.SuspendLayout();
@@ -56,15 +56,6 @@ namespace EighthTask.WinForms
 			this.Button.UseVisualStyleBackColor = true;
 			this.Button.Click += new System.EventHandler(this.ButtonClick);
 			// 
-			// Label
-			// 
-			this.Label.AutoSize = true;
-			this.Label.Location = new System.Drawing.Point(638, 150);
-			this.Label.Name = "Label";
-			this.Label.Size = new System.Drawing.Size(98, 20);
-			this.Label.TabIndex = 2;
-			this.Label.Text = "Масштаб: 1.0";
-			// 
 			// TrackBar
 			// 
 			this.TrackBar.Location = new System.Drawing.Point(527, 91);
@@ -84,6 +75,15 @@ namespace EighthTask.WinForms
 			this.ComboBox.Name = "ComboBox";
 			this.ComboBox.Size = new System.Drawing.Size(313, 28);
 			this.ComboBox.TabIndex = 4;
+			// 
+			// Label
+			// 
+			this.Label.AutoSize = true;
+			this.Label.Location = new System.Drawing.Point(638, 150);
+			this.Label.Name = "Label";
+			this.Label.Size = new System.Drawing.Size(98, 20);
+			this.Label.TabIndex = 2;
+			this.Label.Text = "Масштаб: 1.0";
 			// 
 			// MainForm
 			// 
@@ -109,9 +109,9 @@ namespace EighthTask.WinForms
 
 		private System.Windows.Forms.PictureBox PictureBox;
 		private System.Windows.Forms.Button Button;
-		private System.Windows.Forms.Label Label;
 		private System.Windows.Forms.TrackBar TrackBar;
 		private System.Windows.Forms.ComboBox ComboBox;
+		private System.Windows.Forms.Label Label;
 	}
 }
 

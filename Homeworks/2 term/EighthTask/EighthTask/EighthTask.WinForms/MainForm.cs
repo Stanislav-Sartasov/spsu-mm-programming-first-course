@@ -29,7 +29,7 @@ namespace EighthTask.WinForms
 			SizeNum = 1;
 			Label.Text = String.Concat("Масштаб: ", SizeNum.ToString());
 
-			ComboBox.Items.AddRange(new Curve[] { new Ellipse(1, 1, 1), new Ellipse(5, 2, 1), new Hyperbola(2, 4, 1), new Parabola(0.5f, 2.4f) });
+			ComboBox.Items.AddRange(new Curve[] { new Ellipse(1, 1, 1), new Ellipse(5, 1.8f, 1), new Hyperbola(2, 4, 1), new Parabola(0.5f, 2.4f) });
 			ComboBox.SelectedItem = ComboBox.Items[0];
 		}
 
@@ -50,46 +50,47 @@ namespace EighthTask.WinForms
 			Panel.DrawLine(Pens.Black, PanelWidth - 15, PanelHeight / 2 - 5, PanelWidth, PanelHeight / 2);
 			Panel.DrawLine(Pens.Black, PanelWidth - 15, PanelHeight / 2 + 5, PanelWidth, PanelHeight / 2);
 
-			//Разметка по Ox
-			float num = SizeNum * 9; // size_param
+			//Ox layout
+			float num = -9 * SizeNum;
 			for (int width = PanelWidth / 20; width < PanelWidth; width += PanelWidth / 20)
 			{
 				if (width == PanelWidth / 2)
 				{
-					num -= SizeNum;
+					num += SizeNum;
 					continue;
 				}
 				Panel.DrawLine(Pens.Black, width, PanelHeight / 2 - 5, width, PanelHeight / 2 + 5);
 
-				Panel.DrawString(Math.Round(num, 2).ToString(), font, Brushes.Black, PanelHeight / 2 + 5, width - 9);
-				num -= SizeNum;
+				if (num - Math.Round(num, 6) == 0.000000)
+				{
+					Panel.DrawString(Math.Round(num, 2).ToString(), font, Brushes.Black, width - 5, PanelWidth / 2 + 5);
+				}
+				else if (Math.Abs(num) < 10)
+				{
+					Panel.DrawString(Math.Round(num, 2).ToString(), font, Brushes.Black, width - 10, PanelWidth / 2 + 5);
+				}
+				else
+				{
+					Panel.DrawString(Math.Round(num, 2).ToString(), font, Brushes.Black, width - 16, PanelWidth / 2 + 5);
+				}
+
+				num += SizeNum;
 			}
 
-			//Разметка по Oy
-			num = -9 * SizeNum; // size_param
+			//Oy layout
+			num = 9 * SizeNum;
 			for (int height = PanelHeight / 20; height < PanelHeight; height += PanelHeight / 20)
 			{
 				if (height == PanelHeight / 2)
 				{
-					num += SizeNum;
+					num -= SizeNum;
 					continue;
 				}
 				Panel.DrawLine(Pens.Black, PanelWidth / 2 - 5, height, PanelWidth / 2 + 5, height);
 
-				if (num - Math.Round(num, 6) == 0.000000)
-				{
-					Panel.DrawString(Math.Round(num, 2).ToString(), font, Brushes.Black, height - 5, PanelWidth / 2 + 5);
-				}
-				else if (Math.Abs(num) < 10)
-				{
-					Panel.DrawString(Math.Round(num, 2).ToString(), font, Brushes.Black, height - 10, PanelWidth / 2 + 5);
-				}
-				else
-				{
-					Panel.DrawString(Math.Round(num, 2).ToString(), font, Brushes.Black, height - 16, PanelWidth / 2 + 5);
-				}
+				Panel.DrawString(Math.Round(num, 2).ToString(), font, Brushes.Black, PanelHeight / 2 + 5, height - 9);
 
-				num += SizeNum;
+				num -= SizeNum;
 			}
 
 			#endregion

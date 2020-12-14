@@ -6,14 +6,31 @@
         xmlns:local="clr-namespace:EighthTask.WPF"
         mc:Ignorable="d"
         Title="Eighth task" Height="567" Width="870" ResizeMode="NoResize">
-	<Grid HorizontalAlignment="Center" Height="513" Margin="0,10,0,0" VerticalAlignment="Top" Width="850">
-		<Canvas x:Name="Canvas" HorizontalAlignment="Left" Height="500" Margin="10,0,0,0" VerticalAlignment="Center" Width="500"/>
-		<DockPanel HorizontalAlignment="Left" Height="513" LastChildFill="False" Margin="551,0,0,0" VerticalAlignment="Center" Width="289">
+	<Grid HorizontalAlignment="Center" Height="513" Margin="0,10,0,0" VerticalAlignment="Top" Width="859">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="254*"/>
+			<RowDefinition/>
+			<RowDefinition/>
+			<RowDefinition Height="8*"/>
+			<RowDefinition Height="2*"/>
+			<RowDefinition Height="5*"/>
+			<RowDefinition Height="10*"/>
+			<RowDefinition Height="232*"/>
+		</Grid.RowDefinitions>
+		<Canvas x:Name="Canvas" HorizontalAlignment="Left" Height="500" VerticalAlignment="Top" Width="500" Margin="0,6,0,0" Grid.RowSpan="8"/>
+		<DockPanel HorizontalAlignment="Left" Height="513" LastChildFill="False" Margin="551,0,0,0" VerticalAlignment="Top" Width="289" Grid.RowSpan="8">
 			<DockPanel LastChildFill="False" DockPanel.Dock="Top" Height="199">
-				<ComboBox x:Name="ComboBox" DockPanel.Dock="Top" Height="37"/>
-				<Label Content="Label" Width="0"/>
-				<Slider x:Name="Slider" DockPanel.Dock="Bottom" Height="36" Value="5" Minimum="1" Maximum="9" ValueChanged="SliderValueChanged"/>
-				<Label x:Name="Label" Content="Масштаб: 1.0" DockPanel.Dock="Bottom" Height="27" HorizontalAlignment="Center"/>
+				<DockPanel DockPanel.Dock="Top" Height="151">
+					<TextBlock x:Name="TextBlock" Text="Масштаб: 1.0" TextWrapping="Wrap" DockPanel.Dock="Bottom" TextAlignment="Center" Height="19" Width="287" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+					<ComboBox x:Name="ComboBox" DockPanel.Dock="Top" Height="24" VerticalAlignment="Top">
+						<ComboBox.ItemTemplate>
+							<DataTemplate>
+								<TextBlock Text="{Binding Path=CurveName}"/>
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+					</ComboBox>
+				</DockPanel>
+				<Slider x:Name="Slider" DockPanel.Dock="Bottom" Value="5" Minimum="1" Maximum="9" ValueChanged="SliderValueChanged" Height="36" Width="287"/>
 			</DockPanel>
 			<Button x:Name="Button" Content="Draw" DockPanel.Dock="Bottom" Height="55" Click="ButtonClick"/>
 		</DockPanel>
