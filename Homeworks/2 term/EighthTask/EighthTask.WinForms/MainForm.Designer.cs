@@ -95,6 +95,7 @@ namespace EighthTask.WinForms
 			this.Controls.Add(this.Label);
 			this.Controls.Add(this.Button);
 			this.Controls.Add(this.PictureBox);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
 			this.Name = "MainForm";
 			this.Text = "Eighth task";
