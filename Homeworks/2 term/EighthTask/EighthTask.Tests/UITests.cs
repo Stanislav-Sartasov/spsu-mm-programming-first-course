@@ -5,14 +5,30 @@ using EighthTask.MathCurves;
 namespace EighthTask.Tests
 {
 	[TestClass]
-	public class UITests // Points' lists initialization tests
+	public class UITests // Points' lists correctness tests (for 1.0f)
 	{
 		[TestMethod]
 		public void Circle()
 		{
 			var circle = new Ellipse(1, 1, 1);
 
-			Testing(circle);
+			Init(circle);
+
+			foreach (var point in circle.Points)
+			{
+				//Assert.IsNotNull(point);
+				float fun = circle.B * circle.B * (circle.R * circle.R - point.X * point.X / (circle.A * circle.A));
+				if (fun < 0)
+				{
+					fun = 0;
+				}
+				else
+				{
+					fun = (float)Math.Round(Math.Sqrt(fun), 3);
+				}
+
+				Assert.AreEqual(fun, Math.Abs(point.Y));
+			}
 		}
 
 		[TestMethod]
@@ -20,34 +36,82 @@ namespace EighthTask.Tests
 		{
 			var ellipse = new Ellipse(1, 2, 1);
 
-			Testing(ellipse);
+			Init(ellipse);
+
+			foreach (var point in ellipse.Points)
+			{
+				//Assert.IsNotNull(point);
+				float fun = ellipse.B * ellipse.B * (ellipse.R  - point.X * point.X / (ellipse.A * ellipse.A));
+				if (fun < 0)
+				{
+					fun = 0;
+				}
+				else
+				{
+					fun = (float)Math.Round(Math.Sqrt(fun), 3);
+				}
+
+				Assert.AreEqual(fun, Math.Abs(point.Y));
+			}
 		}
 
 		[TestMethod]
 		public void Parabola()
 		{
 
-			var circle = new Parabola(2, 5);
+			var parabola = new Parabola(2, 5);
 
-			Testing(circle);
+			Init(parabola);
+
+			foreach (var point in parabola.Points)
+			{
+				//Assert.IsNotNull(point);
+				float fun = 2 * parabola.P * point.X + parabola.R;
+				if (fun < 0)
+				{
+					fun = 0;
+				}
+				else
+				{
+					fun = (float)Math.Round(Math.Sqrt(fun), 3);
+				}
+
+				Assert.AreEqual(fun, Math.Abs(point.Y));
+			}
 		}
 
 		[TestMethod]
 		public void Hyperbola()
 		{
 
-			var circle = new Hyperbola(3, 2, 1);
+			var hyperbola = new Hyperbola(3, 2, 1);
 
-			Testing(circle);
+			Init(hyperbola);
+
+			foreach (var point in hyperbola.Points)
+			{
+				//Assert.IsNotNull(point);
+				float fun = hyperbola.B * hyperbola.B * (point.X * point.X / (hyperbola.A * hyperbola.A) - hyperbola.R);
+				if (fun < 0)
+				{
+					fun = 0;
+				}
+				else
+				{
+					fun = (float)Math.Round(Math.Sqrt(fun), 3);
+				}
+
+				Assert.AreEqual(fun, Math.Abs(point.Y));
+			}
 		}
 
-		private void Testing(Curve curve)
+		private void Init(Curve curve)
 		{
-			curve.SetPoints(1.0f);
-			foreach (var point in curve.Points)
-			{
-				Assert.IsNotNull(point);
-			}
+			int abs = 35;
+			float size = 1.0f;
+
+			curve.SetPoints(size);
+			Assert.AreEqual(abs * 2 * (2 / 1.0f) * 100, curve.Points.Count); // Count of points
 		}
 	}
 }

@@ -7,9 +7,9 @@ namespace EighthTask.MathCurves
 {
 	public class Hyperbola : Curve
         {
-		private float A { get; set; }
-		private float B { get; set; }
-		private float R { get; set; }
+		public float A { get; private set; }
+		public float B { get; private set; }
+		public float R { get; private set; }
 
 		internal override float Function(float arg, int prm)
 		{

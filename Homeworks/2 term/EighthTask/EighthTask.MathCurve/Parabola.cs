@@ -7,8 +7,8 @@ namespace EighthTask.MathCurves
 {
 	public class Parabola : Curve
 	{
-		private float P { get; set; }
-		private float R { get; set; }
+		public float P { get; private set; }
+		public float R { get; private set; }
 
 		internal override float Function(float arg, int prm)
 		{
