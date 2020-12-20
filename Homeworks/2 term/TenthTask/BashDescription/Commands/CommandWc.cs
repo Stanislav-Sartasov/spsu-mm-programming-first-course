@@ -1,58 +1,40 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TenthTask.BashDescription
+namespace BashDescription.Commands
 {
-	class CommandWc : Command
+	public class CommandWc : Command
 	{
-		//public string Str { get; set; }
-
-		public override string RunCommand(string str, Values values = null)
+		public override void RunCommand()
 		{
 			try
 			{
-				string name = "wc";
-				Str = str;
-				if (Str.Substring(0, Str.IndexOf(name)).Replace(" ", "") != "")
-				{
-					throw new Exception();
-				}
-				else
-				{
-					try
-					{
-						var val = Str.Substring(Str.IndexOf(name) + name.Length + 1).Split(' ');
-					}
-					catch
-					{
-						throw new Exception();
-					}
+				var numOfBytes = String.Concat(File.ReadAllBytes(Input).Count().ToString(), " bytes\n");
 
-					var resStr = "";
-					var path = str.Substring(str.IndexOf(name) + name.Length + 1);
-					path.Replace("\n", "");
+				var lines = File.ReadAllText(Input);
+				var numOfLines = String.Concat(lines.Count().ToString(), " lines\n");
 
-					if (System.IO.File.Exists(path))
-					{
-						resStr = String.Concat(File.ReadAllBytes(path).Length, " bytes ", File.ReadAllLines(path).Length, " strings");
-						Console.WriteLine(String.Concat(File.ReadAllBytes(path).Length, " bytes"));
-						Console.WriteLine(String.Concat(File.ReadAllLines(path).Length, " strings"));
-					}
-					else
-					{
-						Console.WriteLine("Error! No such file.");
-					}
-					return resStr;
-				}
+				var numOfWords = String.Concat(lines.Split(' ', StringSplitOptions.RemoveEmptyEntries).Count().ToString(), " words\n");
+
+				Output = String.Concat(numOfLines, numOfWords, numOfBytes);
 			}
-			catch (Exception e)
+			catch (ArgumentException)
 			{
-				throw e;
+				Output = "File not found.";
 			}
+			catch (FileNotFoundException)
+			{
+				Output = "File not found.";
+			}
+			catch (Exception ex)
+			{
+				Output = ex.Message;
+			}
+		}
+		public CommandWc(string input) : base(input)
+		{
+			Input = input;
 		}
 	}
 }

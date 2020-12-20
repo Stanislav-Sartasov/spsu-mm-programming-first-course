@@ -1,59 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BashDescription.Commands;
 
-namespace TenthTask.BashDescription
+namespace BashDescription
 {
-	public class Bash
+	public static class Bash
 	{
-		internal static readonly string[] commands = { "echo", "exit", "pwd", "cat", "wc" };
+		public static Dictionary<string, string> Variables { get; private set; } = new Dictionary<string, string>();
+		public static Parser Parser { get; private set; } = new Parser();
 
-		public Parser Parser { get; set; } = new Parser();
-		public static Values Values { get; set; } = new Values();
-
-		public static string RunCommand(int commandNum, string str)
+		public static void Start()
 		{
-			var resStr = "";
-			switch (commandNum)
-			{
-				case 0:
-					var echo = new CommandEcho();
-					echo.RunCommand(str, Values);
-					break;
-				case 1:
-					var exit = new CommandExit();
-					exit.RunCommand(str);
-					break;
+			Info();
 
-				case 2:
-					var pwd = new CommandPwd();
-					pwd.RunCommand(str);
-					break;
-				case 3:
-					var cat = new CommandCat();
-					cat.RunCommand(str);
-					break;
-
-				case 4:
-					var wc = new CommandWc();
-					wc.RunCommand(str);
-					break;
-			}
-
-			return resStr;
-		}
-
-		public void Start()
-		{
 			while (true)
 			{
-				var str = Console.ReadLine();
-				Parser.Parse(str, Values);
+				try
+				{
+					var str = Console.ReadLine().Trim();
+
+					if (str == "")
+					{
+						throw new Exception("Please, write the command.");
+					}
+
+					List<Command> listOfCommands = Parser.Parse(str);
+					foreach (var command in listOfCommands)
+					{
+						command.RunCommand();
+						Console.WriteLine(command.Output);
+					}
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e.Message);
+				}
 			}
+		}
+
+		private static void Info()
+		{
+			Console.WriteLine("Welcome to bash!\nCommands: \"echo [argument]\", \"exit\", \"pwd\", \"cat [filename]\", \"wc [filename]\".\nYou can also use operators \"$\" and \"|\".");
 		}
 	}
 }

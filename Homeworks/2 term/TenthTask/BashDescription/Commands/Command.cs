@@ -1,15 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 
-namespace TenthTask.BashDescription
+namespace BashDescription.Commands
 {
-	public abstract class Command
+	public class Command
 	{
-		public string Str { get; set; } // Input string
+		public virtual void RunCommand()
+		{
+			try
+			{
+				var cmd = Input.Split(' ');
 
-		public abstract string RunCommand(string str, Values values = null);
+				if (cmd.Length == 1)
+				{
+					Process.Start(Input);
+				}
+				else
+				{
+					Process.Start(cmd[0], String.Join(null, cmd, 1, cmd.Length - 1));
+				}
+
+				Output = "Undefined command, starting System.Process().";
+			}
+			catch
+			{
+				Output = "Invalid input.";
+			}
+		}
+
+		public string Input { get; protected set; }
+		public string Output { get; protected set; }
+
+		public Command(string input)
+		{
+			Input = input;
+		}
 	}
 }

@@ -1,51 +1,29 @@
 ﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TenthTask.BashDescription
+namespace BashDescription.Commands
 {
-	class CommandPwd : Command
+	public class CommandPwd : Command
 	{
-		//public string Str { get; set; }
-
-		public override string RunCommand(string str, Values values = null)
+		public override void RunCommand()
 		{
 			try
 			{
-				string name = "pwd";
-				Str = str;
-				if (Str.Replace(" ", "") == name)
+				if (Input != "")
 				{
-					var resStr = "";
-					if (str.Replace(" ", "") == name)
-					{
-
-						Console.WriteLine(Directory.GetCurrentDirectory());
-						foreach (string dirStr in Directory.EnumerateFiles(Directory.GetCurrentDirectory()))
-						{
-							resStr = dirStr;
-							Console.WriteLine("\t" + dirStr);
-						}
-					}
-					else
-					{
-						Console.WriteLine("Error syntax");
-					}
-
-					return resStr;
+					throw new Exception("Invalid input.");
 				}
-				else
-				{
-					throw new Exception();
-				}
+
+				Output = String.Join("\n", System.IO.Directory.GetFiles(System.IO.Directory.GetCurrentDirectory()));	
 			}
-			catch (Exception e)
+			catch (Exception ex)
 			{
-				throw e;
+				Output = ex.Message;
 			}
+		}
+
+		public CommandPwd(string input) : base(input)
+		{
+			Input = input;
 		}
 	}
 }

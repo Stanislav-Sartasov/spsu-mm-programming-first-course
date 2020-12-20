@@ -1,5 +1,5 @@
 ﻿using System;
-using TenthTask.BashDescription;
+using BashDescription;
 
 namespace TenthTask
 {
@@ -7,8 +7,7 @@ namespace TenthTask
 	{
 		static void Main()
 		{
-			var bash = new Bash();
-			bash.Start();
+			Bash.Start();
 		}
 	}
 }

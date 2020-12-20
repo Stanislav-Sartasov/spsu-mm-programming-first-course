@@ -1,160 +1,121 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using BashDescription.Commands;
 
-namespace TenthTask.BashDescription
+namespace BashDescription
 {
 	public class Parser
 	{
-		//0 echo
-		//1 exit
-		//2 pwd
-		//3 cat
-		//4 wc
+		private byte CommandFlag { get; set; } = 0;
 
-		public void Parse(string str, Values values)
+		public List<Command> Parse(string input)
 		{
-			var commandFlag = false;
+			var list = new List<Command>();
 
-			if (!str.Contains("|"))
+			foreach (string command in input.Trim().Split('|'))
 			{
-				for (int i = 0; i < Bash.commands.Length; i++)
+				VariableCheck(command.Trim());
+
+				if (CommandFlag == 0)
 				{
-					if (str.Contains(Bash.commands[i]))
-					{
-						int pos = str.IndexOf(Bash.commands[i]);
-						int commandNum = i;
-
-						if (pos >= 0)
-						{
-							try
-							{
-								Bash.RunCommand(commandNum, str);
-
-							}
-							catch
-							{
-								Console.WriteLine("Error, probably no such command.");
-							}
-
-							commandFlag = true;
-							break;
-
-						}
-					}
-				}
-
-				if (!commandFlag)
-				{
-					if (str.Contains("$"))
-					{
-						AddValueMethod(str, values);
-					}
-					else
-					{
-						Console.WriteLine("Wrong syntax.");
-					}
+					list.Add(GetCommand(command.Trim()));
 				}
 			}
-			else
-			{
-				string[] partsOfStr = str.Split('|');
-				foreach (string part in partsOfStr)
-				{
-					for (int i = 0; i < Bash.commands.Length; i++)
-					{
-						if (part.Contains(Bash.commands[i]))
-						{
-							int pos = part.IndexOf(Bash.commands[i]);
-							int commandNum = i;
-							if (pos >= 0)
-							{
-								string resStr = "";
-								var checkStr = String.Concat(part, " ", resStr);
 
-								try
-								{
-									resStr = Bash.RunCommand(commandNum, checkStr);
-
-								}
-								catch
-								{
-									Console.WriteLine("Error, probably no such command.");
-								}
-
-								break;
-							}
-
-							break;
-						}
-						else if (str.Contains("$"))
-						{
-							AddValueMethod(str, values);
-						}
-					}
-				}
-			}
+			CommandFlag = 0;
+			return list;
 		}
 
-		public void AddValueMethod(string str, Values values)
+		private Command GetCommand(string input)
 		{
-			if (str.IndexOf("$") < 0)
-			{
-				return;
-			}
+			var temp = input.Split(' ');
+			var args = string.Join(' ', temp, 1, temp.Length - 1);
 
-			var val = str.Split(',');
-			foreach (string resStr in val)
+			if (temp[0] == "echo")
 			{
-				int pos = resStr.IndexOf("=");
-				if (pos < 0)
+				var echoArg = "";
+
+				foreach (string oldArg in args.Split(' '))
 				{
-					if (values.ValuesUsed.Contains(str.Substring(resStr.IndexOf("$") + 1).Replace(" ", "")))
+					if (oldArg[0] == '$' && Bash.Variables.TryGetValue(oldArg.Remove(0, 1), out string value))
 					{
-						values.ValuesUsed.Clear();
-						values.ValuesMean.Clear();
-						Console.WriteLine("Error! Redefinition.");
+						echoArg = String.Concat(echoArg, value, " ");
 					}
 					else
 					{
-						values.ValuesUsed.Add(resStr.Substring(resStr.IndexOf("$")).Replace(" ", ""));
-						values.ValuesMean.Add("");
+						echoArg = String.Concat(echoArg, oldArg, " ");
+					}
+				}
+
+				args = echoArg;
+			}
+
+			var output = NewCommand(temp[0], args);
+			if (output == null)
+			{
+				output = new Command(input);
+				
+			}
+
+			return output;
+		}
+		private Command NewCommand(string choise, string args)
+		{
+			Command command = choise switch
+			{
+				"echo" => new CommandEcho(args),
+				"exit" => new CommandExit(args),
+				"pwd" => new CommandPwd(args),
+				"cat" => new CommandCat(args),
+				"wc" => new CommandWc(args),
+				_ => null,
+			};
+			return command;
+		}
+
+		private void VariableCheck(string command)
+		{
+			if (command[0].Equals('$') && command.Contains("="))
+			{
+				var temp = command.Remove(0, 1).Split('=');
+
+				if (temp.Length == 2)
+				{
+					temp[0] = temp[0].Trim();
+					temp[1] = temp[1].Trim();
+
+					if (temp[1][0].Equals('$'))
+					{
+						temp[1] = temp[1].Remove(0, 1);
+
+						if (Bash.Variables.TryGetValue(temp[1], out string value))
+						{
+							if (!Bash.Variables.TryAdd(temp[0], value))
+							{
+								Bash.Variables[temp[0]] = value;
+							}
+
+							CommandFlag = 1;
+						}
+						else
+						{
+							throw new Exception("Undefined valuabale.");
+						}
+					}
+					else
+					{
+						if (!Bash.Variables.TryAdd(temp[0], temp[1]))
+						{
+							Bash.Variables[temp[0]] = temp[1];
+						}
+
+						CommandFlag = 1;
 					}
 				}
 				else
 				{
-					if (!resStr.Substring(pos + 1).Contains("$"))
-					{
-						if (!values.ValuesUsed.Contains(resStr.Substring(resStr.IndexOf("$"), pos - resStr.IndexOf("$"))
-						    .Replace(" ", "")))
-						{
-							values.ValuesUsed.Add(resStr.Substring(resStr.IndexOf("$"), pos - resStr.IndexOf("$"))
-							    .Replace(" ", ""));
-
-							values.ValuesMean.Add(resStr.Substring(resStr.IndexOf("=") + 1));
-						}
-						else
-						{
-							values.ValuesMean[values.ValuesUsed.IndexOf(resStr.Substring(resStr.IndexOf("$"), pos - resStr.IndexOf("$"))
-								.Replace(" ", ""))] =
-							    resStr.Substring(resStr.IndexOf("=") + 1);
-						}
-
-					}
-					else if (values.ValuesUsed.Contains(resStr.Substring(pos + 1).Replace(" ", "")))
-					{
-						values.ValuesMean[values.ValuesUsed.IndexOf(resStr.Substring(resStr.IndexOf("$"), pos - resStr.IndexOf("$"))
-						    .Replace(" ", ""))] = values.ValuesMean[values.ValuesUsed.IndexOf(resStr.Substring(pos + 1).Replace(" ", ""))];
-					}
-					else
-					{
-						values.ValuesUsed.Clear();
-						values.ValuesMean.Clear();
-						Console.WriteLine("Error! Values are used.");
-					}
+					throw new Exception("Incorrect input.");
 				}
 			}
 		}
