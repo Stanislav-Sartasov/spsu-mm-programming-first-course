@@ -48,7 +48,7 @@ namespace BashDescription
 					}
 				}
 
-				args = echoArg;
+				args = echoArg.Trim();
 			}
 
 			var output = NewCommand(temp[0], args);

@@ -28,7 +28,7 @@ namespace BashDescription.Commands
 			}
 		}
 
-		public string Input { get; protected set; }
+		public string Input { get; set; } // For tests
 		public string Output { get; protected set; }
 
 		public Command(string input)

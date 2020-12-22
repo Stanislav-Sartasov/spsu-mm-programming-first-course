@@ -25,10 +25,19 @@ namespace BashDescription
 					}
 
 					List<Command> listOfCommands = Parser.Parse(str);
+
+					string output = "";
 					foreach (var command in listOfCommands)
 					{
+						if (command.Input == "")
+						{
+							command.Input = output;
+						}
+
 						command.RunCommand();
-						Console.WriteLine(command.Output);
+
+						output = command.Output;
+						Console.WriteLine(output);
 					}
 				}
 				catch (Exception e)

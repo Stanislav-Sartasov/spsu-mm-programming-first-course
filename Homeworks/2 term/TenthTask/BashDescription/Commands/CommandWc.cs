@@ -10,12 +10,11 @@ namespace BashDescription.Commands
 		{
 			try
 			{
-				var numOfBytes = String.Concat(File.ReadAllBytes(Input).Count().ToString(), " bytes\n");
+				var numOfBytes = String.Concat(File.ReadAllBytes(Input).Count().ToString(), " bytes");
 
-				var lines = File.ReadAllText(Input);
-				var numOfLines = String.Concat(lines.Count().ToString(), " lines\n");
+				var numOfLines = String.Concat(File.ReadLines(Input).Count().ToString(), " lines\n");
 
-				var numOfWords = String.Concat(lines.Split(' ', StringSplitOptions.RemoveEmptyEntries).Count().ToString(), " words\n");
+				var numOfWords = String.Concat(File.ReadAllText(Input).Split(' ', StringSplitOptions.RemoveEmptyEntries).Count().ToString(), " words\n");
 
 				Output = String.Concat(numOfLines, numOfWords, numOfBytes);
 			}
