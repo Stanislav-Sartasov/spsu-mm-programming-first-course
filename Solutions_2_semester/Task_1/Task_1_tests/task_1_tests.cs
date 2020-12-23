@@ -96,12 +96,12 @@ namespace Task1Tests
                 if (File.Exists("NotATest.bmp"))
                     Assert.Warn("NotATest file exist");
 
-                Assert.AreEqual(Image.InvalidInput, Filters.Main(new string[] { "incorrect" }));
-                Assert.AreEqual(Image.InvalidInput, Filters.Main(new string[] { "incorrect\"" }));
-                Assert.AreEqual(Image.InvalidInput, Filters.Main(new string[] { "Test.bmp", "not a filter" }));
-                Assert.AreEqual(Image.InvalidInput, Filters.Main(new string[] { "Test.bmp", "median", "/sg", "MainWithErrCodeOut.bmp" }));
-                Assert.AreEqual(Image.FileNotExist, Filters.Main(new string[] { "NotATest.bmp", "median", "MainWithErrCodeOut.bmp" }));
-                Assert.AreEqual(Image.InvalidInput, Filters.Main(new string[] { "Test.bmp", "not a filter", "MainWithErrCodeOut.bmp" }));
+                Assert.AreEqual(MyImage.InvalidInput, Filters.Main(new string[] { "incorrect" }));
+                Assert.AreEqual(MyImage.InvalidInput, Filters.Main(new string[] { "incorrect\"" }));
+                Assert.AreEqual(MyImage.InvalidInput, Filters.Main(new string[] { "Test.bmp", "not a filter" }));
+                Assert.AreEqual(MyImage.InvalidInput, Filters.Main(new string[] { "Test.bmp", "median", "/sg", "MainWithErrCodeOut.bmp" }));
+                Assert.AreEqual(MyImage.FileNotExist, Filters.Main(new string[] { "NotATest.bmp", "median", "MainWithErrCodeOut.bmp" }));
+                Assert.AreEqual(MyImage.InvalidInput, Filters.Main(new string[] { "Test.bmp", "not a filter", "MainWithErrCodeOut.bmp" }));
                 Assert.AreEqual(false, File.Exists("MainWithErrCodeOut.bmp"));
             }
             catch
@@ -417,9 +417,9 @@ namespace Task1Tests
                 {1, 1, 1, 1, 1, 1, 1, 1, 1},
                 {1, 1, 1, 1, 1, 1, 1, 1, 1},
             };
-            Assert.AreEqual(maskExp, Image.CreateSquareMask(9));
-            Assert.AreEqual(maskExp, Image.CreateSquareMask(8));
-            Assert.AreEqual(null, Image.CreateSquareMask(-1));
+            Assert.AreEqual(maskExp, MyImage.CreateSquareMask(9));
+            Assert.AreEqual(maskExp, MyImage.CreateSquareMask(8));
+            Assert.AreEqual(null, MyImage.CreateSquareMask(-1));
         }
         [Test]
         public void CreateCircleMaskSz9Test()
@@ -436,9 +436,9 @@ namespace Task1Tests
                 {0, 0, 1, 1, 1, 1, 1, 0, 0},
                 {0, 0, 0, 0, 1, 0, 0, 0, 0}
             };
-            Assert.AreEqual(maskExp, Image.CreateCircleMask(9));
-            Assert.AreEqual(maskExp, Image.CreateCircleMask(8));
-            Assert.AreEqual(null, Image.CreateCircleMask(-1));
+            Assert.AreEqual(maskExp, MyImage.CreateCircleMask(9));
+            Assert.AreEqual(maskExp, MyImage.CreateCircleMask(8));
+            Assert.AreEqual(null, MyImage.CreateCircleMask(-1));
         }
         [Test]
         public void CreateCrossMaskSz9Test()
@@ -455,9 +455,9 @@ namespace Task1Tests
                 {0, 0, 0, 0, 1, 0, 0, 0, 0},
                 {0, 0, 0, 0, 1, 0, 0, 0, 0}
             };
-            Assert.AreEqual(maskExp, Image.CreateCrossMask(9));
-            Assert.AreEqual(maskExp, Image.CreateCrossMask(8));
-            Assert.AreEqual(null, Image.CreateCrossMask(-1));
+            Assert.AreEqual(maskExp, MyImage.CreateCrossMask(9));
+            Assert.AreEqual(maskExp, MyImage.CreateCrossMask(8));
+            Assert.AreEqual(null, MyImage.CreateCrossMask(-1));
         }
         [Test]
         public void CreateDiagonalCrossMaskSz9Test()
@@ -474,9 +474,9 @@ namespace Task1Tests
                 {0, 1, 0, 0, 0, 0, 0, 1, 0},
                 {1, 0, 0, 0, 0, 0, 0, 0, 1}
             };
-            Assert.AreEqual(maskExp, Image.CreateDiagonalCrossMask(9));
-            Assert.AreEqual(maskExp, Image.CreateDiagonalCrossMask(8));
-            Assert.AreEqual(null, Image.CreateDiagonalCrossMask(-1));
+            Assert.AreEqual(maskExp, MyImage.CreateDiagonalCrossMask(9));
+            Assert.AreEqual(maskExp, MyImage.CreateDiagonalCrossMask(8));
+            Assert.AreEqual(null, MyImage.CreateDiagonalCrossMask(-1));
         }
         [Test]
         public void CreateEmptySquareMaskSz9Test()
@@ -493,10 +493,10 @@ namespace Task1Tests
                 {1, 0, 0, 0, 0, 0, 0, 0, 1},
                 {1, 1, 1, 1, 1, 1, 1, 1, 1}
             };
-            byte[,] mask_act = Image.CreateEmptySquareMask(9);
-            Assert.AreEqual(maskExp, Image.CreateEmptySquareMask(9));
-            Assert.AreEqual(maskExp, Image.CreateEmptySquareMask(8));
-            Assert.AreEqual(null, Image.CreateEmptySquareMask(-1));
+            byte[,] mask_act = MyImage.CreateEmptySquareMask(9);
+            Assert.AreEqual(maskExp, MyImage.CreateEmptySquareMask(9));
+            Assert.AreEqual(maskExp, MyImage.CreateEmptySquareMask(8));
+            Assert.AreEqual(null, MyImage.CreateEmptySquareMask(-1));
         }
         [Test]
         public void MedianSz15MDiagonalCross()

@@ -18,7 +18,7 @@ namespace Task1
                 Console.WriteLine(" > invalid input");
                 if (manual)
                     return -1;
-                return Image.InvalidInput;
+                return MyImage.InvalidInput;
             }
             
             for (; ; )
@@ -262,9 +262,9 @@ namespace Task1
                     else
                         continue;
 
-                Image paint = new Image();
+                MyImage paint = new MyImage();
 
-                if ((errCode = Image.WriteErrorName(paint.GetFromFile(args[0]))) != 0)
+                if ((errCode = MyImage.WriteErrorName(paint.GetFromFile(args[0]))) != 0)
                     if (manual)
                         continue;
                     else
@@ -279,13 +279,13 @@ namespace Task1
                 if (threshold == -1)
                     threshold = nThreshold;
 
-                if ((errCode = Image.WriteErrorName(paint.FilterByCode(filter, size, mask, sigma, threshold))) != 0)
+                if ((errCode = MyImage.WriteErrorName(paint.FilterByCode(filter, size, mask, sigma, threshold))) != 0)
                     if (manual)
                         continue;
                     else
                         return errCode;
 
-                if ((errCode = Image.WriteErrorName(paint.PutInFile(args[args.Length - 1]))) != 0)
+                if ((errCode = MyImage.WriteErrorName(paint.PutInFile(args[args.Length - 1]))) != 0)
                     if (manual)
                         continue;
                     else

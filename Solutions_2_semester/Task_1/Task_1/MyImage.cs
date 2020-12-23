@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Drawing;
 
 namespace Task1
 {
-    public class Image
+    public class MyImage
     {
         public const int FileNotExist = 1;
         public const int FileReadError = 2;
@@ -39,144 +40,52 @@ namespace Task1
             }
         }
 
-        int fileSize;
-        short reservedOne;
-        short reservedTwo;
-        int offsetBits;
-        int headSize;
         int width;
         int height;
-        short planes;
         short bitCount;    //3 or 4
-        int compression;
-        int imageSize;
-        int xpelsPerMeter;
-        int ypelsPerMeter;
-        int colorsUsed;
-        int colorsImportant;
 
-        int[] palette;
         byte[,,] bitMap;
         bool isСreated = false;
         double[] shadeCoefficient = { 0.299, 0.587, 0.114 };
 
         public byte GetFromFile(string path)
         {
-            if (!File.Exists(path))
-                return FileNotExist;
-            BinaryReader file = new BinaryReader(File.Open(path, FileMode.Open));
-            if (!((char)file.ReadByte() == 'B' && (char)file.ReadByte() == 'M'))
-            {
-                file.Close();
-                return FileReadError;
-            }
             try
             {
-                fileSize = file.ReadInt32();
-                reservedOne = file.ReadInt16();
-                reservedTwo = file.ReadInt16();
-                offsetBits = file.ReadInt32();
-                headSize = file.ReadInt32();
-                width = file.ReadInt32();
-                height = file.ReadInt32();
-                planes = file.ReadInt16();
-                bitCount = file.ReadInt16();
-                compression = file.ReadInt32();
-                imageSize = file.ReadInt32();
-                xpelsPerMeter = file.ReadInt32();
-                ypelsPerMeter = file.ReadInt32();
-                colorsUsed = file.ReadInt32();
-                colorsImportant = file.ReadInt32();
-
-                if (offsetBits - 54 > 0)
-                {
-                    palette = new int[(offsetBits - 54) / 4];
-                    for (int i = 0; i < palette.Length; i++)
-                        palette[i] = file.ReadInt32();
-                }
-
-                if (bitCount == 32)
-                {
-                    bitCount = 4;
-                    bitMap = new byte[width, height, 4];
-                }
-                else if (bitCount == 24)
-                {
-                    bitCount = 3;
-                    bitMap = new byte[width, height, 3];
-                }
-                else
-                {
-                    file.Close();
-                    return FileReadError;
-                }
-
+                Stream reader = File.OpenRead(path);
+                Bitmap bitmap = new Bitmap(reader);
+                height = bitmap.Height;
+                width = bitmap.Width;
+                bitCount = 3;
+                reader.Close();
+                bitMap = new byte[width, height, 3];
                 for (int j = 0; j < height; j++)
-                {
                     for (int i = 0; i < width; i++)
                     {
-                        for (int c = 2; c >= 0; c--)
-                            bitMap[i, j, c] = file.ReadByte();
-                        if (bitCount == 4)
-                            bitMap[i, j, 3] = file.ReadByte();
+                        Color pixel = bitmap.GetPixel(i, j);
+                        bitMap[i, j, 0] = pixel.R;
+                        bitMap[i, j, 1] = pixel.G;
+                        bitMap[i, j, 2] = pixel.B;
                     }
-                    for (int i = 0; i < (4 - (width * bitCount) % 4) % 4; i++)
-                        file.ReadByte();
-                }
-                file.Close();
+                bitmap.Dispose();
                 isСreated = true;
                 return 0;
             }
             catch
             {
-                file.Close();
-                return FileReadError;
+                return UnexpectedError;
             }
         }
         public byte PutInFile(string path)
         {
-            if (!isСreated)
-                return ImageNotCreated;
-            BinaryWriter file = new BinaryWriter(File.Open(path, FileMode.Create));
             try
             {
-                file.Write('B');
-                file.Write('M');
-
-                file.Write(fileSize);
-                file.Write(reservedOne);
-                file.Write(reservedTwo);
-                file.Write(offsetBits);
-                file.Write(headSize);
-                file.Write(width);
-                file.Write(height);
-                file.Write(planes);
-                file.Write((short)(bitCount * 8));
-                file.Write(compression);
-                file.Write(imageSize);
-                file.Write(xpelsPerMeter);
-                file.Write(ypelsPerMeter);
-                file.Write(colorsUsed);
-                file.Write(colorsImportant);
-
-                if (palette != null)
-                    for (int i = 0; i < palette.Length; i++)
-                        file.Write(palette[i]);
-
+                Bitmap bitmap = new Bitmap(width, height);
                 for (int j = 0; j < height; j++)
-                {
                     for (int i = 0; i < width; i++)
-                    {
-                        for (int c = 2; c >= 0; c--)
-                            file.Write(bitMap[i, j, c]);
-                        if (bitCount == 4)
-                            file.Write(bitMap[i, j, 3]);
-                    }
-                    for (int i = 0; i < (4 - (width * bitCount) % 4) % 4; i++)
-                        file.Write((byte)0);
-                }
+                        bitmap.SetPixel(i, j, Color.FromArgb(bitMap[i, j, 0], bitMap[i, j, 1], bitMap[i, j, 2]));
 
-                file.Close();
+                bitmap.Save(path);
                 return 0;
             }
             catch
@@ -466,7 +375,7 @@ namespace Task1
                 double gY = 0;
                 double[,] gXMask = new double[,] { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 1 } };
                 double[,] gYMask = new double[,] { { 1, 2, 1 }, { 0, 0, 0 }, { -1, -2, -1 } };
-                double Shade;
+                //double Shade;
 
                 byte[,,] bitMapNew = new byte[width, height, bitCount];
 
@@ -474,7 +383,7 @@ namespace Task1
                     for (int x = 0; x < width; x++)
                         if (y > 0 && y < height - 1 && x > 0 && x < width - 1)
                         {
-                            Shade = 0;
+                            //Shade = 0;
                             for (int c = 0; c <= 2; c++)
                             {
                                 if (type != 'y')
@@ -486,18 +395,21 @@ namespace Task1
                                     return UnexpectedError;
 
                                 if (type == 'x')
-                                    Shade += gX * shadeCoefficient[c];
+                                    bitMapNew[x, y, c] = (byte)gX;
                                 else if (type == 'y')
-                                    Shade += gY * shadeCoefficient[c];
+                                    bitMapNew[x, y, c] = (byte)gY;
                                 else
-                                    Shade += Math.Sqrt(Math.Pow(gX, 2) + Math.Pow(gY, 2)) * shadeCoefficient[c];
+                                    bitMapNew[x, y, c] = (byte)Math.Sqrt(Math.Pow(gX, 2) + Math.Pow(gY, 2));
                             }
+                            /*
                             if (Shade > 255 / threshold)
                                 Shade = 255;
                             else
                                 Shade = 0;
+                                
                             for (int c = 0; c <= 2; c++)
                                 bitMapNew[x, y, c] = (byte)Shade;
+                                */
                         }
 
                 bitMap = bitMapNew;
