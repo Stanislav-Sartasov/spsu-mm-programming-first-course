@@ -17,7 +17,23 @@ namespace NinthTask
 		static void Main(string[] args)
 		{
 			var chat = new ChatManager();
-			chat.Start(args);
+
+			if (args.Length == 0)
+			{
+				chat.StartServer(); //сервер - для себя, поменяю
+			}
+			else if (args.Length == 1)
+			{
+				chat.StartChatting(args[0]);
+			}
+			else if (args.Length == 2)
+			{
+				chat.StartChatting(args[0], args[1]);
+			}
+			else
+			{
+				Console.WriteLine("Incorrect input format.");
+			}
 		}
 	}
 }
