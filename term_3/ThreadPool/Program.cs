@@ -11,7 +11,7 @@ namespace ThreadPool
 	{
 		public void Hello()
 		{
-			Console.WriteLine("Hello wrld");
+			Console.WriteLine("Hello world");
 		}
 		static void Main(string[] args)
 		{
@@ -28,6 +28,7 @@ namespace ThreadPool
 				myPool.Enqueue(a);
 			Thread.Sleep(1000);
 			myPool.Dispose();
+			Console.WriteLine("<Reading Key.....>");
 			Console.ReadKey();
 		}
 	}

@@ -29,40 +29,38 @@ namespace ThreadPool
 		}
 		public void Enqueue(Action a)
 		{
-			lock (queue)
+			Monitor.Enter(queue);
+			try
 			{
-				if (queue.Count == 0)
-				{
-					queue.Enqueue(a);
-					for (int i = 0; i < number; i++)
-					{
-						if (!threadLst[i].IsAlive)
-						{
-							threadLst[i].Join();
-							threadLst[i] = new Thread(Work);
-							threadLst[i].Name = i.ToString();
-							threadLst[i].Start();
-						}
-					}
-				}
-				else
-					queue.Enqueue(a);
+				queue.Enqueue(a);
+				Monitor.PulseAll(queue);
+			}
+			finally
+			{
+				Monitor.Exit(queue);
 			}
 		}
 		private void Work()
 		{
-				for (int i = 0; i < queue.Count; ++i)
+				while (!stop)
 				{
 					Action act = null;
 					bool flag;
 					flag = false;
-					lock (queue)
+					Monitor.Enter(queue);
+					try
 					{
+						while ((queue.Count == 0) && (!stop))
+							Monitor.Wait(queue);
 						if (queue.Count > 0)
 						{
-						act = queue.Dequeue();
-						flag = true;
+							act = queue.Dequeue();
+							flag = true;
 						}
+					}
+					finally
+					{
+						Monitor.Exit(queue);
 					}
 					if (flag)
 						act?.Invoke();
@@ -78,9 +76,15 @@ namespace ThreadPool
 			stop = true;
 			if (flag)
 			{
-				lock(queue)
+				Monitor.Enter(queue);
+				try
 				{
 					queue.Clear();
+					Monitor.PulseAll(queue);
+				}
+				finally
+				{
+					Monitor.Exit(queue);
 				}
 				foreach (var t in threadLst)
 				{
