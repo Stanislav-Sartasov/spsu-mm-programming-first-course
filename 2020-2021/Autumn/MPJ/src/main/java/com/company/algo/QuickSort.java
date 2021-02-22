@@ -17,7 +17,7 @@ public class QuickSort {
         this.writer = writer;
     }
 
-    class Pair<L,R> {
+    static class Pair<L,R> {
         private final L l;
         private final R r;
         public Pair(L l, R r){
@@ -189,32 +189,16 @@ public class QuickSort {
                 int i = 0;
                 int j = 0;
                 while (i < sz[0] || j < sz[1]) {
-                    if (i < sz[0] && j < sz[1]) {
-                        if (first[i] <= second[j]) {
-                            if (first[i] <= sz[2]) {
-                                less.add(first[i]);
-                            } else {
-                                more.add(first[i]);
-                            }
-                            i++;
-                        } else {
-                            if (second[j] <= sz[2]) {
-                                less.add(second[j]);
-                            } else {
-                                more.add(second[j]);
-                            }
-                            j++;
-                        }
-                    }
-                    else if (i < sz[0]) {
+                    if ((i < sz[0] && j < sz[1] && first[i] <= second[j])
+                            || (i < sz[0] && j == sz[1])) {
                         if (first[i] <= sz[2]) {
                             less.add(first[i]);
                         } else {
                             more.add(first[i]);
                         }
                         i++;
-                    }
-                    else {
+                    } else if ((i < sz[0] && j < sz[1] && first[i] > second[j])
+                            || (j < sz[1] && i == sz[0])) {
                         if (second[j] <= sz[2]) {
                             less.add(second[j]);
                         } else {
