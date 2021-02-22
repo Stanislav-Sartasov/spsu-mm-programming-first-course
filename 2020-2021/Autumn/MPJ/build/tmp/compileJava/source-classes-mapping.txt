@@ -1,4 +1,5 @@
-com/company/algo/FloydAlgo.java
- com.company.algo.FloydAlgo
 com/company/Main.java
  com.company.Main
+com/company/algo/QuickSort.java
+ com.company.algo.Pair
+ com.company.algo.QuickSort

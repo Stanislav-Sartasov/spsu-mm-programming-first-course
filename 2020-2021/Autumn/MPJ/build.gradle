@@ -8,23 +8,23 @@ def mpjStarter =  files("$mpjHome/lib/starter.jar")
 def mpjJar = files("$mpjHome/lib/mpj.jar")
 def mpjClasspath = sourceSets.main.runtimeClasspath - mpjJar
 
-/*repositories {
+repositories {
     mavenCentral()
-}*/
+}
 
 dependencies {
     compile mpjJar
-    //testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
-    //testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 
 run {
     main = 'runtime.starter.MPJRun'
     classpath = mpjStarter
-    args mainClassName, '-cp' , mpjClasspath.asPath, '-np', 8
+    args mainClassName, '-cp' , mpjClasspath.asPath, '-np', 5
     dependsOn classes
 }
 
-/*test {
+test {
     useJUnitPlatform()
-}*/
+}

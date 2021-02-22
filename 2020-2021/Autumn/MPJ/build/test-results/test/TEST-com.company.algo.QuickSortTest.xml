@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.company.algo.QuickSortTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-02-22T07:32:53" hostname="lenovo-ideapad-310-15isk" time="3.882">
+  <properties/>
+  <testcase name="compareResults()" classname="com.company.algo.QuickSortTest" time="3.882"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
