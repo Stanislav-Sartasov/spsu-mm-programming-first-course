@@ -66,16 +66,11 @@ namespace FiberLib
             }
             scheduleType = priority;
             isExecuting = true;
-            SchedulePriorityInit(scheduleType);
             Switch(false);
         }
         public static  void AddProcess(Process process)
         {
             fibers.Add(process);
-        }
-        public static void SchedulePriorityInit(SchedulerPriority priority)
-        {
-            /////MAGIC
         }
         public static void Dispose()
         {
