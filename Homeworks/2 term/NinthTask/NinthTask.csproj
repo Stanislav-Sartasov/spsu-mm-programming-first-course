@@ -6,16 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="NinthTask.ChatDescription\**" />
+    <Compile Remove="ChatLibrary\**" />
     <Compile Remove="NinthTask.Tests\**" />
-    <EmbeddedResource Remove="NinthTask.ChatDescription\**" />
+    <EmbeddedResource Remove="ChatLibrary\**" />
     <EmbeddedResource Remove="NinthTask.Tests\**" />
-    <None Remove="NinthTask.ChatDescription\**" />
+    <None Remove="ChatLibrary\**" />
     <None Remove="NinthTask.Tests\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="NinthTask.ChatDescription\NinthTask.ChatDescription.csproj" />
+    <ProjectReference Include="ChatLibrary\ChatDescription.csproj" />
   </ItemGroup>
 
 </Project>

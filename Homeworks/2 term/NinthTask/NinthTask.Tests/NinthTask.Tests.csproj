@@ -14,8 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NinthTask.ChatDescription\NinthTask.ChatDescription.csproj" />
-    <ProjectReference Include="..\NinthTask.csproj" />
+    <ProjectReference Include="..\ChatLibrary\ChatDescription.csproj" />
   </ItemGroup>
 
 </Project>
