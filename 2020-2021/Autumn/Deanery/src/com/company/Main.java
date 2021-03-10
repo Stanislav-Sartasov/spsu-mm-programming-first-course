@@ -34,7 +34,7 @@ public class Main {
                     int exam = random.nextInt(10);
                     if (j == 55) {
                         examSystem.remove(student, exam);
-                    } else if (j % 10 == 4) {
+                    } else if (j / 10 == 4 && j % 10 != 4) {
                         examSystem.add(student, exam);
                     } else {
                         examSystem.contains(student, exam);
