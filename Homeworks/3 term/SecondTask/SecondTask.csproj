@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="RSQSortLib\**" />
+    <Compile Remove="SecondTask.Tests\**" />
+    <EmbeddedResource Remove="RSQSortLib\**" />
+    <EmbeddedResource Remove="SecondTask.Tests\**" />
+    <None Remove="RSQSortLib\**" />
+    <None Remove="SecondTask.Tests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="RSQSortLib\RSQSortLib.csproj" />
+  </ItemGroup>
+
+</Project>
