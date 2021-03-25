@@ -107,14 +107,31 @@ namespace MPI_Floyd
                 else
                 {
                     Matrix m = MPI.Communicator.world.Receive<Matrix>(0, 0);
+                    long oneprocess = m.Width / (processorNumber - 1);
+                    long bottom = ((long)(myRank) - 1) * oneprocess;
+                    long top = bottom + oneprocess - 1;
+                    if (myRank == processorNumber - 1)
+                    {
+                        top = m.Width - 1;
+                    }
+                    
+
                     for (long i = 0; i < m.Height; ++i)
                     {
                         for (long j = 0; j < m.Width; ++j)
                         {
                             for (long k = 0; k < m.Width; ++k)
                             {
-                                MPI.Communicator.world.Send<Triple<long, bool>>(new Triple<long, bool>(k, j, true), 0, 1);
-                                long valueKJ = MPI.Communicator.world.Receive<long>(0, 1); //array [k , j]
+                                long valueKJ = 0;
+                                if (k >= bottom && k <= top)
+                                {
+                                    valueKJ = m.Array[k - bottom, j];
+                                }
+                                else
+                                {
+                                    MPI.Communicator.world.Send<Triple<long, bool>>(new Triple<long, bool>(k, j, true), 0, 1);
+                                    valueKJ = MPI.Communicator.world.Receive<long>(0, 1); //array [k , j]
+                                }
                                 if ( ((m.Array[i, j] > (m.Array[i, k] + valueKJ)) &&
                                         (m.Array[i, k] >= 0) &&
                                          (valueKJ >= 0)) ||
