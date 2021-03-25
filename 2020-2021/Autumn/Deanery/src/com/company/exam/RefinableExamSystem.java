@@ -3,18 +3,17 @@ package com.company.exam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicMarkableReference;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class RefinableExamSystem extends ExamSystem {
 
     AtomicMarkableReference<Thread> owner;
-    volatile ReentrantLock[] locks;
+    volatile Lock[] locks;
 
     public RefinableExamSystem(int capacity) {
         super(capacity);
-        locks = new ReentrantLock[capacity];
+        locks = new Lock[capacity];
         for (int i = 0; i < capacity; i++) {
-            locks[i] = new ReentrantLock();
+            locks[i] = new Lock();
         }
         owner = new AtomicMarkableReference<>(null, false);
     }
@@ -30,7 +29,7 @@ public class RefinableExamSystem extends ExamSystem {
                     return;
                 }
 
-                for (ReentrantLock lock : locks) {
+                for (Lock lock : locks) {
                     lock.lock();
                     lock.unlock();
                 }
@@ -41,9 +40,9 @@ public class RefinableExamSystem extends ExamSystem {
                     table[i] = new ArrayList<>();
                 }
 
-                locks = new ReentrantLock[newCapacity];
+                locks = new Lock[newCapacity];
                 for (int i = 0; i < newCapacity; i++) {
-                    locks[i] = new ReentrantLock();
+                    locks[i] = new Lock();
                 }
 
                 for (List<Pair> bucket: oldTable) {
@@ -67,8 +66,8 @@ public class RefinableExamSystem extends ExamSystem {
                 who = owner.get(mark);
             } while (mark[0] && who != me);
 
-            ReentrantLock[] oldLocks = locks;
-            ReentrantLock oldLock = oldLocks[Math.abs(x.hashCode() % oldLocks.length)];
+            Lock[] oldLocks = locks;
+            Lock oldLock = oldLocks[Math.abs(x.hashCode() % oldLocks.length)];
             oldLock.lock();
             who = owner.get(mark);
             if ((!mark[0] || who == me) && locks == oldLocks) {

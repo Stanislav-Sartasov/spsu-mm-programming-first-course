@@ -6,11 +6,11 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class CoarseExamSystem extends ExamSystem {
 
-    private final ReentrantLock mutex;
+    private volatile Lock lock;
 
     public CoarseExamSystem(int capacity) {
         super(capacity);
-        mutex = new ReentrantLock();
+        lock = new Lock();
     }
 
     protected void resize() {
@@ -37,10 +37,10 @@ public class CoarseExamSystem extends ExamSystem {
     }
 
     protected void acquire(Pair x) {
-        mutex.lock();
+        lock.lock();
     }
 
     protected void release(Pair x) {
-        mutex.unlock();
+        lock.unlock();
     }
 }

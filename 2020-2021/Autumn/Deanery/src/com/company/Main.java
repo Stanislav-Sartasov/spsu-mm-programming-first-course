@@ -9,6 +9,7 @@ public class Main {
     public static void main(String[] args) {
         IExamSystem coarseExamSystem = new CoarseExamSystem(10);
         IExamSystem refinableExamSystem = new RefinableExamSystem(10);
+        System.out.println("Computing...");
 
         long startTime = System.nanoTime();
         work(coarseExamSystem);
@@ -24,7 +25,7 @@ public class Main {
     }
 
     private static void work(IExamSystem examSystem) {
-        int n = 10000;
+        int n = 1000;
         Thread[] users = new Thread[n];
         for (int i = 0; i < n; i++) {
             users[i] = new Thread(() -> {
