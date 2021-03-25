@@ -6,16 +6,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ArrayGeneratorLib\**" />
+    <Compile Remove="ArrayHandlerLib\**" />
     <Compile Remove="RSQSortLib\**" />
     <Compile Remove="SecondTask.Tests\**" />
+    <Compile Remove="TextFilesHandlerLib\**" />
+    <EmbeddedResource Remove="ArrayGeneratorLib\**" />
+    <EmbeddedResource Remove="ArrayHandlerLib\**" />
     <EmbeddedResource Remove="RSQSortLib\**" />
     <EmbeddedResource Remove="SecondTask.Tests\**" />
+    <EmbeddedResource Remove="TextFilesHandlerLib\**" />
+    <None Remove="ArrayGeneratorLib\**" />
+    <None Remove="ArrayHandlerLib\**" />
     <None Remove="RSQSortLib\**" />
     <None Remove="SecondTask.Tests\**" />
+    <None Remove="TextFilesHandlerLib\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="RSQSortLib\RSQSortLib.csproj" />
+    <PackageReference Include="MPI.NET" Version="1.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="ArrayHandlerLib\ArrayHandlerLib.csproj" />
   </ItemGroup>
 
 </Project>
