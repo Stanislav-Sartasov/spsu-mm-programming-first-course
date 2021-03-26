@@ -21,12 +21,13 @@ namespace SecondTask.Tests
 		public void Init()
 		{
 			NumOfProcessors = 4;
-			string path = AppDomain.CurrentDomain.BaseDirectory + @"..\..\..\TestSources\";
+			string path = AppDomain.CurrentDomain.BaseDirectory + @"..\..\..\ArraySources\";
 
 			ArrayGeneration.GenerateTwoArrays(path);
 
+			ExpectedFile = path + "sorted.dat";
 			ActualFile = path + "my_sort.dat";
-			var args = $"mpiexec -n {NumOfProcessors} SecondTask.exe {path + "unsorted.dat"} {ActualFile}";
+			var args = $"mpiexec -n {NumOfProcessors} SecondTask.exe \"{path + "unsorted.dat"}\" \"{ActualFile}\"";
 			var MPIPath = path + @"..\..\bin\Debug\net5.0\";
 
 			var cmd = new Process();
@@ -41,8 +42,6 @@ namespace SecondTask.Tests
 			cmd.StandardInput.Flush();
 			cmd.StandardInput.Close();
 			cmd.WaitForExit();
-
-			ExpectedFile = path + "sorted.dat";
 		}
 
 		[TestMethod]

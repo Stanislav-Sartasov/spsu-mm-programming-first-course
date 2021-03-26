@@ -3,70 +3,63 @@ using System.Collections.Generic;
 using MPI;
 using ArrayHandlerLib;
 
+using System.IO;
+
 namespace SecondTask
 {
 	class RSQSort
 	{
 		static void Main(string[] args)
 		{
-			try
+			using (new MPI.Environment(ref args))
 			{
-				using (new MPI.Environment(ref args))
+				var comm = Communicator.world;
+				try
 				{
-					var comm = Communicator.world;
-
-					var arr = new List<int>(); //исходный массив
+					var arr = new List<int>();
 
 					if (args.Length != 2)
 					{
 						if (comm.Rank == 0)
 						{
-							Console.WriteLine(args.Length);
-							throw new Exception("Error in input format, please try again.");
+							throw new Exception("Error in input format (mpiexec -n <procNum> SecondTask.exe <input.txt> <output.txt>), please try again.");
 						}
-						else
-						{
-							return;
-						}
+						return;
 					}
 
-					arr = TextFilesLib.ReadArray(args[0]);
-
-					comm.Barrier();
-
-					if (comm.Size > arr.Count)
+					int sizeOfArray = 0;
+					if (comm.Rank == 0)
 					{
-						if (comm.Rank == 0)
+						arr = TextFilesLib.ReadArray(args[0]);
+						sizeOfArray = arr.Count;
+
+						if (comm.Size > sizeOfArray)
 						{
 							SingleQuickSort.QuickSort(arr, 0, arr.Count - 1);
 
 							TextFilesLib.WriteArray(args[1], arr);
+							return;
 						}
-						return;
-					}
-					else
-					{
-						if (comm.Rank == 0)
+						else
 						{
 							for (int i = 1; i < comm.Size; i++)
 							{
 								comm.Send(arr, i, 0);
 							}
 						}
-						else
-						{
-							arr = comm.Receive<List<int>>(0, 0);
-						}
+					}
+					else
+					{
+						arr = comm.Receive<List<int>>(0, 0);
+						sizeOfArray = arr.Count;
 					}
 
-					//comm.Barrier(); //??
-
-					var nodeArr = new List<int>(); //массив элементов на конкретном процессорe
-					int procSize = arr.Count / comm.Size;
+					var nodeArr = new List<int>();
+					int procSize = sizeOfArray / comm.Size;
 
 					if (comm.Size - comm.Rank == 1)
 					{
-						for (int i = procSize * (comm.Rank + 1); i < arr.Count; i++)
+						for (int i = procSize * comm.Rank; i < sizeOfArray; i++)
 						{
 							nodeArr.Add(arr[i]);
 						}
@@ -78,15 +71,14 @@ namespace SecondTask
 							nodeArr.Add(arr[i]);
 						}
 					}
-					int size = arr.Count;
 					arr.Clear();
 
 					SingleQuickSort.QuickSort(nodeArr, 0, nodeArr.Count - 1);
 
-					comm.Barrier(); //??
+					comm.Barrier();
 
-					var sepArr = new List<int>(); //массив элементов-разделителей
-					int firstStep = arr.Count / (comm.Size * comm.Size);
+					var sepArr = new List<int>();
+					int firstStep = sizeOfArray / (comm.Size * comm.Size);
 					if (comm.Rank == 0)
 					{
 						for (int i = 0; i < firstStep * comm.Size; i += firstStep)
@@ -108,7 +100,7 @@ namespace SecondTask
 						}
 					}
 
-					var pivArr = new List<int>(); //массив ведущих элементов
+					var pivArr = new List<int>();
 					if (comm.Rank == 0)
 					{
 						int i = comm.Size + comm.Size / 2 - 1;
@@ -116,10 +108,7 @@ namespace SecondTask
 						{
 							pivArr.Add(sepArr[i]);
 						}
-
 					}
-
-					comm.Barrier();
 
 					if (comm.Rank == 0)
 					{
@@ -136,7 +125,11 @@ namespace SecondTask
 
 					comm.Barrier();
 
-					var sendArr = new List<int>[comm.Size]; //массив для отправки
+					var sendArr = new List<int>[comm.Size];
+					for (int i = 0; i < comm.Size; i++)
+					{
+						sendArr[i] = new List<int>();
+					}
 
 					int k = 0, l = 0;
 					while (k < nodeArr.Count)
@@ -155,64 +148,50 @@ namespace SecondTask
 						}
 						else
 						{
-							if (nodeArr[k] > pivArr[k - 1])
+							if (nodeArr[k] > pivArr[l - 1])
 							{
 								sendArr[l].Add(nodeArr[k]);
 								k++;
 							}
 						}
 					}
+					pivArr.Clear();
+					nodeArr.Clear();
 
 					comm.Barrier();
 
-					var finalSortArr = new List<int>(); //массив для последней сортировки
-					for (int i = 0; i < comm.Size; i++)
+					var temp = comm.Alltoall(sendArr);
+					var finalSortArr = new List<int>();
+					foreach (var t in temp)
 					{
-						if (comm.Rank == i)
-						{
-							for (int j = 0; j < comm.Size; j++)
-							{
-								if (comm.Rank != j)
-								{
-									finalSortArr.AddRange(comm.Receive<List<int>>(j, 0));
-								}
-								else
-								{
-									finalSortArr.AddRange(sendArr[comm.Rank]);
-								}
-							}
-						}
-						else
-						{
-							comm.Send(sendArr[i], i, comm.Rank);
-						}
+						finalSortArr.AddRange(t);
 					}
-
-					//comm.Barrier(); //??
 
 					SingleQuickSort.QuickSort(finalSortArr, 0, finalSortArr.Count - 1);
 
 					comm.Barrier();
-
+					
+					sendArr = comm.Gather(finalSortArr, 0);
 					if (comm.Rank == 0)
 					{
-						arr.AddRange(finalSortArr);
-						for (int i = 1; i < comm.Size; i++)
+						foreach (var t in sendArr)
 						{
-							arr.AddRange(comm.Receive<List<int>>(0, i));
+							arr.AddRange(t);
 						}
 
 						TextFilesLib.WriteArray(args[1], arr);
 					}
-					else
-					{
-						comm.Send(finalSortArr, 0, comm.Rank);
-					}
+
+					arr.Clear();
+					finalSortArr.Clear();
+
+					Array.Clear(sendArr, 0, sendArr.Length);
+					Array.Clear(temp, 0, temp.Length);
 				}
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine("The program has stopped working.\n" + ex.Message);
+				catch (Exception ex)
+				{
+					Console.WriteLine($"An error has occured in [{comm.Rank}] node. The program has stopped working.\n" + ex.Message);
+				}
 			}
 		}
 	}

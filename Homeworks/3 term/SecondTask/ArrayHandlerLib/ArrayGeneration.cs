@@ -10,7 +10,7 @@ namespace ArrayHandlerLib
 		public static void GenerateTwoArrays(string dirPath)
 		{
 			Random r = new(DateTime.Now.Millisecond);
-			int capacity = 100; //10000000
+			int capacity = 10000000;
 
 			List<int> lst = new(capacity);
 			for (int i = 0; i < capacity; i++)

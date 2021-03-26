@@ -8,11 +8,6 @@ namespace ArrayHandlerLib
 	{
 		public static bool CompareTwoFileArrays(string fileFirst, string fileSecond)
 		{
-			/*
-			var fileFirst = args[0];
-			var fileSecond = args[1];
-			*/
-
 			if (!File.Exists(fileFirst))
 			{
 				Console.WriteLine($"File {fileFirst} does not exist.");

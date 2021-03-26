@@ -11,20 +11,11 @@ namespace ArrayHandlerLib
 		{
 			try
 			{
-				var text = File.ReadAllText(path).Split(' ');
-
-				var temp = new List<int>();
-				foreach (var t in text)
-				{
-					temp.Add(int.Parse(t));
-				}
-
-				return temp;
+				return File.ReadAllText(path).Split(new char[] { ' ' }).Select(x => int.Parse(x)).ToList();
 			}
-			catch(Exception ex)
+			catch
 			{
-				throw new Exception(ex.Message);
-				//throw new Exception("Error in reading file.");
+				throw new Exception("Error in reading file.");
 			}
 		}
 
