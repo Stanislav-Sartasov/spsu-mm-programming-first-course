@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="FourthTask.Tests\**" />
+    <Compile Remove="TPLib\**" />
+    <EmbeddedResource Remove="FourthTask.Tests\**" />
+    <EmbeddedResource Remove="TPLib\**" />
+    <None Remove="FourthTask.Tests\**" />
+    <None Remove="TPLib\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="TPLib\TPLib.csproj" />
+  </ItemGroup>
+
+</Project>
