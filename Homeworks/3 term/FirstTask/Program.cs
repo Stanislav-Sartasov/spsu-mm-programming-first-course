@@ -5,13 +5,12 @@ namespace FirstTask
 {
 	class Program
 	{
-		public static int NumOfProcesses { get; set; }
+		public static int NumOfProcesses { get; set; } = 4;
 
 		static void Main()
 		{
 			//Input();
-			NumOfProcesses = 4;
-			ProcessManager.IsPrioritized = false;
+			ProcessManager.IsPrioritized = true;
 
 			for (int i = 0; i < NumOfProcesses; i++)
 			{
@@ -26,54 +25,54 @@ namespace FirstTask
 			Console.WriteLine("Disposed!");
 		}
 
-		static void Input()
-		{
-			Console.WriteLine("Num of processes:");
-			while (true)
-			{
-				try
-				{
-					NumOfProcesses = Convert.ToInt32(Console.ReadLine());
+		//static void Input()
+		//{
+		//	Console.WriteLine("Num of processes:");
+		//	while (true)
+		//	{
+		//		try
+		//		{
+		//			NumOfProcesses = Convert.ToInt32(Console.ReadLine());
 
-					if (NumOfProcesses < 1)
-					{
-						throw new Exception();
-					}
+		//			if (NumOfProcesses < 1)
+		//			{
+		//				throw new Exception();
+		//			}
 					
-					break;
-				}
-				catch
-				{
-					Console.WriteLine("Incorrect num of processes, try again:");
-				}
-			}
+		//			break;
+		//		}
+		//		catch
+		//		{
+		//			Console.WriteLine("Incorrect num of processes, try again:");
+		//		}
+		//	}
 
-			Console.WriteLine("Is prioritized? y/n");
-			while (true)
-			{
-				try
-				{
-					var input = Console.ReadLine();
+		//	Console.WriteLine("Is prioritized? y/n");
+		//	while (true)
+		//	{
+		//		try
+		//		{
+		//			var input = Console.ReadLine();
 
-					switch (input)
-					{
-						case "y":
-							ProcessManager.IsPrioritized = true;
-							break;
-						case "n":
-							ProcessManager.IsPrioritized = false;
-							break;
-						default:
-							throw new Exception();
-					}
+		//			switch (input)
+		//			{
+		//				case "y":
+		//					ProcessManager.IsPrioritized = true;
+		//					break;
+		//				case "n":
+		//					ProcessManager.IsPrioritized = false;
+		//					break;
+		//				default:
+		//					throw new Exception();
+		//			}
 
-					break;
-				}
-				catch
-				{
-					Console.WriteLine("Invalid input, try again:");
-				}
-			}
-		}
+		//			break;
+		//		}
+		//		catch
+		//		{
+		//			Console.WriteLine("Invalid input, try again:");
+		//		}
+		//	}
+		//}
 	}
 }

@@ -51,7 +51,6 @@ namespace FibersDescription
 		/// <param name='fiberId'>Fiber id.</param>
 		public static void Switch(uint fiberId)
 		{
-			// for debug only and to show that indeed it works! Remove this line!!!
 			Console.WriteLine(string.Format("Fiber [{0}] Switch", fiberId));
 			UnmanagedFiberAPI.SwitchToFiber(fiberId);
 		}
