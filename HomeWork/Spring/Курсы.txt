@@ -1,0 +1,13 @@
+Для получения зачёта по теории автоматом необходимо предоставить свидетельства о прохождении следующих онлайн курсов:
+
+https://www.coursera.org/learn/object-oriented-java
+
+ИЛИ
+
+https://stepik.org/course/3944/syllabus
+
+ИЛИ
+
+https://www.coursera.org/learn/c-plus-plus-yellow
+И
+https://www.coursera.org/learn/c-plus-plus-white

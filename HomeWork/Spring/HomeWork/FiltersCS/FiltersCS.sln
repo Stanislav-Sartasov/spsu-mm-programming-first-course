@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29905.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FiltersCS", "FiltersCS\FiltersCS.csproj", "{76E7F581-5139-44D6-ABE0-A345C2244876}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Picture", "Filters\Picture.csproj", "{1CACEF73-BC3E-4CF1-8257-023033750320}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiltersTest", "FiltersTest\FiltersTest.csproj", "{2A759C1D-88A7-40A2-9331-C38C66AF97FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{76E7F581-5139-44D6-ABE0-A345C2244876}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76E7F581-5139-44D6-ABE0-A345C2244876}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76E7F581-5139-44D6-ABE0-A345C2244876}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76E7F581-5139-44D6-ABE0-A345C2244876}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CACEF73-BC3E-4CF1-8257-023033750320}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CACEF73-BC3E-4CF1-8257-023033750320}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CACEF73-BC3E-4CF1-8257-023033750320}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CACEF73-BC3E-4CF1-8257-023033750320}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A759C1D-88A7-40A2-9331-C38C66AF97FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A759C1D-88A7-40A2-9331-C38C66AF97FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A759C1D-88A7-40A2-9331-C38C66AF97FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A759C1D-88A7-40A2-9331-C38C66AF97FA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9FA59B18-81DE-413E-9D81-B97A31442992}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29905.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IoC", "IoC\IoC.csproj", "{AC03BE2B-7A18-472F-B21A-373C865C23AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IoC.Tests", "IoC.Tests\IoC.Tests.csproj", "{BF6FB05D-E7A6-4A98-BF01-59F1CB11E52F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AC03BE2B-7A18-472F-B21A-373C865C23AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC03BE2B-7A18-472F-B21A-373C865C23AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC03BE2B-7A18-472F-B21A-373C865C23AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC03BE2B-7A18-472F-B21A-373C865C23AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF6FB05D-E7A6-4A98-BF01-59F1CB11E52F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF6FB05D-E7A6-4A98-BF01-59F1CB11E52F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF6FB05D-E7A6-4A98-BF01-59F1CB11E52F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF6FB05D-E7A6-4A98-BF01-59F1CB11E52F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A72CEF0C-277E-4C0E-881B-51DD8B32D60C}
+	EndGlobalSection
+EndGlobal
