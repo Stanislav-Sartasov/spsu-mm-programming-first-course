@@ -1,11 +1,13 @@
+package com.company.ProcessManager;
+
 import java.util.ArrayList;
 import java.util.Random;
 
 import static java.lang.Thread.sleep;
 
 public class Process {
-	private static final int longPauseBoundary = 10000;
-	private static final int shortPauseBoundary = 100;
+	private static final int longPauseBoundary = 1000;
+	private static final int shortPauseBoundary = 10;
 	private static final int workBoundary = 1000;
 	private static final int intervalsAmountBoundary = 10;
 	private static final int priorityLevelsNumber = 10;
@@ -42,6 +44,7 @@ public class Process {
 
 	public Process() {
 		Random random = new Random();
+		isFinished = false;
 		int amount = random.nextInt(intervalsAmountBoundary);
 		for (int i = 0; i < amount; i++) {
 			workIntervals.add(random.nextInt(workBoundary));
@@ -59,11 +62,12 @@ public class Process {
 				sleep(workIntervals.get(i)); // work emulation
 				long pauseBeginTime = System.currentTimeMillis();
 				do {
-					Thread.sleep(1);
+					sleep(1);
 					ProcessManager.processManagerSwitch(false);
 				} while ((System.currentTimeMillis() - pauseBeginTime) < pauseIntervals.get(i)); // I/O emulation*/
 			}
 			isFinished = true;
+			sleep(1);
 			ProcessManager.processManagerSwitch(true);
 		}
 	}

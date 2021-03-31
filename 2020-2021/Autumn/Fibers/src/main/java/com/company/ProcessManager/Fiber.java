@@ -1,3 +1,5 @@
+package com.company.ProcessManager;
+
 public class Fiber {
     /// The fiber action delegate.
     private Runnable action;
@@ -41,12 +43,22 @@ public class Fiber {
     /// Deletes the current fiber.
     /// <remarks>This method should only be used in the fiber action that's executing.</remarks>
     public void delete() {
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         UnmanagedFiberAPI.kernel32.DeleteFiber(id);
     }
 
     /// Deletes the fiber with the specified fiber id.
     /// <param name='fiberId'>fiber id.</param>
     public static void delete(long fiberId) {
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         UnmanagedFiberAPI.kernel32.DeleteFiber(fiberId);
     }
 
@@ -55,7 +67,11 @@ public class Fiber {
     public static void fiberSwitch(long fiberId) {
     // for debug only and to show that indeed it works! Remove this line!!!
     //    System.out.println("Fiber [" + fiberId + "] Switch");
-
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         UnmanagedFiberAPI.kernel32.SwitchToFiber(fiberId);
     }
 
@@ -70,13 +86,13 @@ public class Fiber {
             primaryFiber = this;
         }
         EventCallbackInterface lpFiber = this::fiberRunnerProc;
-        id = UnmanagedFiberAPI.kernel32.CreateFiber(10050, lpFiber, 0);
+        id = UnmanagedFiberAPI.kernel32.CreateFiber(100500, lpFiber, 0);
     }
 
     /// Fiber method that executes the fiber action.
     /// <param name='lpParam'>Lp parameter.</param>
     /// <returns>fiber status code.</returns>
-    private int fiberRunnerProc(int param) throws InterruptedException{
+    private int fiberRunnerProc(int param) throws InterruptedException {
         int status = 0;
         try {
             action.run();
@@ -86,6 +102,11 @@ public class Fiber {
             e.printStackTrace();
         } finally {
             if (status == 1) {
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 UnmanagedFiberAPI.kernel32.DeleteFiber(id);
             }
         }

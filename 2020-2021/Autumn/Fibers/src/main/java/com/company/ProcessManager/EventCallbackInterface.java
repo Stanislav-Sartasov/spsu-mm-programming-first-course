@@ -1,3 +1,5 @@
+package com.company.ProcessManager;
+
 import com.sun.jna.Callback;
 
 public interface EventCallbackInterface extends Callback {
