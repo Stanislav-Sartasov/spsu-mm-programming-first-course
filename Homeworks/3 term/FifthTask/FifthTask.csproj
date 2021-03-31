@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="CascadeLib\**" />
+    <Compile Remove="FifthTask.Tests\**" />
+    <EmbeddedResource Remove="CascadeLib\**" />
+    <EmbeddedResource Remove="FifthTask.Tests\**" />
+    <None Remove="CascadeLib\**" />
+    <None Remove="FifthTask.Tests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="CascadeLib\CascadeLib.csproj" />
+  </ItemGroup>
+
+</Project>
