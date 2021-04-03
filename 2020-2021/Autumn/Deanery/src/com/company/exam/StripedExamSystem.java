@@ -4,19 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class CoarseExamSystem extends ExamSystem {
+public class StripedExamSystem extends ExamSystem {
 
-    private volatile Lock lock;
+    private volatile Lock[] locks;
 
-    public CoarseExamSystem(int capacity) {
+    public StripedExamSystem(int capacity) {
         super(capacity);
-        lock = new Lock();
+        locks = new Lock[capacity];
+        for (int i = 0; i < capacity; i++)
+            locks[i] = new Lock();
     }
 
     protected void resize() {
         int oldCapacity = table.length;
-        Pair p = new Pair(0, 0);
-        acquire(p);
+        for (Lock lock: locks)
+            lock.lock();
         try {
             if (oldCapacity != table.length) {
                 return;
@@ -32,15 +34,16 @@ public class CoarseExamSystem extends ExamSystem {
                 }
             }
         } finally {
-            release(p);
+            for (Lock lock: locks)
+                lock.unlock();
         }
     }
 
     protected void acquire(Pair x) {
-        lock.lock();
+        locks[Math.abs(x.hashCode()) % locks.length].lock();
     }
 
     protected void release(Pair x) {
-        lock.unlock();
+        locks[Math.abs(x.hashCode()) % locks.length].unlock();
     }
 }

@@ -7,7 +7,7 @@ import java.util.Random;
 public class Main {
 
     public static void main(String[] args) {
-        IExamSystem coarseExamSystem = new CoarseExamSystem(10);
+        IExamSystem coarseExamSystem = new StripedExamSystem(10);
         IExamSystem refinableExamSystem = new RefinableExamSystem(10);
         System.out.println("Computing...");
 
@@ -15,7 +15,7 @@ public class Main {
         work(coarseExamSystem);
         long endTime   = System.nanoTime();
         long totalTime = endTime - startTime;
-        System.out.println("Coarse Exam System:    " + totalTime + " ms.");
+        System.out.println("Striped Exam System:   " + totalTime + " ms.");
 
         startTime = System.nanoTime();
         work(refinableExamSystem);

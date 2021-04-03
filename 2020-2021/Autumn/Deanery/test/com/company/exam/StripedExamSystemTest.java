@@ -5,12 +5,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CoarseExamSystemTest {
-    CoarseExamSystem examSystem;
+class StripedExamSystemTest {
+    StripedExamSystem examSystem;
 
     @BeforeEach
     void setup() {
-        examSystem = new CoarseExamSystem(10);
+        examSystem = new StripedExamSystem(10);
     }
 
     @Test
