@@ -2,11 +2,10 @@ package com.company.exam;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class StripedExamSystem extends ExamSystem {
 
-    private volatile Lock[] locks;
+    private final Lock[] locks;
 
     public StripedExamSystem(int capacity) {
         super(capacity);
