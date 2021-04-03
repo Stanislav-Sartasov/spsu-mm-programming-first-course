@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Task5\Task4.csproj" />
+    <ProjectReference Include="..\Task4\Task4.csproj" />
   </ItemGroup>
 
 </Project>

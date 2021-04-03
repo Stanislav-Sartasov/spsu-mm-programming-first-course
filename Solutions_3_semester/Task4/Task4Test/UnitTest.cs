@@ -2,7 +2,7 @@ using NUnit.Framework;
 using System;
 using System.Threading;
 
-namespace Task5Test
+namespace Task4Test
 {
 	public class Tests
 	{
