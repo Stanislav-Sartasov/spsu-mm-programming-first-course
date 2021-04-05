@@ -14,7 +14,6 @@ namespace FibersDescription
 		private static uint currFiber;
 
 		private static Dictionary<uint, int> fibersPriorities;
-		private static int sumPriority;
 
 		private static Random rndmzer;
 
@@ -33,7 +32,6 @@ namespace FibersDescription
 				foreach (var fiber in Fibers)
 				{
 					fibersPriorities.Add(fiber.Key, fiber.Value.Priority);
-					sumPriority += fiber.Value.Priority;
 				}
 				currFiber = Fibers.OrderByDescending(x => x.Value.Priority).First().Key;
 			}
@@ -58,7 +56,6 @@ namespace FibersDescription
 
 				if (IsPrioritized)
 				{
-					sumPriority -= fibersPriorities[currFiber];
 					fibersPriorities.Remove(currFiber);
 				}
 
@@ -87,20 +84,31 @@ namespace FibersDescription
 			Fiber.Switch(currFiber);
 		}
 
-		private static uint GetNextPriorFiber()
+		private static uint GetNextPriorFiber() //probability scheme
 		{
-			int rndSum = rndmzer.Next(sumPriority + 1);
+			int rnd = rndmzer.Next(20); //1/20 probability that we take last fiber in dictionary 
 			uint priorFiber = default;
 
-			foreach (var chs in fibersPriorities)
+			if (rnd == 0)
 			{
-				rndSum -= chs.Value;
-				priorFiber = chs.Key;
+				priorFiber = Fibers.Last().Key;
+			}
+			else
+			{
+				int max = fibersPriorities.Max(x => x.Value);
+				var temp = fibersPriorities.Where(x => (x.Value == max)).ToDictionary(x => x.Key);
 
-				if (rndSum <= 0)
+				foreach (var chs in temp)
 				{
-					break;
+					var chsRnd = rndmzer.Next(2); //1/2 chance for each fiber with max priority
+
+					if (chsRnd == 1)
+					{
+						priorFiber = chs.Key;
+						break;
+					}
 				}
+				priorFiber = temp.Last().Key; //if we didn't choose last fiver with max priority in foreach
 			}
 
 			return priorFiber;
@@ -119,7 +127,6 @@ namespace FibersDescription
 			Fibers.Clear();
 
 			fibersPriorities.Clear();
-			sumPriority = default;
 
 			//IsPrioritized = default;
 			//rndmzer = null;
@@ -133,7 +140,6 @@ namespace FibersDescription
 			currFiber = default;
 
 			fibersPriorities = new Dictionary<uint, int>();
-			sumPriority = default;
 
 			rndmzer = new Random();
 		}
