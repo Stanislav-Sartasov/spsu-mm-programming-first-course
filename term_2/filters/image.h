@@ -54,6 +54,8 @@ private:
     char *palete = NULL;
     unsigned int padLine;
     int **matrix, xMatr = 0;
+    unsigned int pixelsAmount;
+    unsigned int pixelsDone;
 
     void medPix(int z);
     struct pix<long> goMatrix(int i, int j);

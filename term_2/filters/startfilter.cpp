@@ -38,42 +38,42 @@ void StartFilter::goFilter()
     {
         im.gary();
         im.closeBMP(load.fileOut);
-        cout << load.mod << " is done good\n";
+        cout << 100;//<< load.mod << " is done good\n";
         return;
     }
     if (strcmp(load.mod, "median") == 0)
     {
         im.median();
         im.closeBMP(load.fileOut);
-        cout << load.mod << " is done good\n";
+        cout << 100;//<< load.mod << " is done good\n";
         return;
     }
     if (strcmp(load.mod, "gauss") == 0)
     {
         im.gauss();
         im.closeBMP(load.fileOut);
-        cout << load.mod << " is done good\n";
+        cout << 100;//<< load.mod << " is done good\n";
         return;
     }
     if (strcmp(load.mod, "sobelX") == 0)
     {
         im.sobelX();
         im.closeBMP(load.fileOut);
-        cout << load.mod << " is done good\n";
+        cout << 100;//<< load.mod << " is done good\n";
         return;
     }
     if (strcmp(load.mod, "sobelY") == 0)
     {
         im.sobelY();
         im.closeBMP(load.fileOut);
-        cout << load.mod << " is done good\n";
+        cout << 100;// << load.mod << " is done good\n";
         return;
     }
     if (strcmp(load.mod, "sobelAll") == 0)
     {
         im.sobelAll();
         im.closeBMP(load.fileOut);
-        cout << load.mod << " is done good\n";
+        cout << 100;//<< load.mod << " is done good\n";
         return;
     }
 //    if (strcmp(load.mod, "blueGray") == 0)

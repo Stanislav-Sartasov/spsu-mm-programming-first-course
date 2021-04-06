@@ -6,6 +6,7 @@ void Image::medPix(int z)
 {
     unsigned char matrix[9];
     for (unsigned int i = 0; i + 2 < image.len; i += 3)
+    {
         for (unsigned int j = 0; j + 2 < image.wid; j += 3)
         {
             unsigned char temp;
@@ -24,6 +25,10 @@ void Image::medPix(int z)
                 for (unsigned int o = 0; o < 3; ++o)
                     image.bits[i + u][j + o].a[z] = matrix[4];
         }
+        pixelsDone += image.wid;
+        int procent = (int)(100 * (pixelsDone - (2 * image.wid)) / pixelsAmount);
+        cout << (procent > 0 ? procent : 0) << "\n";
+    }
 }
 
 struct pix<long> Image::goMatrix(int i, int j)
@@ -142,6 +147,8 @@ void Image::openBMP(char *str)
    image.bits = bits;
    image.wid = bmpInfoH.biWidth;
    image.len = bmpInfoH.biHeight;
+   pixelsAmount = image.len * image.wid;
+   pixelsDone = 0;
 
 }
 
@@ -188,6 +195,7 @@ void Image::gary()
 {
     unsigned char res;
     for (unsigned int i = 0; i < image.len; ++i)
+    {
         for (unsigned int j = 0; j < image.wid; ++j)
         {
             res = (unsigned char)(0.3 * image.bits[i][j].a[0] +  0.5 * image.bits[i][j].a[1] + 0.2 * image.bits[i][j].a[2]) ;
@@ -195,10 +203,15 @@ void Image::gary()
             image.bits[i][j].a[1] = res;
             image.bits[i][j].a[2] = res;
         }
+        pixelsDone += image.wid;
+        int procent = (int)(100 * (pixelsDone - (2 * image.wid)) / pixelsAmount);
+        cout << (procent > 0 ? procent : 0) << "\n";
+    }
 }
 
 void Image::median()
 {
+    //pixelsAmount /= 3;
     medPix(0);
     medPix(1);
     medPix(2);
@@ -216,6 +229,7 @@ void Image::gauss()
     temp.a[1] = 0;
     temp.a[2] = 0;
     for (long long i = 0; i < image.len; ++i)
+    {
         for (long long j = 0; j < image.wid; ++j)
         {
             temp = goMatrix(i, j);
@@ -223,6 +237,10 @@ void Image::gauss()
             image.bits[i][j].a[1] = (unsigned char)(temp.a[1] / 16);
             image.bits[i][j].a[2] = (unsigned char)(temp.a[2] / 16);
         }
+        pixelsDone += image.wid;
+        int procent = (int)(100 * (pixelsDone - (2 * image.wid)) / pixelsAmount);
+        cout << (procent > 0 ? procent : 0) << "\n";
+    }
 }
 
 void Image::sobelY()
@@ -248,6 +266,7 @@ void Image::sobelX()
 
 void Image::sobelAll()
 {
+    pixelsAmount *= 3;
     struct img next;
     next.len = image.len;
     next.wid = image.wid;
@@ -269,6 +288,7 @@ void Image::sobelAll()
 
     long long z = 0;
     for (unsigned int i = 0; i < next.len; ++i)
+    {
         for (unsigned int j = 0; j < next.wid; ++j)
             for (int u = 0; u < 3; ++u)
             {
@@ -277,6 +297,10 @@ void Image::sobelAll()
                 z = z < 0 ? 0 : z;
                 image.bits[i][j].a[u] = (unsigned char)z;
             }
+        pixelsDone += image.wid;
+        int procent = (int)(100 * (pixelsDone - (2 * image.wid)) / pixelsAmount);
+        cout << (procent > 0 ? procent : 0) << "\n";
+    }
 
     for (unsigned int i = 0; i < next.len; ++i)
         delete [] next.bits[i];
@@ -314,6 +338,9 @@ void Image::sobel()
             bits[i][j].a[1] = (unsigned char)(temp.a[1]);
             bits[i][j].a[2] = (unsigned char)(temp.a[2]);
         }
+        pixelsDone += image.wid;
+        int procent = (int)(100 * (pixelsDone - (2 * image.wid)) / pixelsAmount);
+        cout << (procent > 0 ? procent : 0) << "\n";
     }
 
     for (unsigned int i = 0; i < image.len; ++i)
