@@ -36,14 +36,14 @@ namespace FloydAlgo
                     {
                         parsedLine = line.Split(' ');
                        // Console.WriteLine($"{line}--->{long.Parse(parsedLine[0]) - 1} -- {long.Parse(parsedLine[1]) - 1} -- {long.Parse(parsedLine[2])}");
-                        matrix[long.Parse(parsedLine[0]) - 1, long.Parse(parsedLine[1]) - 1] = long.Parse(parsedLine[2]);
+                        matrix[long.Parse(parsedLine[0]), long.Parse(parsedLine[1])] = long.Parse(parsedLine[2]);
                     }
                 }
                 sr.Close();
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception: " + e.Message);
+                Console.WriteLine("error in file read\nException: " + e.Message);
                 throw new Exception("error in read file");
             }
             return new Matrix(numberOfVert, matrix);
