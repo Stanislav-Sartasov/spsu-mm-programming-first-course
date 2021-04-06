@@ -1,8 +1,8 @@
 package com.company.exam;
 
 class Pair implements Comparable<Pair> {
-    private long first;
-    private long second;
+    private final long first;
+    private final long second;
     private static final int p = 11939;
 
     public long getFirst() {
@@ -37,10 +37,6 @@ class Pair implements Comparable<Pair> {
             return -1;
         if (first > p.first)
             return 1;
-        if (second < p.second)
-            return -1;
-        if (second > p.second)
-            return 1;
-        return 0;
+        return Long.compare(second, p.second);
     }
 }

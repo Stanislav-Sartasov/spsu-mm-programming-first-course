@@ -54,14 +54,12 @@ public class OptimisticExamSystem implements IExamSystem {
                 curr.lock.lock();
                 try {
                     if (validate(pred, curr)) {
-                        if (curr.key.equals(item)) {
-                            return; // не получилось
-                        } else {
+                        if (!curr.key.equals(item)) {
                             Node<Pair> node = new Node<>(item);
                             node.next = curr;
                             pred.next = node;
-                            return; 
                         }
+                        return; // не получилось
                     }
                 } finally {
                     pred.lock.unlock();
@@ -86,12 +84,10 @@ public class OptimisticExamSystem implements IExamSystem {
 
             try {
                 if (validate(pred, curr)) {
-                    if (!curr.key.equals(item)) {
-                        return; // не получилось
-                    } else {
+                    if (curr.key.equals(item)) {
                         pred.next = curr.next;
-                        return; 
                     }
+                    return;
                 }
             } finally {
                 curr.lock.unlock();
