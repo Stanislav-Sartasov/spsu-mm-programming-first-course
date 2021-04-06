@@ -84,8 +84,8 @@ namespace FiberLib
                     int i = random.Next(2 * maxPriority) + 1;
                     if (i > maxPriority)
                         i = maxPriority;
-                    --i;
                     int tempHolder = i;
+                    --i;
                     do
                     {
                         if (fibersPrior[i].Count !=0)
