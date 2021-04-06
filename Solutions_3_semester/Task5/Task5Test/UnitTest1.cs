@@ -22,13 +22,14 @@ namespace Task5Test
 		public void MainTest()
 		{
 			for (int i = 0; i < attemptsNumber; i++)
+			{
+				int[] a = new int[random.Next(0, maxArrSize)];
+				for (int j = 0; j < a.Length; j++)
+					a[j] = random.Next(-maxValue, maxValue);
+				int bf = BruteForce(a);
 				foreach (var computer in vectorLengthComputers)
-				{
-					int[] a = new int[random.Next(0, maxArrSize)];
-					for (int j = 0; j < a.Length; j++)
-						a[j] = random.Next(-maxValue, maxValue);
-					Assert.AreEqual(BruteForce(a), computer.ComputeLength(a));
-				}
+					Assert.AreEqual(computer.ComputeLength(a), bf);
+			}
 		}
 	}
 }
