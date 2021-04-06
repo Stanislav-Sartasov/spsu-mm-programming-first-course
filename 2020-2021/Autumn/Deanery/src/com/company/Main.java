@@ -15,13 +15,20 @@ public class Main {
         work(coarseExamSystem);
         long endTime   = System.nanoTime();
         long totalTime = endTime - startTime;
-        System.out.println("Striped Exam System:   " + totalTime + " ms.");
+        System.out.println("Striped Exam System:    " + totalTime + " ms.");
 
         startTime = System.nanoTime();
         work(refinableExamSystem);
         endTime   = System.nanoTime();
         totalTime = endTime - startTime;
-        System.out.println("Refinable Exam System: " + totalTime + " ms.");
+        System.out.println("Refinable Exam System:  " + totalTime + " ms.");
+
+        OptimisticExamSystem optimisticExamSystem = new OptimisticExamSystem();
+        startTime = System.nanoTime();
+        work(optimisticExamSystem);
+        endTime   = System.nanoTime();
+        totalTime = endTime - startTime;
+        System.out.println("Optimistic Exam System: " + totalTime + " ms.");
     }
 
     private static void work(IExamSystem examSystem) {

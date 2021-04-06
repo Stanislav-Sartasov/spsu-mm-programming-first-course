@@ -1,6 +1,6 @@
 package com.company.exam;
 
-class Pair {
+class Pair implements Comparable<Pair> {
     private long first;
     private long second;
     private static final int p = 11939;
@@ -29,5 +29,18 @@ class Pair {
     @Override
     public int hashCode() {
         return (int)(first * p + second);
+    }
+
+    @Override
+    public int compareTo(Pair p) {
+        if (first < p.first)
+            return -1;
+        if (first > p.first)
+            return 1;
+        if (second < p.second)
+            return -1;
+        if (second > p.second)
+            return 1;
+        return 0;
     }
 }
