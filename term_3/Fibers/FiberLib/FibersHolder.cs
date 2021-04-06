@@ -8,6 +8,7 @@ namespace FiberLib
 {
     internal class FibersHolder
     {
+        private Random random = new Random();
         private List<FiberData>[] fibersPrior;
         private List<FiberData> fibersLine;
         private FiberData tempHolder;
@@ -80,11 +81,27 @@ namespace FiberLib
                     Takeout(data);
                     return true;
                 case SchedulerPriority.PriorityLevel:
-                    int i = maxPriority;
+                    int i = random.Next(2 * maxPriority) + 1;
+                    if (i > maxPriority)
+                        i = maxPriority;
+                    --i;
+                    int tempHolder = i;
+                    do
+                    {
+                        if (fibersPrior[i].Count !=0)
+                        {
+                            data = fibersPrior[i].First();
+                            Backin();
+                            Takeout(data);
+                            return true;
+                        }
+                        ++i;
+                    } while (fibersPrior.Length > i);
+                    i = tempHolder;
                     do
                     {
                         --i;
-                        if (fibersPrior[i].Count !=0)
+                        if (fibersPrior[i].Count != 0)
                         {
                             data = fibersPrior[i].First();
                             Backin();

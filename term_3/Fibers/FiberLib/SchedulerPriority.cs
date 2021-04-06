@@ -9,6 +9,6 @@ namespace FiberLib
     public enum SchedulerPriority
     {
         NonePriority, // first in list is first to execute
-        PriorityLevel // priority by 3 levels high, medium, low
+        PriorityLevel // priority by levels
     }
 }
