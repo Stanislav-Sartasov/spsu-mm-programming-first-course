@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
+}
+
+sourceCompatibility = 14
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile "org.testfx:testfx-core:4.0.15-alpha"
+    testCompile "org.testfx:testfx-junit:4.0.15-alpha"
+    testCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.1'
+}
+
+javafx {
+    version = '13'
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+
+mainClassName = 'app.Main'
+
+test {
+    // Always run tests, even when nothing changed.
+    dependsOn 'cleanTest'
+
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+    /*filter {
+        includeTestsMatching "com.company.app.*"
+        includeTestsMatching "com.company.math.*"
+    }*/
+}
