@@ -27,30 +27,40 @@ namespace DeansOffice.ExamSystems
 
         public int Find(T value)
         {
+            first.Lock();
             TTASListNode<T> temp = first;
             int i = -1;
 
             while (temp.Next != null)
             {
+                temp.Unlock();
                 temp = temp.Next;
+                temp.Lock();
                 i++;
                 if (temp.Value.Equals(value))
+                {
+                    temp.Unlock();
                     return i;
+                }
             }
+            temp.Unlock();
 
             return -1;
         }
 
         public bool Contains(T value)
         {
+            first.Lock();
             TTASListNode<T> temp = first;
 
             while (temp.Next != null)
             {
+                first.Unlock();
                 temp = temp.Next;
                 if (temp.Value.Equals(value))
                     return true;
             }
+            temp.Unlock();
 
             return false;
         }

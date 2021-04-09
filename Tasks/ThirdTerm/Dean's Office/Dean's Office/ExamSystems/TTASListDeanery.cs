@@ -37,7 +37,10 @@ namespace DeansOffice.ExamSystems
 
         public bool Contains(long studentId, long courseId)
         {
-            return hashTable[GetHash(studentId)].Contains((studentId, courseId));
+            TTASLock.Lock();
+            bool answer = hashTable[GetHash(studentId)].Contains((studentId, courseId));
+            TTASLock.Unlock();
+            return answer;
         }
 
         public void Remove(long studentId, long courseId)
