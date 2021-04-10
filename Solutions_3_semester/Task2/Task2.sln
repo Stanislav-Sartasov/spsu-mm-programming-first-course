@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task2", "Task2\Task2.csproj", "{F325432E-BBA5-4AA0-8F6B-CD8934C371D2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task2Test", "Task2Test\Task2Test.csproj", "{CFCCBC87-0F12-4FC6-AC15-7A9896CF0952}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphGenerator", "GraphGenerator\GraphGenerator.csproj", "{F0D92B17-0C7D-4C65-9968-A2A1727C3293}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F325432E-BBA5-4AA0-8F6B-CD8934C371D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F325432E-BBA5-4AA0-8F6B-CD8934C371D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F325432E-BBA5-4AA0-8F6B-CD8934C371D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F325432E-BBA5-4AA0-8F6B-CD8934C371D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFCCBC87-0F12-4FC6-AC15-7A9896CF0952}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFCCBC87-0F12-4FC6-AC15-7A9896CF0952}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFCCBC87-0F12-4FC6-AC15-7A9896CF0952}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFCCBC87-0F12-4FC6-AC15-7A9896CF0952}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0D92B17-0C7D-4C65-9968-A2A1727C3293}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0D92B17-0C7D-4C65-9968-A2A1727C3293}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0D92B17-0C7D-4C65-9968-A2A1727C3293}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0D92B17-0C7D-4C65-9968-A2A1727C3293}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {82D74A3C-8C31-4124-B82D-8209675CC52B}
+	EndGlobalSection
+EndGlobal
