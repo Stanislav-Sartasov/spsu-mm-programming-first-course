@@ -46,7 +46,7 @@ namespace UnitTests
         [TestMethod]
         public void TestTTASDeanery()
         {
-            IExamSystem examSystem = new TTASDeanery(9999);
+            IExamSystem examSystem = new TTASDeanery();
 
             examSystem.Add(1, 1);
             examSystem.Add(2, 2);

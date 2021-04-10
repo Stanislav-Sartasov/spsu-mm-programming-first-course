@@ -6,44 +6,36 @@ namespace DeansOffice.ExamSystems
 {
     public class TTASDeanery : IExamSystem
     {
-        private volatile List<(long, long)>[] hashTable;
-        private readonly int size;
-        public TTASDeanery(int size)
+        private volatile List<(long, long)> list;
+        public TTASDeanery()
         {
-            this.size = size;
-            hashTable = new List<(long, long)>[size];
-            for (int i = 0; i < size; i++)
-                hashTable[i] = new List<(long, long)>();
+            list = new List<(long, long)>();
         }
-        public int GetSizeOfHashTable()
+        public int GetSizeOfList()
         {
-            return size;
+            return list.Count;
         }
-        public List<(long, long)>[] GetHashTable()
+        public List<(long, long)> GetList()
         {
-            return hashTable;
+            return list;
         }
 
-        private long GetHash(long id)
-        {
-            return id % size;
-        }
         public void Add(long studentId, long courseId)
         {
             TTASLock.Lock();
-            hashTable[GetHash(studentId)].Add((studentId, courseId));
+            list.Add((studentId, courseId));
             TTASLock.Unlock();
         }
 
         public bool Contains(long studentId, long courseId)
         {
-            return hashTable[GetHash(studentId)].Contains((studentId, courseId));
+            return list.Contains((studentId, courseId));
         }
 
         public void Remove(long studentId, long courseId)
         {
             TTASLock.Lock();
-            hashTable[GetHash(studentId)].Remove((studentId, courseId));
+            list.Remove((studentId, courseId));
             TTASLock.Unlock();
         }
     }

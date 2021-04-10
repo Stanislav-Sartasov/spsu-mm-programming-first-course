@@ -15,7 +15,7 @@ namespace DeansOffice
         static void Main(string[] args)
         {
             tasks = new Task[9999];
-            examSystem = new TTASDeanery(9999);
+            examSystem = new TTASDeanery();
 
             Stopwatch stopwatch = new Stopwatch();
 

@@ -30,24 +30,17 @@ namespace DeansOffice.ExamSystems
         }
         public void Add(long studentId, long courseId)
         {
-            TTASLock.Lock();
             hashTable[GetHash(studentId)].Add((studentId, courseId));
-            TTASLock.Unlock();
         }
 
         public bool Contains(long studentId, long courseId)
         {
-            TTASLock.Lock();
-            bool answer = hashTable[GetHash(studentId)].Contains((studentId, courseId));
-            TTASLock.Unlock();
-            return answer;
+            return hashTable[GetHash(studentId)].Contains((studentId, courseId));
         }
 
         public void Remove(long studentId, long courseId)
         {
-            TTASLock.Lock();
             hashTable[GetHash(studentId)].Remove((studentId, courseId));
-            TTASLock.Unlock();
         }
     }
 }
