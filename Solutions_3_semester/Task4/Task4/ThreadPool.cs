@@ -35,15 +35,18 @@ namespace Task4
 
 		public ThreadPool()
 		{
-			for (int i = 0; i < ThreadCount; i++)
+			lock (threads)
 			{
-				Thread thread = new Thread(Work)
+				for (int i = 0; i < ThreadCount; i++)
 				{
-					Name = i.ToString(),
-					IsBackground = true,
-				};
-				threads.Add(thread);
-				thread.Start();
+					Thread thread = new Thread(Work)
+					{
+						Name = i.ToString(),
+						IsBackground = true,
+					};
+					threads.Add(thread);
+					thread.Start();
+				}
 			}
 		}
 
@@ -74,8 +77,7 @@ namespace Task4
 			{
 				if (stop)
 					return;
-				lock (taskPool)
-					taskPool.Enqueue(action);
+				taskPool.Enqueue(action);
 				Monitor.PulseAll(taskPool);
 			}
 		}
@@ -90,8 +92,9 @@ namespace Task4
 					Monitor.PulseAll(taskPool);
 				}
 
-				foreach (var thread in threads)
-					thread.Join();
+				lock (threads)
+					foreach (var thread in threads)
+						thread.Join();
 
 				taskPool.Clear();
 				threads.Clear();
