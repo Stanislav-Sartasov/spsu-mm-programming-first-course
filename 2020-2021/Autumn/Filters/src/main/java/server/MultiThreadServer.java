@@ -17,7 +17,7 @@ public class MultiThreadServer {
         try (ServerSocket server = new ServerSocket(3345)) {
             while (!server.isClosed()) {
                 Socket client = server.accept();
-                Thread newThread = new Thread(() -> new MonoThreadClientHandler(client, curId.getAndIncrement()).run());
+                Thread newThread = new Thread(() -> new ClientHandler(client, curId.getAndIncrement()).run());
                 threads.add(newThread);
                 newThread.start();
             }

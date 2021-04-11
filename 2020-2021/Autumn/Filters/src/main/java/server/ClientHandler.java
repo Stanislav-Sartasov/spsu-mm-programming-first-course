@@ -4,21 +4,24 @@ import app.BmpImage;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.net.Socket;
+import java.util.Properties;
 
-public class MonoThreadClientHandler implements Runnable {
+public class ClientHandler implements Runnable {
 
-    private static Socket clientDialog;
-    private static int id;
+    private final Socket clientDialog;
+    private final int id;
     private volatile Thread thread;
     private volatile boolean isRunning;
 
-    public MonoThreadClientHandler(Socket client, int id) {
-        MonoThreadClientHandler.clientDialog = client;
+    public ClientHandler(Socket client, int id) {
+        clientDialog = client;
         this.id = id;
     }
 
-    public void stop() {
+    private synchronized void stop() {
         isRunning = false;
         if (thread != null)
             thread.interrupt();
@@ -34,13 +37,13 @@ public class MonoThreadClientHandler implements Runnable {
             while (!clientDialog.isClosed()) {
                 String entry = in.readUTF();
                 if (entry.equalsIgnoreCase("get filters")) {
-                    out.writeUTF("Averaging 5x5");
-                    out.writeUTF("Averaging 3x3");
-                    out.writeUTF("SobelX");
-                    out.writeUTF("SobelY");
-                    out.writeUTF("Gauss 5x5");
-                    out.writeUTF("Gauss 3x3");
-                    out.writeUTF("Grey");
+                    Properties props = new Properties();
+                    props.load(new FileInputStream(getClass().getResource("/server/filters.ini").getFile()));
+                    String[] filters = props.getProperty("FILTERS").split(";");
+                    for (String filter: filters) {
+                        out.writeUTF(filter);
+                        out.flush();
+                    }
                     continue;
                 }
                 if (entry.equalsIgnoreCase("quit")) {
@@ -67,13 +70,15 @@ public class MonoThreadClientHandler implements Runnable {
                             out.flush();
                             ans = bmpImage.percentageOfReadiness();
                         }
-                        if (isRunning) {
-                            out.writeDouble(ans);
-                            out.flush();
-                            String outputPath = "output" + id + ".bmp";
-                            bmpImage.write(outputPath);
-                            out.writeUTF(outputPath);
-                            out.flush();
+                        synchronized (this) {
+                            if (isRunning) {
+                                out.writeDouble(ans);
+                                out.flush();
+                                String outputPath = "output" + id + ".bmp";
+                                bmpImage.write(outputPath);
+                                out.writeUTF(outputPath);
+                                out.flush();
+                            }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

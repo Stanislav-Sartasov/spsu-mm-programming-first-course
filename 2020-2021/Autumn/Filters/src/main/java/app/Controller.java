@@ -31,8 +31,6 @@ public class Controller {
     @FXML
     private Button start;
     @FXML
-    private Button cancel;
-    @FXML
     private ProgressIndicator indicator;
     private File image;
     private Socket socket;
@@ -47,7 +45,7 @@ public class Controller {
             connectToServer();
             initFilters();
         } catch (IOException e) {
-            e.printStackTrace();
+            makeAlert("Server error", "Try again later");
         }
     }
 
@@ -114,9 +112,8 @@ public class Controller {
             try {
                 connectToServer();
             } catch (IOException e) {
-                e.printStackTrace();
+                makeAlert("Server error", "Try again later");
             }
-            makeAlert("Server error", "Try again later");
             return;
         }
         start.setDisable(true);
@@ -132,6 +129,7 @@ public class Controller {
             oos.flush();
         } catch (IOException e) {
             makeAlert("Server error", "Try again later");
+            return;
         }
         new Thread(() -> {
             try {
@@ -140,13 +138,15 @@ public class Controller {
                     indicator.setProgress(readiness);
                     readiness = ois.readDouble();
                 }
-                if (!isCanceled) {
-                    indicator.setProgress(1);
-                    String outputImagePath = ois.readUTF();
-                    indicator.setVisible(false);
-                    photoAfter.setImage(new Image("file:" + outputImagePath));
-                    centerImage(photoAfter);
-                    start.setDisable(false);
+                synchronized (this) {
+                    if (!isCanceled) {
+                        indicator.setProgress(1);
+                        String outputImagePath = ois.readUTF();
+                        indicator.setVisible(false);
+                        photoAfter.setImage(new Image("file:" + outputImagePath));
+                        centerImage(photoAfter);
+                        start.setDisable(false);
+                    }
                 }
             } catch (IOException e) {
                 makeAlert("Server error", "Try again later");
@@ -156,16 +156,17 @@ public class Controller {
     }
 
     @FXML
-    void cancel(MouseEvent event) {
+    synchronized void cancel(MouseEvent event) {
         try {
             isCanceled = true;
             oos.writeUTF("cancel");
             oos.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            makeAlert("Server error", "Try again later");
         }
         start.setDisable(false);
         indicator.setVisible(false);
+        photoAfter.setImage(null);
         event.consume();
     }
 
@@ -189,7 +190,6 @@ public class Controller {
 
             imageView.setX((imageView.getFitWidth() - w) / 2);
             imageView.setY((imageView.getFitHeight() - h) / 2);
-
         }
     }
 
@@ -198,7 +198,7 @@ public class Controller {
             oos.writeUTF("quit");
             oos.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            makeAlert("Server error", "Try again later");
         }
     }
 
