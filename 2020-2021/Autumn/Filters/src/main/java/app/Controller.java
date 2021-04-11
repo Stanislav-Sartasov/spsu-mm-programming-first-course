@@ -32,7 +32,7 @@ public class Controller {
     private Button start;
     @FXML
     private ProgressIndicator indicator;
-    private File image;
+    protected File image;
     private Socket socket;
     private DataOutputStream oos;
     private DataInputStream ois;
@@ -82,6 +82,8 @@ public class Controller {
         image = file;
 
         if (!getFileExtension(file).equals("bmp")) {
+            image = null;
+            photoBefore.setImage(null);
             makeAlert("Invalid file format", "You must upload a bmp image");
             return;
         }
@@ -177,7 +179,7 @@ public class Controller {
         errorAlert.showAndWait();
     }
 
-    private void centerImage(ImageView imageView) {
+    void centerImage(ImageView imageView) {
         Image img = imageView.getImage();
         if (img != null) {
             double ratioX = imageView.getFitWidth() / img.getWidth();
