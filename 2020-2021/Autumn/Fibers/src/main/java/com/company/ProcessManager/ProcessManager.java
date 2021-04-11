@@ -30,17 +30,15 @@ public class ProcessManager {
             System.out.println("You can't set priority while process manager is running");
     }
 
-    public static void addTasks(Process[] processes) {
-        for (Process p: processes) {
-            Fiber fiber = new Fiber(() -> {
-                try {
-                    p.run();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            });
-            allFibers.put(fiber, p);
-        }
+    public static void addTask(Process process) {
+        Fiber fiber = new Fiber(() -> {
+            try {
+                process.run();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        allFibers.put(fiber, process);
     }
 
     public static void run() {
@@ -50,10 +48,38 @@ public class ProcessManager {
         processManagerSwitch(false);
     }
 
-    public static void processManagerSwitch(boolean isFinished) {
-        if (isFinished) {
+    public static void processManagerSwitch(boolean isFinished, Object resource) {
+        if (resource != null)
+            updatePrior(resource);
+        processManagerSwitch(isFinished);
+    }
+
+    private static void updatePrior(Object resource) {
+        Process best = null;
+        int prior = curPrior;
+        for (Process x : allFibers.values()) {
+            if (!x.isFinished() && x.getResource() == resource) {
+                if (x.getPriority() < prior) {
+                    best = x;
+                    prior = x.getPriority();
+                }
+            }
+        }
+        if (best != null) {
+            best.setCurPriority(curPrior);
+        }
+    }
+
+    public static synchronized void processManagerSwitch(boolean isFinished) {
+        if (curFiber != null) {
+            Process curProcess = allFibers.get(curFiber);
+            curProcess.setCurPriority(curProcess.getPriority());
+        }
+
+        if (isFinished && curFiber != null) {
             System.out.println("Fiber " + curFiber.getId() + " finished");
         }
+        Fiber prev = curFiber;
         curFiber = getNextFiber();
         if (allFibers.get(curFiber).isFinished()) {
             System.out.println("All tasks done. Switching to primary fiber");
@@ -61,7 +87,8 @@ public class ProcessManager {
 
         String info = "Fiber " + curFiber.getId() + " with priority ";
         System.out.println(info + allFibers.get(curFiber).getPriority() + " is running");
-        Fiber.fiberSwitch(curFiber.getId());
+        if (curFiber != prev)
+            Fiber.fiberSwitch(curFiber.getId());
     }
 
     private static Fiber getNextFiber() {
@@ -73,14 +100,14 @@ public class ProcessManager {
         for (Fiber fiber: allFibers.keySet()) {
             Process pr = allFibers.get(fiber);
             if (!pr.isFinished() && fiber != curFiber) {
-                if (pr.getPriority() > nextPrior) {
-                    nextPrior = pr.getPriority();
+                if (pr.getCurPriority() > nextPrior) {
+                    nextPrior = pr.getCurPriority();
                     nextFibers.clear();
                     nextFibers.put(fiber, pr);
-                } else if (pr.getPriority() == nextPrior) {
+                } else if (pr.getCurPriority() == nextPrior) {
                     nextFibers.put(fiber, pr);
                 } else if (nextFibers.isEmpty()) {
-                    nextPrior = pr.getPriority();
+                    nextPrior = pr.getCurPriority();
                     nextFibers.put(fiber, pr);
                 }
             }

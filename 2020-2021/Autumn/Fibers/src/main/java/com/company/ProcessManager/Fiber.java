@@ -81,9 +81,9 @@ public class Fiber {
     private void innerCreate(Runnable action) throws InterruptedException {
         this.action = action;
         if (primaryId == 0) {
-            primaryId = UnmanagedFiberAPI.kernel32.ConvertThreadToFiber(0);
             isPrimary = true;
             primaryFiber = this;
+            primaryId = UnmanagedFiberAPI.kernel32.ConvertThreadToFiber(0);
         }
         EventCallbackInterface lpFiber = this::fiberRunnerProc;
         id = UnmanagedFiberAPI.kernel32.CreateFiber(100500, lpFiber, 0);
@@ -98,7 +98,7 @@ public class Fiber {
             action.run();
         } catch (Exception e) {
             status = 1;
-            System.out.println(e);
+            //System.out.println(e);
             e.printStackTrace();
         } finally {
             if (status == 1) {

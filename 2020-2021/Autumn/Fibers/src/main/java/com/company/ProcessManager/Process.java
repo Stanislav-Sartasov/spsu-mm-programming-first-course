@@ -14,9 +14,20 @@ public class Process {
 	private final ArrayList<Integer> workIntervals = new ArrayList<>();
 	private final ArrayList<Integer> pauseIntervals = new ArrayList<>();
 	private int priority;
+	private volatile int curPriority;
 	private int totalDuration;
 	private int activeDuration;
-	private volatile boolean isFinished = false;
+	private volatile boolean isFinished;
+	private Object resource = null;
+	private final Random random;
+
+	public Object getResource() {
+		return resource;
+	}
+
+	public void setResource(Object resource) {
+		this.resource = resource;
+	}
 
 	public boolean isFinished() {
 		return isFinished;
@@ -30,8 +41,17 @@ public class Process {
 		return priority;
 	}
 
+	public int getCurPriority() {
+		return curPriority;
+	}
+
+	public void setCurPriority(int prior) {
+		curPriority = prior;
+	}
+
 	public void setPriority(int priority) {
 		this.priority = priority;
+		curPriority = priority;
 	}
 
 	public int getTotalDuration() {
@@ -43,7 +63,7 @@ public class Process {
 	}
 
 	public Process() {
-		Random random = new Random();
+		random = new Random();
 		isFinished = false;
 		int amount = random.nextInt(intervalsAmountBoundary);
 		for (int i = 0; i < amount; i++) {
@@ -54,6 +74,7 @@ public class Process {
 							: shortPauseBoundary));
 		}
 		priority = random.nextInt(priorityLevelsNumber);
+		curPriority = priority;
 	}
 
 	public void run() throws InterruptedException {
@@ -63,7 +84,10 @@ public class Process {
 				long pauseBeginTime = System.currentTimeMillis();
 				do {
 					sleep(1);
-					ProcessManager.processManagerSwitch(false);
+					if (random.nextInt() % 3 == 0)
+						ProcessManager.processManagerSwitch(false);
+					else
+						ProcessManager.processManagerSwitch(false, resource);
 				} while ((System.currentTimeMillis() - pauseBeginTime) < pauseIntervals.get(i)); // I/O emulation*/
 			}
 			isFinished = true;

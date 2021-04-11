@@ -14,8 +14,8 @@ class ProcessManagerTest {
         tasks = new Process[n];
         for (int i = 0; i < n; i++) {
             tasks[i] = new Process();
+            ProcessManager.addTask(tasks[i]);
         }
-        ProcessManager.addTasks(tasks);
     }
 
     @Test
