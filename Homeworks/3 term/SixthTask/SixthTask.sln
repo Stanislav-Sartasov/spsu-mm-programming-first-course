@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31025.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SixthTask", "SixthTask.csproj", "{90701B8C-80A1-4517-BC6A-C26E5CE41ACD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HTLib", "HTLib\HTLib.csproj", "{1CE0B11A-8639-41E4-A5D1-1100B6E5DAF7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SixthTask.Tests", "SixthTask.Tests\SixthTask.Tests.csproj", "{C46E30AB-6E5D-4C12-ACA2-A0A7AD6F2C86}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{90701B8C-80A1-4517-BC6A-C26E5CE41ACD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90701B8C-80A1-4517-BC6A-C26E5CE41ACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90701B8C-80A1-4517-BC6A-C26E5CE41ACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90701B8C-80A1-4517-BC6A-C26E5CE41ACD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CE0B11A-8639-41E4-A5D1-1100B6E5DAF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CE0B11A-8639-41E4-A5D1-1100B6E5DAF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CE0B11A-8639-41E4-A5D1-1100B6E5DAF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CE0B11A-8639-41E4-A5D1-1100B6E5DAF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C46E30AB-6E5D-4C12-ACA2-A0A7AD6F2C86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C46E30AB-6E5D-4C12-ACA2-A0A7AD6F2C86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C46E30AB-6E5D-4C12-ACA2-A0A7AD6F2C86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C46E30AB-6E5D-4C12-ACA2-A0A7AD6F2C86}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {74FD2C2D-9357-4D4E-875F-4DA9B8A43AF9}
+	EndGlobalSection
+EndGlobal
