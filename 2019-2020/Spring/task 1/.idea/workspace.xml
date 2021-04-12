@@ -2,12 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5ad75b41-4e54-461b-8de4-238355c37786" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../2020-2021/Autumn/Filters/src/test/java/app/ClientTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../2020-2021/Autumn/Filters/src/test/java/app/ClientTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -19,7 +22,10 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
   </component>
   <component name="ProjectId" id="1Zw3z8XnMM5FdC8bI5dJPxK2Mux" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -33,12 +39,19 @@
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="com.company.Image" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers" value="true" />
     <property name="create.test.in.the.same.root" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
@@ -53,10 +66,21 @@
     <configuration name="Main" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.company.Main" />
       <module name="task 1" />
-      <option name="PROGRAM_PARAMETERS" value="pics/input.bmp ToGrey output.bmp" />
-      <shortenClasspath name="NONE" />
+      <option name="PROGRAM_PARAMETERS" value="pics/input.bmp ToGrey pics/output.bmp" />
+      <shortenClasspath name="ARGS_FILE" />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -114,73 +138,11 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1585736588040</updated>
+      <workItem from="1618217678308" duration="71000" />
     </task>
     <servers />
   </component>
-  <component name="WindowStateProjectService">
-    <state x="414" y="207" width="1270" height="698" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587996164591">
-      <screen x="0" y="35" width="1920" height="1045" />
-    </state>
-    <state x="414" y="207" width="1270" height="698" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.35.1920.1045@0.35.1920.1045" timestamp="1587996164591" />
-    <state x="721" y="194" width="468" height="726" key="#com.intellij.ide.util.MemberChooser" timestamp="1587154576502">
-      <screen x="0" y="35" width="1920" height="1045" />
-    </state>
-    <state x="721" y="194" width="468" height="726" key="#com.intellij.ide.util.MemberChooser/0.35.1920.1045@0.35.1920.1045" timestamp="1587154576502" />
-    <state x="622" y="301" width="656" height="514" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1587994645413">
-      <screen x="0" y="35" width="1920" height="1045" />
-    </state>
-    <state x="622" y="301" width="656" height="514" key="#com.intellij.ide.util.TreeClassChooserDialog/0.35.1920.1045@0.35.1920.1045" timestamp="1587994645413" />
-    <state x="498" y="35" width="913" height="1045" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1587993784416">
-      <screen x="0" y="35" width="1920" height="1045" />
-    </state>
-    <state x="498" y="35" width="913" height="1045" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.35.1920.1045@0.35.1920.1045" timestamp="1587993784416" />
-    <state width="1862" height="268" key="GridCell.Tab.0.bottom" timestamp="1587996617937">
-      <screen x="0" y="35" width="1920" height="1045" />
-    </state>
-    <state width="1862" height="268" key="GridCell.Tab.0.bottom/0.35.1920.1045@0.35.1920.1045" timestamp="1587996617937" />
-    <state width="1862" height="268" key="GridCell.Tab.0.center" timestamp="1587996617935">
-      <screen x="0" y="35" width="1920" height="1045" />
-    </state>
-    <state width="1862" height="268" key="GridCell.Tab.0.center/0.35.1920.1045@0.35.1920.1045" timestamp="1587996617935" />
-    <state width="1862" height="268" key="GridCell.Tab.0.left" timestamp="1587996617933">
-      <screen x="0" y="35" width="1920" height="1045" />
-    </state>
-    <state width="1862" height="268" key="GridCell.Tab.0.left/0.35.1920.1045@0.35.1920.1045" timestamp="1587996617933" />
-    <state width="1862" height="268" key="GridCell.Tab.0.right" timestamp="1587996617935">
-      <screen x="0" y="35" width="1920" height="1045" />
-    </state>
-    <state width="1862" height="268" key="GridCell.Tab.0.right/0.35.1920.1045@0.35.1920.1045" timestamp="1587996617935" />
-    <state x="523" y="432" width="863" height="250" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1585817333814">
-      <screen x="0" y="35" width="1920" height="1045" />
-    </state>
-    <state x="523" y="432" width="863" height="250" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.35.1920.1045@0.35.1920.1045" timestamp="1585817333814" />
-    <state x="517" y="88" width="876" height="939" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1587995571592">
-      <screen x="0" y="35" width="1920" height="1045" />
-    </state>
-    <state x="517" y="88" width="876" height="939" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.35.1920.1045@0.35.1920.1045" timestamp="1587995571592" />
-    <state x="673" y="452" width="564" height="211" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1587992998218">
-      <screen x="0" y="35" width="1920" height="1045" />
-    </state>
-    <state x="673" y="452" width="564" height="211" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.35.1920.1045@0.35.1920.1045" timestamp="1587992998218" />
-    <state x="682" y="197" width="545" height="720" key="com.intellij.testIntegration.createTest.CreateTestDialog" timestamp="1587994667375">
-      <screen x="0" y="35" width="1920" height="1045" />
-    </state>
-    <state x="682" y="197" width="545" height="720" key="com.intellij.testIntegration.createTest.CreateTestDialog/0.35.1920.1045@0.35.1920.1045" timestamp="1587994667375" />
-    <state width="1008" height="506" key="javadoc.popup" timestamp="1587146843934">
-      <screen x="0" y="35" width="1920" height="1045" />
-    </state>
-    <state width="1008" height="506" key="javadoc.popup/0.35.1920.1045@0.35.1920.1045" timestamp="1587146843934" />
-    <state x="36" y="59" width="1838" height="997" key="new project wizard" timestamp="1585817250464">
-      <screen x="0" y="35" width="1920" height="1045" />
-    </state>
-    <state x="36" y="59" width="1838" height="997" key="new project wizard/0.35.1920.1045@0.35.1920.1045" timestamp="1585817250464" />
-    <state x="631" y="113" width="647" height="889" key="refactoring.ChangeSignatureDialog" timestamp="1585744809635">
-      <screen x="0" y="35" width="1920" height="1045" />
-    </state>
-    <state x="631" y="113" width="647" height="889" key="refactoring.ChangeSignatureDialog/0.35.1920.1045@0.35.1920.1045" timestamp="1585744809635" />
-    <state x="540" y="251" key="run.anything.popup" timestamp="1586681186040">
-      <screen x="0" y="35" width="1920" height="1045" />
-    </state>
-    <state x="540" y="251" key="run.anything.popup/0.35.1920.1045@0.35.1920.1045" timestamp="1586681186040" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
 </project>

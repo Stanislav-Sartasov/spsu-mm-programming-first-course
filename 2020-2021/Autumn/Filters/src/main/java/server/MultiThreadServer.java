@@ -14,7 +14,7 @@ public class MultiThreadServer {
     static List<Thread> threads = new ArrayList<>();
 
     public static void main(String[] args) {
-        try (ServerSocket server = new ServerSocket(3345)) {
+        try (ServerSocket server = new ServerSocket(8080)) {
             while (!server.isClosed()) {
                 Socket client = server.accept();
                 Thread newThread = new Thread(() -> new ClientHandler(client, curId.getAndIncrement()).run());

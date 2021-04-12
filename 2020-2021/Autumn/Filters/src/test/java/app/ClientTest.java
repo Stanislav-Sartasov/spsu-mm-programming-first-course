@@ -7,20 +7,22 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.File;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 // Сначала нужно запустить сервер
 
-//TODO: beforeEach?
 
 public class ClientTest extends ApplicationTest {
     private ComboBox filter;
@@ -56,48 +58,62 @@ public class ClientTest extends ApplicationTest {
     }
 
     @Test
-    public void testStart() throws InterruptedException {
+    public void test() throws InterruptedException {
         clickOn(filter);
         clickOn("Averaging 5x5");
         assertFalse(start.isDisable());
         clickOn(start);
+        assertNull(photoAfter.getImage());
 
-        Thread.sleep(5000);
+        Thread.sleep(4000);
+        assertNotNull(photoAfter.getImage());
 
         clickOn(filter);
         clickOn("SobelX");
         clickOn(start);
+        assertNull(photoAfter.getImage());
 
-        Thread.sleep(5000);
+        Thread.sleep(4000);
+        assertNotNull(photoAfter.getImage());
 
         clickOn(filter);
         clickOn("Grey");
         clickOn(start);
+        assertNull(photoAfter.getImage());
 
-        Thread.sleep(5000);
+        Thread.sleep(4000);
+        assertNotNull(photoAfter.getImage());
 
-        clickOn(filter);
-        clickOn("SobelY");
         clickOn(filter);
         clickOn("Averaging 3x3");
         clickOn(filter);
-        clickOn("Gauss 5x5");
-        clickOn(filter);
         clickOn("Gauss 3x3");
-    }
 
-    @Test
-    public void testCancel() throws InterruptedException {
-        int[] time = new int[]{100, 700, 1100};
+        int[] time = new int[]{200, 650};
         clickOn(filter);
-        clickOn("Averaging 5x5");
+        clickOn("Gauss 5x5");
         for (int t: time) {
             clickOn(start);
             Thread.sleep(t);
             clickOn(cancel);
             assertNull(photoAfter.getImage());
-            Thread.sleep(5000 - t);
+            Thread.sleep(4000 - t);
             assertNull(photoAfter.getImage());
         }
+
+        clickOn(filter);
+        clickOn("SobelY");
+        clickOn(start);
+        assertNull(photoAfter.getImage());
+
+        Thread.sleep(4000);
+        assertNotNull(photoAfter.getImage());
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        FxToolkit.hideStage();
+        release(new KeyCode[]{});
+        release(new MouseButton[]{});
     }
 }
