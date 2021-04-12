@@ -50,7 +50,7 @@ public class Controller {
     }
 
     void connectToServer() throws IOException {
-        socket = new Socket("localhost", 3345);
+        socket = new Socket("localhost", 8080);
         oos = new DataOutputStream(socket.getOutputStream());
         ois = new DataInputStream(socket.getInputStream());
     }
