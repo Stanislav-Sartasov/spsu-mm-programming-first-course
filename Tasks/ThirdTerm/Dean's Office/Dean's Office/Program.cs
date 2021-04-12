@@ -15,7 +15,7 @@ namespace DeansOffice
         static void Main(string[] args)
         {
             tasks = new Task[9999];
-            examSystem = new MutexListDeanery();
+            examSystem = new MutexListDeanery(9999);
 
             Stopwatch stopwatch = new Stopwatch();
 

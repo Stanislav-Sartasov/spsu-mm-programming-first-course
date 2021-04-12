@@ -6,30 +6,40 @@ namespace DeansOffice.ExamSystems
 {
     public class MutexListDeanery : IExamSystem
     {
-        private volatile List<(long, long)> list;
-        public MutexListDeanery()
+        private volatile MutexList<(long, long)>[] table;
+        private readonly int size;
+
+        public MutexListDeanery(int size)
         {
-            list = new List<(long, long)>();
+            this.size = size;
+            table = new MutexList<(long, long)>[size];
+            for (int i = 0; i < size; i++)
+                table[i] = new MutexList<(long, long)>();
         }
 
-        public List<(long, long)> GetList()
+        public object GetTable()
         {
-            return list;
+            return table;
+        }
+
+        private long GetHash(long id)
+        {
+            return id % size;
         }
 
         public void Add(long studentId, long courseId)
         {
-            list.Add((studentId, courseId));
+            table[GetHash(studentId)].Add((studentId, courseId));
         }
 
         public bool Contains(long studentId, long courseId)
         {
-            return list.Contains((studentId, courseId));
+            return table[GetHash(studentId)].Find((studentId, courseId)) != -1;
         }
 
         public void Remove(long studentId, long courseId)
         {
-            list.Remove((studentId, courseId));
+            table[GetHash(studentId)].Remove((studentId, courseId));
         }
     }
 }

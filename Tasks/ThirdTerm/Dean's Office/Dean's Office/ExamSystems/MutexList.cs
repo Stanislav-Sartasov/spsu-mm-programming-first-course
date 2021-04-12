@@ -4,12 +4,12 @@ using System.Threading;
 
 namespace DeansOffice.ExamSystems
 {
-    public class MyMutexList<T>
+    public class MutexList<T>
     {
         private volatile List<T> list = null;
         private volatile Mutex mutex;
 
-        public MyMutexList()
+        public MutexList()
         {
             list = new List<T>();
             mutex = new System.Threading.Mutex();

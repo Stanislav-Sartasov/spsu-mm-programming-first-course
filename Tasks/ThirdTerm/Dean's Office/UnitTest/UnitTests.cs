@@ -46,7 +46,7 @@ namespace UnitTests
         [TestMethod]
         public void TestMutexDeanery()
         {
-            IExamSystem examSystem = new MutexListDeanery();
+            IExamSystem examSystem = new MutexListDeanery(9999);
 
             examSystem.Add(1, 1);
             examSystem.Add(2, 2);
