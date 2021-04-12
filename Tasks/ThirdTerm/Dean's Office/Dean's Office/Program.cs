@@ -15,7 +15,7 @@ namespace DeansOffice
         static void Main(string[] args)
         {
             tasks = new Task[9999];
-            examSystem = new TTASDeanery();
+            examSystem = new MutexListDeanery();
 
             Stopwatch stopwatch = new Stopwatch();
 
@@ -25,7 +25,7 @@ namespace DeansOffice
             StartTest();
             stopwatch.Stop();
 
-            Console.WriteLine($"TTAS Deanery Table running time after 9999 requests: {stopwatch.ElapsedMilliseconds} ms");
+            Console.WriteLine($"Mutex Deanery Table running time after 9999 requests: {stopwatch.ElapsedMilliseconds} ms");
 
             examSystem = new TTASListDeanery(9999);
 

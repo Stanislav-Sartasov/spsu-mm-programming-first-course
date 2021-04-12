@@ -44,9 +44,9 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void TestTTASDeanery()
+        public void TestMutexDeanery()
         {
-            IExamSystem examSystem = new TTASDeanery();
+            IExamSystem examSystem = new MutexListDeanery();
 
             examSystem.Add(1, 1);
             examSystem.Add(2, 2);

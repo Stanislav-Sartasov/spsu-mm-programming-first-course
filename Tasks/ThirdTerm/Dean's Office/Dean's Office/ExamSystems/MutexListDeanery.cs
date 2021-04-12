@@ -4,17 +4,14 @@ using System.Text;
 
 namespace DeansOffice.ExamSystems
 {
-    public class TTASDeanery : IExamSystem
+    public class MutexListDeanery : IExamSystem
     {
         private volatile List<(long, long)> list;
-        public TTASDeanery()
+        public MutexListDeanery()
         {
             list = new List<(long, long)>();
         }
-        public int GetSizeOfList()
-        {
-            return list.Count;
-        }
+
         public List<(long, long)> GetList()
         {
             return list;
@@ -22,9 +19,7 @@ namespace DeansOffice.ExamSystems
 
         public void Add(long studentId, long courseId)
         {
-            TTASLock.Lock();
             list.Add((studentId, courseId));
-            TTASLock.Unlock();
         }
 
         public bool Contains(long studentId, long courseId)
@@ -34,9 +29,7 @@ namespace DeansOffice.ExamSystems
 
         public void Remove(long studentId, long courseId)
         {
-            TTASLock.Lock();
             list.Remove((studentId, courseId));
-            TTASLock.Unlock();
         }
     }
 }
