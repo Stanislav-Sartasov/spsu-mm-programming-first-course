@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using MPI;
 using ArrayHandlerLib;
 
-using System.IO;
-
 namespace SecondTask
 {
 	class RSQSort
@@ -31,13 +29,16 @@ namespace SecondTask
 					if (comm.Rank == 0)
 					{
 						arr = TextFilesLib.ReadArray(args[0]);
+
 						sizeOfArray = arr.Count;
 
-						if (comm.Size > sizeOfArray)
+						if (sizeOfArray < comm.Size * comm.Size)
 						{
 							SingleQuickSort.QuickSort(arr, 0, arr.Count - 1);
 
 							TextFilesLib.WriteArray(args[1], arr);
+
+							arr.Clear();
 							return;
 						}
 						else
@@ -172,6 +173,7 @@ namespace SecondTask
 					comm.Barrier();
 					
 					sendArr = comm.Gather(finalSortArr, 0);
+
 					if (comm.Rank == 0)
 					{
 						foreach (var t in sendArr)
@@ -180,12 +182,12 @@ namespace SecondTask
 						}
 
 						TextFilesLib.WriteArray(args[1], arr);
+
+						arr.Clear();
+						Array.Clear(sendArr, 0, sendArr.Length);
 					}
-
-					arr.Clear();
+			
 					finalSortArr.Clear();
-
-					Array.Clear(sendArr, 0, sendArr.Length);
 					Array.Clear(temp, 0, temp.Length);
 				}
 				catch (Exception ex)

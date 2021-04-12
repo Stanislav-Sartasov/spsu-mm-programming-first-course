@@ -1,5 +1,4 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 
 namespace SecondTask.Tests
@@ -8,7 +7,7 @@ namespace SecondTask.Tests
 	public class SortTestSmall
 	{
 		public List<int> arr;
-		public int capacity = 32;
+		public int capacity = 100;
 
 		[TestInitialize]
 		public void Init()
