@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Text;
 using System.Collections;
 
-namespace Task6.RefinableHashSet
+namespace Task6.MyHashSet
 {
-	public class RefinableHashSet : IExamSystem
+	public class MyHashSet : IExamSystem
 	{
-		public RefinableHashSet(int size)
+		public MyHashSet(int size)
 		{
 			table = new Bin[size];
 			for (int i = 0; i < size; i++)
 				table[i] = new Bin();
 		}
 
-		Bin[] table;
+		volatile Bin[] table;
 
 		public void Add(long studentId, long courseId)
 		{

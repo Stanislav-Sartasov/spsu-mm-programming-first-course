@@ -4,7 +4,7 @@ using System.Text;
 using Task6;
 using System.Collections;
 
-namespace Task6.RefinableHashSet
+namespace Task6.MyHashSet
 {
 	class Bin
 	{

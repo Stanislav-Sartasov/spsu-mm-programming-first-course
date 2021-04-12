@@ -6,7 +6,7 @@ namespace Task6.LazySet
 {
 	public class LazySet : IExamSystem
 	{
-		Elem<(long, long)> head = new Elem<(long, long)>() { Next = new Elem<(long, long)>() };
+		volatile Elem<(long, long)> head = new Elem<(long, long)>() { Next = new Elem<(long, long)>() };
 
 		static bool Validate(Elem<(long, long)> pred, Elem<(long, long)> curr)
 		{

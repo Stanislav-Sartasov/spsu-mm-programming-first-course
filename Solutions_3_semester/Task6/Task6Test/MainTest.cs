@@ -17,7 +17,7 @@ namespace Task6Test
 		[Test]
 		public void RefinableHashSetCorrectnessTest()
 		{
-			CorrectnessTest(new Task6.RefinableHashSet.RefinableHashSet(1 << 8));
+			CorrectnessTest(new Task6.MyHashSet.MyHashSet(1 << 8));
 		}
 
 		[Test]
@@ -29,13 +29,25 @@ namespace Task6Test
 		[Test]
 		public void RefinableHashSetSpeedTest()
 		{
-			SpeedTest(new Task6.RefinableHashSet.RefinableHashSet(1 << 8));
+			SpeedTest(new Task6.MyHashSet.MyHashSet(1 << 8), UserCount, TaskPerUser);
 		}
 
 		[Test]
 		public void LazySetSpeedTest()
 		{
-			SpeedTest(new Task6.LazySet.LazySet());
+			SpeedTest(new Task6.LazySet.LazySet(), UserCount, TaskPerUser);
+		}
+
+		[Test]
+		public void SoloRefinableHashSetSpeedTest()
+		{
+			SpeedTest(new Task6.MyHashSet.MyHashSet(1 << 8), 1, 20000);
+		}
+
+		[Test]
+		public void SoloLazySetSpeedTest()
+		{
+			SpeedTest(new Task6.LazySet.LazySet(), 1, 5000);
 		}
 
 		static void CorrectnessTest(Task6.IExamSystem table)
@@ -68,13 +80,10 @@ namespace Task6Test
 			Assert.IsFalse(table.Contains(3, 3));
 		}
 
-		static void SpeedTest(Task6.IExamSystem table)
+		static void SpeedTest(Task6.IExamSystem table, int userCount, int taskPerUser)
 		{
 			for (int k = 1; k <= 2; k++)
 			{
-				int userCount = UserCount;
-				int taskPerUser = TaskPerUser * k;
-
 				var userTask = GetTasks(RandGen, userCount, taskPerUser, new int[] { 90, 9, 1 });
 
 				bool start = false;
