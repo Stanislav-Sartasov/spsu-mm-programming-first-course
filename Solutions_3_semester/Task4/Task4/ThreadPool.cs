@@ -9,8 +9,8 @@ namespace Task4
 	{
 		const int ThreadCount = 16;
 
-		bool stop = false;
-		bool disposed = false;
+		volatile bool stop = false;
+		volatile bool disposed = false;
 		Queue<Action> taskPool = new Queue<Action>();
 		List<Thread> threads = new List<Thread>();
 		List<string> log = new List<string>();
@@ -90,14 +90,15 @@ namespace Task4
 				{
 					stop = true;
 					Monitor.PulseAll(taskPool);
+					taskPool.Clear();
 				}
 
 				lock (threads)
+				{
 					foreach (var thread in threads)
 						thread.Join();
-
-				taskPool.Clear();
-				threads.Clear();
+					threads.Clear();
+				}
 
 				disposed = true;
 			}
