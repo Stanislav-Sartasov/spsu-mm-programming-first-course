@@ -1,0 +1,27 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Task7"
+        xmlns:Client="clr-namespace:Task7" x:Name="Window" x:Class="Task7.MainWindow"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="422.528" Width="765.665" MinWidth="530" MinHeight="260" Closing="WindowClosing">
+	<Grid x:Name="MainGrid">
+		<Button x:Name="ChangeFileButton" Content="Select File" Margin="10,10,0,0" HorizontalAlignment="Left" Width="75" Height="22" VerticalAlignment="Top" Click="ChangeFileButtonClick"/>
+		<Grid Margin="10,37,9.8,9.4">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			<Image x:Name="StartImage"/>
+			<Image x:Name="FilterImage" Grid.Column="1"/>
+			<Button x:Name="SaveButton" Content="Save" Grid.Column="1" Margin="0,0,0.2,0.4" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="48" IsEnabled="False" Click="SaveImage"/>
+		</Grid>
+		<Button x:Name="ServerConnectButton" Content="Connect to server" HorizontalAlignment="Left" VerticalAlignment="Top" Width="106" Margin="90,10,0,0" Height="22" Click="ServerConnectButtonClick"/>
+		<ComboBox x:Name="FilterSelectComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="201,10,0,0" IsEnabled="False" SelectionChanged="FilterSelectComboBoxSelected"/>
+		<ProgressBar x:Name="ProgressBar" Height="22" VerticalAlignment="Top" Margin="497,10,9.8,0"/>
+		<Button x:Name="SendButton" Content="Send to server" HorizontalAlignment="Left" VerticalAlignment="Top" Width="86" Margin="326,10,0,0" Height="22" IsEnabled="False" Click="Send"/>
+		<Button x:Name="AbortButton" Content="Abort" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="417,10,0,0" Height="22" IsEnabled="False" Click="Abort"/>
+	</Grid>
+</Window>
