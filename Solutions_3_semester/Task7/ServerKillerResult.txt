@@ -1,1 +1,1 @@
-server killed at 64 requests with image 64x64
+server killed at 44 requests with image 64x64

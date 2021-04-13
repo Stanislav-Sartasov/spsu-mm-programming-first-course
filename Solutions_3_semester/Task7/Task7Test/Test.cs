@@ -79,7 +79,7 @@ namespace Task7Test
 
 			var image = FilterLibrary.BitmapGetter.GetArray(Properties.Resources.p64);
 
-			for (int requestCount = 1;; requestCount *= 2)
+			for (int requestCount = 2;; requestCount += 2)
 			{
 				List<SenderHandler> tests = new List<SenderHandler>();
 
