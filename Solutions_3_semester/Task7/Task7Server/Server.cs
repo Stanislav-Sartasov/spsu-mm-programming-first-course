@@ -37,6 +37,7 @@ namespace Task7Server
 		volatile List<Task> activeTasks = new List<Task>();
 		volatile Hashtable filters = new Hashtable();
 		volatile string filtersString = null;
+		volatile object sendingLocker = new object();
 
 
 		public void Start() 
@@ -51,17 +52,22 @@ namespace Task7Server
 
 					while (!stopped)
 					{
-						TcpClient client = listener.AcceptTcpClient();
+						var client = listener.AcceptTcpClient();
 
 						lock (activeTasks)
 							if (!stopped)
 							{
 								if (activeTasks.Count >= 128)
-									for (int i = 0; i < activeTasks.Count; i++)
+								{
+									int tasksCount = activeTasks.Count;
+									for (int i = 0; i < activeTasks.Count;)
 										if (activeTasks[i].IsCompleted)
 											activeTasks.RemoveAt(i);
 										else
 											i++;
+
+									Console.WriteLine($"cleaning result: {tasksCount - activeTasks.Count} tasks removed, {activeTasks.Count} tasks running");
+								}
 								activeTasks.Add(Task.Run(() => Work(client)));
 							}
 					}
@@ -88,7 +94,10 @@ namespace Task7Server
 				address = client.Client.RemoteEndPoint;
 				Console.WriteLine($"{address}: connected");
 
-				Message message = Message.GetFromStream(client, 5000);
+				Message message;
+
+				lock (sendingLocker)
+					message = Message.GetFromStream(client, 5000);
 
 				switch ((SendingProtocols)message.Flag)
 				{
@@ -126,11 +135,13 @@ namespace Task7Server
 
 		void Check(TcpClient client)
 		{
-			new Message(SendingProtocols.Check).SendToStream(client, 5000);
+			lock (sendingLocker)
+				new Message(SendingProtocols.Check).SendToStream(client, 5000);
 		}
 		void FilterSend(TcpClient client)
 		{
-			new Message(filtersString).SendToStream(client, 5000);
+			lock (sendingLocker)
+				new Message(filtersString).SendToStream(client, 5000);
 		}
 		void UseFilter(TcpClient client, Message message)
 		{
@@ -143,9 +154,10 @@ namespace Task7Server
 					if (!filters.ContainsKey(key))
 						return;
 
-				message = Message.GetFromStream(client, 5000);
+				lock (sendingLocker)
+					message = Message.GetFromStream(client, 5000);
 
-				lock (filters)
+				lock (filters[key])
 					filter = ((IFilter)filters[key]).Use(message.ContentByteArray);
 
 				while (true)
@@ -157,11 +169,15 @@ namespace Task7Server
 					else if (progress == -1 || stopped)
 						return;
 
-					new Message((int)progress).SendToStream(client, 5000);
+					lock (sendingLocker)
+						new Message((int)progress).SendToStream(client, 5000);
 				}
 
-				new Message(100, filter.Result).SendToStream(client, 5000);
-				Message.GetFromStream(client, 5000);
+				lock (sendingLocker)
+					new Message(100, filter.Result).SendToStream(client, 5000);
+
+				lock (sendingLocker)
+					Message.GetFromStream(client, 5000);
 			}
 			catch (Exception ex)
 			{

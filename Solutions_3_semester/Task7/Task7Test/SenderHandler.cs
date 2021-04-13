@@ -13,8 +13,15 @@ namespace Task7Test
 {
 	class SenderHandler
 	{
+		volatile bool finished = false;
+		public bool Finished
+		{
+			get
+			{
+				return finished;
+			}
+		}
 		public long ElapsedMilliseconds { get; private set; } = -1;
-		public bool Finished { get; private set; } = false;
 		public void Work(byte[] image, string filter, IPEndPoint server)
 		{
 			Task.Run(() =>
@@ -39,7 +46,7 @@ namespace Task7Test
 					{
 						sending.Abort();
 						stopwatch.Stop();
-						Finished = true;
+						finished = true;
 						return;
 					}
 					Thread.Sleep(100);
@@ -51,12 +58,12 @@ namespace Task7Test
 				{
 					sending.Abort();
 					stopwatch.Stop();
-					Finished = true;
+					finished = true;
 					return;
 				}
 
 				ElapsedMilliseconds = stopwatch.ElapsedMilliseconds;
-				Finished = true;
+				finished = true;
 			});
 		}
 	}
