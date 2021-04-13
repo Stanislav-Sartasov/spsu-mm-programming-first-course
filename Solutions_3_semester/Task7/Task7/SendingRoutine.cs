@@ -23,7 +23,7 @@ namespace Task7
 			this.FinishedRoutine = FinishedRoutine;
 		}
 
-		object abortLock = new object();
+		volatile object abortLock = new object();
 		volatile bool abort = false;
 		volatile bool finished = false;
 		public bool Finished

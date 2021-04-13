@@ -56,11 +56,12 @@ namespace Task7Server
 						lock (activeTasks)
 							if (!stopped)
 							{
-								for (int i = 0; i < activeTasks.Count; i++)
-									if (activeTasks[i].IsCompleted)
-										activeTasks.RemoveAt(i);
-									else
-										i++;
+								if (activeTasks.Count >= 128)
+									for (int i = 0; i < activeTasks.Count; i++)
+										if (activeTasks[i].IsCompleted)
+											activeTasks.RemoveAt(i);
+										else
+											i++;
 								activeTasks.Add(Task.Run(() => Work(client)));
 							}
 					}
@@ -178,7 +179,7 @@ namespace Task7Server
 				listener.Stop();
 
 			while (working != 0)
-				Thread.Sleep(10);
+				Thread.Sleep(50);
 
 			Task[] taskArr;
 			lock (activeTasks)
