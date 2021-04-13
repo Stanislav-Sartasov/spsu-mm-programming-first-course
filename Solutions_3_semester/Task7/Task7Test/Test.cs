@@ -54,6 +54,60 @@ namespace Task7Test
 			}
 		}
 
+		[Test]
+		public void ServerKillerTest()
+		{
+			/*
+			var server = new Server("127.0.0.1", 7777, new IFilter[] { new FilterLibrary.ShadeFilter() });
+			Task.Run(server.Start);
+			*/
+
+			IPEndPoint serverIP = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 7777);
+
+			try
+			{
+				TcpClient tcp = new TcpClient();
+				tcp.Connect(IPAddress.Parse("127.0.0.1"), 7777);
+				tcp.Close();
+			}
+			catch
+			{
+				throw new Exception("please start Task7Server at 127.0.0.1:7777");
+			}
+
+			StreamWriter streamWriter = new StreamWriter("ServerKillerResult.txt");
+
+			var image = FilterLibrary.BitmapGetter.GetArray(Properties.Resources.p64);
+
+			for (int requestCount = 1;; requestCount *= 2)
+			{
+				List<SenderHandler> tests = new List<SenderHandler>();
+
+				for (int i = 0; i < requestCount; i++)
+				{
+					SenderHandler sender = new SenderHandler();
+					tests.Add(sender);
+					sender.Work(image, new FilterLibrary.ShadeFilter().Name, serverIP);
+				}
+
+				for (int i = 0; i < tests.Count; i++)
+				{
+					while (!tests[i].Finished)
+						Thread.Sleep(50);
+
+					if (tests[i].ElapsedMilliseconds < 0)
+					{
+						streamWriter.WriteLine($"server killed at {requestCount} requests with image 64x64");
+						streamWriter.Close();
+
+						//server.Dispose();
+
+						return;
+					}
+				}
+			}
+		}
+
 		void SingleStressTest(byte[] image, int requestCount, string path)
 		{
 			/*

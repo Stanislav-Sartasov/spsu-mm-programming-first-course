@@ -1,4 +1,3 @@
 Single:	waiting for server response before sending next
 First:	100 requests 3 times per second
 Second: 100 requests 2 times per second
-Server slowdown at more than 3 requests per second with 256x256 image
