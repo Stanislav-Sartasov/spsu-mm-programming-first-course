@@ -43,10 +43,18 @@ namespace Task6.LazySet
 						curr.Locker.Unlock();
 						return;
 					}
-					else if (curr.Value == (studentId, courseId))
+					else if (curr.Key == key)
 					{
 						pred.Locker.Lock();
 						curr.Locker.Lock();
+
+						if (curr.Value != (studentId, courseId))
+						{
+							pred.Locker.Unlock();
+							curr.Locker.Unlock();
+							continue;
+						}
+
 						if (!Validate(pred, curr))
 						{
 							valid = false;
@@ -104,10 +112,18 @@ namespace Task6.LazySet
 				{
 					if (curr.Next == null)
 						return;
-					else if (curr.Value == (studentId, courseId))
+					else if (curr.Key == key)
 					{
 						pred.Locker.Lock();
 						curr.Locker.Lock();
+
+						if (curr.Value != (studentId, courseId))
+						{
+							pred.Locker.Unlock();
+							curr.Locker.Unlock();
+							continue;
+						}
+
 						if (!Validate(pred, curr))
 						{
 							valid = false;
@@ -147,8 +163,21 @@ namespace Task6.LazySet
 			{
 				if (curr.Next == null)
 					return false;
-				else if (curr.Value == (studentId, courseId))
-					return !curr.Marked;
+				else if (curr.Key == key)
+				{
+					curr.Locker.Lock();
+
+					if (curr.Value != (studentId, courseId))
+					{
+						curr.Locker.Unlock();
+						continue;
+					}
+
+					bool res = !curr.Marked;
+					curr.Locker.Unlock();
+
+					return res;
+				}
 				else
 					curr = curr.Next;
 			}

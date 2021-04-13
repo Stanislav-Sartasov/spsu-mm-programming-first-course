@@ -6,10 +6,49 @@ namespace Task6.LazySet
 {
 	class Elem<T>
 	{
-		public Locker Locker { get; } = new Locker();
-		public int Key { get; set; } = int.MinValue;
+		volatile Locker locker = new Locker();
+		volatile int key = int.MinValue;
+		volatile Elem<T> next = null;
+		volatile bool marked = false;
+		public Locker Locker {
+			get
+			{
+				return locker;
+			}
+		}
+		public int Key
+		{
+			get
+			{
+				return key;
+			}
+			set
+			{
+				key = value;
+			}
+		}
 		public T Value { get; set; } = default;
-		public Elem<T> Next { get; set; } = null;
-		public bool Marked { get; set; } = false;
+		public Elem<T> Next
+		{
+			get
+			{
+				return next;
+			}
+			set
+			{
+				next = value;
+			}
+		}
+		public bool Marked
+		{
+			get
+			{
+				return marked;
+			}
+			set
+			{
+				marked = value;
+			}
+		}
 	}
 }

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Collections;
 
-namespace Task6.MyHashSet
+namespace Task6.StaticSizeHashSet
 {
-	public class MyHashSet : IExamSystem
+	public class StaticSizeHashSet : IExamSystem
 	{
-		public MyHashSet(int size)
+		public StaticSizeHashSet(int size)
 		{
 			table = new Bin[size];
 			for (int i = 0; i < size; i++)

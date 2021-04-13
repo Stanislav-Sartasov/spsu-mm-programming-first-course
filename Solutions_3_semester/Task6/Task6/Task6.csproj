@@ -5,4 +5,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="LazySet\Elem.cs~RF1e2ae660.TMP" />
+  </ItemGroup>
+
 </Project>

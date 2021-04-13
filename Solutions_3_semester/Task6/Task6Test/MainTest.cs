@@ -17,7 +17,7 @@ namespace Task6Test
 		[Test]
 		public void RefinableHashSetCorrectnessTest()
 		{
-			CorrectnessTest(new Task6.MyHashSet.MyHashSet(1 << 8));
+			CorrectnessTest(new Task6.StaticSizeHashSet.StaticSizeHashSet(1 << 8));
 		}
 
 		[Test]
@@ -29,25 +29,29 @@ namespace Task6Test
 		[Test]
 		public void RefinableHashSetSpeedTest()
 		{
-			SpeedTest(new Task6.MyHashSet.MyHashSet(1 << 8), UserCount, TaskPerUser);
+			for (int k = 1; k <= 2; k++)
+				SpeedTest(new Task6.StaticSizeHashSet.StaticSizeHashSet(1 << 8), UserCount, TaskPerUser * k);
 		}
 
 		[Test]
 		public void LazySetSpeedTest()
 		{
-			SpeedTest(new Task6.LazySet.LazySet(), UserCount, TaskPerUser);
+			for (int k = 1; k <= 2; k++)
+				SpeedTest(new Task6.LazySet.LazySet(), UserCount, TaskPerUser * k);
 		}
 
 		[Test]
 		public void SoloRefinableHashSetSpeedTest()
 		{
-			SpeedTest(new Task6.MyHashSet.MyHashSet(1 << 8), 1, 20000);
+			for (int k = 1; k <= 2; k++)
+				SpeedTest(new Task6.StaticSizeHashSet.StaticSizeHashSet(1 << 8), 1, 20000 * k);
 		}
 
 		[Test]
 		public void SoloLazySetSpeedTest()
 		{
-			SpeedTest(new Task6.LazySet.LazySet(), 1, 5000);
+			for (int k = 1; k <= 2; k++)
+				SpeedTest(new Task6.LazySet.LazySet(), 1, 5000 * k);
 		}
 
 		static void CorrectnessTest(Task6.IExamSystem table)
@@ -82,33 +86,30 @@ namespace Task6Test
 
 		static void SpeedTest(Task6.IExamSystem table, int userCount, int taskPerUser)
 		{
-			for (int k = 1; k <= 2; k++)
+			var userTask = GetTasks(RandGen, userCount, taskPerUser, new int[] { 90, 9, 1 });
+
+			bool start = false;
+
+			List<Action<long, long>> actions = GetActions(table);
+
+			List<Task> tasks = new List<Task>();
+			for (int i = 0; i < userCount; i++)
 			{
-				var userTask = GetTasks(RandGen, userCount, taskPerUser, new int[] { 90, 9, 1 });
-
-				bool start = false;
-
-				List<Action<long, long>> actions = GetActions(table);
-
-				List<Task> tasks = new List<Task>();
-				for (int i = 0; i < userCount; i++)
+				List<int[]> task = userTask[i];
+				tasks.Add(Task.Run(() =>
 				{
-					List<int[]> task = userTask[i];
-					tasks.Add(Task.Run(() =>
-					{
-						while (!start)
-							Thread.Sleep(100);
-						Work(task, actions);
-					}));
-				}
-
-				Stopwatch stopwatch = new Stopwatch();
-				stopwatch.Start();
-				start = true;
-				Task.WaitAll(tasks.ToArray());
-				stopwatch.Stop();
-				Console.WriteLine($"completed in {stopwatch.ElapsedMilliseconds}ms with {userCount} users and {taskPerUser} tasks per user");
+					while (!start)
+						Thread.Sleep(100);
+					Work(task, actions);
+				}));
 			}
+
+			Stopwatch stopwatch = new Stopwatch();
+			stopwatch.Start();
+			start = true;
+			Task.WaitAll(tasks.ToArray());
+			stopwatch.Stop();
+			Console.WriteLine($"completed in {stopwatch.ElapsedMilliseconds}ms with {userCount} users and {taskPerUser} tasks per user");
 		}
 
 		static List<List<int[]>> GetTasks(int randGen, int userCount, int taskCountPerUser, int[] probabilityOfEvent)

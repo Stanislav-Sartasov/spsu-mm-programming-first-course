@@ -4,13 +4,20 @@ using System.Text;
 using Task6;
 using System.Collections;
 
-namespace Task6.MyHashSet
+namespace Task6.StaticSizeHashSet
 {
 	class Bin
 	{
-		public Locker Locker { get; } = new Locker();
+		volatile Locker locker = new Locker();
 		HashSet<(long, long)> content = new HashSet<(long, long)>();
 
+		public Locker Locker
+		{
+			get
+			{
+				return locker;
+			}
+		}
 		public void Add(long studentId, long courseId)
 		{
 			Locker.Lock();
