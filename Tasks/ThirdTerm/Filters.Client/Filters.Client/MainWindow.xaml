@@ -1,0 +1,34 @@
+﻿<Window x:Class="FilterClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FilterClient"
+        mc:Ignorable="d"
+        MinHeight="500"
+        MinWidth="700"
+        Title="MainWindow">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="5*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="applyFilterButton" Margin="2" Click="ApplyFilterButtonClicked" Content="Apply Filter" Grid.Column="0" Grid.Row="1"/>
+        <ComboBox x:Name="filtersComboBox" Margin="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.Column="0" Grid.Row="2"/>
+        <Button x:Name="cancelButton" Margin="2" Click="CancelButtonClicked"  Content="Cancel" Grid.Column="0" Grid.Row="3"/>
+        <Button x:Name ="selectImageButton" Margin="0,2,4,2" Click="SelectImageButtonClicked"  Content="Select a File" Grid.Column="0" Grid.Row="5"/>
+
+        <ProgressBar x:Name="progressBar" Margin="0,2,0,2" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2"/>
+        <Image x:Name="windowImage" Grid.Column="1" Grid.RowSpan="7" Margin="10,33,10,1"/>
+    </Grid>
+</Window>
