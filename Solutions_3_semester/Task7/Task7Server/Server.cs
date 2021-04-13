@@ -152,7 +152,7 @@ namespace Task7Server
 
 				lock (filters)
 					if (!filters.ContainsKey(key))
-						return;
+						throw new Exception("Unknown filter");
 
 				lock (sendingLocker)
 					message = Message.GetFromStream(client, 5000);
@@ -167,7 +167,7 @@ namespace Task7Server
 					if (progress >= 100)
 						break;
 					else if (progress == -1 || stopped)
-						return;
+						throw new Exception("Filter use failed");
 
 					lock (sendingLocker)
 						new Message((int)progress).SendToStream(client, 5000);
