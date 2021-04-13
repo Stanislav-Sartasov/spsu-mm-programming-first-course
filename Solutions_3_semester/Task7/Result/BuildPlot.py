@@ -38,8 +38,9 @@ for test in ['First_', 'Second_', 'Single_']:
         ymed.append(x[i][0])
         yaver.append(x[i][1])
     
-    plt.plot(xx, ymed)
-    plt.plot(xx, yaver)
+    plt.plot(xx, ymed, label = 'median')
+    plt.plot(xx, yaver, label = 'average')
+    plt.legend(loc='upper left', borderaxespad=0.)
     plt.title(test[:-1])
     plt.xlabel('pixels')
     plt.ylabel('Delay ms')
