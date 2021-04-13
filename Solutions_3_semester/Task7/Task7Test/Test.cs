@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Task7;
 using Task7Server;
 using System.Drawing;
+using System.Net.Sockets;
 
 namespace Task7Test
 {
@@ -62,6 +63,17 @@ namespace Task7Test
 
 			IPEndPoint serverIP = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 7777);
 
+			try
+			{
+				TcpClient tcp = new TcpClient();
+				tcp.Connect(IPAddress.Parse("127.0.0.1"), 7777);
+				tcp.Close();
+			}
+			catch
+			{
+				throw new Exception("please start Task7Server at 127.0.0.1:7777");
+			}
+
 			StreamWriter streamWriter = new StreamWriter(path);
 
 			for (int i = 0; i < requestCount; i++)
@@ -89,6 +101,17 @@ namespace Task7Test
 			bool result = true;
 
 			IPEndPoint serverIP = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 7777);
+
+			try
+			{
+				TcpClient tcp = new TcpClient();
+				tcp.Connect(IPAddress.Parse("127.0.0.1"), 7777);
+				tcp.Close();
+			}
+			catch
+			{
+				throw new Exception("please start Task7Server at 127.0.0.1:7777");
+			}
 
 			List<SenderHandler> tests = new List<SenderHandler>();
 			StreamWriter streamWriter = null;
