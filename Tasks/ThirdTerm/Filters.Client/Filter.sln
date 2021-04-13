@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Filter.Server", "Filters.Server\Filter.Server.csproj", "{09F83DC3-A22F-410D-BC10-89E78A73B4B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Filter.Client", "Filters.Client\Filter.Client.csproj", "{D3D29C47-A268-4518-A791-2925264D105F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Filter.Client", "Filters.Client\Filter.Client.csproj", "{D3D29C47-A268-4518-A791-2925264D105F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Filter.StressTest", "Filter.StressTest\Filter.StressTest.csproj", "{8074CDD2-556B-4D96-9D82-223DAD03D7DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{D3D29C47-A268-4518-A791-2925264D105F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3D29C47-A268-4518-A791-2925264D105F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3D29C47-A268-4518-A791-2925264D105F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8074CDD2-556B-4D96-9D82-223DAD03D7DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8074CDD2-556B-4D96-9D82-223DAD03D7DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8074CDD2-556B-4D96-9D82-223DAD03D7DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8074CDD2-556B-4D96-9D82-223DAD03D7DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

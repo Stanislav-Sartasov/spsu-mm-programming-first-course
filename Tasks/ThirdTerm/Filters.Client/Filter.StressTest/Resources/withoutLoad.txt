@@ -1,0 +1,33 @@
+Testing the Sobel Y filter on a 1920 x 1080 image for 30 seconds without additional load:
+Average Time: 390
+Median Time: 363
+1019
+343
+373
+317
+448
+456
+390
+336
+323
+327
+362
+363
+363
+437
+358
+403
+364
+323
+392
+362
+378
+329
+391
+352
+346
+389
+351
+347
+345
+420
