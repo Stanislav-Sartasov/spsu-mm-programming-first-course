@@ -45,7 +45,7 @@ namespace Task7Test
 		[Test]
 		public void DifferentPixelsTests()
 		{
-			for (int i = 32; i < 256; i += 4)
+			for (int i = 32; i < 256; i += 8)
 			{
 				byte[] image = FilterLibrary.BitmapGetter.GetArray(new Bitmap(Properties.Resources.p256, new Size(i, i)));
 				StressTest(image, FirstDelay, 20, $"DifferentPixelsTestFirst_p{i * i}.txt");

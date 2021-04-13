@@ -157,7 +157,7 @@ namespace Task7Server
 				lock (sendingLocker)
 					message = Message.GetFromStream(client, 5000);
 
-				lock (filters[key])
+				lock (filters)
 					filter = ((IFilter)filters[key]).Use(message.ContentByteArray);
 
 				while (true)
