@@ -6,7 +6,7 @@ namespace Task4Test
 {
 	public class Tests
 	{
-		int counter = 0;
+		volatile int counter = 0;
 		[Test]
 		public void Test()
 		{

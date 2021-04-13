@@ -52,9 +52,17 @@ namespace Task4
 
 		void Work()
 		{
-			while (!stop)
+			while (true)
 			{
 				Monitor.Enter(taskPool);
+
+				if (stop)
+				{
+					Monitor.PulseAll(taskPool);
+					Monitor.Exit(taskPool);
+					return;
+				}
+
 				if (taskPool.Count > 0)
 				{
 					Action task = taskPool.Dequeue();
@@ -91,7 +99,7 @@ namespace Task4
 					stop = true;
 					Monitor.PulseAll(taskPool);
 					taskPool.Clear();
-				}
+				}				
 
 				lock (threads)
 				{
